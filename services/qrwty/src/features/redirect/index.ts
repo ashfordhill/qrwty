@@ -1,6 +1,40 @@
+import { withTransaction } from "@jeeves/postgres-runtime";
 import { defineFeature } from "@jeeves/service-runtime";
+import qr from "../../generated/resources/qr.ts";
+import scan from "../../generated/resources/scan.ts";
+import { database } from "../../jeeves.generated.ts";
 
 // Acceptance: QR-03, QR-04, QR-07
-// Implement the public redirect. Query the current destination by id; if it is missing, return 404 and insert nothing. In one transaction (withTransaction from @jeeves/postgres-runtime), insert one scan row for the qr and commit, then return 302 with the destination in Location and Cache-Control: no-store. Every request counts, including repeated requests from the same client. Do not follow or cache the destination. Use the generated qr and scan descriptors for the physical table and column names, and parameterized SQL. Public access means no session lookup. Fastify also sends HEAD requests to this GET handler; do not insert a scan for HEAD. Do not expose fixture or clock controls.
-// Implement operationId followQr here; the runtime reports 501 until it is registered.
-export default defineFeature({name:"redirect", operations:{}});
+const destinationColumn = qr.fields.find((field) => field.name === "destination")!.column;
+const qrColumn = scan.belongsTo.find((relation) => relation.resource === qr.id)!.column;
+
+export default defineFeature({
+  name: "redirect",
+  operations: {
+    followQr: async (request) => {
+      const id = String(request.params.id);
+      const { rows: [row] } = await database.pool.query<{ destination: string }>(
+        `SELECT "${destinationColumn}" AS "destination" FROM "${qr.table}" WHERE "id" = $1`,
+        [id],
+      );
+      if (!row) {
+        return { status: 404, body: { error: "NOT_FOUND", message: "No such QR" } };
+      }
+
+      // Fastify also dispatches HEAD to this handler; only GET records a scan.
+      if (request.request.method !== "HEAD") {
+        await withTransaction(database.pool, async (client) => {
+          await client.query(
+            `INSERT INTO "${scan.table}" ("id", "${qrColumn}") VALUES (gen_random_uuid(), $1)`,
+            [id],
+          );
+        });
+      }
+
+      return {
+        status: 302,
+        headers: { location: row.destination, "cache-control": "no-store" },
+      };
+    },
+  },
+});
