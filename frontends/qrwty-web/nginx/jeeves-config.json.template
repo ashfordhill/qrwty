@@ -1,0 +1,8 @@
+{
+  "title": "${APP_TITLE}",
+  "apis": {
+    "qrwty": {
+      "url": "/_api/qrwty"
+    }
+  }
+}

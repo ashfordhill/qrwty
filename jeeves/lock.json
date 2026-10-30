@@ -1,0 +1,784 @@
+{
+  "lockVersion": 1,
+  "fixedAcceptance": [
+    {
+      "id": "core",
+      "service": "qrwty",
+      "operationIds": [
+        "downloadQr",
+        "followQr",
+        "qrActivity"
+      ],
+      "acceptanceIds": [
+        "QR-01"
+      ],
+      "requires": "extensions",
+      "runner": "node",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "_support/api.ts"
+        },
+        {
+          "path": "_support/qr.ts"
+        },
+        {
+          "path": "_support/destinations.ts"
+        },
+        {
+          "path": "_support/fixture.ts"
+        },
+        {
+          "path": "_support/db.ts"
+        }
+      ]
+    },
+    {
+      "id": "qr-image",
+      "service": "qrwty",
+      "operationIds": [
+        "downloadQr"
+      ],
+      "acceptanceIds": [
+        "QR-02",
+        "QR-06"
+      ],
+      "requires": "extensions",
+      "runner": "node",
+      "dependencies": [
+        {
+          "name": "jsqr",
+          "version": "1.4.0"
+        },
+        {
+          "name": "pngjs",
+          "version": "7.0.0"
+        }
+      ],
+      "files": [
+        {
+          "path": "_support/api.ts"
+        },
+        {
+          "path": "_support/qr.ts"
+        },
+        {
+          "path": "_support/destinations.ts"
+        },
+        {
+          "path": "_support/fixture.ts"
+        },
+        {
+          "path": "_support/db.ts"
+        }
+      ]
+    },
+    {
+      "id": "redirect",
+      "service": "qrwty",
+      "operationIds": [
+        "followQr"
+      ],
+      "acceptanceIds": [
+        "QR-03",
+        "QR-04",
+        "QR-07"
+      ],
+      "requires": "extensions",
+      "runner": "node",
+      "dependencies": [
+        {
+          "name": "jsqr",
+          "version": "1.4.0"
+        },
+        {
+          "name": "pngjs",
+          "version": "7.0.0"
+        }
+      ],
+      "files": [
+        {
+          "path": "_support/api.ts"
+        },
+        {
+          "path": "_support/qr.ts"
+        },
+        {
+          "path": "_support/destinations.ts"
+        },
+        {
+          "path": "_support/fixture.ts"
+        },
+        {
+          "path": "_support/db.ts"
+        }
+      ]
+    },
+    {
+      "id": "activity",
+      "service": "qrwty",
+      "operationIds": [
+        "qrActivity"
+      ],
+      "acceptanceIds": [
+        "QR-05",
+        "QR-06"
+      ],
+      "requires": "extensions",
+      "runner": "node",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "_support/api.ts"
+        },
+        {
+          "path": "_support/qr.ts"
+        },
+        {
+          "path": "_support/destinations.ts"
+        },
+        {
+          "path": "_support/fixture.ts"
+        },
+        {
+          "path": "_support/db.ts"
+        }
+      ]
+    },
+    {
+      "id": "restart",
+      "service": "qrwty",
+      "operationIds": [
+        "downloadQr",
+        "followQr",
+        "qrActivity"
+      ],
+      "acceptanceIds": [
+        "QR-08"
+      ],
+      "requires": "extensions",
+      "runner": "node",
+      "dependencies": [
+        {
+          "name": "jsqr",
+          "version": "1.4.0"
+        },
+        {
+          "name": "pngjs",
+          "version": "7.0.0"
+        }
+      ],
+      "files": [
+        {
+          "path": "_support/api.ts"
+        },
+        {
+          "path": "_support/qr.ts"
+        },
+        {
+          "path": "_support/destinations.ts"
+        },
+        {
+          "path": "_support/fixture.ts"
+        },
+        {
+          "path": "_support/db.ts"
+        }
+      ]
+    },
+    {
+      "id": "browser",
+      "service": "qrwty",
+      "operationIds": [
+        "downloadQr",
+        "followQr",
+        "qrActivity"
+      ],
+      "acceptanceIds": [
+        "QR-09"
+      ],
+      "requires": "frontend",
+      "runner": "playwright",
+      "dependencies": [
+        {
+          "name": "@playwright/test",
+          "version": "1.63.0"
+        },
+        {
+          "name": "jsqr",
+          "version": "1.4.0"
+        },
+        {
+          "name": "pngjs",
+          "version": "7.0.0"
+        }
+      ],
+      "files": [
+        {
+          "path": "_support/api.ts"
+        },
+        {
+          "path": "_support/qr.ts"
+        },
+        {
+          "path": "_support/destinations.ts"
+        },
+        {
+          "path": "_support/fixture.ts"
+        },
+        {
+          "path": "_support/db.ts"
+        }
+      ]
+    }
+  ],
+  "resourceModels": {
+    "qrwty": {
+      "storeConnection": "qrwty-uses-db",
+      "resources": [
+        {
+          "id": "qr",
+          "name": "qr",
+          "access": "owner",
+          "fields": [
+            {
+              "id": "destination",
+              "name": "destination",
+              "type": "http-url",
+              "required": true
+            },
+            {
+              "id": "title",
+              "name": "title",
+              "type": "text",
+              "required": false,
+              "maxLength": 120
+            }
+          ],
+          "belongsTo": [],
+          "operations": [
+            "create",
+            "read",
+            "list",
+            "update"
+          ]
+        },
+        {
+          "id": "scan",
+          "name": "scan",
+          "access": "internal",
+          "fields": [
+            {
+              "id": "occurred-at",
+              "name": "occurredAt",
+              "type": "timestamp",
+              "generated": "created-at"
+            }
+          ],
+          "belongsTo": [
+            {
+              "id": "scan-qr",
+              "resource": "qr",
+              "required": true
+            }
+          ],
+          "operations": []
+        }
+      ],
+      "acceptanceCases": [
+        "QR-01",
+        "QR-02",
+        "QR-03",
+        "QR-04",
+        "QR-05",
+        "QR-06",
+        "QR-07",
+        "QR-08",
+        "QR-09"
+      ],
+      "extensions": [
+        {
+          "id": "qr-image",
+          "operationId": "downloadQr",
+          "method": "GET",
+          "path": "/api/qr/{id}/image",
+          "access": "owner",
+          "acceptance": [
+            "QR-02",
+            "QR-06"
+          ],
+          "notes": "Implement the owner-scoped PNG download. Use sessionPrincipal(request.request) and publicOrigin() from @jeeves/rest-server; never read process.env.PUBLIC_ORIGIN. Read the QR from the generated qr descriptor's physical table by id and its owner_id column, returning 404 if it is absent or another owner's. Encode publicOrigin() + '/q/' + id as a 512x512 PNG with margin 4 and error-correction level M using the qrcode dependency already in package.json. Never encode destination. Set Content-Type: image/png and a Content-Disposition attachment header. Use deterministic encoder options (no timestamp or random metadata) so the bytes stay identical after destination edits and restarts. Do not generate the QR in the browser.",
+          "dependencies": [
+            {
+              "name": "qrcode",
+              "version": "1.5.4"
+            }
+          ],
+          "contract": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "PNG QR code containing the stable public redirect URL",
+                "content": {
+                  "image/png": {
+                    "schema": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                },
+                "headers": {
+                  "Content-Disposition": {
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Invalid id",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Unauthenticated",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "QR not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "redirect",
+          "operationId": "followQr",
+          "method": "GET",
+          "path": "/q/{id}",
+          "access": "public",
+          "acceptance": [
+            "QR-03",
+            "QR-04",
+            "QR-07"
+          ],
+          "notes": "Implement the public redirect. Query the current destination by id; if it is missing, return 404 and insert nothing. In one transaction (withTransaction from @jeeves/postgres-runtime), insert one scan row for the qr and commit, then return 302 with the destination in Location and Cache-Control: no-store. Every request counts, including repeated requests from the same client. Do not follow or cache the destination. Use the generated qr and scan descriptors for the physical table and column names, and parameterized SQL. Public access means no session lookup. Fastify also sends HEAD requests to this GET handler; do not insert a scan for HEAD. Do not expose fixture or clock controls.",
+          "contract": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            ],
+            "responses": {
+              "302": {
+                "description": "Redirect to the current destination",
+                "headers": {
+                  "Location": {
+                    "required": true,
+                    "schema": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  },
+                  "Cache-Control": {
+                    "required": true,
+                    "schema": {
+                      "type": "string",
+                      "const": "no-store"
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Invalid id",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Unknown redirect",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "activity",
+          "operationId": "qrActivity",
+          "method": "GET",
+          "path": "/api/qr/{id}/activity",
+          "access": "owner",
+          "acceptance": [
+            "QR-05",
+            "QR-06"
+          ],
+          "notes": "Implement the owner-scoped activity query. Use sessionPrincipal(request.request); check the QR belongs to the authenticated principal and return 404 for an absent or another owner's id. Require from and to as inclusive UTC dates. A range is valid when to >= from and (to - from) is at most 365 days, i.e. at most 366 dates inclusive; reject anything else with 400. Return {total, days:[{date,count}]}; include every UTC day in the range, including zero-count days. Aggregate scan rows by UTC day using the generated qr/scan descriptors and parameterized SQL. Do not expose fixture or clock controls.",
+          "contract": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              {
+                "name": "from",
+                "in": "query",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "date"
+                }
+              },
+              {
+                "name": "to",
+                "in": "query",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "date"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Activity over the requested UTC date range",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "required": [
+                        "total",
+                        "days"
+                      ],
+                      "properties": {
+                        "days": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "date",
+                              "count"
+                            ],
+                            "properties": {
+                              "date": {
+                                "type": "string",
+                                "format": "date"
+                              },
+                              "count": {
+                                "type": "integer",
+                                "minimum": 0
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        },
+                        "total": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Invalid date range",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Unauthenticated",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "QR not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "resourceStores": {
+    "qrwty": {
+      "connection": "qrwty-uses-db",
+      "database": "qrwty-db"
+    }
+  },
+  "resourceFingerprints": {
+    "qrwty": "1c71e75bcecff9a08cfd09275049c977b827b7724dc510dda22f6cea4d325cca"
+  },
+  "generator": "0.1.0",
+  "designRevision": 1,
+  "templates": [
+    "http-service@0.1.0",
+    "postgres@0.1.0",
+    "rest-api-client@0.1.0",
+    "rest-api-server@0.1.0",
+    "web-app@0.1.0"
+  ],
+  "runtimes": [
+    {
+      "name": "@jeeves/postgres-runtime",
+      "version": "0.1.0",
+      "tarball": "vendor/jeeves/jeeves-postgres-runtime-0.1.0.tgz"
+    },
+    {
+      "name": "@jeeves/rest-client",
+      "version": "0.1.0",
+      "tarball": "vendor/jeeves/jeeves-rest-client-0.1.0.tgz"
+    },
+    {
+      "name": "@jeeves/rest-server",
+      "version": "0.1.0",
+      "tarball": "vendor/jeeves/jeeves-rest-server-0.1.0.tgz"
+    },
+    {
+      "name": "@jeeves/service-runtime",
+      "version": "0.1.0",
+      "tarball": "vendor/jeeves/jeeves-service-runtime-0.1.0.tgz"
+    },
+    {
+      "name": "@jeeves/web-runtime",
+      "version": "0.1.0",
+      "tarball": "vendor/jeeves/jeeves-web-runtime-0.1.0.tgz"
+    }
+  ],
+  "elements": [
+    {
+      "id": "qrwty",
+      "template": "http-service@0.1.0",
+      "dir": "services/qrwty",
+      "ownedPaths": [
+        "services/qrwty/"
+      ]
+    },
+    {
+      "id": "qrwty-db",
+      "template": "postgres@0.1.0",
+      "dir": "databases/qrwty-db",
+      "ownedPaths": [
+        "databases/qrwty-db/"
+      ]
+    },
+    {
+      "id": "qrwty-web",
+      "template": "web-app@0.1.0",
+      "dir": "frontends/qrwty-web",
+      "ownedPaths": [
+        "frontends/qrwty-web/"
+      ]
+    }
+  ],
+  "files": {
+    "AGENTS.md": "sha256-3efb7d71c2711c4313a55b1d1913896fce172fcc731eb48360d9fdb1e6f712c1",
+    "contracts/qrwty.openapi.yaml": "sha256-8084645b622ea44c9fb6ad477c003f90716eef6bbec09c13ef2bf9177b5aea32",
+    "databases/qrwty-db/init/10-consumers.sql": "sha256-c90910e8a3fdf0e4d4579a1d155ee40e147e5f73d64f3aa817f4b267b2e8823e",
+    "docker-compose.yml": "sha256-cd2ba49e8431922dd580de83158e9353685384c50c265f7534b5fd094ed26f31",
+    "frontends/qrwty-web/nginx/default.conf.template": "sha256-450bddcaf678d22e63e1c75cbf4aa057f5e97faf651ec1daaf6d8c22edfecdd5",
+    "frontends/qrwty-web/nginx/jeeves-config.json.template": "sha256-c6d4d4875145df5fdd0671d1b8eebc8778517fc5bd0e5348ed7a821526cf0b6a",
+    "frontends/qrwty-web/src/clients/qrwty.generated.ts": "sha256-cc3c9437fd9910ce5fae5902926743fc178ef9c63364c5987a11b106fb94fdf1",
+    "frontends/qrwty-web/src/clients/qrwty.openapi.ts": "sha256-0a214108ef5a71b7bd0568411e7fd6b76141eabe16346bdd4c1e3403c2627306",
+    "frontends/qrwty-web/src/jeeves.generated.ts": "sha256-2e896a5784f736608c2590de2aa15ca5e419b191892a6f020499bce1ce13c5d2",
+    "jeeves/design.json": "sha256-11bd8e180668889c21b1aff0d72fb7f17c24a2be6d562d04e0505e92b9596d28",
+    "jeeves/elements/qrwty-db.md": "sha256-1f7eb4ac43c471ea855b5414ea097722cac2f2a7eb18abd2224c7f7e3c30c360",
+    "jeeves/elements/qrwty-web.md": "sha256-5c88175a4f9a02fcb872ceb0dc1994bb8feb2667d48b430815e5301ca025931e",
+    "jeeves/elements/qrwty.md": "sha256-1aa65bb1f08a60d5826816344502dfdc7a2527814aecbbf3c8233a2aa0cc8651",
+    "services/qrwty/resource-migrations/0001.sql": "sha256-859cd7341408d8a296860e6e10b0a3d4fd1b834a235b33fe8862a5157861d427",
+    "services/qrwty/resource-migrations/manifest.json": "sha256-6e1b327a9ee204d1cd203a003329ffc8f76d31ad741ed638a6fa0615ccddee99",
+    "services/qrwty/src/generated/resources/qr.ts": "sha256-cb194c8dbd578667552071ab3c23f85fbffae2870c735c6750ef1c886c2192d1",
+    "services/qrwty/src/generated/resources/scan.ts": "sha256-c57aee9ace46c2fb3371adc7f62efe445de7a4b305fda25b575fb54447c29c48",
+    "services/qrwty/src/generated/routes.ts": "sha256-90925c5b9c6f2d1d51d29090b92500a4c044d7c834945f9fafdba5ea6b8efa38",
+    "services/qrwty/src/jeeves.generated.ts": "sha256-573e6390e9d7cd3400850051e7859ff30214162aefa34839bc7060e95bd031a5",
+    "tests/acceptance/qrwty/_support/api.ts": "sha256-98d43a3a7e34442b80f689f0bb650aabce4794ccb87ed7a1d053b53c5cd9c5a5",
+    "tests/acceptance/qrwty/_support/db.ts": "sha256-fe4175ee17d73520f29e7708fdd90c66a9744f4b3574aff40c3ba0fd27ab2993",
+    "tests/acceptance/qrwty/_support/destinations.ts": "sha256-cac39bab2b1d60881fd4438a3998c317706bcba67ba71de32b852f810255514a",
+    "tests/acceptance/qrwty/_support/fixture.ts": "sha256-acc6e3c3efb6362ce6b2246103d1281c1428814839e0fbfe7c9dc5f686f1a7b3",
+    "tests/acceptance/qrwty/_support/qr.ts": "sha256-4cb23c3609ebf0c685abd188a037f01bf2ba72611c9976aa3049308e74b4977c",
+    "tests/acceptance/qrwty/activity.test.ts": "sha256-d1467fb84f370fdd509eb46894d0695a7b95a7738a19ff494ad59504a3309574",
+    "tests/acceptance/qrwty/browser.test.ts": "sha256-a50c33f9aeb49743704b8e3f315d4d007ff9243c161b3626701d16bb39c98f47",
+    "tests/acceptance/qrwty/core.test.ts": "sha256-431e7f7e6002db80fa98f250286e697a84fbb875d9da9f91b8537753fc3feece",
+    "tests/acceptance/qrwty/qr-image.test.ts": "sha256-de9d29a24f7598c2c5bdf0292d1be3530e63f172824670a060773ea215a0138d",
+    "tests/acceptance/qrwty/redirect.test.ts": "sha256-8b9cc3e2c70b7fc98379a3a8f7cff5b088179adb9928389ca3862e501903bba8",
+    "tests/acceptance/qrwty/restart.test.ts": "sha256-fb08fb04d131c051ac3986d8268121686df9bd62eb925b3d13809e577a1f9dd1",
+    "tests/generated/qrwty/_session.test.ts": "sha256-edcf0bef97185c2f75b7f87afae95b09cca79ab7284336a47f0f705bd631de06",
+    "tests/generated/qrwty/qr.test.ts": "sha256-776e5951fce7e558d27c9c05f69d8d7595dcd6b527c4e15e3ba3d86010cd50af"
+  }
+}

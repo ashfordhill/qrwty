@@ -1,0 +1,7 @@
+# What qrwty API's image build may see of the project root (the build context).
+*
+!vendor/jeeves/
+!contracts/
+!services/qrwty/
+services/qrwty/node_modules/
+services/qrwty/test/
