@@ -757,7 +757,7 @@
     "frontends/qrwty-web/src/clients/qrwty.generated.ts": "sha256-cc3c9437fd9910ce5fae5902926743fc178ef9c63364c5987a11b106fb94fdf1",
     "frontends/qrwty-web/src/clients/qrwty.openapi.ts": "sha256-0a214108ef5a71b7bd0568411e7fd6b76141eabe16346bdd4c1e3403c2627306",
     "frontends/qrwty-web/src/jeeves.generated.ts": "sha256-2e896a5784f736608c2590de2aa15ca5e419b191892a6f020499bce1ce13c5d2",
-    "jeeves/design.json": "sha256-3a0009715392e4d2c57fa7b4458628722f5f591938caae0176348216ddb95f45",
+    "jeeves/design.json": "sha256-11bd8e180668889c21b1aff0d72fb7f17c24a2be6d562d04e0505e92b9596d28",
     "jeeves/elements/qrwty-db.md": "sha256-1f7eb4ac43c471ea855b5414ea097722cac2f2a7eb18abd2224c7f7e3c30c360",
     "jeeves/elements/qrwty-web.md": "sha256-5c88175a4f9a02fcb872ceb0dc1994bb8feb2667d48b430815e5301ca025931e",
     "jeeves/elements/qrwty.md": "sha256-1aa65bb1f08a60d5826816344502dfdc7a2527814aecbbf3c8233a2aa0cc8651",
