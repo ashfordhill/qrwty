@@ -776,7 +776,7 @@
     "tests/acceptance/qrwty/browser.test.ts": "sha256-a50c33f9aeb49743704b8e3f315d4d007ff9243c161b3626701d16bb39c98f47",
     "tests/acceptance/qrwty/core.test.ts": "sha256-431e7f7e6002db80fa98f250286e697a84fbb875d9da9f91b8537753fc3feece",
     "tests/acceptance/qrwty/qr-image.test.ts": "sha256-de9d29a24f7598c2c5bdf0292d1be3530e63f172824670a060773ea215a0138d",
-    "tests/acceptance/qrwty/redirect.test.ts": "sha256-8b9cc3e2c70b7fc98379a3a8f7cff5b088179adb9928389ca3862e501903bba8",
+    "tests/acceptance/qrwty/redirect.test.ts": "sha256-8bcf8447723b37354b7dedc92dc7092cabf1f99fb4205cfa64486314ccd42f7f",
     "tests/acceptance/qrwty/restart.test.ts": "sha256-fb08fb04d131c051ac3986d8268121686df9bd62eb925b3d13809e577a1f9dd1",
     "tests/generated/qrwty/_session.test.ts": "sha256-edcf0bef97185c2f75b7f87afae95b09cca79ab7284336a47f0f705bd631de06",
     "tests/generated/qrwty/qr.test.ts": "sha256-776e5951fce7e558d27c9c05f69d8d7595dcd6b527c4e15e3ba3d86010cd50af"
