@@ -4,6 +4,7 @@ import type { FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import type { paths } from "../clients/qrwty.openapi.ts";
 import type { app } from "../jeeves.generated.ts";
+import { Analytics } from "./Analytics.tsx";
 import { message } from "./apiMessage.ts";
 import { CopyLink } from "./CopyLink.tsx";
 import { Icon } from "./Icon.tsx";
@@ -64,7 +65,7 @@ export function QrDashboard({
     return () => window.removeEventListener("beforeunload", warn);
   }, []);
   useEffect(() => {
-    if (section.startsWith("#studio")) window.scrollTo(0, 0);
+    if (section.startsWith("#studio") || section === "#analytics") window.scrollTo(0, 0);
     else if (section === "#library" || section === "#create")
       document.getElementById(section.slice(1))?.scrollIntoView();
   }, [section]);
@@ -142,6 +143,7 @@ export function QrDashboard({
     }
   }
 
+  if (section === "#analytics") return <Analytics onUnauthorized={onUnauthorized} />;
   if (studioId)
     return (
       <QrStudio

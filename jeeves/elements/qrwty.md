@@ -18,8 +18,8 @@ contract. Do not add standard CRUD handlers, routes, tables, or migrations; impl
 declared extensions below.
 
 - Resources: `qr` (owner; create, read, list, update); `scan` (internal; no CRUD routes); `artwork` (internal; no CRUD routes)
-- Extensions: `qr-image` GET /api/qr/{id}/image (owner; QR-02, QR-06); `redirect` GET /q/{id} (public; QR-03, QR-04, QR-07); `activity` GET /api/qr/{id}/activity (owner; QR-05, QR-06); `studio` GET /api/qr/{id}/studio (owner; QR-10, QR-12, QR-13, QR-14); `artwork-preview` POST /api/qr/{id}/artwork/preview (owner; QR-11, QR-12, QR-14); `artwork-save` POST /api/qr/{id}/artwork (owner; QR-10, QR-12, QR-13, QR-14); `artwork-export` GET /api/qr/{id}/artwork/{revision}/export (owner; QR-11, QR-12, QR-13, QR-14)
-- Fixed acceptance: QR-01, QR-02, QR-03, QR-04, QR-05, QR-06, QR-07, QR-08, QR-09, QR-10, QR-11, QR-12, QR-13, QR-14
+- Extensions: `qr-image` GET /api/qr/{id}/image (owner; QR-02, QR-06); `redirect` GET /q/{id} (public; QR-03, QR-04, QR-07); `activity` GET /api/qr/{id}/activity (owner; QR-05, QR-06); `studio` GET /api/qr/{id}/studio (owner; QR-10, QR-12, QR-13, QR-14); `artwork-preview` POST /api/qr/{id}/artwork/preview (owner; QR-11, QR-12, QR-14); `artwork-save` POST /api/qr/{id}/artwork (owner; QR-10, QR-12, QR-13, QR-14); `artwork-export` GET /api/qr/{id}/artwork/{revision}/export (owner; QR-11, QR-12, QR-13, QR-14); `owner-analytics` GET /api/analytics (owner; QR-15, QR-16)
+- Fixed acceptance: QR-01, QR-02, QR-03, QR-04, QR-05, QR-06, QR-07, QR-08, QR-09, QR-10, QR-11, QR-12, QR-13, QR-14, QR-15, QR-16
 - Generated-owned: `contracts/qrwty.openapi.yaml`, `services/qrwty/src/generated/`, `services/qrwty/resource-migrations/`, `tests/generated/qrwty/`, `tests/acceptance/qrwty/`
 - Implement extensions in `services/qrwty/src/features/<extension-id>/`. Read the generated
   resource descriptors in `src/generated/resources/` for physical table and column names.
@@ -479,7 +479,9 @@ independent owner-isolation and fixed acceptance suites.
       "QR-11",
       "QR-12",
       "QR-13",
-      "QR-14"
+      "QR-14",
+      "QR-15",
+      "QR-16"
     ],
     "extensions": [
       {
@@ -2378,6 +2380,203 @@ independent owner-isolation and fixed acceptance suites.
             },
             "500": {
               "description": "Unable to complete request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "owner-analytics",
+        "operationId": "ownerAnalytics",
+        "method": "GET",
+        "path": "/api/analytics",
+        "access": "owner",
+        "acceptance": [
+          "QR-15",
+          "QR-16"
+        ],
+        "notes": "Use @jeeves/analytics/postgres ownedEventCounter with generated qr and scan descriptors, timestamp occurredAt, label title and the authenticated sessionPrincipal. Validate UTC range with at most 90 inclusive days. Return consistent owner-scoped total scans, total/active QR resources, zero-filled daily counts and top ten. Counts are stored redirect events, not visitors. Never use a request-supplied owner or arbitrary SQL. No-store. Existing per-QR activity and all identities remain unchanged.",
+        "contract": {
+          "parameters": [
+            {
+              "name": "from",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date"
+              }
+            },
+            {
+              "name": "to",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Owned QR scan events in the inclusive UTC range",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "from": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "to": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "total": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      "totalResources": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      "activeResources": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      "days": {
+                        "type": "array",
+                        "maxItems": 90,
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "date": {
+                              "type": "string",
+                              "format": "date"
+                            },
+                            "count": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            }
+                          },
+                          "required": [
+                            "date",
+                            "count"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "top": {
+                        "type": "array",
+                        "maxItems": 10,
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "label": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "maxLength": 120
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "count": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "label",
+                            "count"
+                          ],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": [
+                      "from",
+                      "to",
+                      "total",
+                      "totalResources",
+                      "activeResources",
+                      "days",
+                      "top"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Sign in required",
               "content": {
                 "application/json": {
                   "schema": {

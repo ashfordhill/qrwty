@@ -79,6 +79,8 @@ Test hooks (fixed browser acceptance relies on these exact attributes)
 Studio (P17)
 - Add an owner-only Studio for the selected QR using the generated readQrStudio, previewQrArtwork, saveQrArtwork and exportQrArtwork operations. Use the pinned @jeeves/qr-artwork settings and @jeeves/product-ui configuration editor artifact. Keep drafts in session memory across library navigation; export only saved settings; preserve existing QR-09 hooks and legacy download. Never generate QR artwork in the browser. PNG/SVG bytes arrive from the server in typed base64 envelopes.
 
+Analytics (P18): Add an owner-wide Analytics workspace using generated ownerAnalytics, bounded UTC date presets/custom apply and explicit result range labels. Use shared Metrics and CountChart, an accessible daily table, empty/error/retry states and top-link Studio navigation. Do not call scans unique visitors. Preserve old library/Studio flows and strict browser verification.
+
 ---
 
 <!-- Agent guide for web-app@0.1.0 -->

@@ -178,9 +178,12 @@ importers:
 
   frontends/qrwty-web:
     dependencies:
+      '@jeeves/analytics':
+        specifier: file:artifacts/jeeves-analytics-0.1.0.tgz
+        version: file:frontends/qrwty-web/artifacts/jeeves-analytics-0.1.0.tgz
       '@jeeves/product-ui':
-        specifier: file:artifacts/jeeves-product-ui-0.2.0.tgz
-        version: file:frontends/qrwty-web/artifacts/jeeves-product-ui-0.2.0.tgz(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        specifier: file:artifacts/jeeves-product-ui-0.3.0.tgz
+        version: file:frontends/qrwty-web/artifacts/jeeves-product-ui-0.3.0.tgz(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@jeeves/qr-artwork':
         specifier: file:artifacts/jeeves-qr-artwork-0.1.0.tgz
         version: file:frontends/qrwty-web/artifacts/jeeves-qr-artwork-0.1.0.tgz
@@ -224,6 +227,9 @@ importers:
 
   services/qrwty:
     dependencies:
+      '@jeeves/analytics':
+        specifier: file:artifacts/jeeves-analytics-0.1.0.tgz
+        version: file:services/qrwty/artifacts/jeeves-analytics-0.1.0.tgz
       '@jeeves/postgres-runtime':
         specifier: file:../../vendor/jeeves/jeeves-postgres-runtime-0.1.0.tgz
         version: file:vendor/jeeves/jeeves-postgres-runtime-0.1.0.tgz
@@ -739,14 +745,22 @@ packages:
   '@fastify/proxy-addr@5.1.2':
     resolution: {integrity: sha512-uqB4QsgVoro0XDC+DIftIMGXHdBPn+lK6Ek3xXAIxPMCJfqxnbtyEoMCm2KPUVOuIosd7Cyw9HawEqMFM/UA+g==}
 
+  '@jeeves/analytics@file:frontends/qrwty-web/artifacts/jeeves-analytics-0.1.0.tgz':
+    resolution: {integrity: sha512-/F4VVopbCpIPFsAZgpOfDuCh8ewTP9MTz0n2rARrVkPctZwEzREQa95ShqTQSGvVHl71NrhM5HQG12VS+T08qw==, tarball: file:frontends/qrwty-web/artifacts/jeeves-analytics-0.1.0.tgz}
+    version: 0.1.0
+
+  '@jeeves/analytics@file:services/qrwty/artifacts/jeeves-analytics-0.1.0.tgz':
+    resolution: {integrity: sha512-/F4VVopbCpIPFsAZgpOfDuCh8ewTP9MTz0n2rARrVkPctZwEzREQa95ShqTQSGvVHl71NrhM5HQG12VS+T08qw==, tarball: file:services/qrwty/artifacts/jeeves-analytics-0.1.0.tgz}
+    version: 0.1.0
+
   '@jeeves/postgres-runtime@file:vendor/jeeves/jeeves-postgres-runtime-0.1.0.tgz':
     resolution: {integrity: sha512-gQ0j2AQb5EO/z15+nKr3XZfcTumwCJbDwhatOHXR4nM+gmchMHr9zzHTRar7fR6kYjQbJY5bIPtAowjDc7pRSA==, tarball: file:vendor/jeeves/jeeves-postgres-runtime-0.1.0.tgz}
     version: 0.1.0
     hasBin: true
 
-  '@jeeves/product-ui@file:frontends/qrwty-web/artifacts/jeeves-product-ui-0.2.0.tgz':
-    resolution: {integrity: sha512-/uAK19Bf+Z0ipPR5WrjnyCPWqGxiTGLKpsNJSXu3nNIcQrTYqNvtBQPh7imspplQYiMInQOZxfVRpGGMOrqiZg==, tarball: file:frontends/qrwty-web/artifacts/jeeves-product-ui-0.2.0.tgz}
-    version: 0.2.0
+  '@jeeves/product-ui@file:frontends/qrwty-web/artifacts/jeeves-product-ui-0.3.0.tgz':
+    resolution: {integrity: sha512-A5D5JCojcwsAd5Z2+bwKL7RHASAnvtUUxKtTUs56p9QB19nsk/RF9ioh+KHaUH0RvSZa4tEP1yBUXkQEYCnHvg==, tarball: file:frontends/qrwty-web/artifacts/jeeves-product-ui-0.3.0.tgz}
+    version: 0.3.0
     peerDependencies:
       react: ^19.2.0
       react-dom: ^19.2.0
@@ -2102,6 +2116,10 @@ snapshots:
       '@fastify/forwarded': 3.1.2
       ipaddr.js: 2.5.0
 
+  '@jeeves/analytics@file:frontends/qrwty-web/artifacts/jeeves-analytics-0.1.0.tgz': {}
+
+  '@jeeves/analytics@file:services/qrwty/artifacts/jeeves-analytics-0.1.0.tgz': {}
+
   '@jeeves/postgres-runtime@file:vendor/jeeves/jeeves-postgres-runtime-0.1.0.tgz':
     dependencies:
       drizzle-orm: 0.45.4(pg@8.23.1)
@@ -2138,7 +2156,7 @@ snapshots:
       - sql.js
       - sqlite3
 
-  '@jeeves/product-ui@file:frontends/qrwty-web/artifacts/jeeves-product-ui-0.2.0.tgz(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@jeeves/product-ui@file:frontends/qrwty-web/artifacts/jeeves-product-ui-0.3.0.tgz(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)

@@ -15,3 +15,9 @@ The Worker HTTP workaround is removed. Requests use the generated client's ordin
 `jeeves-qr-artwork-0.1.0.tgz` supplies only the browser-safe `@jeeves/qr-artwork/settings` entry here. SHA-256: `ec642ef20b0d40ca25bfce3e84fad17384e28b02602e0773441584609b7a1abf`. The API owns rendering; the browser displays and downloads exact server bytes. It verifies export hashes before download.
 
 The old 0.1.0 UI artifact remains unchanged. P17 intentionally regenerates contracts/routes/acceptance from the reviewed Studio model and adopts REST runtime 0.2.0 alongside the original artifact. Historical P14 preservation claims above describe that earlier package.
+
+## P18 analytics adoption
+
+`jeeves-analytics-0.1.0.tgz` contains the bounded UTC range and owner-event aggregation component. SHA-256: `737e507b4791283936be5f518512aae97f6ae5fbaea957e0ac088ebdc0bb4048`. The browser imports only its date/count entry; the server binds the authenticated principal and reviewed generated descriptors to `/postgres`. No user-supplied SQL, identifiers or owner scope. Preserve the artifact under this version.
+
+`jeeves-product-ui-0.3.0.tgz` adds metric cards and a daily count chart with a complete accessible table. SHA-256: `389791a7a18bf33bbd66fc0b62e8c52c9abedf22acd7ebd86c53f823d696a615`. Previous UI and QR renderer artifacts remain unchanged.

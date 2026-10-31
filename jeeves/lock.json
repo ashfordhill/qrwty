@@ -345,6 +345,77 @@
           "path": "_support/page-problems.ts"
         }
       ]
+    },
+    {
+      "id": "owner-analytics",
+      "service": "qrwty",
+      "operationIds": [
+        "ownerAnalytics"
+      ],
+      "acceptanceIds": [
+        "QR-15"
+      ],
+      "requires": "extensions",
+      "runner": "node",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "_support/api.ts"
+        },
+        {
+          "path": "_support/qr.ts"
+        },
+        {
+          "path": "_support/destinations.ts"
+        },
+        {
+          "path": "_support/fixture.ts"
+        },
+        {
+          "path": "_support/db.ts"
+        },
+        {
+          "path": "_support/page-problems.ts"
+        }
+      ]
+    },
+    {
+      "id": "analytics-browser",
+      "service": "qrwty",
+      "operationIds": [
+        "ownerAnalytics"
+      ],
+      "acceptanceIds": [
+        "QR-16"
+      ],
+      "requires": "frontend",
+      "runner": "playwright",
+      "dependencies": [
+        {
+          "name": "@playwright/test",
+          "version": "1.63.0"
+        }
+      ],
+      "files": [
+        {
+          "path": "_support/api.ts"
+        },
+        {
+          "path": "_support/qr.ts"
+        },
+        {
+          "path": "_support/destinations.ts"
+        },
+        {
+          "path": "_support/fixture.ts"
+        },
+        {
+          "path": "_support/db.ts"
+        },
+        {
+          "path": "_support/page-problems.ts"
+        }
+      ]
     }
   ],
   "resourceModels": {
@@ -523,7 +594,9 @@
         "QR-11",
         "QR-12",
         "QR-13",
-        "QR-14"
+        "QR-14",
+        "QR-15",
+        "QR-16"
       ],
       "extensions": [
         {
@@ -2451,6 +2524,203 @@
               }
             }
           }
+        },
+        {
+          "id": "owner-analytics",
+          "operationId": "ownerAnalytics",
+          "method": "GET",
+          "path": "/api/analytics",
+          "access": "owner",
+          "acceptance": [
+            "QR-15",
+            "QR-16"
+          ],
+          "notes": "Use @jeeves/analytics/postgres ownedEventCounter with generated qr and scan descriptors, timestamp occurredAt, label title and the authenticated sessionPrincipal. Validate UTC range with at most 90 inclusive days. Return consistent owner-scoped total scans, total/active QR resources, zero-filled daily counts and top ten. Counts are stored redirect events, not visitors. Never use a request-supplied owner or arbitrary SQL. No-store. Existing per-QR activity and all identities remain unchanged.",
+          "contract": {
+            "parameters": [
+              {
+                "name": "from",
+                "in": "query",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "date"
+                }
+              },
+              {
+                "name": "to",
+                "in": "query",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "date"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Owned QR scan events in the inclusive UTC range",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "from": {
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "to": {
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "total": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "totalResources": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "activeResources": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "days": {
+                          "type": "array",
+                          "maxItems": 90,
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "date": {
+                                "type": "string",
+                                "format": "date"
+                              },
+                              "count": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 9007199254740991
+                              }
+                            },
+                            "required": [
+                              "date",
+                              "count"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "top": {
+                          "type": "array",
+                          "maxItems": 10,
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "label": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "maxLength": 120
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "count": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 9007199254740991
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "label",
+                              "count"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "from",
+                        "to",
+                        "total",
+                        "totalResources",
+                        "activeResources",
+                        "days",
+                        "top"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Invalid request",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Sign in required",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       ]
     }
@@ -2527,26 +2797,26 @@
     }
   ],
   "files": {
-    "AGENTS.md": "sha256-3aaa6ff9b16cb3350e7eaafd2725226430915b0d9646043953c388aba13b96b8",
-    "contracts/qrwty.openapi.yaml": "sha256-a7f2f3d832001f3590e290adc707effb42169bcc3321c7ff68710bbab4aa05c3",
+    "AGENTS.md": "sha256-0645d3ccd758aaed55e616ebe185d7326ddb0f5ec1da6ea62a26f22da9ed85be",
+    "contracts/qrwty.openapi.yaml": "sha256-3a0df93bf9b5153fa84bfd4f13d809b673d870490d7cc722c16ddd64cd411ba8",
     "databases/qrwty-db/init/10-consumers.sql": "sha256-c90910e8a3fdf0e4d4579a1d155ee40e147e5f73d64f3aa817f4b267b2e8823e",
     "docker-compose.yml": "sha256-cd2ba49e8431922dd580de83158e9353685384c50c265f7534b5fd094ed26f31",
     "frontends/qrwty-web/nginx/default.conf.template": "sha256-450bddcaf678d22e63e1c75cbf4aa057f5e97faf651ec1daaf6d8c22edfecdd5",
     "frontends/qrwty-web/nginx/jeeves-config.json.template": "sha256-c6d4d4875145df5fdd0671d1b8eebc8778517fc5bd0e5348ed7a821526cf0b6a",
     "frontends/qrwty-web/src/clients/qrwty.generated.ts": "sha256-cc3c9437fd9910ce5fae5902926743fc178ef9c63364c5987a11b106fb94fdf1",
-    "frontends/qrwty-web/src/clients/qrwty.openapi.ts": "sha256-f797f6f8121cd8a2fb112d98188b27cd4801f3d9d938c0d4f5b0d96fb4bfbcdf",
+    "frontends/qrwty-web/src/clients/qrwty.openapi.ts": "sha256-3dc18dce576df0b36cf7846cbd7a5470db5ae4d90c1673ac3ae4d4cb95a7e20c",
     "frontends/qrwty-web/src/jeeves.generated.ts": "sha256-2e896a5784f736608c2590de2aa15ca5e419b191892a6f020499bce1ce13c5d2",
-    "jeeves/design.json": "sha256-ba815dcc156d7e842cb8fdce2b90e4b00591ab4e2adb42ac4af50f2b8ecd5568",
+    "jeeves/design.json": "sha256-e77ad6e64573471cdee6a4005e2c4cb7fe02b80b065af63ff5a8fc3124d33fb0",
     "jeeves/elements/qrwty-db.md": "sha256-1f7eb4ac43c471ea855b5414ea097722cac2f2a7eb18abd2224c7f7e3c30c360",
-    "jeeves/elements/qrwty-web.md": "sha256-3667c6b3485e497317ce106d85b3e491e1038960e61a04ed84120c2ee34a0645",
-    "jeeves/elements/qrwty.md": "sha256-8e2a298aff22a5e160afb7780b3e1292a69467b3f29064a7df9f8179005c8011",
+    "jeeves/elements/qrwty-web.md": "sha256-f5ea3c5df73f565abfc50ff5650c7f73e71f8b9290f16407ef030ebf4afc20af",
+    "jeeves/elements/qrwty.md": "sha256-107d333da411be96261707423717568214a785115824c904d4c6d5641ea8e5f0",
     "services/qrwty/resource-migrations/0001.sql": "sha256-859cd7341408d8a296860e6e10b0a3d4fd1b834a235b33fe8862a5157861d427",
     "services/qrwty/resource-migrations/0002.sql": "sha256-eb9f9571e6bd790524fc0464da3ab83c41c07694ac490da00a2046ffc46b49f5",
     "services/qrwty/resource-migrations/manifest.json": "sha256-4089ea682ef2872b61d90c774c3f0f6803d13cf199504172178415c2bb9f4fbb",
     "services/qrwty/src/generated/resources/artwork.ts": "sha256-ac0c3c083965c57387d1e4131b8f24e75dda914d004ea246b7e81ba634ce60af",
     "services/qrwty/src/generated/resources/qr.ts": "sha256-cb194c8dbd578667552071ab3c23f85fbffae2870c735c6750ef1c886c2192d1",
     "services/qrwty/src/generated/resources/scan.ts": "sha256-c57aee9ace46c2fb3371adc7f62efe445de7a4b305fda25b575fb54447c29c48",
-    "services/qrwty/src/generated/routes.ts": "sha256-be1461241349bd22b31d4aa70d5766c7edb4e684ef520535a0493ad8fc380905",
+    "services/qrwty/src/generated/routes.ts": "sha256-3d70a74db3ccc77224482b2fb24d6fe62c74de7bbde9d86c34fb1ae71f958d24",
     "services/qrwty/src/jeeves.generated.ts": "sha256-573e6390e9d7cd3400850051e7859ff30214162aefa34839bc7060e95bd031a5",
     "tests/acceptance/qrwty/_support/api.ts": "sha256-6b68ad78efdaf6b6c65cd9ddba55983c47c944dcb965f0a3144cf4f083a8a2e0",
     "tests/acceptance/qrwty/_support/db.ts": "sha256-fe4175ee17d73520f29e7708fdd90c66a9744f4b3574aff40c3ba0fd27ab2993",
@@ -2555,9 +2825,11 @@
     "tests/acceptance/qrwty/_support/page-problems.ts": "sha256-096c53e283c57b80f774a85c701b5c3b02114d2f850a2256247dcdb1fd1c4950",
     "tests/acceptance/qrwty/_support/qr.ts": "sha256-4cb23c3609ebf0c685abd188a037f01bf2ba72611c9976aa3049308e74b4977c",
     "tests/acceptance/qrwty/activity.test.ts": "sha256-d1467fb84f370fdd509eb46894d0695a7b95a7738a19ff494ad59504a3309574",
+    "tests/acceptance/qrwty/analytics-browser.test.ts": "sha256-80e0f4526b7efafb023b8748d6c18fc3aa71847381f3ac10b3d3ff83c32c41ef",
     "tests/acceptance/qrwty/artwork.test.ts": "sha256-f91ae9dbf484db8940e8df884770a8c2d6f8cd5b16a138548a99f010bbe5f04d",
     "tests/acceptance/qrwty/browser.test.ts": "sha256-a501fb497cd05d4b19e93862a20fc5286b445c788e3a20cdeb3dc1a2a76d2f0c",
     "tests/acceptance/qrwty/core.test.ts": "sha256-431e7f7e6002db80fa98f250286e697a84fbb875d9da9f91b8537753fc3feece",
+    "tests/acceptance/qrwty/owner-analytics.test.ts": "sha256-04d2e08b4fa66304d7a6c8060efba7147719575652e353ff8a6c518eac91efec",
     "tests/acceptance/qrwty/qr-image.test.ts": "sha256-de9d29a24f7598c2c5bdf0292d1be3530e63f172824670a060773ea215a0138d",
     "tests/acceptance/qrwty/redirect.test.ts": "sha256-8bcf8447723b37354b7dedc92dc7092cabf1f99fb4205cfa64486314ccd42f7f",
     "tests/acceptance/qrwty/restart.test.ts": "sha256-fb08fb04d131c051ac3986d8268121686df9bd62eb925b3d13809e577a1f9dd1",

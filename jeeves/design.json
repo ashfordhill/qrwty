@@ -198,7 +198,9 @@
                 "QR-11",
                 "QR-12",
                 "QR-13",
-                "QR-14"
+                "QR-14",
+                "QR-15",
+                "QR-16"
               ],
               "extensions": [
                 {
@@ -2126,6 +2128,203 @@
                       }
                     }
                   }
+                },
+                {
+                  "id": "owner-analytics",
+                  "operationId": "ownerAnalytics",
+                  "method": "GET",
+                  "path": "/api/analytics",
+                  "access": "owner",
+                  "acceptance": [
+                    "QR-15",
+                    "QR-16"
+                  ],
+                  "notes": "Use @jeeves/analytics/postgres ownedEventCounter with generated qr and scan descriptors, timestamp occurredAt, label title and the authenticated sessionPrincipal. Validate UTC range with at most 90 inclusive days. Return consistent owner-scoped total scans, total/active QR resources, zero-filled daily counts and top ten. Counts are stored redirect events, not visitors. Never use a request-supplied owner or arbitrary SQL. No-store. Existing per-QR activity and all identities remain unchanged.",
+                  "contract": {
+                    "parameters": [
+                      {
+                        "name": "from",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                          "type": "string",
+                          "format": "date"
+                        }
+                      },
+                      {
+                        "name": "to",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                          "type": "string",
+                          "format": "date"
+                        }
+                      }
+                    ],
+                    "responses": {
+                      "200": {
+                        "description": "Owned QR scan events in the inclusive UTC range",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "type": "object",
+                              "properties": {
+                                "from": {
+                                  "type": "string",
+                                  "format": "date"
+                                },
+                                "to": {
+                                  "type": "string",
+                                  "format": "date"
+                                },
+                                "total": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 9007199254740991
+                                },
+                                "totalResources": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 9007199254740991
+                                },
+                                "activeResources": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 9007199254740991
+                                },
+                                "days": {
+                                  "type": "array",
+                                  "maxItems": 90,
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "date": {
+                                        "type": "string",
+                                        "format": "date"
+                                      },
+                                      "count": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 9007199254740991
+                                      }
+                                    },
+                                    "required": [
+                                      "date",
+                                      "count"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "top": {
+                                  "type": "array",
+                                  "maxItems": 10,
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                      },
+                                      "label": {
+                                        "anyOf": [
+                                          {
+                                            "type": "string",
+                                            "maxLength": 120
+                                          },
+                                          {
+                                            "type": "null"
+                                          }
+                                        ]
+                                      },
+                                      "count": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 9007199254740991
+                                      }
+                                    },
+                                    "required": [
+                                      "id",
+                                      "label",
+                                      "count"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                }
+                              },
+                              "required": [
+                                "from",
+                                "to",
+                                "total",
+                                "totalResources",
+                                "activeResources",
+                                "days",
+                                "top"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        }
+                      },
+                      "400": {
+                        "description": "Invalid request",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "type": "object",
+                              "properties": {
+                                "error": {
+                                  "type": "string"
+                                },
+                                "message": {
+                                  "type": "string"
+                                },
+                                "details": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object"
+                                  }
+                                }
+                              },
+                              "required": [
+                                "error",
+                                "message"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        }
+                      },
+                      "401": {
+                        "description": "Sign in required",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "type": "object",
+                              "properties": {
+                                "error": {
+                                  "type": "string"
+                                },
+                                "message": {
+                                  "type": "string"
+                                },
+                                "details": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object"
+                                  }
+                                }
+                              },
+                              "required": [
+                                "error",
+                                "message"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               ]
             }
@@ -2169,7 +2368,7 @@
           "notes": ""
         }
       ],
-      "notes": "Build the qrwty user interface in this web app. Use the generated `qrwtyClient` from\n`useApis()` and the existing runtime config. Do not generate QR codes in the browser and do not\nedit generated clients, contracts, or server code.\n\nAuth\n- On load, call GET /auth/session. If 401, show a register/login form; if 200, show the app.\n- Register and login with email + password. Store the returned csrfToken in memory (not localStorage).\n- Logout calls POST /auth/logout with the csrf token and clears the local state.\n- Every mutation sends `x-csrf-token` and uses the same-origin client. Handle 401 by returning to auth.\n\nQR list\n- GET /api/qr?limit=25, newest first. Show title (or \"Untitled\"), destination, created time, and\n  the public link `window.location.origin + \"/q/\" + id`.\n- Support the next cursor with a Load more button; empty state; loading and error states.\n\nCreate\n- Form: destination (required, absolute HTTP/HTTPS, no credentials) and optional title (max 120).\n- POST /api/qr; on 201 clear the form, refresh the list, and show the public link.\n- Inline 400 errors; 401 returns to auth.\n\nEdit\n- Select a QR with its row select button. Only the selected row shows the edit form, the image\n  download, and the activity action.\n- Edit the selected QR's destination and title, PATCH /api/qr/{id}. Send destination and title; the\n  server preserves an omitted optional title and clears it when the request sends null.\n- On success refresh the row and keep it selected so its download and activity actions stay\n  available; 400/404 inline; 401 returns to auth.\n\nImage\n- Shown only for the selected row. Download GET /api/qr/{id}/image through the same-origin client\n  with `parseAs: \"blob\"` (or an authenticated same-origin fetch if the generated client cannot type\n  it).\n- Trigger a browser download with the returned blob; do not build the image from the destination.\n- Show the stable public link beside the download action.\n\nActivity\n- Shown only for the selected row. Activity view: from/to date controls defaulting to the last 30\n  UTC days, a total, and a table of every returned day including zero-count days.\n- GET /api/qr/{id}/activity?from=...&to=...; handle 400 for an invalid or too-wide range.\n- Do not claim unique visitors; label the number as requests.\n\nQuality\n- Every action works by mouse. No keyboard-only controls.\n- No console.error for expected 400/401/404 flows.\n- Keep supplemental tests in the app's `tests/` folder: auth gate, list/create, image download,\n  activity rendering.\n- Do not add a chart library for the first proof; a table is enough.\n\nTest hooks (fixed browser acceptance relies on these exact attributes)\n- Email input: `data-testid=\"auth-email\"`; password input: `data-testid=\"auth-password\"`.\n- Register button: `data-testid=\"auth-register\"`; login button: `data-testid=\"auth-login\"`.\n- Logout button: `data-testid=\"auth-logout\"`.\n- Create form: `data-testid=\"qr-create-form\"`, destination `data-testid=\"qr-destination\"`,\n  title `data-testid=\"qr-title\"`, submit `data-testid=\"qr-create\"`.\n- Each list row: `data-testid=\"qr-row\"` with `data-qr-id` set to the resource id, and a select\n  button `data-testid=\"qr-select\"`.\n- Edit form on the selected row: destination `data-testid=\"qr-edit-destination\"`, title\n  `data-testid=\"qr-edit-title\"`, save `data-testid=\"qr-edit-save\"`.\n- Inside the selected row, a download image link or button: `data-testid=\"qr-image-download\"` (a\n  link with `download` is fine) and an activity button `data-testid=\"qr-activity\"`.\n- Activity form: from `data-testid=\"activity-from\"`; to\n  `data-testid=\"activity-to\"`; apply `data-testid=\"activity-apply\"`; total\n  `data-testid=\"activity-total\"`; table rows `data-testid=\"activity-day\"` with\n  `data-date` and `data-count` attributes.\n- The public link shown for a row: `data-testid=\"qr-public-link\"` with its href and text equal to\n  `window.location.origin + \"/q/\" + id`.\n\nStudio (P17)\n- Add an owner-only Studio for the selected QR using the generated readQrStudio, previewQrArtwork, saveQrArtwork and exportQrArtwork operations. Use the pinned @jeeves/qr-artwork settings and @jeeves/product-ui configuration editor artifact. Keep drafts in session memory across library navigation; export only saved settings; preserve existing QR-09 hooks and legacy download. Never generate QR artwork in the browser. PNG/SVG bytes arrive from the server in typed base64 envelopes.\n"
+      "notes": "Build the qrwty user interface in this web app. Use the generated `qrwtyClient` from\n`useApis()` and the existing runtime config. Do not generate QR codes in the browser and do not\nedit generated clients, contracts, or server code.\n\nAuth\n- On load, call GET /auth/session. If 401, show a register/login form; if 200, show the app.\n- Register and login with email + password. Store the returned csrfToken in memory (not localStorage).\n- Logout calls POST /auth/logout with the csrf token and clears the local state.\n- Every mutation sends `x-csrf-token` and uses the same-origin client. Handle 401 by returning to auth.\n\nQR list\n- GET /api/qr?limit=25, newest first. Show title (or \"Untitled\"), destination, created time, and\n  the public link `window.location.origin + \"/q/\" + id`.\n- Support the next cursor with a Load more button; empty state; loading and error states.\n\nCreate\n- Form: destination (required, absolute HTTP/HTTPS, no credentials) and optional title (max 120).\n- POST /api/qr; on 201 clear the form, refresh the list, and show the public link.\n- Inline 400 errors; 401 returns to auth.\n\nEdit\n- Select a QR with its row select button. Only the selected row shows the edit form, the image\n  download, and the activity action.\n- Edit the selected QR's destination and title, PATCH /api/qr/{id}. Send destination and title; the\n  server preserves an omitted optional title and clears it when the request sends null.\n- On success refresh the row and keep it selected so its download and activity actions stay\n  available; 400/404 inline; 401 returns to auth.\n\nImage\n- Shown only for the selected row. Download GET /api/qr/{id}/image through the same-origin client\n  with `parseAs: \"blob\"` (or an authenticated same-origin fetch if the generated client cannot type\n  it).\n- Trigger a browser download with the returned blob; do not build the image from the destination.\n- Show the stable public link beside the download action.\n\nActivity\n- Shown only for the selected row. Activity view: from/to date controls defaulting to the last 30\n  UTC days, a total, and a table of every returned day including zero-count days.\n- GET /api/qr/{id}/activity?from=...&to=...; handle 400 for an invalid or too-wide range.\n- Do not claim unique visitors; label the number as requests.\n\nQuality\n- Every action works by mouse. No keyboard-only controls.\n- No console.error for expected 400/401/404 flows.\n- Keep supplemental tests in the app's `tests/` folder: auth gate, list/create, image download,\n  activity rendering.\n- Do not add a chart library for the first proof; a table is enough.\n\nTest hooks (fixed browser acceptance relies on these exact attributes)\n- Email input: `data-testid=\"auth-email\"`; password input: `data-testid=\"auth-password\"`.\n- Register button: `data-testid=\"auth-register\"`; login button: `data-testid=\"auth-login\"`.\n- Logout button: `data-testid=\"auth-logout\"`.\n- Create form: `data-testid=\"qr-create-form\"`, destination `data-testid=\"qr-destination\"`,\n  title `data-testid=\"qr-title\"`, submit `data-testid=\"qr-create\"`.\n- Each list row: `data-testid=\"qr-row\"` with `data-qr-id` set to the resource id, and a select\n  button `data-testid=\"qr-select\"`.\n- Edit form on the selected row: destination `data-testid=\"qr-edit-destination\"`, title\n  `data-testid=\"qr-edit-title\"`, save `data-testid=\"qr-edit-save\"`.\n- Inside the selected row, a download image link or button: `data-testid=\"qr-image-download\"` (a\n  link with `download` is fine) and an activity button `data-testid=\"qr-activity\"`.\n- Activity form: from `data-testid=\"activity-from\"`; to\n  `data-testid=\"activity-to\"`; apply `data-testid=\"activity-apply\"`; total\n  `data-testid=\"activity-total\"`; table rows `data-testid=\"activity-day\"` with\n  `data-date` and `data-count` attributes.\n- The public link shown for a row: `data-testid=\"qr-public-link\"` with its href and text equal to\n  `window.location.origin + \"/q/\" + id`.\n\nStudio (P17)\n- Add an owner-only Studio for the selected QR using the generated readQrStudio, previewQrArtwork, saveQrArtwork and exportQrArtwork operations. Use the pinned @jeeves/qr-artwork settings and @jeeves/product-ui configuration editor artifact. Keep drafts in session memory across library navigation; export only saved settings; preserve existing QR-09 hooks and legacy download. Never generate QR artwork in the browser. PNG/SVG bytes arrive from the server in typed base64 envelopes.\n\nAnalytics (P18): Add an owner-wide Analytics workspace using generated ownerAnalytics, bounded UTC date presets/custom apply and explicit result range labels. Use shared Metrics and CountChart, an accessible daily table, empty/error/retry states and top-link Studio navigation. Do not call scans unique visitors. Preserve old library/Studio flows and strict browser verification.\n"
     }
   ],
   "connections": [

@@ -1566,6 +1566,140 @@ paths:
         - QR-12
         - QR-13
         - QR-14
+  /api/analytics:
+    get:
+      operationId: ownerAnalytics
+      parameters:
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Owned QR scan events in the inclusive UTC range
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  from:
+                    type: string
+                    format: date
+                  to:
+                    type: string
+                    format: date
+                  total:
+                    type: integer
+                    minimum: 0
+                    maximum: 9007199254740991
+                  totalResources:
+                    type: integer
+                    minimum: 0
+                    maximum: 9007199254740991
+                  activeResources:
+                    type: integer
+                    minimum: 0
+                    maximum: 9007199254740991
+                  days:
+                    type: array
+                    maxItems: 90
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                          format: date
+                        count:
+                          type: integer
+                          minimum: 0
+                          maximum: 9007199254740991
+                      required:
+                        - date
+                        - count
+                      additionalProperties: false
+                  top:
+                    type: array
+                    maxItems: 10
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        label:
+                          anyOf:
+                            - type: string
+                              maxLength: 120
+                            - type: "null"
+                        count:
+                          type: integer
+                          minimum: 0
+                          maximum: 9007199254740991
+                      required:
+                        - id
+                        - label
+                        - count
+                      additionalProperties: false
+                required:
+                  - from
+                  - to
+                  - total
+                  - totalResources
+                  - activeResources
+                  - days
+                  - top
+                additionalProperties: false
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "401":
+          description: Sign in required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+      security:
+        - session: []
+      x-jeeves-acceptance:
+        - QR-15
+        - QR-16
 components:
   securitySchemes:
     session:

@@ -17,8 +17,9 @@
     "@jeeves/web-runtime": "file:../../vendor/jeeves/jeeves-web-runtime-0.1.0.tgz",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "@jeeves/product-ui": "file:artifacts/jeeves-product-ui-0.2.0.tgz",
-    "@jeeves/qr-artwork": "file:artifacts/jeeves-qr-artwork-0.1.0.tgz"
+    "@jeeves/product-ui": "file:artifacts/jeeves-product-ui-0.3.0.tgz",
+    "@jeeves/qr-artwork": "file:artifacts/jeeves-qr-artwork-0.1.0.tgz",
+    "@jeeves/analytics": "file:artifacts/jeeves-analytics-0.1.0.tgz"
   },
   "devDependencies": {
     "@types/node": "24.19.2",

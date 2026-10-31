@@ -119,13 +119,22 @@ export function Home() {
                 href: "#library",
                 label: "QR library",
                 icon: <Icon name="grid" />,
-                current: section !== "#create" && !section.startsWith("#studio"),
+                current:
+                  section !== "#create" &&
+                  section !== "#analytics" &&
+                  !section.startsWith("#studio"),
               },
               {
                 href: "#studio",
                 label: "QR Studio",
                 icon: <Icon name="palette" />,
                 current: section.startsWith("#studio"),
+              },
+              {
+                href: "#analytics",
+                label: "Analytics",
+                icon: <Icon name="chart" />,
+                current: section === "#analytics",
               },
               {
                 href: "#create",
@@ -174,14 +183,22 @@ export function Home() {
         <>
           <PageHeader
             eyebrow="Your workspace"
-            title={section.startsWith("#studio") ? "QR Studio" : "QR library"}
+            title={
+              section === "#analytics"
+                ? "Analytics"
+                : section.startsWith("#studio")
+                  ? "QR Studio"
+                  : "QR library"
+            }
             description={
-              section.startsWith("#studio")
-                ? "A small canvas for a lasting connection."
-                : "Create once. Share everywhere. Change where it leads."
+              section === "#analytics"
+                ? "See where your links come to life."
+                : section.startsWith("#studio")
+                  ? "A small canvas for a lasting connection."
+                  : "Create once. Share everywhere. Change where it leads."
             }
             actions={
-              section.startsWith("#studio") ? (
+              section.startsWith("#studio") || section === "#analytics" ? (
                 <a className="button" href="#library">
                   Back to library
                 </a>

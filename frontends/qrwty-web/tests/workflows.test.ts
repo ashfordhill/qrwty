@@ -1,6 +1,7 @@
 import { mkdir, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import AxeBuilder from "@axe-core/playwright";
+import { dailyCounts, recentRange } from "@jeeves/analytics";
 import { artworkSettingsSchema, defaultSettings, renderArtwork } from "@jeeves/qr-artwork";
 import type { Browser, Page } from "@playwright/test";
 import { expect as browserExpect, chromium } from "@playwright/test";
@@ -648,4 +649,112 @@ test("Studio has accessible responsive controls and a real server-rendered previ
   await noOverflow();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await capture("studio-mobile");
+});
+
+function analyticsReply(request: Request) {
+  const query = new URL(request.url()).searchParams;
+  const from = query.get("from")!,
+    to = query.get("to")!;
+  const days = dailyCounts({ from, to }, []).map((day, index) => ({ ...day, count: index % 7 }));
+  const total = days.reduce((sum, day) => sum + day.count, 0);
+  return {
+    body: {
+      from,
+      to,
+      total,
+      totalResources: 2,
+      activeResources: total ? 2 : 0,
+      days,
+      top: total
+        ? [
+            { id: qr.id, label: "Spring launch", count: Math.ceil(total * 0.7) },
+            { id: second.id, label: "Packaging labels", count: Math.floor(total * 0.3) },
+          ]
+        : [],
+    },
+  };
+}
+
+describe("owner analytics", () => {
+  test("scoped error retry, explicit custom apply and stale range responses", async () => {
+    let first = true;
+    await open(async (request, path) => {
+      if (path === "/api/analytics") {
+        if (first) {
+          first = false;
+          return { status: 503, body: { error: "UNAVAILABLE", message: "Try again" } };
+        }
+        const response = analyticsReply(request);
+        if (response.body.days.length === 7)
+          await new Promise((resolve) => setTimeout(resolve, 200));
+        return response;
+      }
+      return standard(request, path);
+    });
+    const range = recentRange(30);
+    const failed = negative(
+      "GET",
+      `/api/analytics?from=${range.from}&to=${range.to}`,
+      503,
+      "analytics temporarily unavailable",
+    );
+    await page.getByRole("link", { name: "Analytics", exact: true }).click();
+    await browserExpect(page.getByRole("button", { name: "Retry analytics" })).toBeVisible();
+    failed.finish();
+    await page.getByRole("button", { name: "Retry analytics" }).click();
+    await browserExpect(hook("analytics-result-range")).toContainText("30 days");
+    await page.getByRole("button", { name: "Last 7 days", exact: true }).click();
+    await page.getByRole("button", { name: "Last 90 days", exact: true }).click();
+    await browserExpect(hook("analytics-result-range")).toContainText("90 days");
+    await page.waitForTimeout(250);
+    await browserExpect(hook("analytics-result-range")).toContainText("90 days");
+    await hook("analytics-from").fill("2026-01-01");
+    await hook("analytics-to").fill("2026-01-03");
+    await browserExpect(hook("analytics-result-range")).toContainText("90 days");
+    await browserExpect(
+      page.getByText("Apply your date range to update the results."),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Apply range", exact: true }).click();
+    await browserExpect(hook("analytics-result-range")).toHaveText(
+      "Showing 2026-01-01 – 2026-01-03 · 3 days · UTC",
+    );
+    await hook("analytics-from").fill("2026-03-01");
+    await browserExpect(
+      page.getByRole("button", { name: "Apply range", exact: true }),
+    ).toBeDisabled();
+    await browserExpect(hook("analytics-result-range")).toContainText("2026-01-01");
+  });
+  test("responsive analytics exposes a complete table and readable mouse controls", async () => {
+    await open((request, path) =>
+      path === "/api/analytics" ? analyticsReply(request) : standard(request, path),
+    );
+    await page.getByRole("link", { name: "Analytics", exact: true }).click();
+    await browserExpect(hook("analytics-result-range")).toContainText("30 days");
+    await browserExpect(page.getByRole("img", { name: /Scans over time/ })).toBeVisible();
+    await page.getByText("View daily counts", { exact: true }).click();
+    await browserExpect(page.getByRole("table", { name: /Scans over time/ })).toBeVisible();
+    expect(
+      await page
+        .getByRole("table", { name: /Scans over time/ })
+        .locator("tbody tr")
+        .count(),
+    ).toBe(30);
+    await page.getByText("View daily counts", { exact: true }).click();
+    await mkdir("/tmp/jeeves-p18-screenshots", { recursive: true });
+    for (const [name, viewport] of [
+      ["desktop", { width: 1440, height: 1000 }],
+      ["mobile", { width: 390, height: 844 }],
+    ] as const) {
+      await page.setViewportSize(viewport);
+      await page.evaluate(() => window.scrollTo(0, 0));
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+      ).toBe(true);
+      expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+      await page.screenshot({
+        path: `/tmp/jeeves-p18-screenshots/analytics-${name}.png`,
+        fullPage: true,
+      });
+    }
+  });
 });
