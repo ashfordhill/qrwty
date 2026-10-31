@@ -16,7 +16,8 @@
     "@jeeves/rest-client": "file:../../vendor/jeeves/jeeves-rest-client-0.1.0.tgz",
     "@jeeves/web-runtime": "file:../../vendor/jeeves/jeeves-web-runtime-0.1.0.tgz",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "@jeeves/product-ui": "file:artifacts/jeeves-product-ui-0.1.0.tgz"
   },
   "devDependencies": {
     "@types/node": "24.19.2",
@@ -25,6 +26,7 @@
     "@vitejs/plugin-react": "6.1.1",
     "typescript": "7.0.2",
     "vite": "8.2.2",
-    "vitest": "5.0.0"
+    "vitest": "5.0.0",
+    "@axe-core/playwright": "4.13.0"
   }
 }

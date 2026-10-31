@@ -6,6 +6,7 @@ FROM node:24.22.2-alpine AS build
 WORKDIR /app
 COPY vendor/jeeves/ vendor/jeeves/
 COPY frontends/qrwty-web/package.json frontends/qrwty-web/
+COPY frontends/qrwty-web/artifacts/ frontends/qrwty-web/artifacts/
 RUN cd frontends/qrwty-web && npm install --no-audit --no-fund --no-package-lock
 COPY . .
 RUN cd frontends/qrwty-web && npm run build

@@ -178,6 +178,9 @@ importers:
 
   frontends/qrwty-web:
     dependencies:
+      '@jeeves/product-ui':
+        specifier: file:artifacts/jeeves-product-ui-0.1.0.tgz
+        version: file:frontends/qrwty-web/artifacts/jeeves-product-ui-0.1.0.tgz(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@jeeves/rest-client':
         specifier: file:../../vendor/jeeves/jeeves-rest-client-0.1.0.tgz
         version: file:vendor/jeeves/jeeves-rest-client-0.1.0.tgz(fastify@5.12.7)
@@ -191,6 +194,9 @@ importers:
         specifier: 19.2.8
         version: 19.2.8(react@19.2.8)
     devDependencies:
+      '@axe-core/playwright':
+        specifier: 4.13.0
+        version: 4.13.0(playwright-core@1.63.0)
       '@types/node':
         specifier: 24.19.2
         version: 24.19.2
@@ -245,6 +251,11 @@ importers:
         version: 5.0.0(@types/node@24.19.2)(vite@8.2.2(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.9.1))
 
 packages:
+
+  '@axe-core/playwright@4.13.0':
+    resolution: {integrity: sha512-6YLx+kxXu5GJceG4ozFg+33a2EMTdjYwWGloJ3sb9Kta5pp+ZNS53uxGVog5JetIY8s++P5UrtX+cri+u0VAVg==}
+    peerDependencies:
+      playwright-core: '>= 1.0.0'
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
@@ -727,6 +738,13 @@ packages:
     version: 0.1.0
     hasBin: true
 
+  '@jeeves/product-ui@file:frontends/qrwty-web/artifacts/jeeves-product-ui-0.1.0.tgz':
+    resolution: {integrity: sha512-ZA1R2juOHGACetGH8qZ7LybOZ2P31a/omIvDScQstAV7v4odeQnVQBozyjTihtNmEacneOQgzb/57/Y/qmYfxA==, tarball: file:frontends/qrwty-web/artifacts/jeeves-product-ui-0.1.0.tgz}
+    version: 0.1.0
+    peerDependencies:
+      react: ^19.2.0
+      react-dom: ^19.2.0
+
   '@jeeves/rest-client@file:vendor/jeeves/jeeves-rest-client-0.1.0.tgz':
     resolution: {integrity: sha512-EBmJ6hMjgnbKKw85Y0nI7ub6SuyS+rYKntYXfPmIdzmWcGQ+WQVy6kxkDod6qNO8jGFp+y57qo02iZh62BBfeA==, tarball: file:vendor/jeeves/jeeves-rest-client-0.1.0.tgz}
     version: 0.1.0
@@ -1086,6 +1104,10 @@ packages:
 
   avvio@9.3.1:
     resolution: {integrity: sha512-QyTKW61/qlba+cUQBm/sT9X8lri4UdomqSDwCnrnj1IvLVDRRiXRkz4CgBRWB+/cmfC7SK5WQc8T1vSdGvaUcQ==}
+
+  axe-core@4.13.0:
+    resolution: {integrity: sha512-UzGt8zg7Ny8djbYMhxl2zuEevVa7r2gJjYY5Lwr1xM7+XU2nd6CkIWFTVcCIbAP63vSz71NaVyyuSk9lHKcy0A==}
+    engines: {node: '>=4'}
 
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
@@ -1802,6 +1824,11 @@ packages:
 
 snapshots:
 
+  '@axe-core/playwright@4.13.0(playwright-core@1.63.0)':
+    dependencies:
+      axe-core: 4.13.0
+      playwright-core: 1.63.0
+
   '@drizzle-team/brocli@0.10.2': {}
 
   '@esbuild-kit/core-utils@3.3.2':
@@ -2097,6 +2124,11 @@ snapshots:
       - sql.js
       - sqlite3
 
+  '@jeeves/product-ui@file:frontends/qrwty-web/artifacts/jeeves-product-ui-0.1.0.tgz(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+    dependencies:
+      react: 19.2.8
+      react-dom: 19.2.8(react@19.2.8)
+
   '@jeeves/rest-client@file:vendor/jeeves/jeeves-rest-client-0.1.0.tgz(fastify@5.12.7)':
     dependencies:
       openapi-fetch: 0.17.0
@@ -2313,6 +2345,8 @@ snapshots:
     dependencies:
       '@fastify/error': 4.2.1
       fastq: 1.20.3
+
+  axe-core@4.13.0: {}
 
   buffer-from@1.1.2: {}
 
