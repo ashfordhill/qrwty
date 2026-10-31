@@ -1,0 +1,22 @@
+Line,At 200 units (USD per unit),"At 1,000 units (USD per unit)",Basis,Source,Section,Plot label,L200,H200,L1000,H1000
+ESP32 e-paper driver board,11.56,11.56,"retailer, 100+ price",https://datasheet.lcsc.com/lcsc/2303281130_Waveshare-e-Paper-ESP32-Driver-Board_C5374679.pdf,one,ESP32 e-paper driver board,11.56,11.56,11.56,11.56
+"4.2"" e-paper module",18.99-34.99,18.99-34.99,"vendor, single-unit price",https://www.waveshare.com/product/displays/e-paper/epaper-2.htm,one,4.2in e-paper module,18.99,34.99,18.99,34.99
+"Catalogue enclosure, power, assembly, test",10-25,10-25,assumption (no IP65 enclosure price found),none,one,"Enclosure, power, assembly, test",10,25,10,25
+Parts subtotal,40.55-71.55,40.55-71.55,derived,,one,Parts subtotal,40.55,71.55,40.55,71.55
+"FCC Part 15B with pre-certified module ($2,500-5,500 per model)",12.50-27.50,2.50-5.50,"testing vendor, amortised (derived)",https://compliancetesting.com/fcc-certification-faqs/fcc-certification-cost/ https://www.digi.com/Support/knowledge-base/fcc-modular-approval,one,FCC Part 15B (amortised),12.5,27.5,2.5,5.5
+"Landed cost, catalogue enclosure",53.05-99.05,43.05-77.05,derived,,one,"Landed cost, catalogue enclosure",53.05,99.05,43.05,77.05
+"Optional: injection-mould tooling ($4,000-12,000)",20-60,4-12,"vendor, amortised (derived)",https://dev.to/china-sourcing-agents/injection-mold-tooling-costs-for-electronics-enclosures-16dl https://www.teamrapidtooling.com/injection-molding-cost-1000-10000-parts-a-680.html,one,"Tooling (amortised, optional)",20,60,4,12
+"Optional: UN 38.3 for a lithium pack ($500-1,500)",2.50-7.50,0.50-1.50,"testing vendor, amortised (derived)",https://www.kiwa.com/en/services/testing/battery-testing/ https://aaportablepower.com/UN383test.html,one,"UN 38.3 (amortised, optional)",2.5,7.5,0.5,1.5
+"Landed cost, with tooling and battery testing",75.55-166.55,47.55-90.55,derived,,one,Landed cost with tooling and battery testing,75.55,166.55,47.55,90.55
+Retail at 2.5x landed cost (catalogue enclosure),133-248,108-193,derived from the rule of thumb,https://atomic14.com/2025/07/21/crowd-funding-retro,one,Retail at 2.5x landed (catalogue),133,248,108,193
+Cellular variant: ESP32 4G relay board instead of driver board,from 40,from 40,vendor,https://shop.kincony.com/collections/kc868-ax,one,Cellular variant: 4G relay board (from),40,40,40,40
+"Monthly, per device",|,|,hdr,,,,,
+Fleet and OTA: Golioth,0.25,0.25,vendor,https://www.golioth.io/pricing,mo,Golioth fleet and OTA,0.25,0.25,0.25,0.25
+Fleet and OTA: Mender Professional ($291 per month up to 250),1.46,contact sales above 250 tier,vendor (derived per device),https://mender.io/pricing,mo,Mender (up to 250 devices),1.46,1.46,,
+Fleet and OTA: Particle Basic ($299 per 100-device block),2.99,2.99,vendor,https://www.particle.io/pricing/,mo,Particle Basic,2.99,2.99,2.99,2.99
+"Fleet and OTA: balena Production ($1,439 for 110, +$2 each)",8.10,3.22,vendor (derived per device),https://www.balena.io/pricing,mo,balena Production,8.1,8.1,3.22,3.22
+Message broker: AWS IoT Core connectivity,~0.004,~0.004,vendor ($0.042 per device-year),https://aws.amazon.com/iot-core/pricing/,mo,AWS IoT Core broker,0.004,0.004,0.004,0.004
+Cellular data (LTE variant only),0.10-1.03,0.10-1.03,vendor: 1NCE EUR 12-USD 15 per 10 years; Hologram $1 + $0.03 per MB at 1 MB,https://1nce.com/en-eu/support/faq/what-is-included-in-the-1nce-lifetime-fee-are-there-any-additional-costs-to-be-taken-into https://a.storyblok.com/f/335000/x/cfc1ac4a9d/1nce_pte_ltd_price_list_en.pdf https://www.hologram.io/pricing/,mo,Cellular data (LTE only),0.1,1.03,0.1,1.03
+Support: 0.5-2 hours per device per year at $60 an hour,2.50-10.00,2.50-10.00,assumption (no benchmark found),none,mo,Support (assumption),2.5,10,2.5,10
+Replacement reserve: 5-10% of units a year,0.18-0.83,0.18-0.83,assumption (no RMA rate found),none,mo,Replacement reserve (assumption),0.18,0.83,0.18,0.83
+"Total monthly, Wi-Fi on Golioth",2.93-11.08,2.93-11.08,derived,,mo,"Total monthly, Wi-Fi on Golioth",2.93,11.08,2.93,11.08

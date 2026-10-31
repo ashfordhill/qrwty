@@ -1,0 +1,12 @@
+Option,Price (USD),Basis,Source,Low,High
+"Pre-printed codes, phone only",0 in the field,desk printer or print shop beforehand,derived,0,0
+Phomemo M110,51.99,retailer price,https://frontdeskreview.com/product/label-makers/phomemo-m110/,51.99,51.99
+Niimbot B21S,~60,retailer price (US listing),https://aio.lv/en/product--niimbot-b21s-black--11381131.md,60,60
+Brother PT-P710BT,114.99 (MSRP 159.95),retailer price,https://www.staples.com/brother-p-touch-pt-p710bt-cube-desktop-label-maker-plus-bluetooth/product_24358260 https://www.ptouchdirect.com/ptouch/new-ptp710bt.html,114.99,114.99
+Brother RJ-2035B,380,retailer price,https://www.barcodesinc.com/brother/part-rj2035b.htm,380,380
+Zebra ZQ320 Plus,375-600,retailer prices,https://www.barcodediscount.com/catalog/zebra/zq320-plus.htm https://www.cdw.com/product/zebra-zq320-plus-dt-printer/7230947,375,600
+"Custom Pi-based device, unit cost",120-300,assumption (500-unit run),https://www.raspberrypi.com/news/more-memory-driven-price-rises/ https://compliancetesting.com/fcc-certification-faqs/fcc-certification-cost/,120,300
+"Custom Pi-based device, retail",200-600,derived at 40-60% margin,derived,200,600
+Zebra TC22 rugged computer,"1,035",retailer price,https://rfid4ustore.com/zebra-mobile-computer/?page=2,1035,1035
+Zebra TC53 rugged computer,"2,281.79-2,884.70",retailer prices,https://www.cdw.com/product/zebra-tc53-se55-imager/7039906,2281.79,2884.7
+Rugged computer plus ZQ320 Plus,"1,410-3,485",derived (TC22 low + printer low; TC53 high + printer high),derived,1410,3485

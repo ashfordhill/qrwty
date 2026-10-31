@@ -1,0 +1,8 @@
+Capability,Static printed QR,Printed dynamic QR + SaaS,Code rendered on user's phone (SafeTix-style),Connected display at location,Connected actuator (sticker code),Connected printer at location,Source
+Change destination after printing,0,1,1,1,1,1,https://www.qrstuff.com/feeds/service/qr-code-menu-stand https://bitly.com/blog/qr-codes-for-realtors/
+Scan logging,0,1,1,1,1,1,https://www.qrcodechimp.com/pricing https://bitly.com/pages/pricing
+Rotating or time-bound payload at the location,0,0,"0.5 (on the user's device, not at the location)",1,0,0,https://gigazine.net/gsc_news/en/20240710-ticketmaster-safetix-ticket
+Act on scan at the location,0,0,0,0,1,0,https://www.sec.gov/Archives/edgar/data/896429/000162828025041775/ctlp-20250630.htm https://www.evconnect.com/blog/ev-charging-without-app-qr-code/
+Print with server-assigned identity at event time,0,0,0,0,0,1,https://developer.happyreturns.com/guides/qr-code-returns-ups/
+Visual content beside the code,0,0,0,1,0,"0.5 (on the label, once)",https://www.hanshow.com/en/news/unlocking-the-future-of-digital-retail-with-hanshows-esls-seamless-integration-for-dpp-access
+Resists sticker overlay,0,0,1,0.5 (device can be swapped),0,0.5,https://www.ic3.gov/PSA/2022/PSA220118

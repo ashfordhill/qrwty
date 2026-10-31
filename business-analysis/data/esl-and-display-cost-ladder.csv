@@ -1,0 +1,10 @@
+Option,Unit cost (USD),Basis,Source,Low,High,Unit,Kind
+"Hosted dynamic QR, 10 codes",0-29 per month,vendor price pages,https://www.qrcodechimp.com/pricing https://bitly.com/pages/pricing,0,29,per month,vendor
+Reusable printed QR rider,11.00-34.90,retailer,"https://lowensign.com/realestatesigns/independent/products/item/12p180qr/real%20estate%20qr%20code%20sign%20rider,%20.090%20polyethylene,%206h%20x%2024w.html",11,34.9,each,retailer
+Repurposed Hanshow ESL for OpenEPaperLink,19-22,"retailer, no warranty",https://www.tindie.com/products/youtechitfromhere/openepaperlink-diy-e-ink-screen-nebular-420,19,22,each,retailer
+"OpenEPaperLink 4.2"" tag",24-28,"retailer, access point extra",https://www.tindie.com/products/electronics-by-nic/42-epaper-tag-for-openepaperlink,24,28,each,retailer
+"ESP32 driver board + 4.2"" e-paper module",31-47,derived from retail parts (11.56-12.33 + 18.99-34.99),https://datasheet.lcsc.com/lcsc/2303281130_Waveshare-e-Paper-ESP32-Driver-Board_C5374679.pdf https://www.waveshare.com/product/displays/e-paper/epaper-2.htm,31,47,each,derived
+Commercial ESL label,"5-20 per label, plus 0-2 per label per month cloud fee",vendor blogs,https://shopappy.com/retail/supermarkets-grocers/electronic-shelf-labels-grocery https://minewtag.com/newsinfo433.html,5,20,per label,vendor
+"Commercial ESL, whole store (~10,000 labels)","80,000-110,000+",vendor blogs,https://shopappy.com/retail/supermarkets-grocers/electronic-shelf-labels-grocery https://www.kiosketagscreen.com/info/electronic-shelf-labels-for-small-grocery-stor-103537605.html,80000,110000,whole store,vendor
+Visionect Joan 6 Pro,749,retailer,https://www.exertisalmo.com/productdetails/VISNET/JOAN6PRO%20GRAY,749,749,each,retailer
+Visionect Joan 13,751,retailer,https://www.tanotis.com/products/visionect-joan-13-13-uxga-room-scheduling-e-ink-display-slate-gray,751,751,each,retailer

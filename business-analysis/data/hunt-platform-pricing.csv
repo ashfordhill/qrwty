@@ -1,0 +1,12 @@
+Platform,Unit,Price,Price per participant (derived),Source,Plot value,Currency,Plot unit,Bound
+GooseChase,"Single experience, up to 10 participants",$99,$9.90,https://www.goosechase.com/pricing,9.9,USD,participant per event,exact
+Actionbound,50 players,EUR 350,EUR 7.00,https://en.actionbound.com/license/business/1,7,EUR,participant per event,exact
+Actionbound,100 players,EUR 600,EUR 6.00,https://en.actionbound.com/license/business/1,6,EUR,participant per event,exact
+Actionbound,200 players,EUR 900,EUR 4.50,https://en.actionbound.com/license/business/1,4.5,EUR,participant per event,exact
+Actionbound,500 players,"EUR 1,500",EUR 3.00,https://en.actionbound.com/license/business/1,0.9,EUR,"participant per event (at 2,500)",exact
+Actionbound,"Enterprise flat, up to 2,500 players","EUR 2,250","EUR 0.90 (at 2,500)",https://en.actionbound.com/license/business/1,,,,
+Loquiz,per team per month (1-100 teams/yr),EUR 9,not derivable (team size unknown),https://www.loquiz.com/pricing/,,,,
+Loquiz,"yearly (101-1,000 teams)",EUR 600 + EUR 5/team,not derivable,https://www.loquiz.com/pricing/,,,,
+Scavify,packages (aggregator),"$995 / $1,995",not derivable,https://us.fitgap.com/products/scavify,,,,
+Geocaching Premium,per player per year,$39.99,$39.99,https://payments.geocaching.com/,39.99,USD,player per year,exact
+Niantic sponsored location,per daily unique visit (secondary),< $0.50,< $0.50 per visit,https://vip-develop.siliconera.com/niantic-shares-details-revenue-generated-sponsorship-partners-pokmon-go,0.5,USD,daily unique visit,upper

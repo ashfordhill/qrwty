@@ -1,0 +1,12 @@
+Tool,Tier or basis,Listed price (USD/month unless noted),Evidence,Source,Low,High,Currency,Per
+NationBuilder,"Starter (5,000 contacts)",34,vendor page,https://nationbuilder.com/pricing,34,34,USD,month
+NationBuilder,"Pro (10,000 contacts)",160,vendor page,https://nationbuilder.com/pricing,160,160,USD,month
+Ecanvasser,Core (plan card),99,vendor page,https://www.ecanvasser.com/pricing,99,99,USD,month
+Ecanvasser,Core (page calculator),299,"vendor page, conflicts with plan card",https://www.ecanvasser.com/pricing,299,299,USD,month
+Ecanvasser,Pro (plan card),599,vendor page,https://www.ecanvasser.com/pricing,599,599,USD,month
+Ecanvasser,Pro (page calculator),"1,299","vendor page, conflicts with plan card",https://www.ecanvasser.com/pricing,1299,1299,USD,month
+Ecanvasser,Starter / Standard,EUR 99 / EUR 199,"aggregator, older",https://www.capterra.com/p/156872/Ecanvasser/pricing/,99,199,EUR,month
+Campaign Sidekick,per user,~99,aggregator,https://www.getapp.com/government-social-services-software/a/campaignsidekick,99,99,USD,user per month
+NGP VAN,per user,45,"aggregator, unverified",https://www.getapp.com/government-social-services-software/a/ngp-van/alternatives,45,45,USD,user per month
+Civitech Campaign OS,range,50-250,"secondary, 2022",https://highergroundlabs.com/?p=1849,50,250,USD,month
+Flyra (sign pin + QR),included in plan,not found,"vendor page, no price",https://helpdesk.flyra.io/articles/9963328-qr-code-tracking-for-signs-and-flyers,,,,

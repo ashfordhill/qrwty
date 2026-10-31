@@ -1,0 +1,4 @@
+Redirects / month,Cloud Run requests ($0.40/M),Cloud Run requests + assumed CPU (~$0.76/M),Fly egress at 0.5 KB ($0.02/GB),"Hetzner VM (€, fixed)",Fly app + Managed Postgres (fixed),Source
+1M,0.40 (free under 2M tier),0.76,0.01,5.49 (CX23),~44,https://cloud.google.com/run/pricing https://docs.fly.io/about/pricing https://privatedevops.com/news/hetzner-june-2026-cloud-price-increase-what-to-do
+10M,4.00,7.60,0.10,5.49 (CX23),~44,https://cloud.google.com/run/pricing https://docs.fly.io/about/pricing https://privatedevops.com/news/hetzner-june-2026-cloud-price-increase-what-to-do
+100M,40.00,76.00,1.00,29.49 (CX53),~44 + volume,https://cloud.google.com/run/pricing https://docs.fly.io/about/pricing https://privatedevops.com/news/hetzner-june-2026-cloud-price-increase-what-to-do

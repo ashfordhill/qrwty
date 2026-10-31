@@ -1,0 +1,8 @@
+Benchmark,Price band / segment,Monthly churn low (%),Monthly churn high (%),Source type,Source
+ChartMogul,ARPA < $10,6,7,vendor (analytics provider),https://help.chartmogul.com/hc/en-us/articles/203359321
+ChartMogul,ARPA ≥ $500,1,2,vendor (analytics provider),https://help.chartmogul.com/hc/en-us/articles/203359321
+"ProfitWell via Lenny's (""good"")",B2C SaaS,3,5,secondary,https://www.lennysnewsletter.com/p/monthly-churn-benchmarks
+"ProfitWell via Lenny's (""good"")","B2B SMB, < $1K/mo",2.5,5,secondary,https://www.lennysnewsletter.com/p/monthly-churn-benchmarks
+Secondary summaries,SMB SaaS,3,7,secondary,https://kalungi.com/blog/saas-churn-rate-benchmarks
+Flippa QR SaaS #12298618,~$10.3K ARR QR tool,6,6,self-reported,https://flippa.com/12298618-profitable-qr-code-saas-with-98-margins-10-3k-arr-2-000-users-6-churn-scalable-low-overhead-seo-strong-with-ai-search-visibility
+Flippa QR SaaS #11785340,QR generator + biolink,5,5,self-reported,https://flippa.com/11785340-profitable-2-year-old-qr-code-generator-and-biolink-business-huge-potential
