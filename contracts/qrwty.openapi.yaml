@@ -286,16 +286,16 @@ paths:
                 required:
                   - error
                   - message
+                additionalProperties: false
                 properties:
                   error:
+                    type: string
+                  message:
                     type: string
                   details:
                     type: array
                     items:
                       type: object
-                  message:
-                    type: string
-                additionalProperties: false
         "401":
           description: Unauthenticated
           content:
@@ -305,12 +305,12 @@ paths:
                 required:
                   - error
                   - message
+                additionalProperties: false
                 properties:
                   error:
                     type: string
                   message:
                     type: string
-                additionalProperties: false
         "404":
           description: QR not found
           content:
@@ -320,12 +320,12 @@ paths:
                 required:
                   - error
                   - message
+                additionalProperties: false
                 properties:
                   error:
                     type: string
                   message:
                     type: string
-                additionalProperties: false
       security:
         - session: []
       x-jeeves-acceptance:
@@ -364,12 +364,12 @@ paths:
                 required:
                   - error
                   - message
+                additionalProperties: false
                 properties:
                   error:
                     type: string
                   message:
                     type: string
-                additionalProperties: false
         "404":
           description: Unknown redirect
           content:
@@ -379,12 +379,12 @@ paths:
                 required:
                   - error
                   - message
+                additionalProperties: false
                 properties:
                   error:
                     type: string
                   message:
                     type: string
-                additionalProperties: false
       security: []
       x-jeeves-acceptance:
         - QR-03
@@ -422,7 +422,11 @@ paths:
                 required:
                   - total
                   - days
+                additionalProperties: false
                 properties:
+                  total:
+                    type: integer
+                    minimum: 0
                   days:
                     type: array
                     items:
@@ -430,6 +434,7 @@ paths:
                       required:
                         - date
                         - count
+                      additionalProperties: false
                       properties:
                         date:
                           type: string
@@ -437,11 +442,6 @@ paths:
                         count:
                           type: integer
                           minimum: 0
-                      additionalProperties: false
-                  total:
-                    type: integer
-                    minimum: 0
-                additionalProperties: false
         "400":
           description: Invalid date range
           content:
@@ -451,12 +451,12 @@ paths:
                 required:
                   - error
                   - message
+                additionalProperties: false
                 properties:
                   error:
                     type: string
                   message:
                     type: string
-                additionalProperties: false
         "401":
           description: Unauthenticated
           content:
@@ -466,12 +466,12 @@ paths:
                 required:
                   - error
                   - message
+                additionalProperties: false
                 properties:
                   error:
                     type: string
                   message:
                     type: string
-                additionalProperties: false
         "404":
           description: QR not found
           content:
@@ -481,17 +481,1091 @@ paths:
                 required:
                   - error
                   - message
+                additionalProperties: false
                 properties:
                   error:
                     type: string
                   message:
                     type: string
-                additionalProperties: false
       security:
         - session: []
       x-jeeves-acceptance:
         - QR-05
         - QR-06
+  /api/qr/{id}/studio:
+    get:
+      operationId: readQrStudio
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 25
+            default: 12
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Owned QR Studio and bounded revision history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  qr:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      title:
+                        type:
+                          - string
+                          - "null"
+                      destination:
+                        type: string
+                        format: uri
+                        maxLength: 8192
+                    required:
+                      - id
+                      - title
+                      - destination
+                    additionalProperties: false
+                  canonicalUrl:
+                    type: string
+                    format: uri
+                    maxLength: 2048
+                  items:
+                    type: array
+                    maxItems: 25
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        savedAt:
+                          type: string
+                          format: date-time
+                        canonicalUrl:
+                          type: string
+                          format: uri
+                          maxLength: 2048
+                        rendererVersion:
+                          type: string
+                          const: qr-artwork@0.1.0
+                        settings:
+                          type: object
+                          properties:
+                            foreground:
+                              type: string
+                              pattern: ^#[0-9A-Fa-f]{6}$
+                            background:
+                              type: string
+                              pattern: ^#[0-9A-Fa-f]{6}$
+                            moduleStyle:
+                              type: string
+                              enum:
+                                - square
+                                - rounded
+                            finderStyle:
+                              type: string
+                              enum:
+                                - square
+                                - rounded
+                            size:
+                              type: integer
+                              enum:
+                                - 256
+                                - 512
+                                - 1024
+                            quietZone:
+                              type: integer
+                              minimum: 4
+                              maximum: 8
+                            errorCorrection:
+                              type: string
+                              enum:
+                                - M
+                                - Q
+                                - H
+                          required:
+                            - foreground
+                            - background
+                            - moduleStyle
+                            - finderStyle
+                            - size
+                            - quietZone
+                            - errorCorrection
+                          additionalProperties: false
+                        pngSha256:
+                          type: string
+                          pattern: ^[a-f0-9]{64}$
+                        svgSha256:
+                          type: string
+                          pattern: ^[a-f0-9]{64}$
+                      required:
+                        - id
+                        - savedAt
+                        - canonicalUrl
+                        - rendererVersion
+                        - settings
+                        - pngSha256
+                        - svgSha256
+                      additionalProperties: false
+                  nextCursor:
+                    anyOf:
+                      - type: string
+                        format: uuid
+                      - type: "null"
+                required:
+                  - qr
+                  - canonicalUrl
+                  - items
+                  - nextCursor
+                additionalProperties: false
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "401":
+          description: Sign in required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "403":
+          description: Origin or CSRF rejected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "404":
+          description: QR or revision not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "409":
+          description: Request identity conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "500":
+          description: Unable to complete request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+      security:
+        - session: []
+      x-jeeves-acceptance:
+        - QR-10
+        - QR-12
+        - QR-13
+        - QR-14
+  /api/qr/{id}/artwork/preview:
+    post:
+      operationId: previewQrArtwork
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                settings:
+                  type: object
+                  properties:
+                    foreground:
+                      type: string
+                      pattern: ^#[0-9A-Fa-f]{6}$
+                    background:
+                      type: string
+                      pattern: ^#[0-9A-Fa-f]{6}$
+                    moduleStyle:
+                      type: string
+                      enum:
+                        - square
+                        - rounded
+                    finderStyle:
+                      type: string
+                      enum:
+                        - square
+                        - rounded
+                    size:
+                      type: integer
+                      enum:
+                        - 256
+                        - 512
+                        - 1024
+                    quietZone:
+                      type: integer
+                      minimum: 4
+                      maximum: 8
+                    errorCorrection:
+                      type: string
+                      enum:
+                        - M
+                        - Q
+                        - H
+                  required:
+                    - foreground
+                    - background
+                    - moduleStyle
+                    - finderStyle
+                    - size
+                    - quietZone
+                    - errorCorrection
+                  additionalProperties: false
+              required:
+                - settings
+              additionalProperties: false
+      responses:
+        "200":
+          description: Server-rendered PNG preview and validation evidence
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bytesBase64:
+                    type: string
+                    minLength: 1
+                    maxLength: 2000000
+                    pattern: ^[A-Za-z0-9+/]+={0,2}$
+                  contentType:
+                    type: string
+                    enum:
+                      - image/png
+                      - image/svg+xml
+                  sha256:
+                    type: string
+                    pattern: ^[a-f0-9]{64}$
+                  filename:
+                    type: string
+                    pattern: ^[a-f0-9-]+\.(png|svg)$
+                  canonicalUrl:
+                    type: string
+                    format: uri
+                    maxLength: 2048
+                  rendererVersion:
+                    type: string
+                    const: qr-artwork@0.1.0
+                  checks:
+                    type: object
+                    properties:
+                      modules:
+                        type: integer
+                        minimum: 21
+                      modulePixels:
+                        type: integer
+                        minimum: 3
+                      quietZone:
+                        type: integer
+                        minimum: 4
+                        maximum: 8
+                      contrastRatio:
+                        type: number
+                        minimum: 7
+                      pngDecode:
+                        type: boolean
+                        const: true
+                    required:
+                      - modules
+                      - modulePixels
+                      - quietZone
+                      - contrastRatio
+                      - pngDecode
+                    additionalProperties: false
+                required:
+                  - bytesBase64
+                  - contentType
+                  - sha256
+                  - filename
+                  - canonicalUrl
+                  - rendererVersion
+                  - checks
+                additionalProperties: false
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "401":
+          description: Sign in required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "403":
+          description: Origin or CSRF rejected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "404":
+          description: QR or revision not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "409":
+          description: Request identity conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "500":
+          description: Unable to complete request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+      security:
+        - session: []
+      x-jeeves-acceptance:
+        - QR-11
+        - QR-12
+        - QR-14
+  /api/qr/{id}/artwork:
+    post:
+      operationId: saveQrArtwork
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestId:
+                  type: string
+                  format: uuid
+                settings:
+                  type: object
+                  properties:
+                    foreground:
+                      type: string
+                      pattern: ^#[0-9A-Fa-f]{6}$
+                    background:
+                      type: string
+                      pattern: ^#[0-9A-Fa-f]{6}$
+                    moduleStyle:
+                      type: string
+                      enum:
+                        - square
+                        - rounded
+                    finderStyle:
+                      type: string
+                      enum:
+                        - square
+                        - rounded
+                    size:
+                      type: integer
+                      enum:
+                        - 256
+                        - 512
+                        - 1024
+                    quietZone:
+                      type: integer
+                      minimum: 4
+                      maximum: 8
+                    errorCorrection:
+                      type: string
+                      enum:
+                        - M
+                        - Q
+                        - H
+                  required:
+                    - foreground
+                    - background
+                    - moduleStyle
+                    - finderStyle
+                    - size
+                    - quietZone
+                    - errorCorrection
+                  additionalProperties: false
+              required:
+                - requestId
+                - settings
+              additionalProperties: false
+      responses:
+        "200":
+          description: Same request identity and normalized settings already saved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  savedAt:
+                    type: string
+                    format: date-time
+                  canonicalUrl:
+                    type: string
+                    format: uri
+                    maxLength: 2048
+                  rendererVersion:
+                    type: string
+                    const: qr-artwork@0.1.0
+                  settings:
+                    type: object
+                    properties:
+                      foreground:
+                        type: string
+                        pattern: ^#[0-9A-Fa-f]{6}$
+                      background:
+                        type: string
+                        pattern: ^#[0-9A-Fa-f]{6}$
+                      moduleStyle:
+                        type: string
+                        enum:
+                          - square
+                          - rounded
+                      finderStyle:
+                        type: string
+                        enum:
+                          - square
+                          - rounded
+                      size:
+                        type: integer
+                        enum:
+                          - 256
+                          - 512
+                          - 1024
+                      quietZone:
+                        type: integer
+                        minimum: 4
+                        maximum: 8
+                      errorCorrection:
+                        type: string
+                        enum:
+                          - M
+                          - Q
+                          - H
+                    required:
+                      - foreground
+                      - background
+                      - moduleStyle
+                      - finderStyle
+                      - size
+                      - quietZone
+                      - errorCorrection
+                    additionalProperties: false
+                  pngSha256:
+                    type: string
+                    pattern: ^[a-f0-9]{64}$
+                  svgSha256:
+                    type: string
+                    pattern: ^[a-f0-9]{64}$
+                required:
+                  - id
+                  - savedAt
+                  - canonicalUrl
+                  - rendererVersion
+                  - settings
+                  - pngSha256
+                  - svgSha256
+                additionalProperties: false
+        "201":
+          description: New immutable artwork revision
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  savedAt:
+                    type: string
+                    format: date-time
+                  canonicalUrl:
+                    type: string
+                    format: uri
+                    maxLength: 2048
+                  rendererVersion:
+                    type: string
+                    const: qr-artwork@0.1.0
+                  settings:
+                    type: object
+                    properties:
+                      foreground:
+                        type: string
+                        pattern: ^#[0-9A-Fa-f]{6}$
+                      background:
+                        type: string
+                        pattern: ^#[0-9A-Fa-f]{6}$
+                      moduleStyle:
+                        type: string
+                        enum:
+                          - square
+                          - rounded
+                      finderStyle:
+                        type: string
+                        enum:
+                          - square
+                          - rounded
+                      size:
+                        type: integer
+                        enum:
+                          - 256
+                          - 512
+                          - 1024
+                      quietZone:
+                        type: integer
+                        minimum: 4
+                        maximum: 8
+                      errorCorrection:
+                        type: string
+                        enum:
+                          - M
+                          - Q
+                          - H
+                    required:
+                      - foreground
+                      - background
+                      - moduleStyle
+                      - finderStyle
+                      - size
+                      - quietZone
+                      - errorCorrection
+                    additionalProperties: false
+                  pngSha256:
+                    type: string
+                    pattern: ^[a-f0-9]{64}$
+                  svgSha256:
+                    type: string
+                    pattern: ^[a-f0-9]{64}$
+                required:
+                  - id
+                  - savedAt
+                  - canonicalUrl
+                  - rendererVersion
+                  - settings
+                  - pngSha256
+                  - svgSha256
+                additionalProperties: false
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "401":
+          description: Sign in required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "403":
+          description: Origin or CSRF rejected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "404":
+          description: QR or revision not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "409":
+          description: Request identity conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "500":
+          description: Unable to complete request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+      security:
+        - session: []
+      x-jeeves-acceptance:
+        - QR-10
+        - QR-12
+        - QR-13
+        - QR-14
+  /api/qr/{id}/artwork/{revision}/export:
+    get:
+      operationId: exportQrArtwork
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: revision
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: format
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - png
+              - svg
+      responses:
+        "200":
+          description: Exact saved artifact bytes in a typed envelope
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bytesBase64:
+                    type: string
+                    minLength: 1
+                    maxLength: 2000000
+                    pattern: ^[A-Za-z0-9+/]+={0,2}$
+                  contentType:
+                    type: string
+                    enum:
+                      - image/png
+                      - image/svg+xml
+                  sha256:
+                    type: string
+                    pattern: ^[a-f0-9]{64}$
+                  filename:
+                    type: string
+                    pattern: ^[a-f0-9-]+\.(png|svg)$
+                  canonicalUrl:
+                    type: string
+                    format: uri
+                    maxLength: 2048
+                  rendererVersion:
+                    type: string
+                    const: qr-artwork@0.1.0
+                  checks:
+                    type: object
+                    properties:
+                      modules:
+                        type: integer
+                        minimum: 21
+                      modulePixels:
+                        type: integer
+                        minimum: 3
+                      quietZone:
+                        type: integer
+                        minimum: 4
+                        maximum: 8
+                      contrastRatio:
+                        type: number
+                        minimum: 7
+                      pngDecode:
+                        type: boolean
+                        const: true
+                    required:
+                      - modules
+                      - modulePixels
+                      - quietZone
+                      - contrastRatio
+                      - pngDecode
+                    additionalProperties: false
+                required:
+                  - bytesBase64
+                  - contentType
+                  - sha256
+                  - filename
+                  - canonicalUrl
+                  - rendererVersion
+                  - checks
+                additionalProperties: false
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "401":
+          description: Sign in required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "403":
+          description: Origin or CSRF rejected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "404":
+          description: QR or revision not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "409":
+          description: Request identity conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+        "500":
+          description: Unable to complete request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+                required:
+                  - error
+                  - message
+                additionalProperties: false
+      security:
+        - session: []
+      x-jeeves-acceptance:
+        - QR-11
+        - QR-12
+        - QR-13
+        - QR-14
 components:
   securitySchemes:
     session:

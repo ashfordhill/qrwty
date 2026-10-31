@@ -30,6 +30,9 @@
         },
         {
           "path": "_support/db.ts"
+        },
+        {
+          "path": "_support/page-problems.ts"
         }
       ]
     },
@@ -70,6 +73,9 @@
         },
         {
           "path": "_support/db.ts"
+        },
+        {
+          "path": "_support/page-problems.ts"
         }
       ]
     },
@@ -111,6 +117,9 @@
         },
         {
           "path": "_support/db.ts"
+        },
+        {
+          "path": "_support/page-problems.ts"
         }
       ]
     },
@@ -142,6 +151,9 @@
         },
         {
           "path": "_support/db.ts"
+        },
+        {
+          "path": "_support/page-problems.ts"
         }
       ]
     },
@@ -183,6 +195,9 @@
         },
         {
           "path": "_support/db.ts"
+        },
+        {
+          "path": "_support/page-problems.ts"
         }
       ]
     },
@@ -228,6 +243,106 @@
         },
         {
           "path": "_support/db.ts"
+        },
+        {
+          "path": "_support/page-problems.ts"
+        }
+      ]
+    },
+    {
+      "id": "artwork",
+      "service": "qrwty",
+      "operationIds": [
+        "readQrStudio",
+        "previewQrArtwork",
+        "saveQrArtwork",
+        "exportQrArtwork"
+      ],
+      "acceptanceIds": [
+        "QR-10",
+        "QR-11",
+        "QR-12",
+        "QR-13"
+      ],
+      "requires": "extensions",
+      "runner": "node",
+      "dependencies": [
+        {
+          "name": "jsqr",
+          "version": "1.4.0"
+        },
+        {
+          "name": "pngjs",
+          "version": "7.0.0"
+        }
+      ],
+      "files": [
+        {
+          "path": "_support/api.ts"
+        },
+        {
+          "path": "_support/qr.ts"
+        },
+        {
+          "path": "_support/destinations.ts"
+        },
+        {
+          "path": "_support/fixture.ts"
+        },
+        {
+          "path": "_support/db.ts"
+        },
+        {
+          "path": "_support/page-problems.ts"
+        }
+      ]
+    },
+    {
+      "id": "studio-browser",
+      "service": "qrwty",
+      "operationIds": [
+        "readQrStudio",
+        "previewQrArtwork",
+        "saveQrArtwork",
+        "exportQrArtwork"
+      ],
+      "acceptanceIds": [
+        "QR-14"
+      ],
+      "requires": "frontend",
+      "runner": "playwright",
+      "dependencies": [
+        {
+          "name": "@playwright/test",
+          "version": "1.63.0"
+        },
+        {
+          "name": "jsqr",
+          "version": "1.4.0"
+        },
+        {
+          "name": "pngjs",
+          "version": "7.0.0"
+        }
+      ],
+      "files": [
+        {
+          "path": "_support/api.ts"
+        },
+        {
+          "path": "_support/qr.ts"
+        },
+        {
+          "path": "_support/destinations.ts"
+        },
+        {
+          "path": "_support/fixture.ts"
+        },
+        {
+          "path": "_support/db.ts"
+        },
+        {
+          "path": "_support/page-problems.ts"
         }
       ]
     }
@@ -283,6 +398,115 @@
             }
           ],
           "operations": []
+        },
+        {
+          "id": "artwork",
+          "name": "artwork",
+          "access": "internal",
+          "fields": [
+            {
+              "id": "renderer-version",
+              "name": "rendererVersion",
+              "type": "text",
+              "required": true,
+              "maxLength": 40
+            },
+            {
+              "id": "canonical-url",
+              "name": "canonicalUrl",
+              "type": "http-url",
+              "required": true
+            },
+            {
+              "id": "foreground",
+              "name": "foreground",
+              "type": "text",
+              "required": true,
+              "maxLength": 7
+            },
+            {
+              "id": "background",
+              "name": "background",
+              "type": "text",
+              "required": true,
+              "maxLength": 7
+            },
+            {
+              "id": "module-style",
+              "name": "moduleStyle",
+              "type": "enum",
+              "required": true,
+              "values": [
+                "square",
+                "rounded"
+              ]
+            },
+            {
+              "id": "finder-style",
+              "name": "finderStyle",
+              "type": "enum",
+              "required": true,
+              "values": [
+                "square",
+                "rounded"
+              ]
+            },
+            {
+              "id": "size",
+              "name": "size",
+              "type": "integer",
+              "required": true,
+              "minimum": 256,
+              "maximum": 1024
+            },
+            {
+              "id": "quiet-zone",
+              "name": "quietZone",
+              "type": "integer",
+              "required": true,
+              "minimum": 4,
+              "maximum": 8
+            },
+            {
+              "id": "error-correction",
+              "name": "errorCorrection",
+              "type": "enum",
+              "required": true,
+              "values": [
+                "M",
+                "Q",
+                "H"
+              ]
+            },
+            {
+              "id": "png-sha256",
+              "name": "pngSha256",
+              "type": "text",
+              "required": true,
+              "maxLength": 64
+            },
+            {
+              "id": "svg-sha256",
+              "name": "svgSha256",
+              "type": "text",
+              "required": true,
+              "maxLength": 64
+            },
+            {
+              "id": "saved-at",
+              "name": "savedAt",
+              "type": "timestamp",
+              "generated": "created-at"
+            }
+          ],
+          "belongsTo": [
+            {
+              "id": "artwork-qr",
+              "resource": "qr",
+              "required": true
+            }
+          ],
+          "operations": []
         }
       ],
       "acceptanceCases": [
@@ -294,7 +518,12 @@
         "QR-06",
         "QR-07",
         "QR-08",
-        "QR-09"
+        "QR-09",
+        "QR-10",
+        "QR-11",
+        "QR-12",
+        "QR-13",
+        "QR-14"
       ],
       "extensions": [
         {
@@ -356,8 +585,12 @@
                         "error",
                         "message"
                       ],
+                      "additionalProperties": false,
                       "properties": {
                         "error": {
+                          "type": "string"
+                        },
+                        "message": {
                           "type": "string"
                         },
                         "details": {
@@ -365,12 +598,8 @@
                           "items": {
                             "type": "object"
                           }
-                        },
-                        "message": {
-                          "type": "string"
                         }
-                      },
-                      "additionalProperties": false
+                      }
                     }
                   }
                 }
@@ -385,6 +614,7 @@
                         "error",
                         "message"
                       ],
+                      "additionalProperties": false,
                       "properties": {
                         "error": {
                           "type": "string"
@@ -392,8 +622,7 @@
                         "message": {
                           "type": "string"
                         }
-                      },
-                      "additionalProperties": false
+                      }
                     }
                   }
                 }
@@ -408,6 +637,7 @@
                         "error",
                         "message"
                       ],
+                      "additionalProperties": false,
                       "properties": {
                         "error": {
                           "type": "string"
@@ -415,8 +645,7 @@
                         "message": {
                           "type": "string"
                         }
-                      },
-                      "additionalProperties": false
+                      }
                     }
                   }
                 }
@@ -478,6 +707,7 @@
                         "error",
                         "message"
                       ],
+                      "additionalProperties": false,
                       "properties": {
                         "error": {
                           "type": "string"
@@ -485,8 +715,7 @@
                         "message": {
                           "type": "string"
                         }
-                      },
-                      "additionalProperties": false
+                      }
                     }
                   }
                 }
@@ -501,6 +730,7 @@
                         "error",
                         "message"
                       ],
+                      "additionalProperties": false,
                       "properties": {
                         "error": {
                           "type": "string"
@@ -508,8 +738,7 @@
                         "message": {
                           "type": "string"
                         }
-                      },
-                      "additionalProperties": false
+                      }
                     }
                   }
                 }
@@ -569,7 +798,12 @@
                         "total",
                         "days"
                       ],
+                      "additionalProperties": false,
                       "properties": {
+                        "total": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
                         "days": {
                           "type": "array",
                           "items": {
@@ -578,6 +812,7 @@
                               "date",
                               "count"
                             ],
+                            "additionalProperties": false,
                             "properties": {
                               "date": {
                                 "type": "string",
@@ -587,16 +822,10 @@
                                 "type": "integer",
                                 "minimum": 0
                               }
-                            },
-                            "additionalProperties": false
+                            }
                           }
-                        },
-                        "total": {
-                          "type": "integer",
-                          "minimum": 0
                         }
-                      },
-                      "additionalProperties": false
+                      }
                     }
                   }
                 }
@@ -611,6 +840,7 @@
                         "error",
                         "message"
                       ],
+                      "additionalProperties": false,
                       "properties": {
                         "error": {
                           "type": "string"
@@ -618,8 +848,7 @@
                         "message": {
                           "type": "string"
                         }
-                      },
-                      "additionalProperties": false
+                      }
                     }
                   }
                 }
@@ -634,6 +863,7 @@
                         "error",
                         "message"
                       ],
+                      "additionalProperties": false,
                       "properties": {
                         "error": {
                           "type": "string"
@@ -641,8 +871,7 @@
                         "message": {
                           "type": "string"
                         }
-                      },
-                      "additionalProperties": false
+                      }
                     }
                   }
                 }
@@ -657,6 +886,7 @@
                         "error",
                         "message"
                       ],
+                      "additionalProperties": false,
                       "properties": {
                         "error": {
                           "type": "string"
@@ -664,7 +894,1556 @@
                         "message": {
                           "type": "string"
                         }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "studio",
+          "operationId": "readQrStudio",
+          "method": "GET",
+          "path": "/api/qr/{id}/studio",
+          "access": "owner",
+          "acceptance": [
+            "QR-10",
+            "QR-12",
+            "QR-13",
+            "QR-14"
+          ],
+          "notes": "Read only the session owner QR. Return newest saved revisions, sorted by savedAt and id descending, at most 25 rows. Cursor must belong to this QR; reject another QR cursor without exposing it. Canonical URL is the earliest saved revision URL, or publicOrigin() plus /q/ plus the QR id before its first save. Never derive the canonical URL from destination or request headers.",
+          "contract": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              {
+                "name": "limit",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 25,
+                  "default": 12
+                }
+              },
+              {
+                "name": "cursor",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Owned QR Studio and bounded revision history",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "qr": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "title": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "destination": {
+                              "type": "string",
+                              "format": "uri",
+                              "maxLength": 8192
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "title",
+                            "destination"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "canonicalUrl": {
+                          "type": "string",
+                          "format": "uri",
+                          "maxLength": 2048
+                        },
+                        "items": {
+                          "type": "array",
+                          "maxItems": 25,
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "savedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "canonicalUrl": {
+                                "type": "string",
+                                "format": "uri",
+                                "maxLength": 2048
+                              },
+                              "rendererVersion": {
+                                "type": "string",
+                                "const": "qr-artwork@0.1.0"
+                              },
+                              "settings": {
+                                "type": "object",
+                                "properties": {
+                                  "foreground": {
+                                    "type": "string",
+                                    "pattern": "^#[0-9A-Fa-f]{6}$"
+                                  },
+                                  "background": {
+                                    "type": "string",
+                                    "pattern": "^#[0-9A-Fa-f]{6}$"
+                                  },
+                                  "moduleStyle": {
+                                    "type": "string",
+                                    "enum": [
+                                      "square",
+                                      "rounded"
+                                    ]
+                                  },
+                                  "finderStyle": {
+                                    "type": "string",
+                                    "enum": [
+                                      "square",
+                                      "rounded"
+                                    ]
+                                  },
+                                  "size": {
+                                    "type": "integer",
+                                    "enum": [
+                                      256,
+                                      512,
+                                      1024
+                                    ]
+                                  },
+                                  "quietZone": {
+                                    "type": "integer",
+                                    "minimum": 4,
+                                    "maximum": 8
+                                  },
+                                  "errorCorrection": {
+                                    "type": "string",
+                                    "enum": [
+                                      "M",
+                                      "Q",
+                                      "H"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "foreground",
+                                  "background",
+                                  "moduleStyle",
+                                  "finderStyle",
+                                  "size",
+                                  "quietZone",
+                                  "errorCorrection"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "pngSha256": {
+                                "type": "string",
+                                "pattern": "^[a-f0-9]{64}$"
+                              },
+                              "svgSha256": {
+                                "type": "string",
+                                "pattern": "^[a-f0-9]{64}$"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "savedAt",
+                              "canonicalUrl",
+                              "rendererVersion",
+                              "settings",
+                              "pngSha256",
+                              "svgSha256"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "nextCursor": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
                       },
+                      "required": [
+                        "qr",
+                        "canonicalUrl",
+                        "items",
+                        "nextCursor"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Invalid request",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Sign in required",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "403": {
+                "description": "Origin or CSRF rejected",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "QR or revision not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "409": {
+                "description": "Request identity conflict",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Unable to complete request",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "artwork-preview",
+          "operationId": "previewQrArtwork",
+          "method": "POST",
+          "path": "/api/qr/{id}/artwork/preview",
+          "access": "owner",
+          "acceptance": [
+            "QR-11",
+            "QR-12",
+            "QR-14"
+          ],
+          "notes": "Authorize the owner before rendering. Strictly parse settings with @jeeves/qr-artwork@0.1.0, select the server-established canonical URL and render PNG. Return the exact bytes in a bounded base64 artifact envelope with hash and check evidence. Preview creates no revision. No uploads, browser QR rendering or client-selected identity/origin/renderer.",
+          "contract": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "settings": {
+                        "type": "object",
+                        "properties": {
+                          "foreground": {
+                            "type": "string",
+                            "pattern": "^#[0-9A-Fa-f]{6}$"
+                          },
+                          "background": {
+                            "type": "string",
+                            "pattern": "^#[0-9A-Fa-f]{6}$"
+                          },
+                          "moduleStyle": {
+                            "type": "string",
+                            "enum": [
+                              "square",
+                              "rounded"
+                            ]
+                          },
+                          "finderStyle": {
+                            "type": "string",
+                            "enum": [
+                              "square",
+                              "rounded"
+                            ]
+                          },
+                          "size": {
+                            "type": "integer",
+                            "enum": [
+                              256,
+                              512,
+                              1024
+                            ]
+                          },
+                          "quietZone": {
+                            "type": "integer",
+                            "minimum": 4,
+                            "maximum": 8
+                          },
+                          "errorCorrection": {
+                            "type": "string",
+                            "enum": [
+                              "M",
+                              "Q",
+                              "H"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "foreground",
+                          "background",
+                          "moduleStyle",
+                          "finderStyle",
+                          "size",
+                          "quietZone",
+                          "errorCorrection"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "settings"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Server-rendered PNG preview and validation evidence",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "bytesBase64": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000000,
+                          "pattern": "^[A-Za-z0-9+/]+={0,2}$"
+                        },
+                        "contentType": {
+                          "type": "string",
+                          "enum": [
+                            "image/png",
+                            "image/svg+xml"
+                          ]
+                        },
+                        "sha256": {
+                          "type": "string",
+                          "pattern": "^[a-f0-9]{64}$"
+                        },
+                        "filename": {
+                          "type": "string",
+                          "pattern": "^[a-f0-9-]+\\.(png|svg)$"
+                        },
+                        "canonicalUrl": {
+                          "type": "string",
+                          "format": "uri",
+                          "maxLength": 2048
+                        },
+                        "rendererVersion": {
+                          "type": "string",
+                          "const": "qr-artwork@0.1.0"
+                        },
+                        "checks": {
+                          "type": "object",
+                          "properties": {
+                            "modules": {
+                              "type": "integer",
+                              "minimum": 21
+                            },
+                            "modulePixels": {
+                              "type": "integer",
+                              "minimum": 3
+                            },
+                            "quietZone": {
+                              "type": "integer",
+                              "minimum": 4,
+                              "maximum": 8
+                            },
+                            "contrastRatio": {
+                              "type": "number",
+                              "minimum": 7
+                            },
+                            "pngDecode": {
+                              "type": "boolean",
+                              "const": true
+                            }
+                          },
+                          "required": [
+                            "modules",
+                            "modulePixels",
+                            "quietZone",
+                            "contrastRatio",
+                            "pngDecode"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "bytesBase64",
+                        "contentType",
+                        "sha256",
+                        "filename",
+                        "canonicalUrl",
+                        "rendererVersion",
+                        "checks"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Invalid request",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Sign in required",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "403": {
+                "description": "Origin or CSRF rejected",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "QR or revision not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "409": {
+                "description": "Request identity conflict",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Unable to complete request",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "artwork-save",
+          "operationId": "saveQrArtwork",
+          "method": "POST",
+          "path": "/api/qr/{id}/artwork",
+          "access": "owner",
+          "acceptance": [
+            "QR-10",
+            "QR-12",
+            "QR-13",
+            "QR-14"
+          ],
+          "notes": "Authorize the owned QR in a database transaction. Strictly normalize settings; use requestId as revision UUID. Render PNG and SVG with the pinned 0.1.0 renderer; store their hashes, canonical URL and configuration. Same requestId for the same owned QR and normalized configuration returns its original revision. Conflicting reuse returns generic 409; do not disclose another owner. No update/delete operation. Preserve the first revision canonical URL for subsequent revisions; retain old renderer versions when upgrading.",
+          "contract": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "requestId": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "settings": {
+                        "type": "object",
+                        "properties": {
+                          "foreground": {
+                            "type": "string",
+                            "pattern": "^#[0-9A-Fa-f]{6}$"
+                          },
+                          "background": {
+                            "type": "string",
+                            "pattern": "^#[0-9A-Fa-f]{6}$"
+                          },
+                          "moduleStyle": {
+                            "type": "string",
+                            "enum": [
+                              "square",
+                              "rounded"
+                            ]
+                          },
+                          "finderStyle": {
+                            "type": "string",
+                            "enum": [
+                              "square",
+                              "rounded"
+                            ]
+                          },
+                          "size": {
+                            "type": "integer",
+                            "enum": [
+                              256,
+                              512,
+                              1024
+                            ]
+                          },
+                          "quietZone": {
+                            "type": "integer",
+                            "minimum": 4,
+                            "maximum": 8
+                          },
+                          "errorCorrection": {
+                            "type": "string",
+                            "enum": [
+                              "M",
+                              "Q",
+                              "H"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "foreground",
+                          "background",
+                          "moduleStyle",
+                          "finderStyle",
+                          "size",
+                          "quietZone",
+                          "errorCorrection"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "requestId",
+                      "settings"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Same request identity and normalized settings already saved",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "savedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "canonicalUrl": {
+                          "type": "string",
+                          "format": "uri",
+                          "maxLength": 2048
+                        },
+                        "rendererVersion": {
+                          "type": "string",
+                          "const": "qr-artwork@0.1.0"
+                        },
+                        "settings": {
+                          "type": "object",
+                          "properties": {
+                            "foreground": {
+                              "type": "string",
+                              "pattern": "^#[0-9A-Fa-f]{6}$"
+                            },
+                            "background": {
+                              "type": "string",
+                              "pattern": "^#[0-9A-Fa-f]{6}$"
+                            },
+                            "moduleStyle": {
+                              "type": "string",
+                              "enum": [
+                                "square",
+                                "rounded"
+                              ]
+                            },
+                            "finderStyle": {
+                              "type": "string",
+                              "enum": [
+                                "square",
+                                "rounded"
+                              ]
+                            },
+                            "size": {
+                              "type": "integer",
+                              "enum": [
+                                256,
+                                512,
+                                1024
+                              ]
+                            },
+                            "quietZone": {
+                              "type": "integer",
+                              "minimum": 4,
+                              "maximum": 8
+                            },
+                            "errorCorrection": {
+                              "type": "string",
+                              "enum": [
+                                "M",
+                                "Q",
+                                "H"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "foreground",
+                            "background",
+                            "moduleStyle",
+                            "finderStyle",
+                            "size",
+                            "quietZone",
+                            "errorCorrection"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "pngSha256": {
+                          "type": "string",
+                          "pattern": "^[a-f0-9]{64}$"
+                        },
+                        "svgSha256": {
+                          "type": "string",
+                          "pattern": "^[a-f0-9]{64}$"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "savedAt",
+                        "canonicalUrl",
+                        "rendererVersion",
+                        "settings",
+                        "pngSha256",
+                        "svgSha256"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "201": {
+                "description": "New immutable artwork revision",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "savedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "canonicalUrl": {
+                          "type": "string",
+                          "format": "uri",
+                          "maxLength": 2048
+                        },
+                        "rendererVersion": {
+                          "type": "string",
+                          "const": "qr-artwork@0.1.0"
+                        },
+                        "settings": {
+                          "type": "object",
+                          "properties": {
+                            "foreground": {
+                              "type": "string",
+                              "pattern": "^#[0-9A-Fa-f]{6}$"
+                            },
+                            "background": {
+                              "type": "string",
+                              "pattern": "^#[0-9A-Fa-f]{6}$"
+                            },
+                            "moduleStyle": {
+                              "type": "string",
+                              "enum": [
+                                "square",
+                                "rounded"
+                              ]
+                            },
+                            "finderStyle": {
+                              "type": "string",
+                              "enum": [
+                                "square",
+                                "rounded"
+                              ]
+                            },
+                            "size": {
+                              "type": "integer",
+                              "enum": [
+                                256,
+                                512,
+                                1024
+                              ]
+                            },
+                            "quietZone": {
+                              "type": "integer",
+                              "minimum": 4,
+                              "maximum": 8
+                            },
+                            "errorCorrection": {
+                              "type": "string",
+                              "enum": [
+                                "M",
+                                "Q",
+                                "H"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "foreground",
+                            "background",
+                            "moduleStyle",
+                            "finderStyle",
+                            "size",
+                            "quietZone",
+                            "errorCorrection"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "pngSha256": {
+                          "type": "string",
+                          "pattern": "^[a-f0-9]{64}$"
+                        },
+                        "svgSha256": {
+                          "type": "string",
+                          "pattern": "^[a-f0-9]{64}$"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "savedAt",
+                        "canonicalUrl",
+                        "rendererVersion",
+                        "settings",
+                        "pngSha256",
+                        "svgSha256"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Invalid request",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Sign in required",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "403": {
+                "description": "Origin or CSRF rejected",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "QR or revision not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "409": {
+                "description": "Request identity conflict",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Unable to complete request",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "artwork-export",
+          "operationId": "exportQrArtwork",
+          "method": "GET",
+          "path": "/api/qr/{id}/artwork/{revision}/export",
+          "access": "owner",
+          "acceptance": [
+            "QR-11",
+            "QR-12",
+            "QR-13",
+            "QR-14"
+          ],
+          "notes": "Scope both QR and revision to the session owner. Render only the saved canonical URL, settings and pinned renderer version; verify against the saved SHA-256 before returning base64 bytes. Fail if the renderer/version/hash cannot be honored. Export never changes the revision, destination or legacy /image endpoint. The frontend downloads exactly these bytes and media type; it does not reconstruct geometry.",
+          "contract": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              {
+                "name": "revision",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              {
+                "name": "format",
+                "in": "query",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "png",
+                    "svg"
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Exact saved artifact bytes in a typed envelope",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "bytesBase64": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000000,
+                          "pattern": "^[A-Za-z0-9+/]+={0,2}$"
+                        },
+                        "contentType": {
+                          "type": "string",
+                          "enum": [
+                            "image/png",
+                            "image/svg+xml"
+                          ]
+                        },
+                        "sha256": {
+                          "type": "string",
+                          "pattern": "^[a-f0-9]{64}$"
+                        },
+                        "filename": {
+                          "type": "string",
+                          "pattern": "^[a-f0-9-]+\\.(png|svg)$"
+                        },
+                        "canonicalUrl": {
+                          "type": "string",
+                          "format": "uri",
+                          "maxLength": 2048
+                        },
+                        "rendererVersion": {
+                          "type": "string",
+                          "const": "qr-artwork@0.1.0"
+                        },
+                        "checks": {
+                          "type": "object",
+                          "properties": {
+                            "modules": {
+                              "type": "integer",
+                              "minimum": 21
+                            },
+                            "modulePixels": {
+                              "type": "integer",
+                              "minimum": 3
+                            },
+                            "quietZone": {
+                              "type": "integer",
+                              "minimum": 4,
+                              "maximum": 8
+                            },
+                            "contrastRatio": {
+                              "type": "number",
+                              "minimum": 7
+                            },
+                            "pngDecode": {
+                              "type": "boolean",
+                              "const": true
+                            }
+                          },
+                          "required": [
+                            "modules",
+                            "modulePixels",
+                            "quietZone",
+                            "contrastRatio",
+                            "pngDecode"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "bytesBase64",
+                        "contentType",
+                        "sha256",
+                        "filename",
+                        "canonicalUrl",
+                        "rendererVersion",
+                        "checks"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Invalid request",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Sign in required",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "403": {
+                "description": "Origin or CSRF rejected",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "QR or revision not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "409": {
+                "description": "Request identity conflict",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Unable to complete request",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "error",
+                        "message"
+                      ],
                       "additionalProperties": false
                     }
                   }
@@ -683,10 +2462,10 @@
     }
   },
   "resourceFingerprints": {
-    "qrwty": "1c71e75bcecff9a08cfd09275049c977b827b7724dc510dda22f6cea4d325cca"
+    "qrwty": "2a81ea97bf37ffb1d8450a65cb148b2fe6e77fce2b3d64259a1fc11f6b8ca7b9"
   },
   "generator": "0.1.0",
-  "designRevision": 1,
+  "designRevision": 0,
   "templates": [
     "http-service@0.1.0",
     "postgres@0.1.0",
@@ -707,8 +2486,8 @@
     },
     {
       "name": "@jeeves/rest-server",
-      "version": "0.1.0",
-      "tarball": "vendor/jeeves/jeeves-rest-server-0.1.0.tgz"
+      "version": "0.2.0",
+      "tarball": "vendor/jeeves/jeeves-rest-server-0.2.0.tgz"
     },
     {
       "name": "@jeeves/service-runtime",
@@ -748,36 +2527,41 @@
     }
   ],
   "files": {
-    "AGENTS.md": "sha256-3efb7d71c2711c4313a55b1d1913896fce172fcc731eb48360d9fdb1e6f712c1",
-    "contracts/qrwty.openapi.yaml": "sha256-8084645b622ea44c9fb6ad477c003f90716eef6bbec09c13ef2bf9177b5aea32",
+    "AGENTS.md": "sha256-3aaa6ff9b16cb3350e7eaafd2725226430915b0d9646043953c388aba13b96b8",
+    "contracts/qrwty.openapi.yaml": "sha256-a7f2f3d832001f3590e290adc707effb42169bcc3321c7ff68710bbab4aa05c3",
     "databases/qrwty-db/init/10-consumers.sql": "sha256-c90910e8a3fdf0e4d4579a1d155ee40e147e5f73d64f3aa817f4b267b2e8823e",
     "docker-compose.yml": "sha256-cd2ba49e8431922dd580de83158e9353685384c50c265f7534b5fd094ed26f31",
     "frontends/qrwty-web/nginx/default.conf.template": "sha256-450bddcaf678d22e63e1c75cbf4aa057f5e97faf651ec1daaf6d8c22edfecdd5",
     "frontends/qrwty-web/nginx/jeeves-config.json.template": "sha256-c6d4d4875145df5fdd0671d1b8eebc8778517fc5bd0e5348ed7a821526cf0b6a",
     "frontends/qrwty-web/src/clients/qrwty.generated.ts": "sha256-cc3c9437fd9910ce5fae5902926743fc178ef9c63364c5987a11b106fb94fdf1",
-    "frontends/qrwty-web/src/clients/qrwty.openapi.ts": "sha256-0a214108ef5a71b7bd0568411e7fd6b76141eabe16346bdd4c1e3403c2627306",
+    "frontends/qrwty-web/src/clients/qrwty.openapi.ts": "sha256-f797f6f8121cd8a2fb112d98188b27cd4801f3d9d938c0d4f5b0d96fb4bfbcdf",
     "frontends/qrwty-web/src/jeeves.generated.ts": "sha256-2e896a5784f736608c2590de2aa15ca5e419b191892a6f020499bce1ce13c5d2",
-    "jeeves/design.json": "sha256-11bd8e180668889c21b1aff0d72fb7f17c24a2be6d562d04e0505e92b9596d28",
+    "jeeves/design.json": "sha256-ba815dcc156d7e842cb8fdce2b90e4b00591ab4e2adb42ac4af50f2b8ecd5568",
     "jeeves/elements/qrwty-db.md": "sha256-1f7eb4ac43c471ea855b5414ea097722cac2f2a7eb18abd2224c7f7e3c30c360",
-    "jeeves/elements/qrwty-web.md": "sha256-5c88175a4f9a02fcb872ceb0dc1994bb8feb2667d48b430815e5301ca025931e",
-    "jeeves/elements/qrwty.md": "sha256-1aa65bb1f08a60d5826816344502dfdc7a2527814aecbbf3c8233a2aa0cc8651",
+    "jeeves/elements/qrwty-web.md": "sha256-3667c6b3485e497317ce106d85b3e491e1038960e61a04ed84120c2ee34a0645",
+    "jeeves/elements/qrwty.md": "sha256-8e2a298aff22a5e160afb7780b3e1292a69467b3f29064a7df9f8179005c8011",
     "services/qrwty/resource-migrations/0001.sql": "sha256-859cd7341408d8a296860e6e10b0a3d4fd1b834a235b33fe8862a5157861d427",
-    "services/qrwty/resource-migrations/manifest.json": "sha256-6e1b327a9ee204d1cd203a003329ffc8f76d31ad741ed638a6fa0615ccddee99",
+    "services/qrwty/resource-migrations/0002.sql": "sha256-eb9f9571e6bd790524fc0464da3ab83c41c07694ac490da00a2046ffc46b49f5",
+    "services/qrwty/resource-migrations/manifest.json": "sha256-4089ea682ef2872b61d90c774c3f0f6803d13cf199504172178415c2bb9f4fbb",
+    "services/qrwty/src/generated/resources/artwork.ts": "sha256-ac0c3c083965c57387d1e4131b8f24e75dda914d004ea246b7e81ba634ce60af",
     "services/qrwty/src/generated/resources/qr.ts": "sha256-cb194c8dbd578667552071ab3c23f85fbffae2870c735c6750ef1c886c2192d1",
     "services/qrwty/src/generated/resources/scan.ts": "sha256-c57aee9ace46c2fb3371adc7f62efe445de7a4b305fda25b575fb54447c29c48",
-    "services/qrwty/src/generated/routes.ts": "sha256-90925c5b9c6f2d1d51d29090b92500a4c044d7c834945f9fafdba5ea6b8efa38",
+    "services/qrwty/src/generated/routes.ts": "sha256-be1461241349bd22b31d4aa70d5766c7edb4e684ef520535a0493ad8fc380905",
     "services/qrwty/src/jeeves.generated.ts": "sha256-573e6390e9d7cd3400850051e7859ff30214162aefa34839bc7060e95bd031a5",
-    "tests/acceptance/qrwty/_support/api.ts": "sha256-05d4a6d520f9e9b36185a0dd5ef82b1b72f63442176c84eb28225e96a0f4c394",
+    "tests/acceptance/qrwty/_support/api.ts": "sha256-6b68ad78efdaf6b6c65cd9ddba55983c47c944dcb965f0a3144cf4f083a8a2e0",
     "tests/acceptance/qrwty/_support/db.ts": "sha256-fe4175ee17d73520f29e7708fdd90c66a9744f4b3574aff40c3ba0fd27ab2993",
     "tests/acceptance/qrwty/_support/destinations.ts": "sha256-819df5db17da18d39bdad5f6671cf1d2655eb066585834ff223971938da7f205",
     "tests/acceptance/qrwty/_support/fixture.ts": "sha256-acc6e3c3efb6362ce6b2246103d1281c1428814839e0fbfe7c9dc5f686f1a7b3",
+    "tests/acceptance/qrwty/_support/page-problems.ts": "sha256-096c53e283c57b80f774a85c701b5c3b02114d2f850a2256247dcdb1fd1c4950",
     "tests/acceptance/qrwty/_support/qr.ts": "sha256-4cb23c3609ebf0c685abd188a037f01bf2ba72611c9976aa3049308e74b4977c",
     "tests/acceptance/qrwty/activity.test.ts": "sha256-d1467fb84f370fdd509eb46894d0695a7b95a7738a19ff494ad59504a3309574",
-    "tests/acceptance/qrwty/browser.test.ts": "sha256-a50c33f9aeb49743704b8e3f315d4d007ff9243c161b3626701d16bb39c98f47",
+    "tests/acceptance/qrwty/artwork.test.ts": "sha256-f91ae9dbf484db8940e8df884770a8c2d6f8cd5b16a138548a99f010bbe5f04d",
+    "tests/acceptance/qrwty/browser.test.ts": "sha256-a501fb497cd05d4b19e93862a20fc5286b445c788e3a20cdeb3dc1a2a76d2f0c",
     "tests/acceptance/qrwty/core.test.ts": "sha256-431e7f7e6002db80fa98f250286e697a84fbb875d9da9f91b8537753fc3feece",
     "tests/acceptance/qrwty/qr-image.test.ts": "sha256-de9d29a24f7598c2c5bdf0292d1be3530e63f172824670a060773ea215a0138d",
     "tests/acceptance/qrwty/redirect.test.ts": "sha256-8bcf8447723b37354b7dedc92dc7092cabf1f99fb4205cfa64486314ccd42f7f",
     "tests/acceptance/qrwty/restart.test.ts": "sha256-fb08fb04d131c051ac3986d8268121686df9bd62eb925b3d13809e577a1f9dd1",
+    "tests/acceptance/qrwty/studio-browser.test.ts": "sha256-ca5b6f3579f15722e67c396834c982db73f0cd57f393825fe8c3310fa6610c6f",
     "tests/generated/qrwty/_session.test.ts": "sha256-edcf0bef97185c2f75b7f87afae95b09cca79ab7284336a47f0f705bd631de06",
     "tests/generated/qrwty/qr.test.ts": "sha256-776e5951fce7e558d27c9c05f69d8d7595dcd6b527c4e15e3ba3d86010cd50af"
   }

@@ -76,6 +76,9 @@ Test hooks (fixed browser acceptance relies on these exact attributes)
 - The public link shown for a row: `data-testid="qr-public-link"` with its href and text equal to
   `window.location.origin + "/q/" + id`.
 
+Studio (P17)
+- Add an owner-only Studio for the selected QR using the generated readQrStudio, previewQrArtwork, saveQrArtwork and exportQrArtwork operations. Use the pinned @jeeves/qr-artwork settings and @jeeves/product-ui configuration editor artifact. Keep drafts in session memory across library navigation; export only saved settings; preserve existing QR-09 hooks and legacy download. Never generate QR artwork in the browser. PNG/SVG bytes arrive from the server in typed base64 envelopes.
+
 ---
 
 <!-- Agent guide for web-app@0.1.0 -->

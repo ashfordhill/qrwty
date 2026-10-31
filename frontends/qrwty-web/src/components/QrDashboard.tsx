@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from "react";
-import type { FormEvent } from "react";
-import { useApis } from "@jeeves/web-runtime";
 import { EmptyState, Feedback } from "@jeeves/product-ui";
-import type { app } from "../jeeves.generated.ts";
+import { useApis } from "@jeeves/web-runtime";
+import type { FormEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { paths } from "../clients/qrwty.openapi.ts";
+import type { app } from "../jeeves.generated.ts";
 import { message } from "./apiMessage.ts";
-import { QrDetails } from "./QrDetails.tsx";
 import { CopyLink } from "./CopyLink.tsx";
 import { Icon } from "./Icon.tsx";
+import { QrDetails } from "./QrDetails.tsx";
+import { hasDraftChanges, QrStudio, type StudioDraft } from "./QrStudio.tsx";
 
 export type Qr = paths["/api/qr/{id}"]["get"]["responses"][200]["content"]["application/json"];
 export const publicLink = (id: string) => `${window.location.origin}/q/${id}`;
@@ -31,9 +32,11 @@ export function destinationError(value: string) {
 export function QrDashboard({
   csrfToken,
   onUnauthorized,
+  section,
 }: {
   csrfToken: string;
   onUnauthorized: () => void;
+  section: string;
 }) {
   const { qrwty: client } = useApis<typeof app.apis>();
   const [items, setItems] = useState<Qr[]>([]);
@@ -48,6 +51,23 @@ export function QrDashboard({
   const [created, setCreated] = useState<string | null>(null);
   const mounted = useRef(true);
   const loadVersion = useRef(0);
+  const drafts = useRef(new Map<string, StudioDraft>());
+  const studioId = /^#studio\/([0-9a-f-]{36})$/i.exec(section)?.[1];
+  useEffect(() => {
+    const warn = (event: BeforeUnloadEvent) => {
+      if ([...drafts.current.values()].some(hasDraftChanges)) {
+        event.preventDefault();
+        event.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, []);
+  useEffect(() => {
+    if (section.startsWith("#studio")) window.scrollTo(0, 0);
+    else if (section === "#library" || section === "#create")
+      document.getElementById(section.slice(1))?.scrollIntoView();
+  }, [section]);
 
   async function load(next?: string) {
     const version = ++loadVersion.current;
@@ -122,6 +142,47 @@ export function QrDashboard({
     }
   }
 
+  if (studioId)
+    return (
+      <QrStudio
+        key={studioId}
+        id={studioId}
+        csrfToken={csrfToken}
+        drafts={drafts.current}
+        onUnauthorized={onUnauthorized}
+      />
+    );
+  if (section === "#studio")
+    return (
+      <section className="panel studio-chooser">
+        <span className="section-icon">
+          <Icon name="palette" />
+        </span>
+        <h2>Choose a link. Make it yours.</h2>
+        <p className="muted">Your Studio designs keep the same permanent QR link.</p>
+        {loading && <Feedback>Loading your links…</Feedback>}
+        {listError && (
+          <Feedback kind="error">
+            {listError}{" "}
+            <button type="button" onClick={() => void load()}>
+              Retry
+            </button>
+          </Feedback>
+        )}
+        <div className="studio-chooser-links">
+          {items.map((qr) => (
+            <a className="button" key={qr.id} href={`#studio/${qr.id}`}>
+              {qr.title || "Untitled QR"}
+              <Icon name="arrow" />
+            </a>
+          ))}
+        </div>
+        <a className="button primary" href="#create">
+          <Icon name="plus" />
+          Create a QR link
+        </a>
+      </section>
+    );
   return (
     <div className="library-layout">
       <section className="panel create-panel" id="create" aria-labelledby="create-heading">
@@ -181,14 +242,17 @@ export function QrDashboard({
             <h2>Your links</h2>
             <small>Newest first{items.length > 0 ? ` · ${items.length} loaded` : ""}</small>
           </div>
-          <button disabled={loading} onClick={() => void load()}>
+          <button type="button" disabled={loading} onClick={() => void load()}>
             Refresh
           </button>
         </div>
         {loading && <Feedback>Loading QR links…</Feedback>}
         {listError && (
           <Feedback kind="error">
-            {listError} <button onClick={() => void load()}>Retry</button>
+            {listError}{" "}
+            <button type="button" onClick={() => void load()}>
+              Retry
+            </button>
           </Feedback>
         )}
         {!loading && !listError && items.length === 0 && (
@@ -214,14 +278,21 @@ export function QrDashboard({
                 </span>
                 <h3>{qr.title || "Untitled"}</h3>
               </div>
-              <button
-                data-testid="qr-select"
-                aria-expanded={selected === qr.id}
-                aria-controls={`details-${qr.id}`}
-                onClick={() => setSelected(selected === qr.id ? null : qr.id)}
-              >
-                {selected === qr.id ? "Close details" : "Manage"}
-              </button>
+              <div className="row-actions">
+                <a className="button" data-testid="studio-open" href={`#studio/${qr.id}`}>
+                  <Icon name="palette" />
+                  Studio
+                </a>
+                <button
+                  type="button"
+                  data-testid="qr-select"
+                  aria-expanded={selected === qr.id}
+                  aria-controls={`details-${qr.id}`}
+                  onClick={() => setSelected(selected === qr.id ? null : qr.id)}
+                >
+                  {selected === qr.id ? "Close details" : "Manage"}
+                </button>
+              </div>
             </div>
             <p className="destination">{qr.destination}</p>
             <p className="created-at">
@@ -255,7 +326,7 @@ export function QrDashboard({
           </article>
         ))}
         {cursor && (
-          <button disabled={loading} onClick={() => void load(cursor)}>
+          <button type="button" disabled={loading} onClick={() => void load(cursor)}>
             Load more
           </button>
         )}

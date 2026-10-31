@@ -1,13 +1,14 @@
-import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from "vitest";
-import { chromium, expect as browserExpect } from "@playwright/test";
-import type { Browser, Page } from "@playwright/test";
-import { createServer } from "vite";
-import type { ViteDevServer } from "vite";
+import { mkdir, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { readFile, mkdir } from "node:fs/promises";
 import AxeBuilder from "@axe-core/playwright";
-import { observePageProblems } from "./support/page-problems.ts";
+import { artworkSettingsSchema, defaultSettings, renderArtwork } from "@jeeves/qr-artwork";
+import type { Browser, Page } from "@playwright/test";
+import { expect as browserExpect, chromium } from "@playwright/test";
+import type { ViteDevServer } from "vite";
+import { createServer } from "vite";
+import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from "vitest";
 import type { PageProblems } from "./support/page-problems.ts";
+import { observePageProblems } from "./support/page-problems.ts";
 
 vi.setConfig({ testTimeout: 20000 });
 
@@ -523,4 +524,128 @@ test("a previous session's late mutation cannot sign out a newly authenticated w
   expired.finish();
   await browserExpect(hook("qr-row")).toHaveCount(2);
   await browserExpect(hook("auth-login")).toHaveCount(0);
+});
+
+function studioFixture(failFirstSave = false): typeof respond {
+  const revisions: Record<string, unknown>[] = [];
+  let fail = failFirstSave;
+  const artifact = (settings: unknown, format: "png" | "svg", revision?: string) => {
+    const canonicalUrl = `${origin}/q/${qr.id}`;
+    const result = renderArtwork(canonicalUrl, settings, format);
+    return {
+      bytesBase64: result.bytes.toString("base64"),
+      contentType: result.contentType,
+      sha256: result.sha256,
+      checks: result.checks,
+      canonicalUrl,
+      rendererVersion: result.rendererVersion,
+      filename: `${qr.id}${revision ? `-${revision}` : ""}.${format}`,
+    };
+  };
+  return (request, path) => {
+    if (path === `/api/qr/${qr.id}/studio`)
+      return {
+        body: {
+          qr,
+          canonicalUrl: `${origin}/q/${qr.id}`,
+          items: [...revisions].reverse(),
+          nextCursor: null,
+        },
+      };
+    if (path === `/api/qr/${qr.id}/artwork/preview`)
+      return { body: artifact(request.postDataJSON().settings, "png") };
+    if (path === `/api/qr/${qr.id}/artwork`) {
+      if (fail) {
+        fail = false;
+        return {
+          status: 503,
+          body: { error: "UNAVAILABLE", message: "Save temporarily unavailable. Retry." },
+        };
+      }
+      const input = request.postDataJSON();
+      const existing = revisions.find((item) => item.id === input.requestId);
+      if (existing) return { body: existing };
+      const settings = artworkSettingsSchema.parse(input.settings);
+      const result = {
+        id: input.requestId,
+        settings,
+        savedAt: new Date().toISOString(),
+        canonicalUrl: `${origin}/q/${qr.id}`,
+        rendererVersion: "qr-artwork@0.1.0",
+        pngSha256: artifact(settings, "png").sha256,
+        svgSha256: artifact(settings, "svg").sha256,
+      };
+      revisions.push(result);
+      return { status: 201, body: result };
+    }
+    if (path.startsWith(`/api/qr/${qr.id}/artwork/`) && path.endsWith("/export")) {
+      const revision = revisions.find((item) => path.includes(String(item.id)));
+      if (revision)
+        return {
+          body: artifact(
+            revision.settings,
+            new URL(request.url()).searchParams.get("format") as "png" | "svg",
+            String(revision.id),
+          ),
+        };
+    }
+    return standard(request, path);
+  };
+}
+
+test("Studio preserves a failed save identity and asks before replacing customized settings", async () => {
+  await open(studioFixture(true));
+  await page.getByTestId("qr-row").first().getByTestId("studio-open").click();
+  await browserExpect(hook("studio-preview")).toBeVisible();
+  const failed = negative(
+    "POST",
+    `/api/qr/${qr.id}/artwork`,
+    503,
+    "failed Studio save can be retried",
+  );
+  await hook("studio-save").click();
+  await browserExpect(page.getByRole("alert")).toContainText("temporarily unavailable");
+  failed.finish();
+  await browserExpect(hook("studio-export-png")).toBeDisabled();
+  await hook("studio-save").click();
+  await browserExpect(hook("studio-export-png")).toBeEnabled();
+  const saves = calls.filter((call) => call.url().endsWith(`/api/qr/${qr.id}/artwork`));
+  expect(saves).toHaveLength(2);
+  expect(saves[0]?.postDataJSON().requestId).toBe(saves[1]?.postDataJSON().requestId);
+  expect(saves[1]?.headers()["x-csrf-token"]).toBe(session.csrfToken);
+  await hook("studio-foreground").fill("#132C25");
+  await page.getByRole("button", { name: "Forest Canopy", exact: true }).click();
+  await browserExpect(page.getByRole("dialog")).toBeVisible();
+  await page.getByRole("button", { name: "Keep editing", exact: true }).click();
+  await browserExpect(hook("studio-foreground")).toHaveValue("#132C25");
+  await page.getByRole("button", { name: "Forest Canopy", exact: true }).click();
+  await page.getByRole("button", { name: "Use preset", exact: true }).click();
+  await browserExpect(hook("studio-foreground")).toHaveValue("#193F35");
+  await hook("studio-foreground").fill("#EEEEEE");
+  await browserExpect(hook("studio-save")).toBeDisabled();
+  await browserExpect(hook("studio-export-png")).toBeDisabled();
+  await browserExpect(page.getByRole("alert")).toContainText("contrast");
+});
+
+test("Studio has accessible responsive controls and a real server-rendered preview", async () => {
+  await open(studioFixture());
+  await page.getByTestId("qr-row").first().getByTestId("studio-open").click();
+  await browserExpect(hook("studio-preview")).toBeVisible();
+  await hook("studio-save").click();
+  await browserExpect(hook("studio-export-png")).toBeEnabled();
+  await browserExpect(hook("studio-foreground")).toHaveValue(defaultSettings.foreground);
+  await browserExpect
+    .poll(() => hook("studio-preview").evaluate((img) => (img as HTMLImageElement).naturalWidth))
+    .toBe(512);
+  await noOverflow();
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await capture("studio-desktop");
+  // Skip navigation must focus content without erasing the Studio route.
+  await page.getByRole("link", { name: "Skip to content" }).focus();
+  await page.getByRole("link", { name: "Skip to content" }).click();
+  expect(page.url()).toContain(`#studio/${qr.id}`);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await noOverflow();
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await capture("studio-mobile");
 });

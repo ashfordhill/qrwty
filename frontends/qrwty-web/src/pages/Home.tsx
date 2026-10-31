@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import type { FormEvent } from "react";
-import { useApis, useRuntimeConfig } from "@jeeves/web-runtime";
 import { Feedback, PageHeader, ProductShell } from "@jeeves/product-ui";
-import type { app } from "../jeeves.generated.ts";
+import { useApis, useRuntimeConfig } from "@jeeves/web-runtime";
+import type { FormEvent } from "react";
+import { useEffect, useState } from "react";
 import { message } from "../components/apiMessage.ts";
-import { QrDashboard } from "../components/QrDashboard.tsx";
 import { Icon } from "../components/Icon.tsx";
+import { QrDashboard } from "../components/QrDashboard.tsx";
+import type { app } from "../jeeves.generated.ts";
 
 export function Home() {
   const { qrwty: client } = useApis<typeof app.apis>();
@@ -57,6 +57,7 @@ export function Home() {
     setSession(null);
     setPassword("");
     setError("");
+    window.location.hash = "#library";
   }
 
   async function authenticate(event: FormEvent<HTMLFormElement>) {
@@ -118,7 +119,13 @@ export function Home() {
                 href: "#library",
                 label: "QR library",
                 icon: <Icon name="grid" />,
-                current: section !== "#create",
+                current: section !== "#create" && !section.startsWith("#studio"),
+              },
+              {
+                href: "#studio",
+                label: "QR Studio",
+                icon: <Icon name="palette" />,
+                current: section.startsWith("#studio"),
               },
               {
                 href: "#create",
@@ -132,6 +139,7 @@ export function Home() {
       footer={
         session ? (
           <button
+            type="button"
             className="logout"
             data-testid="auth-logout"
             disabled={busy}
@@ -158,23 +166,35 @@ export function Home() {
             description="Your workspace will be here when the connection returns."
           />
           <Feedback kind="error">{checkError}</Feedback>
-          <button onClick={() => setAttempt((n) => n + 1)}>Retry session check</button>
+          <button type="button" onClick={() => setAttempt((n) => n + 1)}>
+            Retry session check
+          </button>
         </section>
       ) : session ? (
         <>
           <PageHeader
             eyebrow="Your workspace"
-            title="QR library"
-            description="Create once. Share everywhere. Change where it leads."
+            title={section.startsWith("#studio") ? "QR Studio" : "QR library"}
+            description={
+              section.startsWith("#studio")
+                ? "A small canvas for a lasting connection."
+                : "Create once. Share everywhere. Change where it leads."
+            }
             actions={
-              <a className="button primary" href="#create">
-                <Icon name="plus" />
-                Create a QR link
-              </a>
+              section.startsWith("#studio") ? (
+                <a className="button" href="#library">
+                  Back to library
+                </a>
+              ) : (
+                <a className="button primary" href="#create">
+                  <Icon name="plus" />
+                  Create a QR link
+                </a>
+              )
             }
           />
           {error && <Feedback kind="error">{error}</Feedback>}
-          <QrDashboard csrfToken={session.csrfToken} onUnauthorized={signedOut} />
+          <QrDashboard csrfToken={session.csrfToken} onUnauthorized={signedOut} section={section} />
         </>
       ) : (
         <div className="auth-layout">

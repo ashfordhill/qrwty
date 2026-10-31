@@ -11,10 +11,11 @@
   },
   "dependencies": {
     "@jeeves/postgres-runtime": "file:../../vendor/jeeves/jeeves-postgres-runtime-0.1.0.tgz",
-    "@jeeves/rest-server": "file:../../vendor/jeeves/jeeves-rest-server-0.1.0.tgz",
+    "@jeeves/rest-server": "file:../../vendor/jeeves/jeeves-rest-server-0.2.0.tgz",
     "@jeeves/service-runtime": "file:../../vendor/jeeves/jeeves-service-runtime-0.1.0.tgz",
     "drizzle-orm": "0.45.4",
-    "qrcode": "1.5.4"
+    "qrcode": "1.5.4",
+    "@jeeves/qr-artwork": "file:artifacts/jeeves-qr-artwork-0.1.0.tgz"
   },
   "devDependencies": {
     "@types/node": "24.19.2",

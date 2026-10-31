@@ -17,9 +17,9 @@ This service's resource model generates sessions and owner-scoped CRUD routes fr
 contract. Do not add standard CRUD handlers, routes, tables, or migrations; implement only the
 declared extensions below.
 
-- Resources: `qr` (owner; create, read, list, update); `scan` (internal; no CRUD routes)
-- Extensions: `qr-image` GET /api/qr/{id}/image (owner; QR-02, QR-06); `redirect` GET /q/{id} (public; QR-03, QR-04, QR-07); `activity` GET /api/qr/{id}/activity (owner; QR-05, QR-06)
-- Fixed acceptance: QR-01, QR-02, QR-03, QR-04, QR-05, QR-06, QR-07, QR-08, QR-09
+- Resources: `qr` (owner; create, read, list, update); `scan` (internal; no CRUD routes); `artwork` (internal; no CRUD routes)
+- Extensions: `qr-image` GET /api/qr/{id}/image (owner; QR-02, QR-06); `redirect` GET /q/{id} (public; QR-03, QR-04, QR-07); `activity` GET /api/qr/{id}/activity (owner; QR-05, QR-06); `studio` GET /api/qr/{id}/studio (owner; QR-10, QR-12, QR-13, QR-14); `artwork-preview` POST /api/qr/{id}/artwork/preview (owner; QR-11, QR-12, QR-14); `artwork-save` POST /api/qr/{id}/artwork (owner; QR-10, QR-12, QR-13, QR-14); `artwork-export` GET /api/qr/{id}/artwork/{revision}/export (owner; QR-11, QR-12, QR-13, QR-14)
+- Fixed acceptance: QR-01, QR-02, QR-03, QR-04, QR-05, QR-06, QR-07, QR-08, QR-09, QR-10, QR-11, QR-12, QR-13, QR-14
 - Generated-owned: `contracts/qrwty.openapi.yaml`, `services/qrwty/src/generated/`, `services/qrwty/resource-migrations/`, `tests/generated/qrwty/`, `tests/acceptance/qrwty/`
 - Implement extensions in `services/qrwty/src/features/<extension-id>/`. Read the generated
   resource descriptors in `src/generated/resources/` for physical table and column names.
@@ -180,6 +180,25 @@ contract documents standard error bodies, so return `{ error, message }` for 400
 Compare it with the resource's `owner_id` column (generated for owner resources) and never take the
 owner from a request body or query.
 
+### Owner commands and bounded settings
+
+Structured extensions support GET reads and owner-only POST commands. A POST declares a required
+`application/json` object body with `additionalProperties: false` in the design. Generation owns
+the resulting contract and client types. The runtime checks the session, matching Origin and
+CSRF token before dispatch, then validates the body without type coercion. Public POST commands
+and GET request bodies are unsupported. Do not add undeclared routes to work around this boundary.
+
+Owner access establishes a principal; the extension must still scope its query to the actual
+owned resource. Put `owner_id = principal.id` in the mutation predicate (or join through its owned
+parent), use parameterized values and return 404 when no owned row matches. Use a transaction for
+related writes. Never accept a caller-supplied owner or replace a generated CRUD handler.
+
+Resource fields can declare bounded `integer` values or finite `enum` tokens. Their JSON and SQL
+constraints agree. Changing existing bounds or enum membership requires a reviewed migration;
+changing names preserves stable physical IDs. A new optional field or a new resource is additive.
+The widened descriptor surface uses `@jeeves/rest-server@0.2.0`; adopt that new artifact through
+generation, preserving earlier pinned runtime artifacts and immutable migration history.
+
 ### Dates and binary bodies
 
 - Postgres returns `date` and `timestamptz` columns as JavaScript `Date` objects. The response
@@ -335,6 +354,115 @@ independent owner-isolation and fixed acceptance suites.
           }
         ],
         "operations": []
+      },
+      {
+        "id": "artwork",
+        "name": "artwork",
+        "access": "internal",
+        "fields": [
+          {
+            "id": "renderer-version",
+            "name": "rendererVersion",
+            "type": "text",
+            "required": true,
+            "maxLength": 40
+          },
+          {
+            "id": "canonical-url",
+            "name": "canonicalUrl",
+            "type": "http-url",
+            "required": true
+          },
+          {
+            "id": "foreground",
+            "name": "foreground",
+            "type": "text",
+            "required": true,
+            "maxLength": 7
+          },
+          {
+            "id": "background",
+            "name": "background",
+            "type": "text",
+            "required": true,
+            "maxLength": 7
+          },
+          {
+            "id": "module-style",
+            "name": "moduleStyle",
+            "type": "enum",
+            "required": true,
+            "values": [
+              "square",
+              "rounded"
+            ]
+          },
+          {
+            "id": "finder-style",
+            "name": "finderStyle",
+            "type": "enum",
+            "required": true,
+            "values": [
+              "square",
+              "rounded"
+            ]
+          },
+          {
+            "id": "size",
+            "name": "size",
+            "type": "integer",
+            "required": true,
+            "minimum": 256,
+            "maximum": 1024
+          },
+          {
+            "id": "quiet-zone",
+            "name": "quietZone",
+            "type": "integer",
+            "required": true,
+            "minimum": 4,
+            "maximum": 8
+          },
+          {
+            "id": "error-correction",
+            "name": "errorCorrection",
+            "type": "enum",
+            "required": true,
+            "values": [
+              "M",
+              "Q",
+              "H"
+            ]
+          },
+          {
+            "id": "png-sha256",
+            "name": "pngSha256",
+            "type": "text",
+            "required": true,
+            "maxLength": 64
+          },
+          {
+            "id": "svg-sha256",
+            "name": "svgSha256",
+            "type": "text",
+            "required": true,
+            "maxLength": 64
+          },
+          {
+            "id": "saved-at",
+            "name": "savedAt",
+            "type": "timestamp",
+            "generated": "created-at"
+          }
+        ],
+        "belongsTo": [
+          {
+            "id": "artwork-qr",
+            "resource": "qr",
+            "required": true
+          }
+        ],
+        "operations": []
       }
     ],
     "acceptanceCases": [
@@ -346,7 +474,12 @@ independent owner-isolation and fixed acceptance suites.
       "QR-06",
       "QR-07",
       "QR-08",
-      "QR-09"
+      "QR-09",
+      "QR-10",
+      "QR-11",
+      "QR-12",
+      "QR-13",
+      "QR-14"
     ],
     "extensions": [
       {
@@ -408,8 +541,12 @@ independent owner-isolation and fixed acceptance suites.
                       "error",
                       "message"
                     ],
+                    "additionalProperties": false,
                     "properties": {
                       "error": {
+                        "type": "string"
+                      },
+                      "message": {
                         "type": "string"
                       },
                       "details": {
@@ -417,12 +554,8 @@ independent owner-isolation and fixed acceptance suites.
                         "items": {
                           "type": "object"
                         }
-                      },
-                      "message": {
-                        "type": "string"
                       }
-                    },
-                    "additionalProperties": false
+                    }
                   }
                 }
               }
@@ -437,6 +570,7 @@ independent owner-isolation and fixed acceptance suites.
                       "error",
                       "message"
                     ],
+                    "additionalProperties": false,
                     "properties": {
                       "error": {
                         "type": "string"
@@ -444,8 +578,7 @@ independent owner-isolation and fixed acceptance suites.
                       "message": {
                         "type": "string"
                       }
-                    },
-                    "additionalProperties": false
+                    }
                   }
                 }
               }
@@ -460,6 +593,7 @@ independent owner-isolation and fixed acceptance suites.
                       "error",
                       "message"
                     ],
+                    "additionalProperties": false,
                     "properties": {
                       "error": {
                         "type": "string"
@@ -467,8 +601,7 @@ independent owner-isolation and fixed acceptance suites.
                       "message": {
                         "type": "string"
                       }
-                    },
-                    "additionalProperties": false
+                    }
                   }
                 }
               }
@@ -530,6 +663,7 @@ independent owner-isolation and fixed acceptance suites.
                       "error",
                       "message"
                     ],
+                    "additionalProperties": false,
                     "properties": {
                       "error": {
                         "type": "string"
@@ -537,8 +671,7 @@ independent owner-isolation and fixed acceptance suites.
                       "message": {
                         "type": "string"
                       }
-                    },
-                    "additionalProperties": false
+                    }
                   }
                 }
               }
@@ -553,6 +686,7 @@ independent owner-isolation and fixed acceptance suites.
                       "error",
                       "message"
                     ],
+                    "additionalProperties": false,
                     "properties": {
                       "error": {
                         "type": "string"
@@ -560,8 +694,7 @@ independent owner-isolation and fixed acceptance suites.
                       "message": {
                         "type": "string"
                       }
-                    },
-                    "additionalProperties": false
+                    }
                   }
                 }
               }
@@ -621,7 +754,12 @@ independent owner-isolation and fixed acceptance suites.
                       "total",
                       "days"
                     ],
+                    "additionalProperties": false,
                     "properties": {
+                      "total": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
                       "days": {
                         "type": "array",
                         "items": {
@@ -630,6 +768,7 @@ independent owner-isolation and fixed acceptance suites.
                             "date",
                             "count"
                           ],
+                          "additionalProperties": false,
                           "properties": {
                             "date": {
                               "type": "string",
@@ -639,16 +778,10 @@ independent owner-isolation and fixed acceptance suites.
                               "type": "integer",
                               "minimum": 0
                             }
-                          },
-                          "additionalProperties": false
+                          }
                         }
-                      },
-                      "total": {
-                        "type": "integer",
-                        "minimum": 0
                       }
-                    },
-                    "additionalProperties": false
+                    }
                   }
                 }
               }
@@ -663,6 +796,7 @@ independent owner-isolation and fixed acceptance suites.
                       "error",
                       "message"
                     ],
+                    "additionalProperties": false,
                     "properties": {
                       "error": {
                         "type": "string"
@@ -670,8 +804,7 @@ independent owner-isolation and fixed acceptance suites.
                       "message": {
                         "type": "string"
                       }
-                    },
-                    "additionalProperties": false
+                    }
                   }
                 }
               }
@@ -686,6 +819,7 @@ independent owner-isolation and fixed acceptance suites.
                       "error",
                       "message"
                     ],
+                    "additionalProperties": false,
                     "properties": {
                       "error": {
                         "type": "string"
@@ -693,8 +827,7 @@ independent owner-isolation and fixed acceptance suites.
                       "message": {
                         "type": "string"
                       }
-                    },
-                    "additionalProperties": false
+                    }
                   }
                 }
               }
@@ -709,6 +842,7 @@ independent owner-isolation and fixed acceptance suites.
                       "error",
                       "message"
                     ],
+                    "additionalProperties": false,
                     "properties": {
                       "error": {
                         "type": "string"
@@ -716,7 +850,1556 @@ independent owner-isolation and fixed acceptance suites.
                       "message": {
                         "type": "string"
                       }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "studio",
+        "operationId": "readQrStudio",
+        "method": "GET",
+        "path": "/api/qr/{id}/studio",
+        "access": "owner",
+        "acceptance": [
+          "QR-10",
+          "QR-12",
+          "QR-13",
+          "QR-14"
+        ],
+        "notes": "Read only the session owner QR. Return newest saved revisions, sorted by savedAt and id descending, at most 25 rows. Cursor must belong to this QR; reject another QR cursor without exposing it. Canonical URL is the earliest saved revision URL, or publicOrigin() plus /q/ plus the QR id before its first save. Never derive the canonical URL from destination or request headers.",
+        "contract": {
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 25,
+                "default": 12
+              }
+            },
+            {
+              "name": "cursor",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Owned QR Studio and bounded revision history",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "qr": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "title": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "destination": {
+                            "type": "string",
+                            "format": "uri",
+                            "maxLength": 8192
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "title",
+                          "destination"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "canonicalUrl": {
+                        "type": "string",
+                        "format": "uri",
+                        "maxLength": 2048
+                      },
+                      "items": {
+                        "type": "array",
+                        "maxItems": 25,
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "savedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "canonicalUrl": {
+                              "type": "string",
+                              "format": "uri",
+                              "maxLength": 2048
+                            },
+                            "rendererVersion": {
+                              "type": "string",
+                              "const": "qr-artwork@0.1.0"
+                            },
+                            "settings": {
+                              "type": "object",
+                              "properties": {
+                                "foreground": {
+                                  "type": "string",
+                                  "pattern": "^#[0-9A-Fa-f]{6}$"
+                                },
+                                "background": {
+                                  "type": "string",
+                                  "pattern": "^#[0-9A-Fa-f]{6}$"
+                                },
+                                "moduleStyle": {
+                                  "type": "string",
+                                  "enum": [
+                                    "square",
+                                    "rounded"
+                                  ]
+                                },
+                                "finderStyle": {
+                                  "type": "string",
+                                  "enum": [
+                                    "square",
+                                    "rounded"
+                                  ]
+                                },
+                                "size": {
+                                  "type": "integer",
+                                  "enum": [
+                                    256,
+                                    512,
+                                    1024
+                                  ]
+                                },
+                                "quietZone": {
+                                  "type": "integer",
+                                  "minimum": 4,
+                                  "maximum": 8
+                                },
+                                "errorCorrection": {
+                                  "type": "string",
+                                  "enum": [
+                                    "M",
+                                    "Q",
+                                    "H"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "foreground",
+                                "background",
+                                "moduleStyle",
+                                "finderStyle",
+                                "size",
+                                "quietZone",
+                                "errorCorrection"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "pngSha256": {
+                              "type": "string",
+                              "pattern": "^[a-f0-9]{64}$"
+                            },
+                            "svgSha256": {
+                              "type": "string",
+                              "pattern": "^[a-f0-9]{64}$"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "savedAt",
+                            "canonicalUrl",
+                            "rendererVersion",
+                            "settings",
+                            "pngSha256",
+                            "svgSha256"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "nextCursor": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
                     },
+                    "required": [
+                      "qr",
+                      "canonicalUrl",
+                      "items",
+                      "nextCursor"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Sign in required",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Origin or CSRF rejected",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "QR or revision not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Request identity conflict",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Unable to complete request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "artwork-preview",
+        "operationId": "previewQrArtwork",
+        "method": "POST",
+        "path": "/api/qr/{id}/artwork/preview",
+        "access": "owner",
+        "acceptance": [
+          "QR-11",
+          "QR-12",
+          "QR-14"
+        ],
+        "notes": "Authorize the owner before rendering. Strictly parse settings with @jeeves/qr-artwork@0.1.0, select the server-established canonical URL and render PNG. Return the exact bytes in a bounded base64 artifact envelope with hash and check evidence. Preview creates no revision. No uploads, browser QR rendering or client-selected identity/origin/renderer.",
+        "contract": {
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "settings": {
+                      "type": "object",
+                      "properties": {
+                        "foreground": {
+                          "type": "string",
+                          "pattern": "^#[0-9A-Fa-f]{6}$"
+                        },
+                        "background": {
+                          "type": "string",
+                          "pattern": "^#[0-9A-Fa-f]{6}$"
+                        },
+                        "moduleStyle": {
+                          "type": "string",
+                          "enum": [
+                            "square",
+                            "rounded"
+                          ]
+                        },
+                        "finderStyle": {
+                          "type": "string",
+                          "enum": [
+                            "square",
+                            "rounded"
+                          ]
+                        },
+                        "size": {
+                          "type": "integer",
+                          "enum": [
+                            256,
+                            512,
+                            1024
+                          ]
+                        },
+                        "quietZone": {
+                          "type": "integer",
+                          "minimum": 4,
+                          "maximum": 8
+                        },
+                        "errorCorrection": {
+                          "type": "string",
+                          "enum": [
+                            "M",
+                            "Q",
+                            "H"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "foreground",
+                        "background",
+                        "moduleStyle",
+                        "finderStyle",
+                        "size",
+                        "quietZone",
+                        "errorCorrection"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "settings"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Server-rendered PNG preview and validation evidence",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "bytesBase64": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000000,
+                        "pattern": "^[A-Za-z0-9+/]+={0,2}$"
+                      },
+                      "contentType": {
+                        "type": "string",
+                        "enum": [
+                          "image/png",
+                          "image/svg+xml"
+                        ]
+                      },
+                      "sha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      },
+                      "filename": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9-]+\\.(png|svg)$"
+                      },
+                      "canonicalUrl": {
+                        "type": "string",
+                        "format": "uri",
+                        "maxLength": 2048
+                      },
+                      "rendererVersion": {
+                        "type": "string",
+                        "const": "qr-artwork@0.1.0"
+                      },
+                      "checks": {
+                        "type": "object",
+                        "properties": {
+                          "modules": {
+                            "type": "integer",
+                            "minimum": 21
+                          },
+                          "modulePixels": {
+                            "type": "integer",
+                            "minimum": 3
+                          },
+                          "quietZone": {
+                            "type": "integer",
+                            "minimum": 4,
+                            "maximum": 8
+                          },
+                          "contrastRatio": {
+                            "type": "number",
+                            "minimum": 7
+                          },
+                          "pngDecode": {
+                            "type": "boolean",
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "modules",
+                          "modulePixels",
+                          "quietZone",
+                          "contrastRatio",
+                          "pngDecode"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "bytesBase64",
+                      "contentType",
+                      "sha256",
+                      "filename",
+                      "canonicalUrl",
+                      "rendererVersion",
+                      "checks"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Sign in required",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Origin or CSRF rejected",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "QR or revision not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Request identity conflict",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Unable to complete request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "artwork-save",
+        "operationId": "saveQrArtwork",
+        "method": "POST",
+        "path": "/api/qr/{id}/artwork",
+        "access": "owner",
+        "acceptance": [
+          "QR-10",
+          "QR-12",
+          "QR-13",
+          "QR-14"
+        ],
+        "notes": "Authorize the owned QR in a database transaction. Strictly normalize settings; use requestId as revision UUID. Render PNG and SVG with the pinned 0.1.0 renderer; store their hashes, canonical URL and configuration. Same requestId for the same owned QR and normalized configuration returns its original revision. Conflicting reuse returns generic 409; do not disclose another owner. No update/delete operation. Preserve the first revision canonical URL for subsequent revisions; retain old renderer versions when upgrading.",
+        "contract": {
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "requestId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "settings": {
+                      "type": "object",
+                      "properties": {
+                        "foreground": {
+                          "type": "string",
+                          "pattern": "^#[0-9A-Fa-f]{6}$"
+                        },
+                        "background": {
+                          "type": "string",
+                          "pattern": "^#[0-9A-Fa-f]{6}$"
+                        },
+                        "moduleStyle": {
+                          "type": "string",
+                          "enum": [
+                            "square",
+                            "rounded"
+                          ]
+                        },
+                        "finderStyle": {
+                          "type": "string",
+                          "enum": [
+                            "square",
+                            "rounded"
+                          ]
+                        },
+                        "size": {
+                          "type": "integer",
+                          "enum": [
+                            256,
+                            512,
+                            1024
+                          ]
+                        },
+                        "quietZone": {
+                          "type": "integer",
+                          "minimum": 4,
+                          "maximum": 8
+                        },
+                        "errorCorrection": {
+                          "type": "string",
+                          "enum": [
+                            "M",
+                            "Q",
+                            "H"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "foreground",
+                        "background",
+                        "moduleStyle",
+                        "finderStyle",
+                        "size",
+                        "quietZone",
+                        "errorCorrection"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "requestId",
+                    "settings"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Same request identity and normalized settings already saved",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "savedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "canonicalUrl": {
+                        "type": "string",
+                        "format": "uri",
+                        "maxLength": 2048
+                      },
+                      "rendererVersion": {
+                        "type": "string",
+                        "const": "qr-artwork@0.1.0"
+                      },
+                      "settings": {
+                        "type": "object",
+                        "properties": {
+                          "foreground": {
+                            "type": "string",
+                            "pattern": "^#[0-9A-Fa-f]{6}$"
+                          },
+                          "background": {
+                            "type": "string",
+                            "pattern": "^#[0-9A-Fa-f]{6}$"
+                          },
+                          "moduleStyle": {
+                            "type": "string",
+                            "enum": [
+                              "square",
+                              "rounded"
+                            ]
+                          },
+                          "finderStyle": {
+                            "type": "string",
+                            "enum": [
+                              "square",
+                              "rounded"
+                            ]
+                          },
+                          "size": {
+                            "type": "integer",
+                            "enum": [
+                              256,
+                              512,
+                              1024
+                            ]
+                          },
+                          "quietZone": {
+                            "type": "integer",
+                            "minimum": 4,
+                            "maximum": 8
+                          },
+                          "errorCorrection": {
+                            "type": "string",
+                            "enum": [
+                              "M",
+                              "Q",
+                              "H"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "foreground",
+                          "background",
+                          "moduleStyle",
+                          "finderStyle",
+                          "size",
+                          "quietZone",
+                          "errorCorrection"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "pngSha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      },
+                      "svgSha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "savedAt",
+                      "canonicalUrl",
+                      "rendererVersion",
+                      "settings",
+                      "pngSha256",
+                      "svgSha256"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "201": {
+              "description": "New immutable artwork revision",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "savedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "canonicalUrl": {
+                        "type": "string",
+                        "format": "uri",
+                        "maxLength": 2048
+                      },
+                      "rendererVersion": {
+                        "type": "string",
+                        "const": "qr-artwork@0.1.0"
+                      },
+                      "settings": {
+                        "type": "object",
+                        "properties": {
+                          "foreground": {
+                            "type": "string",
+                            "pattern": "^#[0-9A-Fa-f]{6}$"
+                          },
+                          "background": {
+                            "type": "string",
+                            "pattern": "^#[0-9A-Fa-f]{6}$"
+                          },
+                          "moduleStyle": {
+                            "type": "string",
+                            "enum": [
+                              "square",
+                              "rounded"
+                            ]
+                          },
+                          "finderStyle": {
+                            "type": "string",
+                            "enum": [
+                              "square",
+                              "rounded"
+                            ]
+                          },
+                          "size": {
+                            "type": "integer",
+                            "enum": [
+                              256,
+                              512,
+                              1024
+                            ]
+                          },
+                          "quietZone": {
+                            "type": "integer",
+                            "minimum": 4,
+                            "maximum": 8
+                          },
+                          "errorCorrection": {
+                            "type": "string",
+                            "enum": [
+                              "M",
+                              "Q",
+                              "H"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "foreground",
+                          "background",
+                          "moduleStyle",
+                          "finderStyle",
+                          "size",
+                          "quietZone",
+                          "errorCorrection"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "pngSha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      },
+                      "svgSha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "savedAt",
+                      "canonicalUrl",
+                      "rendererVersion",
+                      "settings",
+                      "pngSha256",
+                      "svgSha256"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Sign in required",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Origin or CSRF rejected",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "QR or revision not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Request identity conflict",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Unable to complete request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "artwork-export",
+        "operationId": "exportQrArtwork",
+        "method": "GET",
+        "path": "/api/qr/{id}/artwork/{revision}/export",
+        "access": "owner",
+        "acceptance": [
+          "QR-11",
+          "QR-12",
+          "QR-13",
+          "QR-14"
+        ],
+        "notes": "Scope both QR and revision to the session owner. Render only the saved canonical URL, settings and pinned renderer version; verify against the saved SHA-256 before returning base64 bytes. Fail if the renderer/version/hash cannot be honored. Export never changes the revision, destination or legacy /image endpoint. The frontend downloads exactly these bytes and media type; it does not reconstruct geometry.",
+        "contract": {
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "revision",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            {
+              "name": "format",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "png",
+                  "svg"
+                ]
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Exact saved artifact bytes in a typed envelope",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "bytesBase64": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2000000,
+                        "pattern": "^[A-Za-z0-9+/]+={0,2}$"
+                      },
+                      "contentType": {
+                        "type": "string",
+                        "enum": [
+                          "image/png",
+                          "image/svg+xml"
+                        ]
+                      },
+                      "sha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      },
+                      "filename": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9-]+\\.(png|svg)$"
+                      },
+                      "canonicalUrl": {
+                        "type": "string",
+                        "format": "uri",
+                        "maxLength": 2048
+                      },
+                      "rendererVersion": {
+                        "type": "string",
+                        "const": "qr-artwork@0.1.0"
+                      },
+                      "checks": {
+                        "type": "object",
+                        "properties": {
+                          "modules": {
+                            "type": "integer",
+                            "minimum": 21
+                          },
+                          "modulePixels": {
+                            "type": "integer",
+                            "minimum": 3
+                          },
+                          "quietZone": {
+                            "type": "integer",
+                            "minimum": 4,
+                            "maximum": 8
+                          },
+                          "contrastRatio": {
+                            "type": "number",
+                            "minimum": 7
+                          },
+                          "pngDecode": {
+                            "type": "boolean",
+                            "const": true
+                          }
+                        },
+                        "required": [
+                          "modules",
+                          "modulePixels",
+                          "quietZone",
+                          "contrastRatio",
+                          "pngDecode"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "bytesBase64",
+                      "contentType",
+                      "sha256",
+                      "filename",
+                      "canonicalUrl",
+                      "rendererVersion",
+                      "checks"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Sign in required",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Origin or CSRF rejected",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "QR or revision not found",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "409": {
+              "description": "Request identity conflict",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Unable to complete request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "error",
+                      "message"
+                    ],
                     "additionalProperties": false
                   }
                 }

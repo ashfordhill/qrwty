@@ -6,6 +6,8 @@ const paths = {
   copy: "M9 9h12v12H9zM15 5V3H3v12h2",
   check: "m5 12 4 4L19 6",
   exit: "M9 4H4v16h5M9 12h12M16 7l5 5-5 5",
+  palette:
+    "M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 1-4c-1-1 0-3 2-3h2a3 3 0 0 0 3-3 9 9 0 0 0-9-8ZM7 9h.01M12 6h.01M17 9h.01M6 14h.01",
 };
 
 export function Icon({ name }: { name: keyof typeof paths }) {
