@@ -1,0 +1,5 @@
+scenario,qualified_contacts_monthly,contact_to_paid,new_accounts_monthly,monthly_churn,month24_accounts,month24_mrr,month24_cash_surplus,month24_founder_hours,month24_economic_surplus,revenue_24mo,cash_surplus_24mo,economic_surplus_24mo
+No sales,40,0.0,0.0,0.02,0.0,0.0,-100.0,8.0,-500.0,0.0,-2400.0,-12000.0
+Weak channel,40,0.01,0.4,0.02,7.6844,376.5353,182.4015,10.3211,-333.6535,5069.7718,1402.3288,-9970.9803
+Working channel,40,0.025,1.0,0.02,19.211,941.3382,606.0036,13.8027,-84.1337,12674.4294,7105.822,-6927.4508
+Strong channel,40,0.05,2.0,0.02,38.422,1882.6764,1312.0073,19.6055,331.7327,25348.8588,16611.6441,-1854.9015

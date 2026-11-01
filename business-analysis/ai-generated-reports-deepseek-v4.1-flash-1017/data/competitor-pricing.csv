@@ -1,0 +1,25 @@
+vendor,plan,price_usd_per_month,billing,custom_domain,self_host,notes,source,accessed
+Bitly,Free,0,monthly,no,no,2 QR codes/month; 5 links/month; ads,Bitly pricing,2026-10-31
+Bitly,Core,10,annual only,no,no,5 QR codes/month; 100 links/month; 30-day data,Bitly pricing,2026-10-31
+Bitly,Growth,29,annual only,yes,no,10 QR codes/month; 500 links/month; custom domain included,Bitly pricing,2026-10-31
+Bitly,Premium,199,annual only,yes,no,200 QR codes/month; 3000 links/month; city-level data,Bitly pricing,2026-10-31
+Uniqode,Lite/Starter,9,annual only,no,no,15 dynamic codes; 60-day analytics (per Fable); annual only,Uniqode pricing/FAQ,2026-10-31
+Uniqode,Core,49,annual only,no,no,Core plan per FAQ; custom domain add-on $2000/domain/year,Uniqode pricing/FAQ,2026-10-31
+Hovercode,Free,0,monthly,no,no,3 dynamic codes; 3-month history,Hovercode pricing,2026-10-31
+Hovercode,Pro,12,monthly or annual (10 months/year),yes (1),no,100 dynamic codes; 12-month history; 1 custom domain,Hovercode pricing,2026-10-31
+Hovercode,Business,39,monthly or annual,yes (10),no,600 dynamic codes/month; API; bulk; CSV; 10 team members,Hovercode pricing,2026-10-31
+Hovercode,Business Plus,99,monthly or annual,yes (50),no,2000 dynamic codes/month; 25 team members; webhooks,Hovercode pricing,2026-10-31
+QR.io,Unlimited,39.99,monthly,unclear,no,Unlimited QR codes/scans; custom landing pages; 5 team members,QR.io pricing,2026-10-31
+QR.io,Unlimited annual,29.17,annual (350/year),unclear,no,Annual price 350; equivalent monthly 29.17,QR.io pricing,2026-10-31
+Scanova,Basic,5,annual only,no,no,3 QR codes; unlimited scans,Scanova pricing,2026-10-31
+Scanova,Lite,9,annual only,no,no,10 QR codes; 26 categories,Scanova pricing,2026-10-31
+Scanova,Standard,35,annual only,no,no,50 QR codes; advanced analytics; bulk 50,Scanova pricing,2026-10-31
+Scanova,Pro,75,annual only,yes (1),no,500 QR codes; 5 users; folders; API; GPS; HubSpot,Scanova pricing,2026-10-31
+Quick Code,On-prem,20.83,one-time 250,managed/custom,yes,Unlimited codes/scans/seats; one-time licence; paid updates/support optional,Quick Code pricing,2026-10-31
+Quick Code,Managed/Agency,39,monthly,managed/custom,yes,Managed hosting; white-label; agency plan,Quick Code pricing,2026-10-31
+Quick Code,Enterprise,833.33,annual 10k-150k+,custom,yes,SSO/SCIM; audit; HA/Helm; 24/7; SLA; airgap; equivalent monthly at 10k/year,Quick Code pricing,2026-10-31
+qrwty,Pro SaaS,12,monthly,higher tiers,planned,Planned; site says custom short domain on higher tiers,qrwty.io,2026-10-31
+qrwty,Self-host,12.42,annual 149 or lifetime 499,yes,planned,Planned; optional support add-on; equivalent monthly at 149/year,qrwty.io,2026-10-31
+Shlink,Self-host,0,free,yes,yes,Open-source shortener with QR endpoint per short URL; MIT,Shlink GitHub,2026-10-31
+YOURLS,Self-host,0,free,yes,yes,Open-source URL shortener; QR via plugins; MIT,YOURLS GitHub,2026-10-31
+Dub,Open-source,0,free,yes,yes,AGPL core + commercial /ee; hosted Business from about 81/month,Dub GitHub/pricing,2026-10-31

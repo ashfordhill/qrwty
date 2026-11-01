@@ -1,0 +1,5 @@
+offer,price_monthly,payment_rate,partner_rate,support_hours_monthly,hourly_value,support_value_monthly,contribution_after_support
+Individual direct,12.0,0.05,0.0,0.1,50.0,5.0,6.4
+Agency direct,49.0,0.05,0.0,0.25,50.0,12.5,34.05
+Agency via partner,49.0,0.05,0.2,0.25,50.0,12.5,24.25
+Agency premium via partner,79.0,0.05,0.2,0.25,50.0,12.5,46.75

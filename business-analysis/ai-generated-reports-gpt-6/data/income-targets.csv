@@ -1,0 +1,17 @@
+offer,target_economic_surplus_monthly,fixed_cash_monthly,general_hours_monthly,accounts_required
+Individual direct,0,100.0,8.0,79
+Individual direct,500,100.0,8.0,157
+Individual direct,1500,100.0,8.0,313
+Individual direct,3000,100.0,8.0,547
+Agency direct,0,100.0,8.0,15
+Agency direct,500,100.0,8.0,30
+Agency direct,1500,100.0,8.0,59
+Agency direct,3000,100.0,8.0,103
+Agency via partner,0,100.0,8.0,21
+Agency via partner,500,100.0,8.0,42
+Agency via partner,1500,100.0,8.0,83
+Agency via partner,3000,100.0,8.0,145
+Agency premium via partner,0,100.0,8.0,11
+Agency premium via partner,500,100.0,8.0,22
+Agency premium via partner,1500,100.0,8.0,43
+Agency premium via partner,3000,100.0,8.0,75
