@@ -1,6 +1,7 @@
 name: Render Excalidraw
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - '**/*.excalidraw'
