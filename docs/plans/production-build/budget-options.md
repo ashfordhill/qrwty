@@ -4,6 +4,10 @@ Researched 2026-11-13. USD, one environment, on-demand list prices before credit
 tax. The bands below are **engineering allowances**, not vendor quotes or spending permission.
 No cloud resources were provisioned. The owner prefers GCP and has no residency requirement.
 
+**Revision 3 owner decision:** spend nothing on new cloud/services yet. The active path is local
+development plus deployment preparation under [local-to-cloud.md](local-to-cloud.md). All bands
+and probe allowances below are future options, not today's recommendation to provision resources.
+
 ## Practical options
 
 | Option | Working monthly envelope | What it buys / what remains unproven |
@@ -13,7 +17,7 @@ No cloud resources were provisioned. The owner prefers GCP and has no residency 
 | Warm second region and more operating headroom | $1,500–$3,500 | Additional database/compute/storage/network capacity and recovery operation. Does not automatically buy continuous global availability or zero regional-disaster data loss |
 | Billion-scale operation | Quote after Q15's measured resource model | Actual per-event bytes, compute time, DB working set, geographical egress and peak capacity dominate. None of the smaller bands is a promise of 10 billion redirects/month |
 
-Recommended progression: build locally, use temporary probes, then aim for about **$1,000/month**
+When the owner later activates cloud work: use temporary probes, then consider about **$1,000/month**
 as a planning center for the first HA deployment. Suggested separate probe allowance **$250 total**
 across both arms, subject to a resource/duration worksheet; stop or reprice if insufficient.
 L0 load tests need their own quote. Price L1's 100-million-row seed, load generators, replicas,
@@ -96,7 +100,8 @@ logs if needed; never sample the required click event stream. Reserve enough cap
 backlog drain, security response and teardown. Automatic action at a cost limit must not delete
 durable records. Compare payment processing/Billing fees separately from cloud and model costs.
 
-Remaining owner steering: pick an initial monthly envelope and disposable-test allowance; later
-choose paid-tier price/limits and the exact execution model. Existing answers already settle GCP
+Future activation steering: pick a monthly envelope and disposable-test allowance then. Local
+development does not wait for those choices; exact model/settings and local tier fixtures are
+pinned separately. Existing answers already settle no cloud spending now, GCP
 preference, indefinite guest links, durable clicks, individual free/paid accounts and a controlled
 same-stack/model comparison. No repeated approval is needed for those decisions.

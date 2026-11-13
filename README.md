@@ -48,10 +48,16 @@ with anonymous quick links, individual free/paid accounts, management and durabl
 a real cloud deployment and two comparable implementations: [with Jeeves](docs/plans/production-build/units.md) and
 [without Jeeves](docs/plans/production-build/baseline-units.md).
 
-**Status: planning only.** The application has not been generated, built or deployed. The first
+**Status: planning only; local build first, $0 new cloud/service spending now.** The application
+has not been generated, built or deployed. The first
 application phase saves the architecture in Jeeves before generating into this repository.
 The drawing below is a proposed Excalidraw explanation, not a saved Jeeves diagram or runtime
 verification. The actual Jeeves diagram and export will be linked here when Q01–Q02 complete.
+
+The [local-to-cloud contract](docs/plans/production-build/local-to-cloud.md) requires production
+containers, real GCP adapters, migrations and infrastructure definitions during the local build.
+Later deployment should promote the same artifacts through configuration, secrets and provisioning.
+Real managed-service compatibility, recovery and scale checks remain pending until cloud activation.
 
 ![Proposed QRWTY system: durable click before redirect, guest links and free/paid accounts](docs/diagrams/system-overview.svg)
 
@@ -100,7 +106,7 @@ the time saved. [Counting and comparison protocol](docs/plans/production-build/c
 | Proven traffic tier / cloud cost | Not deployed | Not deployed |
 | Recovery, security and maintenance-change results | Not run | Not run |
 
-Remaining [owner choices](docs/plans/production-build/README.md#owner-steering-questions) concern
-spend caps, release/load-proof sequence, paid prices/limits and exact execution settings. GCP
+Remaining [owner choices](docs/plans/production-build/README.md#owner-steering-questions) include
+exact execution settings; future spend caps, release/load proof and live prices wait for activation. GCP
 preference, guest permanence, durable capture, individual free/paid accounts and the controlled
 comparison are recorded. Existing research above remains background, not the release checklist.

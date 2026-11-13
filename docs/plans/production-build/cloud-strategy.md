@@ -1,6 +1,9 @@
 # Cloud strategy and scale proof
 
-Revision 2 follows the owner's GCP preference, with no stated residency restriction. Proposed
+Revision 3 keeps the GCP target and defers all paid work. Current cloud/service budget: **$0**.
+Prepare the real adapters, containers, environment bindings and IaC locally under
+[local-to-cloud.md](local-to-cloud.md); do not provision even a trial/free-tier project now.
+The owner has no stated residency restriction. Proposed
 reference: Cloudflare edge and static UI; Node containers on Cloud Run; Cloud SQL PostgreSQL,
 Pub/Sub, optional Memorystore cache and Cloud Storage. Billing uses a tested managed provider.
 Docker packages processes; correct code, managed durability, recovery and operating evidence
@@ -22,12 +25,12 @@ See [editable cloud diagram](../../diagrams/cloud-deployment.excalidraw) and
 | DNS, TLS, defense | Cloudflare DNS/proxy/WAF | Certificate renewal, origin protection, distributed abuse limits; quote actual plan |
 | UI | Cloudflare static hosting | Immutable assets, rollback, no browser secrets |
 | Public routing | Thin Cloudflare Worker or equivalent route configuration | Allowlisted hosts/methods/routes, trusted forwarding, bounded timeouts; no cached final redirect |
-| GCP ingress | External HTTPS load balancer with serverless NEGs or verified authenticated invocation | Disable/restrict default Cloud Run public bypass; prove the exact Cloudflare-to-origin authentication and routing in Q04 |
+| GCP ingress | External HTTPS load balancer with serverless NEGs or verified authenticated invocation | Disable/restrict default Cloud Run public bypass; prepare in Q04, prove actual Cloudflare-to-origin authentication/routing in Q12a |
 | HTTP processes | Regional Cloud Run services, proposed us-central1 | Independent redirect scaling, measured warm minimums/concurrency/max instances, drain, non-root images and rollback; managed regional placement rather than invented zone-pinned tasks |
-| Background consumers | Cloud Run worker pools, subject to G12/Q04 region/lifecycle proof | Always-running pull consumer without an HTTP listener; explicit replicas and tested backlog scaling. If incompatible, use a regional Compute Engine managed instance group with the same container and record the cost/operational delta |
+| Background consumers | Cloud Run worker pools, subject to G12/Q04 local checks and Q12a live region/lifecycle proof | Always-running pull consumer without an HTTP listener; explicit replicas and tested backlog scaling. If incompatible, use a regional Compute Engine managed instance group with the same container and record the cost/operational delta |
 | Links / Sessions / Billing | Cloud SQL PostgreSQL regional HA | Restricted separate logical DB roles; encryption, PITR, migrations, tested failover; one owning writer per domain |
 | Analytics | Separate logical Postgres DB initially; separate capacity before interference | Time partitions, bounded dedup/retention/query work; large-event storage redesign only from measured limits |
-| Hot routes / Admission | Managed Memorystore Redis/Valkey option proven against actual client | TLS/auth/network compatibility, optional redirect cache, safe distributed creation admission; exact edition/version and quote chosen in Q04 |
+| Hot routes / Admission | Managed Memorystore Redis/Valkey option proven against actual client | TLS/auth/network compatibility, optional redirect cache, safe distributed creation admission; candidate selected locally in Q04; exact managed compatibility/quote confirmed in Q12a |
 | Click events | Pub/Sub topic and subscriptions, explicit regional storage policy | Durable ACK required before 302; 31-day proposed retention; subscriber expiry disabled, least privilege, replay/DLQ and health gates |
 | Raw sanitized archive | Independent Pub/Sub Cloud Storage export subscription | Batched files, dedup-aware replay, lag alarms, tested failure/recovery and explicit lifecycle; no one-object-per-click design |
 | Identity | Managed OIDC, selected after compatibility probe | Audience/JWKS/rotation/recovery compatibility, MFA option and MAU/email costs; GCP Identity Platform is a candidate, not an assumed fit |
@@ -144,24 +147,26 @@ requiring proof; adding a synchronous dependency makes it harder, not automatica
 
 ## Deployment progression and cost
 
-1. **Q04 disposable probe:** real GCP TLS/IAM, Cloud Run HTTP and consumer hosting, Cloud SQL,
-   Pub/Sub ACK/replay/archive and managed identity. Bound duration, price, instances and teardown.
-   A small probe is not HA or scale evidence.
-2. **Q13 staging:** independent projects/credentials/data/hostnames per arm; reproducible IaC,
+1. **Q04/Q12 local preparation now:** implement GCP adapters and production images; validate local
+   environment/IaC/migrations and rehearse release. No cloud resources or paid requests.
+2. **Q12a probe later, after activation:** real TLS/IAM, Cloud Run HTTP/worker hosting, Cloud SQL,
+   Pub/Sub ACK/replay/archive and managed identity. Bound duration, cost and teardown; not scale proof.
+3. **Q13 staging after Q12a:** independent projects/credentials/data/hostnames per arm; reproducible IaC,
    secrets, private stores, migration/release jobs, warm capacity and operational telemetry.
-3. **Q14–Q15 reliability and load:** actual regional failover, restore, durability/backlog tests and
+4. **Q14–Q15 reliability and load:** actual regional failover, restore, durability/backlog tests and
    authorized capacity tiers. Save topology, sizes, quotas and image digests with every run.
-4. **Q18 selected release:** exact estimate, IaC/images, recovery/security evidence, live billing
+5. **Q18 selected release:** exact estimate, IaC/images, recovery/security evidence, live billing
    configuration and unresolved findings reviewed; gradual `qrwty.io` cutover with rollback.
    Baseline uses an isolated hostname and synthetic data, not copied private customer traffic.
-5. **Regional evolution:** measure failover/lag and fence writers. Warm asynchronous standby is
+6. **Regional evolution:** measure failover/lag and fence writers. Warm asynchronous standby is
    not zero-loss multi-region click publication. Any stronger requirement has its own design,
    latency tests, pricing and acceptance gates before a claim.
 
-A paid apply needs a concrete reviewed plan and available authorized cap. The user's GCP
-preference is recorded; no spend cap or account permissions were inferred. Use earlier approvals
-when provided. Budgets alerts alone do not stop charges; configure limits while preserving
-backlog/recovery capacity. Test notifications need the owner's selected destination/scope.
+Cloud work is deferred by the owner. When activated later, a paid apply needs its concrete
+reviewed plan and authorized cap; reuse that authorization within scope. The current $0 boundary
+is not a request to ask for permission now. Budget alerts alone do not stop charges; configure
+limits while preserving backlog/recovery capacity. Test notifications need the owner's selected
+destination/scope.
 
 The [budget worksheet](budget-options.md) gives options and dated component prices. Q13 expands it:
 

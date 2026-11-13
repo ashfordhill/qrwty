@@ -2,7 +2,9 @@
 
 Revision 2 implements the owner's requirement: **every click is durably recorded**. This contract
 is shared by both builds and supersedes revision 1's optional telemetry buffer. It is a planned
-contract, not an implemented guarantee.
+contract, not an implemented guarantee. Revision 3 adds a $0 local-build phase: emulator/fixture
+checks can prove application ordering, not real storage durability. That evidence remains pending
+until cloud activation under [local-to-cloud.md](local-to-cloud.md).
 
 ## The guarantee we can actually provide
 
@@ -49,7 +51,8 @@ regional fault boundary; a global Pub/Sub name is not synchronous multi-region r
 [Publish lifecycle](https://docs.cloud.google.com/pubsub/docs/publish-message-overview),
 [regional reliability](https://docs.cloud.google.com/pubsub/docs/reliability-intro).
 
-Q04 must prove the exact publisher adapter, runtime IAM, regional endpoint/storage policy,
+Q04 prepares the real publisher adapter and proves its local behavior. Q12a must verify runtime
+IAM, regional endpoint/storage policy,
 topic/subscription setup and returned acknowledgment. Use pre-created analytics and archive
 subscriptions, disable inactivity expiration, restrict deletion, and verify them before enabling
 traffic. A RabbitMQ confirm implementation cannot be relabeled Pub/Sub without a real adapter.
@@ -62,7 +65,7 @@ retention policy, not permanent storage of every raw event. Publish that policy 
 Include all retained bytes and duplicates in the price calculation.
 
 Use an independent managed Cloud Storage export subscription for durable batched archive files;
-Q04 verifies its schema, permissions, failure/redelivery and retention behavior. Archive objects
+Q04 prepares its schema/configuration; Q12a verifies real permissions, delivery and retention. Archive objects
 can contain duplicate event IDs. Analytics consumes independently, atomically deduplicates and
 updates aggregates, then acknowledges. Never ACK a consumer before its transaction commits.
 Do not assume a GCS object is one click, or use one object per click.

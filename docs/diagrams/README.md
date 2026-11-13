@@ -34,3 +34,8 @@ in [revision 2 evidence](../evidence/plan-revision-2/checks.md).
 
 Additional diagrams are assigned to later units: link state, event lifecycle, UI flow and actual
 recovery sequence. Do not make one unreadable master sheet for all four concerns.
+
+Revision 3 changes execution timing, not this target topology: build locally with $0 new cloud/
+service spending, prepare deployment configuration now, verify managed services later. See the
+[local-to-cloud contract](../plans/production-build/local-to-cloud.md). Diagram assets/hashes
+remain those verified in revision 2; they do not depict an already provisioned environment.

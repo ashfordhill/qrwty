@@ -89,6 +89,20 @@ Alert tests that send email/chat require the owner's authorized destination and 
 when that operational unit runs. Prepare rules and a local/dry-run proof first; this planning
 document does not authorize sending messages to others.
 
+## Local deployment preparation
+
+Revision 3 makes these shared A/B gates the no-spend milestone. They supplement local product
+tests and never substitute for D/L rows or live-provider assertions. See [promotion contract](local-to-cloud.md).
+
+| ID | Check | Pass condition |
+| --- | --- | --- |
+| R01 | Environment/schema validation and spend boundary | Explicit typed bindings; missing production values or emulator/fake/insecure settings rejected; ordinary build/tests require no cloud credentials or billable request |
+| R02 | Real adapters exercised locally | Production DB/cache/PubSub clients use isolated local services; signed auth/payment fixtures test real validation logic; each emulator/fixture limitation recorded |
+| R03 | Container runtime and multiple copies | Final runtime images start, drain and restart; independent copies use external state and bounded connections; no local disk/sticky-session authority |
+| R04 | Infrastructure and secret inventory | GCP resources/IAM/network/retention/backups/alerts/scaling declarations validate offline; every binding has owner/source; no apply or authenticated refresh required |
+| R05 | Fresh-checkout release rehearsal | Documented build/start/migrate/deploy/rollback commands work at local scope; fixed image/UI hashes reused across test configurations; no handler/generated/SQL/UI source edits to change environment |
+| R06 | Activation backlog and honest status | Named live IAM/TLS/provider/archive/failover/load checks remain not run; future resource/cost/rollback plan prepared; no production or capacity claim from mocks |
+
 ## Load and measurement
 
 | ID | Test | Evidence |
@@ -107,6 +121,8 @@ document does not authorize sending messages to others.
 ## Release labels
 
 - **Local working:** product tests pass locally. No production claim.
+- **Locally verified; cloud activation pending:** local product/runtime tests and R01–R06 pass;
+  deployment artifacts prepared. No managed durability, provider compatibility or scale claim.
 - **Production candidate at L0/L1:** accepted product/security/cloud/failure/load rows pass at that
   exact tier; owner has the priced deployment and rollback pack. Explicit pending items listed.
 - **Public beta:** actual chosen deployment, limited traffic/feature scope, known tier and gaps

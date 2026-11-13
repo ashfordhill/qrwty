@@ -75,3 +75,37 @@ authoring window. No generated app, saved Jeeves project, independent repo or cl
 were created in this unit. Do not re-ask the confirmed decisions. Actual cloud/model spending
 still needs its concrete capped plan; paid-tier limits and live price IDs must be explicit before
 activation. Preserve `.docs/` and all concurrent Jeeves work.
+
+## 2026-11-13 — Plan revision 3: local build with cloud deployment prepared
+
+**Decision.** Owner does not want to spend money on this yet, but wants a project that can later
+deploy/scale through cloud configuration. Current additional cloud/service budget is $0. Do not
+ask for a hosting cap now or provision trials/free-tier resources on an assumed exception.
+
+**Changed.** Added the local-to-cloud contract: production containers and real GCP adapters now,
+validated environment/secret bindings, external state and multi-copy correctness, offline IaC,
+migrations, release/rollback tooling and a same-artifact local deployment rehearsal. Updated both
+plans so Q04/B02 are local preparation; new Q12a/B08a defer real managed-service probes until
+cloud activation. Q05/local product/UI work no longer depends on paid proof. Added R01–R06 shared
+preparation gates, updated README/agent guidance/status/cost references and preserved real cloud
+release criteria. There are now 22 assisted units, 17 baseline units and 68 acceptance IDs.
+
+**Boundary.** A locally passing Pub/Sub emulator or signed provider fixture cannot prove real
+managed durability/IAM/archive/failover. Those checks remain not run; missing cloud access is not
+a reason to block local implementation. Production adapters must be implemented and production
+configuration must reject fake/emulator/insecure settings. Later source fixes are recorded and
+charged honestly, not called configuration or moved into the original baseline. Billion-scale
+analytics may require measured architecture work beyond replica settings.
+
+**Checks.** Local links/anchors, JSON/Excalidraw/SVG parsing, 15 unchanged diagram hashes, ordered
+22/17 unit inventories, 68 acceptance IDs, original README prefix, previous handoff/evidence
+preservation, $0/pending measurement status and `git diff --check` passed.
+[Verification](evidence/plan-revision-3/checks.md) and
+[results](evidence/plan-revision-3/document-validation.json). Diagram assets were unchanged, so
+their earlier browser/mouse evidence remains applicable. No app/Jeeves code changed; no runtime
+suite, local release rehearsal, provider probe or cloud apply was claimed to run in this unit.
+
+**Next.** Q00 freezes remaining neutral execution/local-policy inputs, then Q01 saves the actual
+Jeeves design in a safe authoring window. Both apps and their deployment packs can be built
+locally under the plan before cloud activation. No new app/cloud resources or charges in this
+planning unit. Owner `.docs/`, old handoffs/evidence and concurrent Jeeves work are preserved.

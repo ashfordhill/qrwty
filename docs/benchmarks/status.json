@@ -31,7 +31,9 @@
     "inputTokens": null,
     "outputTokens": null,
     "costUsd": null,
-    "reason": "Exact runtime model identity and provider usage counters were not exposed for either planning unit. Null does not mean zero usage or a known model snapshot."
+    "reason": "Exact runtime model identity and provider usage counters were not exposed for these planning units. Null does not mean zero usage or a known model snapshot."
   },
-  "planningRevision": 2
+  "planningRevision": 3,
+  "cloudActivation": "deferred-by-owner",
+  "additionalCloudServiceBudgetUsd": 0
 }

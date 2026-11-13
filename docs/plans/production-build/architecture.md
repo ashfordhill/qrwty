@@ -32,7 +32,7 @@ or Gateway kinds merely because their names sound appropriate.
 | Stripe API | Hosted payment/subscription provider | External API stub; signed incoming webhook enters Billing API through an explicit public action |
 
 Cloud Storage's independent archive export subscription is deployment infrastructure, configured
-and tested in Q04/Q13. It is shown in Excalidraw, not offered as an installed Jeeves generation
+prepared locally in Q04, verified live in Q12a/Q13. It is shown in Excalidraw, not offered as an installed Jeeves generation
 feature. The native Pub/Sub topic, publisher and analytics subscriber require G12 to pass.
 
 An external safety/moderation operator is a role reaching Link API through an authenticated
@@ -90,7 +90,10 @@ unused framework scaffolding to improve the percentage.
 
 Q03 creates `docs/evidence/q03/capabilities.md` with for each row: inspected commit, minimal
 reproduction, actual supported seam, proposed remedy, owning repo/unit and verification. These
-are candidates, not claims that every item requires new generator code.
+are candidates, not claims that every item requires new generator code. Under revision 3, Q04
+proves local adapter/runtime behavior; Q12a holds managed IAM/TLS/provider/hosting checks. A
+deferred live check is neither a pass nor a reason to block unrelated local implementation.
+The actual production adapter must still be implemented before the local baseline is frozen.
 
 | Gap ID | Probe | Allowed remedy / stop condition |
 | --- | --- | --- |

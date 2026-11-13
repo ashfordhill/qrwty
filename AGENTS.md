@@ -21,6 +21,11 @@ merely because a plan names them.
 - Owner-confirmed scope: GCP preferred, indefinite guest links, every successful GET redirect
   durably recorded first, individual free/paid accounts, no teams/custom domains. Do not revive
   revision 1's lossy telemetry or deferred billing. Unconfirmed/unknown click ACK means 503.
+- Current additional cloud/service budget is $0. Follow `docs/plans/production-build/local-to-cloud.md`:
+  build real adapters, production containers, migrations and IaC locally; no cloud provisioning,
+  trials or paid requests. Later deployment should use the same artifacts with environment
+  configuration/secrets. Live provider proof is deferred, not waived; it does not block local
+  units. Do not ask for a hosting budget again until the owner activates cloud work.
 - Use pinned exact dependency versions and TypeScript/ESM with the existing generator-compatible
   toolchain unless the frozen comparison contract says otherwise. Never put secrets in Git.
 - Execute meaningful unit/integration/browser/failure checks appropriate to the assigned change.

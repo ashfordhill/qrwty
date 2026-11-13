@@ -4,6 +4,12 @@ The question is whether Jeeves reduces the cost and difficulty of producing and 
 same correct deployed product. Generated LOC is one outcome; it is not equivalent to time saved,
 quality or operating efficiency. Two builds are a case study, not a statistically general claim.
 
+Revision 3 splits the experiment into local build/deployment preparation now and real cloud
+operation later. Both arms have the same $0 additional cloud/service boundary and the same
+[promotion contract](local-to-cloud.md). Report local results without calling the deployment
+comparison complete. Record deferred cloud probes, later source/template fixes and real costs
+chronologically; never move the original generated baseline to conceal late compatibility work.
+
 ## Arms and fairness
 
 | Item | A: Jeeves-assisted | B: without Jeeves |

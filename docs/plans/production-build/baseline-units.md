@@ -44,22 +44,25 @@ disclosed as shared preparation. Record dependency/library choices and alternati
 **Checks:** each API/data ownership/SLO maps to a named component; no loop or double writer
 unexplained; editable drawings open/render. **Commit:** `B01: design independent QRWTY architecture`.
 
-## B02 — Build the runtime and prove cloud compatibility
+## B02 — Build the runtime and cloud bindings locally
 
-**Goal:** independent process lifecycle, clients and real-provider fit.
-**Writes:** runtime source, disposable provider probe, root scripts and tests.
+**Goal:** independent production-shaped runtime and deployment preparation with $0 cloud spending.
+**Writes:** runtime source, local container/config harness, draft IaC/live-probe scripts and tests.
 
-Implement strict config validation, HTTP admission/timeouts/errors, structured redacted logs,
-graceful shutdown, health/readiness, bounded connection pools, TLS verification and secret injection.
-Use established clients; do not invent cryptography or database protocols. Implement a scoped
-transaction API with rollback and bounded raw-body access before JSON parsing. Test Cloud SQL,
-Memorystore, Pub/Sub/Cloud Storage archive and managed OIDC against the same selected services,
-including Cloud Run HTTP and worker hosting, under the same bounded probe budget as A. Record
-migrations, IAM, protected ingress, least-privilege grants and durable acknowledgment behavior.
-Teardown disposable resources. Runtime failures must not leak secrets or kill unrelated paths.
+Follow local-to-cloud.md under the same restrictions as A. Implement strict config validation,
+HTTP admission/timeouts/errors, redacted logs, graceful drain, health/readiness, bounded pools,
+verified TLS, a scoped transaction API and unchanged raw-body access. Use real local Postgres/cache,
+local OIDC and the real Pub/Sub client against its emulator. Use controlled provider fixtures for
+faults; keep production validation strict and reject test endpoints/credentials in production.
 
-**Checks:** independent unit/integration tests; G-equivalent cloud requirements from neutral pack;
-D02 subset; clean build. **Commit:** `B02: implement and verify independent runtime`.
+Prepare independent Cloud Run/worker/Cloud SQL/PubSub/archive/IAM infrastructure and environment
+bindings now. Build the production images; test lifecycle and restricted migrations locally.
+Record the production binding/secret inventory and executable live-probe plan; no paid resource,
+trial, cloud apply or new paid API call. Live IAM/TLS/managed identity/archive proof is B08a.
+Missing cloud access does not block B03; a missing adapter or local correctness failure does.
+
+**Checks:** R01–R03, independent local unit/integration/container tests; managed-service evidence
+explicitly not run. **Commit:** `B02: prepare independent runtime and cloud bindings locally`.
 
 ## B03 — Durable anonymous links
 
@@ -83,7 +86,7 @@ rotation/expiry. Verify audience/issuer/algorithm/subject. Implement one-time at
 owner-scoped reads/writes, optimistic version preconditions and cursor bounds. Preserve invalid
 credential errors rather than anonymous fallback. Handle account deletion under frozen policy.
 
-**Checks:** A04–A08/A14/A15/F07 with two accounts and real provider compatibility.
+**Checks:** A04–A08/A14/A15/F07 locally with two accounts; live managed identity proof deferred to B08a.
 **Commit:** `B04: implement accounts and ownership`.
 
 ## B05 — Redirect path and cache
@@ -129,7 +132,7 @@ poison and replayed events and kill between commit and ACK. Lost accepted record
 
 ## B07a — Independently implement subscription billing
 
-**Goal:** hosted sandbox Checkout/portal, signed durable inbox and reliable subscription state.
+**Goal:** implemented Checkout/portal integration, signed durable inbox and reliable state verified locally.
 **Writes:** Billing API/schema/provider adapters/jobs and tests; no A implementation access.
 
 Follow billing-contract.md. Map verified accounts to server-owned customers/prices, enforce CSRF
@@ -139,7 +142,8 @@ Implement fenced/leased reconciliation against canonical provider state with bou
 nightly repair and no browser-return authority. Test forged/changed requests, wrong customer,
 lost acknowledgment, stale worker, provider outage and out-of-order delivery. Use sandbox only.
 
-**Checks:** A19–A21/F10 provider/inbox cases, real sandbox compatibility. Preserve failures.
+**Checks:** A19–A21/F10 locally; existing no-charge sandbox only within local-to-cloud.md.
+Otherwise defer live compatibility to B08a. Preserve failures.
 **Commit:** `B07a: implement independent subscription billing`.
 
 ## B07b — Independently enforce free and paid tiers
@@ -147,7 +151,8 @@ lost acknowledgment, stale worker, provider outage and out-of-order delivery. Us
 **Goal:** same entitlement matrix, exact quotas and subscription lifecycle as A.
 **Writes:** independently authored policy/grants/usage SQL and account/deletion handlers.
 
-Use frozen price/limit configuration. Authorize workload entitlement calls, bound grants by
+Use frozen local price/limit fixtures, requiring real production values before activation.
+Authorize workload entitlement calls, bound grants by
 revision/deadline, enforce usage with create/claim/idempotency in one Links transaction. Preserve
 usage across plan changes and deletion. Apply server-side export/lookback restrictions. Implement
 paid-through, grace, canceled/free and deletion retries; no unlimited outage extension. Published
@@ -159,23 +164,44 @@ links and durable click recording survive downgrade and payment-provider outage.
 ## B08 — Independently implement the approved UI
 
 **Goal:** same approved product design with independently authored source.
-**Writes:** `web/`, required BFF adaptation, UI tests and screenshots.
+**Writes:** `web/`, required BFF adaptation, UI tests/screenshots and independent deployment-preparation pack.
 
 Use the common selected visual direction/tokens/assets and UX contract. Implement create/result,
 copy/QR, sign-in/claim, library/edit/disable, analytics/export and pricing/upgrade/portal/cancel,
 with every design-brief state. B07a/B07b must pass before final integration. No copied
 A components, client code or screenshot-driven source extraction. Count all UI work separately.
 Verify accessibility, responsive/dark/solid/reduced-motion variants, QR scans and mobile performance.
+Complete independent infrastructure/configuration, image/UI hashes and migration/deploy/rollback
+commands. Rehearse a fresh local launch and configuration-only promotion under R01–R06, with real
+cloud/provider checks explicitly pending. No A IaC, release scripts or implementation reuse.
 
-**Checks:** A01/A04/A14/A19–A23/U02–U08; owner review uses the same rubric as A.
+**Checks:** A01/A04/A14/A19–A23/U02–U08 locally, R01–R06; same owner review rubric as A.
 **Commit:** `B08: implement independent QRWTY UI`.
+
+## B08a — Verify independent managed-service compatibility
+
+**Deferred under the current $0 cloud/service budget.**
+**Depends:** B08 and later owner activation with a concrete approved probe cap.
+**Goal:** verify the prepared independent runtime on the same real services as A.
+**Writes:** independent live-probe execution, configuration and sanitized evidence.
+
+Use the same neutral Q12a requirements and topology, but B's own source/IaC/scripts. Test real
+IAM/TLS/networking, managed identity, Pub/Sub ACK/replay/archive, runtime/drain/worker hosting,
+restricted migrations and remaining provider integration. Promote the saved artifacts through
+configuration; disclose and charge any required source changes, never import A fixes. Capture
+actual costs and verify temporary-resource teardown. Real failover/load remains B10/B11.
+
+**Checks:** D02 subset and the same deferred live-provider assertions as A. No live payments or
+customer notifications. **Commit:** `B08a: verify independent managed-service compatibility`.
 
 ## B09 — Independently deploy equivalent staging
 
+**Depends:** B08a and later authorized staging cap; deferred while cloud spending is $0.
 **Goal:** same cloud topology and operational requirements with independent IaC.
 **Writes:** `infra/`, release/secret/backup/telemetry configuration and evidence.
 
-Prepare priced plan, obtain any missing approval and use dedicated environment/credentials.
+Use the already prepared IaC, requote a concrete plan, obtain any missing activation approval and
+use dedicated environment/credentials.
 Deploy the same GCP services with private stores, protected ingress, regional redundancy,
 Pub/Sub/archive policy, digest-pinned images and controlled
 migrations. Demonstrate release rollback and credential rotation. Record fixed/variable cost,

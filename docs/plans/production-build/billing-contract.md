@@ -7,7 +7,8 @@ apply equally to both builds; Stripe is a recommended provider, not an already c
 ## Product boundary
 
 Start with a free individual tier and one paid monthly tier. Final price, currency and numerical
-limits remain owner decisions. Suggested differentiation: owned-link creation allowance,
+limits remain owner decisions. Local fixtures may be frozen without live prices; production
+validation must reject missing required live values. Suggested differentiation: owned-link creation allowance,
 analytics lookback/detail and export allowance. All tiers have safe redirects and durable click
 recording; do not ration the durability guarantee. Do not break existing published links when a
 subscription ends or a quota is exhausted. Deny only the relevant new operation with a useful
@@ -100,7 +101,9 @@ the same independently. Both UI plans include pricing, upgrade confirmation, pay
 cancellation and downgraded states. Save the [billing drawing](../../diagrams/billing-lifecycle.svg)
 and update it from tested behavior.
 
-Tests use provider sandbox credentials/events: forged signature, modified raw body, wrong
+Use local signed fixtures and an existing no-charge sandbox if available under
+[the local-build contract](local-to-cloud.md); otherwise leave live provider proof for Q12a/B08a.
+Required cases: forged signature, modified raw body, wrong
 customer, replay/out-of-order events, two concurrent checkouts, lost 2xx response, failed inbox,
 lease expiry, delayed webhook, payment failure/grace expiry, cancellation, plan changes during
 creation, quota races across replicas and deletion during provider outage. No real cards/charges

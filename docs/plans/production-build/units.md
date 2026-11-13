@@ -42,9 +42,11 @@ those gates. Do not run a competing suite on another agent's reserved ports/reso
 **Goal:** remove requirements ambiguity before two builds start.
 **Input:** this plan and owner answers. **Writes:** docs/benchmarks and agreed contracts only.
 
-- Preserve confirmed owner answers in revision 2; resolve only remaining budget/model/pricing
-  choices. Freeze GCP region, release tier, caps, retention/deletion/grace and notification scope.
-  Include durable-clicks.md and billing-contract.md in the neutral input pack; do not freeze a
+- Preserve confirmed owner answers through revision 3; resolve only remaining model/local-policy
+  choices. Record $0 additional cloud/service spending now; defer future cloud/load caps without
+  blocking local build. Freeze provisional region, local tier fixtures, retention/deletion/grace
+  and experiment inputs. Production price IDs and real provider proof remain activation gates.
+  Include local-to-cloud.md, durable-clicks.md and billing-contract.md in the neutral input pack; do not freeze a
   lossy analytics contract or defer billing. Prices/limits cannot be inferred from test fixtures.
 - Pin a common runtime/language, execution model/settings and review protocol; record unknown
   provider usage capabilities and how they will be captured before any implementation call.
@@ -121,30 +123,33 @@ failure; diagram round trip. **Done:** reproducible diagnostic baseline, not pro
 named. **Done:** implemented-needed/deferred/not-needed decisions and linked assigned fixes.
 **Commit:** `Q03: record QRWTY generation capability audit`.
 
-## Q04 — Prove managed-service compatibility
+## Q04 — Prepare and verify cloud bindings locally
 
-**Depends:** Q03 remedies needed for the probe. **Goal:** prevent a local-only architecture trap.
-**Writes:** disposable IaC/probe code, provider decision and sanitized results.
+**Depends:** Q03 remedies needed for local verification. **Goal:** deployment preparation without
+paid resources. **Writes:** local container/config harness, binding inventory, draft IaC/probe code.
 
-- Prepare a small resource plan with region, versions, duration, cost ceiling and teardown.
-  Use approved spending/credentials; if missing, finish the reviewable plan first.
-- Exercise Cloud SQL and selected Memorystore TLS/auth, Pub/Sub IAM/regional publisher/consumer
-  ACK behavior and independent Cloud Storage archive export from the exported runtime;
-  migrate with the restricted role and verify runtime users cannot migrate or read forbidden data.
-- Test candidate managed OIDC issuer, JWKS, audience and rotation with the generated guard. Choose
-  a provider only after token compatibility and account-flow/cost review. No auth bypass workaround.
-- Demonstrate Cloud Run HTTP startup/drain and worker-pool pull-consumer hosting without a fake
-  HTTP port. Verify region support/replica control; document a Compute Engine group fallback only
-  if needed. Prove protected ingress and no default-hostname bypass. GCP remains the owner choice.
-- Capture costs/inventory, remove temporary resources and verify teardown. No production DNS.
+- Follow local-to-cloud.md. Use real Postgres/cache containers and the real Pub/Sub SDK against
+  its emulator; exercise the production adapters through bounded fixtures where no service runs
+  locally. No account billing, paid request, cloud apply or trial. Document emulator limitations.
+- Implement validated runtime bindings for endpoint/TLS/credentials, issuer/audience, deadlines,
+  pools and process lifecycle through proper template seams. Keep local test injection explicit;
+  production rejects emulator/fake/insecure/missing-required configuration.
+- Build exported production HTTP/worker images, run startup/drain/restart locally and verify
+  restricted DB roles/migrations. Draft Cloud Run/worker/Cloud SQL/PubSub/archive/IAM resources,
+  environment examples and a secret inventory; statically validate without authenticated refresh.
+- Create a concrete live-provider probe script/manifest for Q12a, with expected assertions,
+  candidate region/version, teardown and future cost inputs. Separate locally passed checks from
+  real IAM, managed OIDC, archive, TLS/network and worker-placement checks that remain not run.
+- Record every production binding and unproven assumption. A missing implemented provider adapter
+  or required local correctness failure blocks Q05; deferred live service access alone does not.
 
-**Checks:** G01/G03/G04/G06/G09/G10/G12, D02 subset; no secrets in artifacts. **Done:** real compatibility
-evidence and exact provider/version choices, or explicit blocking gap. **Commit:**
-`Q04: verify QRWTY cloud runtime compatibility`.
+**Checks:** R01–R03, local portions of G01/G03/G04/G06/G09/G10/G12; no cloud correctness claim.
+**Done:** implemented bindings and a reproducible local proof plus named Q12a backlog.
+**Commit:** `Q04: prepare QRWTY cloud bindings without provisioning`.
 
 ## Q05 — Freeze the reusable generation baseline in QRWTY
 
-**Depends:** Q04 and needed Jeeves fixes. **Goal:** immutable before-product measurement point.
+**Depends:** Q04 local gates and needed Jeeves fixes; Q12a live evidence is explicitly deferred. **Goal:** immutable before-product measurement point.
 **Writes:** new `app/` untouched export, measurement tool wrapper, docs and root command wiring.
 
 - If generic fixes change supported provider/module choices, update and resave the real diagram
@@ -194,12 +199,13 @@ diagnostic smoke, with no product-completion claim. **Commit:** `Q05: freeze QRW
 - Test two accounts, expired/replayed proofs, parallel claims and session interruption. Capture
   account deletion policy in data-flow docs. UI work is only a minimal disposable test client.
 
-**Checks:** A04–A08/A14/F07; real identity compatibility regression; no private fields in views/logs.
+**Checks:** A04–A08/A14/F07 locally; no private fields in views/logs. Managed identity compatibility
+remains Q12a; no-charge existing sandbox evidence may supplement the local issuer tests.
 **Commit:** `Q07: enforce QRWTY sessions and ownership`.
 
 ## Q08 — Redirect correctness and cache failure
 
-**Depends:** Q07 and G12 verified in Q04. **Goal:** safe routing with a durable click before each 302.
+**Depends:** Q07 and G12 client/binding behavior verified locally in Q04. **Goal:** safe routing with a durable click before each 302.
 **Writes:** Redirect modules, awaited publisher/event schema, cache hooks, edge mapping and tests.
 
 - Implement host+slug lookup using least-privilege route view, 302/no-store, HEAD, 404/403/410/503
@@ -246,7 +252,8 @@ diagnostic smoke, with no product-completion claim. **Commit:** `Q05: freeze QRW
 - Extend Q08's versioned event schema without breaking deployed readers; preserve IDs/timestamps.
   Record bot GETs durably, then derive filtered counts; no raw IP/full URL/cookies/authorization.
 - Implement consumer ACK only after atomic dedup/aggregate commit. Configure and exercise the
-  independent archive subscription, durable quarantine, replay and deletion/retention behavior.
+  independent archive subscription configuration, durable quarantine, replay and deletion/retention
+  behavior locally using explicit fixtures. Real archive delivery/IAM remains Q12a/Q13 evidence.
   Explicitly disable subscription inactivity expiry and check required subscriptions/permissions.
 - Choose and document dedup/replay/retention mechanism against the tier's event volume. Prove
   bounded growth before enabling an existing event-counter template. Distinguish ordered batch
@@ -263,8 +270,8 @@ diagnostic smoke, with no product-completion claim. **Commit:** `Q05: freeze QRW
 
 ## Q10a — Subscription provider and durable webhook inbox
 
-**Depends:** Q10, G13 and Q00's billing scope. **Goal:** real sandbox Checkout/portal and reliable
-subscription state. **Writes:** Billing API hooks, product SQL, provider adapter and lifecycle tests.
+**Depends:** Q10, G13 and Q00's billing scope. **Goal:** implemented Checkout/portal integration and
+reliable subscription state, verified locally. **Writes:** Billing API hooks, SQL, adapter and tests.
 
 - Follow billing-contract.md. Implement server-owned customer/price mapping, idempotent Checkout
   creation and portal sessions with verified subject, CSRF and allowed return URLs. Concurrent
@@ -275,10 +282,11 @@ subscription state. **Writes:** Billing API hooks, product SQL, provider adapter
 - Implement repeat-safe inbox/reconciliation jobs with bounded retries, lease fencing and current
   provider-state retrieval. Prove out-of-order events and expired workers cannot regress state.
   Reconcile nightly and on stuck checkout; no paid access based on browser return parameters.
-- Capture sandbox lifecycle evidence and update billing-lifecycle Excalidraw. No real charge,
+- Capture local/sandbox lifecycle evidence with scope labels and update billing-lifecycle Excalidraw. No real charge,
   live email or secret committed; generic seam issues return to separately assigned Jeeves units.
 
-**Checks:** A19/A20/A21, G13, F10 provider/inbox cases; unit and real sandbox integration evidence.
+**Checks:** A19/A20/A21, G13, F10 provider/inbox cases locally; use an existing no-charge sandbox
+only within local-to-cloud.md. Otherwise keep real Stripe compatibility pending Q12a.
 **Commit:** `Q10a: implement reliable subscription billing`.
 
 ## Q10b — Entitlements, quotas and subscription transitions
@@ -286,7 +294,8 @@ subscription state. **Writes:** Billing API hooks, product SQL, provider adapter
 **Depends:** Q10a. **Goal:** enforce free/paid policy correctly across replicas and outages.
 **Writes:** product tier policy, Billing/Link/Account hooks, usage SQL and lifecycle tests.
 
-- Freeze actual tier limits with Q00; keep price IDs/config out of diagrams and generated files.
+- Freeze local test-tier limits with Q00; label provisional prices/limits and require real production
+  values before activation. Keep price IDs/config out of diagrams and generated files.
   Issue versioned, bounded entitlement grants; internal calls require workload authorization.
 - Enforce owned-create/claim usage with idempotency in the Links transaction. Race grants, plan
   changes and requests across replicas. Upgrades/downgrades cannot reset usage or refund creation
@@ -321,7 +330,7 @@ and implementable tokens, not “owner probably likes this.” **Commit:** `Q11:
 ## Q12 — Complete the UI
 
 **Depends:** Q11 selection and Q10b. **Goal:** complete the designed user journeys.
-**Writes:** `web/`, product BFF integration only as required, browser tests and screenshots.
+**Writes:** `web/`, required product BFF integration, browser tests/screenshots and completed deployment-preparation pack.
 
 - Implement create/result/copy/QR without login; sign-in-and-claim; owned library/edit/status;
   analytics/export; pricing/upgrade/confirming/portal/cancellation/downgrade; public error pages.
@@ -331,15 +340,44 @@ and implementable tokens, not “owner probably likes this.” **Commit:** `Q11:
 - Run mouse/touch, keyboard/screen-reader and responsive/light/dark/low-motion checks. Decode
   exports and record real-device screen/print scans. Avoid capture of real accounts or secrets.
 - Save performance profile and owner review evidence. Resolve visible issues before handoff.
+- Complete Q04's infrastructure definitions/config/examples with the finished service inventory.
+  Freeze image/UI hashes, migration/release/rollback commands and rehearse from a fresh local
+  checkout without source edits. Record R01–R06; no cloud apply. Label this milestone locally
+  verified, cloud activation pending; keep live-provider and capacity rows explicitly not run.
 
-**Checks:** A01/A04/A14/A19–A23/U02–U08, complete local e2e + build. **Commit:** `Q12: complete QRWTY product UI`.
+**Checks:** A01/A04/A14/A19–A23/U02–U08 at local scope, R01–R06, complete local e2e + build. **Commit:** `Q12: complete QRWTY product UI`.
+
+## Q12a — Verify managed services when cloud activation is requested
+
+**Deferred under the owner's current $0 cloud/service budget.**
+**Depends:** Q12 and a later owner instruction with a concrete approved probe cap.
+**Goal:** verify prepared adapters/containers on real GCP before staging.
+**Writes:** executed Q04 probe, sanitized evidence, updated configuration and exact findings.
+
+- Requote the prepared resources/duration and inspect current provider limits before apply. Use
+  the approved cap, separate synthetic data and scoped credentials; no production DNS or charges
+  to a customer. Existing approval need not be requested again within its scope.
+- Test Cloud SQL/Memorystore TLS, IAM, restricted migrations, actual Pub/Sub publisher ACK,
+  subscription/archive behavior and managed OIDC issuer/audience/rotation with the saved images.
+- Prove Cloud Run ingress/port/startup/drain and worker hosting/replicas; verify origin restriction,
+  default-hostname bypass prevention and workload identity. Run remaining no-charge payment and
+  reputation-provider compatibility tests with real adapters; no live payment or unsolicited send.
+- Change environment/IaC inputs to promote. If a source change is required, record it as a defect
+  or missing capability, fix in the owning scope, regenerate when needed and preserve the frozen
+  baseline. Charge late template/product work to A. Rebuild/reverify any changed artifact.
+- Capture actual inventory/cost and teardown temporary resources. No emulator result substitutes
+  for real managed durability, IAM or regional resilience. Q14/Q15 still own failover/load proof.
+
+**Checks:** live portions of G01/G03/G04/G06/G09/G10/G12, D02 subset and provider tests deferred
+from Q07/Q09/Q10/Q10a. **Done:** real compatibility evidence or exact blocking findings.
+**Commit:** `Q12a: verify QRWTY managed-service compatibility`.
 
 ## Q13 — Reproducible cloud staging
 
-**Depends:** Q12 and approved concrete cloud plan. **Goal:** an actual staging deployment.
+**Depends:** Q12a and approved concrete cloud plan; deferred while cloud spending is $0. **Goal:** an actual staging deployment.
 **Writes:** `infra/`, delivery scripts, dashboards/runbooks and evidence, no public DNS cutover.
 
-- Build IaC from Q04's verified GCP bindings: protected ingress/Cloud Run/worker hosting/Cloud SQL/
+- Apply the prepared Q04/Q12 IaC using Q12a's verified GCP bindings: protected ingress/Cloud Run/worker hosting/Cloud SQL/
   Memorystore/PubSub/archive, restricted roles,
   secret injection, backups, logs, budgets and certificates. Save plan before apply.
 - Set independent instance limits, regional redundancy, health/readiness, drain and image-digest
@@ -398,7 +436,8 @@ pinned configuration. Do not ask A's agent to copy its app and delete the manife
 hooks, generated tests, IaC or postmortem fixes enter the baseline context. Neutral requirement
 amendments go to both arms with actual rework charged. Both deployment environments remain separate.
 
-**Checks:** B00–B13 including B07a/B07b completed with evidence, equivalent release tier and missing usage
+**Checks:** local milestones may be reported while B08a/B09–B11/B13 cloud execution is deferred.
+Final deployment comparison requires B00–B13 including B07a/B07b/B08a, equivalent tier and missing usage
 disclosed. **Commit here:** evidence references only, after baseline commits exist.
 
 ## Q17 — Maintenance trial and final comparison

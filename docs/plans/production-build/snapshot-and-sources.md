@@ -42,7 +42,7 @@ owner images were read, not copied or altered. No new feedback image was supplie
 
 ## Primary external sources checked
 
-Provider documentation can change. Q04/Q13 must recheck versions, plan limits, regions and prices
+Provider documentation can change. Q12a/Q13 must recheck versions, plan limits, regions and prices
 against the actual account before choosing resources. The architecture recommendation is our
 inference from the current code and these documents; providers do not certify QRWTY.
 
@@ -96,3 +96,12 @@ deployment. Revision 2 is based on these additional official sources checked 202
 Budget envelopes are engineering estimates from this topology, not facts asserted by the linked
 providers. The [calculation record](../../evidence/plan-revision-2/rate-calculation.json) preserves
 component formulas/units. No live account quote, discounts, quotas or runtime behavior was verified.
+
+## Revision 3: local build, deferred cloud activation
+
+Owner decision: no new cloud/service spending now; prepare the app to deploy through configuration
+later. Local probes and real provider evidence are separated in the unit dependencies. Additional
+primary sources checked 2026-11-13: [Pub/Sub emulator](https://docs.cloud.google.com/pubsub/docs/emulator)
+(session-lifetime data; incomplete/different behavior possible), and
+[Cloud Run container contract](https://docs.cloud.google.com/run/docs/container-contract)
+(runtime/image/listener/lifecycle constraints). They inform preparation, not live proof.
