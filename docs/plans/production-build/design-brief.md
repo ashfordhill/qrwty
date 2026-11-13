@@ -20,7 +20,11 @@ owner to judge an abstract mood board while hiding the create/result/dashboard s
 4. **Library:** a compact, readable list with title/destination, status, link, clicks/freshness and
    the most useful action. Editing and disabling need clear consequences and an undo path when safe.
 5. **Analytics:** prioritize useful totals, date range and trend, then coarse referrer/device/region
-   breakdowns. Show sample/coverage/freshness limits alongside the data. Avoid decorative charts.
+   breakdowns. Define recorded attempts versus filtered clicks; show freshness/delay and finite
+   lookback. Do not imply sampled capture or excuse lost accepted records. Avoid decorative charts.
+6. **Plan and billing:** clear free/paid comparison with real limits, upgrade, confirming payment,
+   hosted payment management and cancellation. Keep the quick-link task prominent; no upgrade
+   wall before a guest can copy or download. Explain downgrade effects without suggesting links expire.
 
 ## Visual direction constraints
 
@@ -50,7 +54,8 @@ owner to judge an abstract mood board while hiding the create/result/dashboard s
 | Sign-in | Start, callback success/failure, cancelled, session expired, restored return location |
 | Library | Empty, loading, populated, pagination, stale data, network failure, unauthorized object |
 | Edit / disable | Validation, version conflict, save, confirmed disable, blocked-by-operator, delete consequence |
-| Analytics | No clicks, available data, delayed pipeline, coverage gap, date bounds, failed export |
+| Analytics | No clicks, available data, delayed pipeline, reconciliation incident, tier lookback, date bounds, failed export |
+| Billing | Free tier, limits reached, checkout pending/cancelled, confirming webhook, active paid, failed payment/grace, portal unavailable, cancellation scheduled, downgraded, deletion pending |
 | Public error | Unknown, expired/deleted, disabled, blocked, temporary service outage |
 
 Use real-length links and populated data in previews, not only ideal short labels. Never replace
@@ -77,7 +82,7 @@ dashboard bundle. QR encoder loads on demand unless measurement proves a better 
 
 ## Q11 review package
 
-For each of two directions provide create, successful result, library and analytics screens,
+For each of two directions provide create, successful result, library, analytics and pricing/billing screens,
 light/dark, desktop/mobile, plus a small token sheet and a clickable local prototype. Explain
 three specific choices; don't use a list of aesthetic adjectives as evidence. Keep Excalidraw
 flow sketches separate from high-fidelity UI prototypes.

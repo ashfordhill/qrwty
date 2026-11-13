@@ -1,8 +1,8 @@
 # Agents working on QRWTY
 
-Read the latest `docs/handoff.md`, then `docs/plans/production-build/README.md`, the shared product
-and acceptance contracts, and **only the assigned execution unit**. This repo is currently a
-planning/research repo. Planned files, scripts, cloud resources and results are not implemented
+Read the latest `docs/handoff.md`, then `docs/plans/production-build/README.md`, the shared product,
+durable-click, billing and acceptance contracts, and **only the assigned execution unit**. This
+repo is currently a planning/research repo. Planned files, scripts, cloud resources and results are not implemented
 merely because a plan names them.
 
 - Work sequentially on `main` in the primary checkout. Do not branch, create worktrees, stash or
@@ -18,6 +18,9 @@ merely because a plan names them.
   Work in Jeeves follows that repo's AGENTS.md and all required regression checks.
 - Production correctness, UI quality and measurement honesty take priority over a generated LOC
   target. No invented results, models, costs, tokens or capacity claims. Missing usage is null.
+- Owner-confirmed scope: GCP preferred, indefinite guest links, every successful GET redirect
+  durably recorded first, individual free/paid accounts, no teams/custom domains. Do not revive
+  revision 1's lossy telemetry or deferred billing. Unconfirmed/unknown click ACK means 503.
 - Use pinned exact dependency versions and TypeScript/ESM with the existing generator-compatible
   toolchain unless the frozen comparison contract says otherwise. Never put secrets in Git.
 - Execute meaningful unit/integration/browser/failure checks appropriate to the assigned change.

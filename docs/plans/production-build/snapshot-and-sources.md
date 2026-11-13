@@ -14,6 +14,8 @@ describe proposals unless a row is explicitly marked observed.
 | Generated-system tests through GS08 | Generated successful flows and regeneration exercised; GS07 awaits broker reconnect; GS09 review pending in inspected handoff | Q03 checks final outcomes rather than assuming plan files are implementation |
 | Studio catalog | Optional/required verified identity, positive cache reads, event counter, favorites and typed stubs exist | Catalog membership alone is not product completion |
 | HTTP stub response | `ModuleResponse` supports status, headers and body; `stubRoutes` applies them | A stub can send `302` and `Location`; no new redirect-response template required merely for headers |
+| HTTP stub request, same inspected snapshot | Parsed request body is exposed; no explicit original raw-body field | Stripe signature verification needs G13; JSON reserialization is not an acceptable substitute |
+| Generated broker provider, same inspected snapshot | RabbitMQ-oriented local channel implementation | Native Pub/Sub is G12, not an assumed drop-in endpoint |
 | Database stub dependency | `query` and `execute` use a pool; no exposed transaction callback or reserved connection | Never implement a transaction using separate `BEGIN`/`COMMIT` calls on that interface |
 | Identity template | RS256, issuer, JWKS, expiry/subject and audience `<identity-id>-web`; local Keycloak setup | Managed OIDC issuer/audience and token shape require a real compatibility probe |
 | Stub providers | Local hostnames, local secret handling and startup probes | TLS, credentials, endpoint configuration and optional-dependency startup need an explicit gap audit |
@@ -67,3 +69,30 @@ in [cloud strategy](cloud-strategy.md) are explicitly QRWTY planning assumptions
 The 2026-10-31 QRWTY business review distinguishes enterprise-capable software from an enterprise
 sales operation. Preserve that distinction. Its prices, commercial hypotheses and historical
 Jeeves C1–C4 proposals are not a current implementation contract.
+
+## Revision 2 sources and decisions
+
+Owner follow-up chooses GCP preference, no residency restriction, indefinite guest links,
+mandatory durable clicks, individual free/paid accounts without custom domains, and the controlled
+comparison. Prior AWS references above explain the initial recommendation, not the selected
+deployment. Revision 2 is based on these additional official sources checked 2026-11-13:
+
+| Source | Use |
+| --- | --- |
+| [Cloud Run pricing](https://cloud.google.com/run/pricing) | Distinct HTTP instance/request and worker-pool rates; cost examples state mode |
+| [Cloud SQL pricing](https://cloud.google.com/sql/pricing) | us-central1 Enterprise general-purpose HA CPU/RAM example, storage excluded |
+| [Pub/Sub pricing](https://cloud.google.com/pubsub/pricing) | Publish/delivery minimums, archive export and retained-topic costs |
+| [Pub/Sub publish lifecycle](https://docs.cloud.google.com/pubsub/docs/publish-message-overview) | Acknowledgment and regional multi-zone durability |
+| [Pub/Sub reliability](https://docs.cloud.google.com/pubsub/docs/reliability-intro) | Global namespace versus regional storage; stronger regional resilience needs explicit design |
+| [Subscription retention](https://docs.cloud.google.com/pubsub/docs/subscription-message-retention) | Retention, replay and inactivity expiration must be configured |
+| [Cloud Storage export subscriptions](https://docs.cloud.google.com/pubsub/docs/create-cloudstorage-subscription) | Independent managed raw archive; IAM/format/retention need proof |
+| [Cloud Run resource model](https://docs.cloud.google.com/run/docs/resource-model) | Worker pools and HTTP services have different contracts |
+| [Worker pool scaling](https://docs.cloud.google.com/run/docs/configuring/workerpools/manual-scaling) | Explicit replica control; verify availability/limits at Q04 |
+| [Cloud SQL HA](https://docs.cloud.google.com/sql/docs/postgres/high-availability) | Regional HA capability, distinct from global continuity |
+| [Stripe webhooks](https://docs.stripe.com/webhooks) | Verify raw bytes, deduplicate, reconcile unordered deliveries |
+| [Stripe subscriptions](https://docs.stripe.com/billing/subscriptions/overview) | Lifecycle and webhook-driven subscription integration |
+| [Stripe Billing pricing](https://stripe.com/billing/pricing) | Billing fee distinct from processing/infrastructure; requote merchant-country rates |
+
+Budget envelopes are engineering estimates from this topology, not facts asserted by the linked
+providers. The [calculation record](../../evidence/plan-revision-2/rate-calculation.json) preserves
+component formulas/units. No live account quote, discounts, quotas or runtime behavior was verified.

@@ -1,0 +1,83 @@
+{
+  "date": "2026-11-13",
+  "currency": "USD",
+  "type": "illustrative-component-calculations-not-total-quote",
+  "hoursPerComputeMonth": 730,
+  "trafficMonthDays": 30,
+  "regions": {
+    "gcp": "us-central1",
+    "aws": "us-east-1"
+  },
+  "sources": {
+    "cloudRun": "https://cloud.google.com/run/pricing",
+    "cloudSql": "https://cloud.google.com/sql/pricing",
+    "pubsub": "https://cloud.google.com/pubsub/pricing",
+    "fargate": "https://aws.amazon.com/fargate/pricing/"
+  },
+  "ratesUsd": {
+    "fargateLinuxX86CpuSecond": 1.1244e-05,
+    "fargateGibSecond": 1.235e-06,
+    "cloudRunHttpInstanceCpuSecond": 1.8e-05,
+    "cloudRunHttpInstanceGibSecond": 2e-06,
+    "cloudRunWorkerCpuSecond": 1.1244e-05,
+    "cloudRunWorkerGibSecond": 1.235e-06,
+    "cloudSqlHaCpuHour": 0.0826,
+    "cloudSqlHaGibHour": 0.014,
+    "pubsubTiB": 40,
+    "archiveExportTiB": 50,
+    "topicRetentionGiBMonth": 0.27,
+    "cloudRunRequestPerMillion": 0.4
+  },
+  "formulas": {
+    "compute": "730 * 3600 * (cpuSecond + 2 * gibSecond)",
+    "cloudSqlHa": "730 * (2 * haCpuHour + 8 * haGibHour)",
+    "standardPubsub": "events * 1024 * 2 / 2**40 * 40",
+    "archiveExport": "events * 1024 / 2**40 * 50",
+    "topicRetention": "events * 1024 / 2**30 * 0.27 * 31/30",
+    "requestFee": "events / 1000000 * 0.40"
+  },
+  "monthlyComponentUsd": {
+    "fargate_1cpu_2gib": 36.04,
+    "cloudRunInstance_1cpu_2gib": 57.82,
+    "cloudRunWorker_1cpu_2gib": 36.04,
+    "cloudSqlHa_2cpu_8gib": 202.36
+  },
+  "trafficExamples": [
+    {
+      "clicksPer30DayMonth": 1000000000,
+      "billableBytesPerDirectionPerEvent": 1024,
+      "assumedStoredBytesPerEvent": 1024,
+      "pubsubPublishAndOneConsume": 74.51,
+      "archiveExportSubscription": 46.57,
+      "topic31DaySteadyStateRetention": 266.08,
+      "cloudRunRequestFeeIfRequestBilled": 400.0
+    },
+    {
+      "clicksPer30DayMonth": 10000000000,
+      "billableBytesPerDirectionPerEvent": 1024,
+      "assumedStoredBytesPerEvent": 1024,
+      "pubsubPublishAndOneConsume": 745.06,
+      "archiveExportSubscription": 465.66,
+      "topic31DaySteadyStateRetention": 2660.75,
+      "cloudRunRequestFeeIfRequestBilled": 4000.0
+    }
+  ],
+  "excluded": [
+    "free tiers and discounts",
+    "tax",
+    "whole-stack AWS comparison",
+    "measured runtime capacity",
+    "compute for traffic rows",
+    "network/edge/ingress",
+    "archive object storage/operations",
+    "database storage/backups",
+    "identity/email/reputation",
+    "logs/metrics",
+    "retries and replay",
+    "support",
+    "payment/Billing fees",
+    "model/development cost"
+  ],
+  "budgetEnvelopesAreEngineeringJudgment": true,
+  "spendAuthorized": false
+}

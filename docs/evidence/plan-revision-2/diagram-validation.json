@@ -1,0 +1,117 @@
+{
+  "date": "2026-11-13",
+  "renderer": "@excalidraw/excalidraw@0.18.0",
+  "node": "v24.21.0",
+  "playwright": "1.63.0",
+  "viewport": {
+    "width": 1600,
+    "height": 1200
+  },
+  "results": [
+    {
+      "name": "system-overview",
+      "elements": 64,
+      "reopened": true,
+      "mouseDrag": true,
+      "pageErrors": [],
+      "assets": {
+        "excalidraw": {
+          "bytes": 58550,
+          "sha256": "a9a0a416757c2d4a0abb266e80817298cd654ba5d19d299c84215153f8f62c27"
+        },
+        "svg": {
+          "bytes": 61912,
+          "sha256": "8845b37652407990db16fd6c5b5a5d6b567e409ff640bcc423619d191a1bcbe5"
+        },
+        "png": {
+          "bytes": 400632,
+          "sha256": "a94adb6f1e2036291e8a36da075740102b9d6ea3ed06764515b8325fc64a38e1"
+        }
+      }
+    },
+    {
+      "name": "guest-ownership",
+      "elements": 37,
+      "reopened": true,
+      "mouseDrag": true,
+      "pageErrors": [],
+      "assets": {
+        "excalidraw": {
+          "bytes": 33901,
+          "sha256": "fea5d3ced958ce1d948803eeac4fef5ae10f08aea8660c43d720e247b930cd31"
+        },
+        "svg": {
+          "bytes": 40445,
+          "sha256": "a7b75ffa8ac10b1a4b99d10739558666b5d9845220369cd66839bb7defcf6a44"
+        },
+        "png": {
+          "bytes": 286521,
+          "sha256": "5aec82798fd466584fa00effbb615494b3938326b2fa0b09cacdf8dfbf3ab699"
+        }
+      }
+    },
+    {
+      "name": "redirect-failure",
+      "elements": 38,
+      "reopened": true,
+      "mouseDrag": true,
+      "pageErrors": [],
+      "assets": {
+        "excalidraw": {
+          "bytes": 35404,
+          "sha256": "1a9e92a46ba2be6703dc01e3e3c9526137b4dcbc917a621cec86536d5921e128"
+        },
+        "svg": {
+          "bytes": 42390,
+          "sha256": "6f27968154bec0b069945edf63613640e6a68970c576d802ec570580afdc9e95"
+        },
+        "png": {
+          "bytes": 345739,
+          "sha256": "2a333a43f9a8c9b0f8312b92ce77b3e8ae86c9122f269eb483b43597052c710f"
+        }
+      }
+    },
+    {
+      "name": "cloud-deployment",
+      "elements": 49,
+      "reopened": true,
+      "mouseDrag": true,
+      "pageErrors": [],
+      "assets": {
+        "excalidraw": {
+          "bytes": 45570,
+          "sha256": "b0935137446d1928b8c94c11e567851e24f201ed4cd1f666fd9b46f5632695f0"
+        },
+        "svg": {
+          "bytes": 51180,
+          "sha256": "3e5453ac44a9cebd7af7fed4be46de2456d25a563b9b4ccdf4456786131beb50"
+        },
+        "png": {
+          "bytes": 370356,
+          "sha256": "3e7b1847e97e43a79222008d47e83f5277c1d26b1bca2731d2b2e93577591bfa"
+        }
+      }
+    },
+    {
+      "name": "billing-lifecycle",
+      "elements": 38,
+      "reopened": true,
+      "mouseDrag": true,
+      "pageErrors": [],
+      "assets": {
+        "excalidraw": {
+          "bytes": 35345,
+          "sha256": "e523682e35083a3661bd9c0e15cfee5c44821656da92be131415a95ac3f2b828"
+        },
+        "svg": {
+          "bytes": 41407,
+          "sha256": "af714351125557e75463deff3bbb9d4a87a684f3956aa9c84addb288fab4524f"
+        },
+        "png": {
+          "bytes": 346156,
+          "sha256": "e203a9499242b3e2408586e4be91d818e9e6bb5c0ae50f040992785349614d7e"
+        }
+      }
+    }
+  ]
+}

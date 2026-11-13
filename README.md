@@ -44,8 +44,8 @@ Qrwty can still serve as a guinea pig for a software design generation project I
 ## Production build experiment
 
 The [phased build plan](docs/plans/production-build/README.md) defines a public link/QR service
-with anonymous quick links, account-owned management and analytics, a real cloud deployment and
-two comparable implementations: [with Jeeves](docs/plans/production-build/units.md) and
+with anonymous quick links, individual free/paid accounts, management and durable click analytics,
+a real cloud deployment and two comparable implementations: [with Jeeves](docs/plans/production-build/units.md) and
 [without Jeeves](docs/plans/production-build/baseline-units.md).
 
 **Status: planning only.** The application has not been generated, built or deployed. The first
@@ -53,16 +53,22 @@ application phase saves the architecture in Jeeves before generating into this r
 The drawing below is a proposed Excalidraw explanation, not a saved Jeeves diagram or runtime
 verification. The actual Jeeves diagram and export will be linked here when Q01–Q02 complete.
 
-![Proposed QRWTY system: public redirects, anonymous/account operations and isolated click analytics](docs/diagrams/system-overview.svg)
+![Proposed QRWTY system: durable click before redirect, guest links and free/paid accounts](docs/diagrams/system-overview.svg)
 
 [Editable Excalidraw](docs/diagrams/system-overview.excalidraw) ·
 [Guest ownership](docs/diagrams/guest-ownership.svg) ·
 [Redirect failures](docs/diagrams/redirect-failure.svg) ·
 [Cloud deployment](docs/diagrams/cloud-deployment.svg) ·
+[Billing lifecycle](docs/diagrams/billing-lifecycle.svg) ·
 [All diagram sources](docs/diagrams/README.md)
 
-The [cloud strategy](docs/plans/production-build/cloud-strategy.md) proposes Cloudflare plus
-managed regional services and separates launch, large-service load proof and regional recovery.
+The [cloud strategy](docs/plans/production-build/cloud-strategy.md) follows the GCP preference,
+with Cloudflare at the edge. [Budget options](docs/plans/production-build/budget-options.md) separate
+development, regional HA launch and later recovery capacity. Every eligible GET redirect must
+wait for a [durable click acknowledgment](docs/plans/production-build/durable-clicks.md); missing
+or uncertain acknowledgment produces a temporary error. Anonymous links have no automatic expiry.
+The [billing contract](docs/plans/production-build/billing-contract.md) covers subscriptions and
+server-enforced tiers; downgrades do not break existing published links. No custom domains or teams.
 The [UI brief](docs/plans/production-build/design-brief.md) calls for an original, restrained
 Liquid Glass interface, with owner review before full UI implementation.
 
@@ -94,6 +100,7 @@ the time saved. [Counting and comparison protocol](docs/plans/production-build/c
 | Proven traffic tier / cloud cost | Not deployed | Not deployed |
 | Recovery, security and maintenance-change results | Not run | Not run |
 
-The plan includes [questions for the owner](docs/plans/production-build/README.md#owner-steering-questions)
-on budgets, cloud/geography, guest-link permanence, analytics durability, release scope and the
-comparison model. Existing research above remains background; it is not the release checklist.
+Remaining [owner choices](docs/plans/production-build/README.md#owner-steering-questions) concern
+spend caps, release/load-proof sequence, paid prices/limits and exact execution settings. GCP
+preference, guest permanence, durable capture, individual free/paid accounts and the controlled
+comparison are recorded. Existing research above remains background, not the release checklist.

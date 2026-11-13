@@ -1,7 +1,7 @@
 # Product and correctness contract
 
-Revision 1, proposed defaults. Changes are shared by both experiment arms before either implements
-them. The acceptance IDs below link to [acceptance](acceptance.md).
+Revision 2, incorporating the owner's answers. Remaining numerical defaults are labeled proposed.
+Changes are shared by both experiment arms before implementation. See [acceptance](acceptance.md).
 
 ## Release 1
 
@@ -10,8 +10,9 @@ offers copy, open, PNG and SVG download, plus a quiet invitation to save it to a
 account area lists owned links, allows destination changes, disable/delete and basic click
 analytics. “Saved” initially means owned links; arbitrary bookmarks are a separate feature.
 
-No paid plans, organizations, team invitations, vanity aliases, custom domains, developer API
-keys, bulk campaigns, device hardware, geofencing or custom landing-page builder in release 1.
+Individual free and paid plans are required; see the [billing contract](billing-contract.md).
+No organizations, team invitations, vanity aliases, custom domains, developer API keys, bulk
+campaigns, device hardware, geofencing or custom landing-page builder in release 1.
 These are scope decisions, not claims that enterprise buyers never need them. QRWTY can be
 production-quality before selling enterprise contracts.
 
@@ -22,6 +23,7 @@ production-quality before selling enterprise contracts.
 | Claim a guest link | No | With unexpired, one-time claim proof | Knowing the slug or destination is insufficient |
 | List, edit, disable, delete | No | Owner only | Server checks every object; client filters do not authorize |
 | Analytics and CSV export | No | Owner only | Public slug reveals no private analytics |
+| Upgrade / manage subscription | No | Account owner only | Server-confirmed entitlements; guest links and free signup need no card |
 | Abuse report | Yes, bounded | Yes | Does not disable a link just because a report was submitted |
 | Moderate a link | No | Separate operator permission | No public endpoint trusts a caller-supplied role or account ID |
 
@@ -59,7 +61,8 @@ States: `active`, `disabled`, `blocked`, `deleted`. An account may edit an activ
 link, disable/enable its own link, or delete it. Only the abuse operator may block/unblock it;
 owners cannot enable a blocked link. A soft deletion is a permanent tombstone for that slug.
 Never recycle a printed link into another person's destination. Guest links are immutable until
-claimed. The proposed guest policy has no automatic expiry; the owner must confirm that cost.
+claimed. The owner confirmed no automatic guest expiry. Downgrade or quota exhaustion must not
+disable an existing permitted link; hard limits govern new operations under the billing contract.
 
 Updates use optimistic concurrency (`If-Match` version); stale updates return 412. Database
 mutation, version increment and any durable change event/outbox are one transaction. A single
@@ -94,17 +97,23 @@ in the app's edge/deployment layer.
 | `GET /api/v1/me/links?cursor=...` | Cursor page, max 50, stable `(created_at,id)` order | Required |
 | `PATCH /api/v1/links/{id}` | 200 + next ETag; 412 on stale version | Owner, version precondition |
 | `DELETE /api/v1/links/{id}` | 204, repeat-safe tombstone | Owner |
-| `GET /api/v1/links/{id}/analytics` | Counts, range, freshness, coverage, bot definition | Owner; bounded range |
+| `GET /api/v1/links/{id}/analytics` | Counts, range, freshness, reconciliation status, filter definition | Owner; bounded range and tier policy |
 | `GET /api/v1/links/{id}/analytics.csv` | Bounded export; spreadsheet-safe fields | Owner |
 | `POST /api/v1/abuse-reports` | 202 acknowledgment, no reporter-visible disposition | Public, rate-limited |
-| `GET /{slug}` | 302 + `Location`; no application session required | Public |
+| `GET /api/v1/me/billing` | Current tier, usage, paid-through/grace and portal availability | Required, owner |
+| `POST /api/v1/billing/checkout` | Hosted Checkout session for allowlisted server price | Required, owner + CSRF + idempotency |
+| `POST /api/v1/billing/portal` | Hosted portal session with allowed return URL | Required, owner + CSRF |
+| `POST /api/v1/billing/webhook` | 2xx only after verified event is durably in the inbox | Stripe signature over exact raw bytes; no browser session required |
+| `GET /{slug}` | 302 + `Location` only after durable click ACK; otherwise 503 | Public, no application session required |
 | `HEAD /{slug}` | Same location/status, no body and no click event | Public |
 
 Use 302 for mutable links and `Cache-Control: no-store` on the client response. Do not cache a
 permanent 301/308 in the browser. Cache **routing metadata** internally with a bounded freshness
 deadline. Unknown slug: 404; deleted/expired: 410; blocked: 403 safety page without `Location`;
 disabled: 410; lookup unavailable with no valid cache: 503 + `Retry-After`. The UI gives useful
-copy without leaking an owner. Reject unsupported redirect methods with 405.
+copy without leaking an owner. Reject unsupported redirect methods with 405. A click publisher
+timeout or unavailable/ambiguous acknowledgment also returns 503 with no Location. The
+[durable-click contract](durable-clicks.md) governs ordering, expiry recheck, retries and recovery.
 
 No forwarding arbitrary inbound query parameters into the destination. Preserve the destination
 as saved; adding campaign parameters later is an explicit product feature. Treat supplied Host
@@ -132,24 +141,28 @@ that service must still scope each query. Prefer an owner API over broadly grant
 
 ## Analytics and data minimization
 
-“Click” means an eligible GET resolved by QRWTY, not proof a human reached the destination. HEAD,
-health probes and known test traffic do not count. Show observed redirects and filtered clicks
-with the filter version; don't label IP-based estimates as exact unique people. QR versus copied
-link cannot be distinguished when both encode the same URL; do not invent attribution.
+“Click” is a recorded eligible GET redirect attempt, not proof a human reached the destination.
+Persist every eligible attempt before responding with a redirect, including bots. HEAD and health
+probes do not count; synthetic GETs remain identifiable and excluded from customer totals. A
+committed event may precede a lost response or a policy/expiry recheck failure; show the definition
+beside totals. Filter human-like clicks afterward with a versioned rule; don't call estimates exact
+unique people. QR versus copied link is indistinguishable when both encode the same URL.
 
 Events contain a stable event ID, link ID, event time, schema version and only approved coarse
 dimensions (for example country, referrer hostname and device class). Strip referrer paths,
 queries, destination URLs, raw authorization and cookies. Proposed raw sanitized retention is
-7 days, daily aggregates 13 months, operational logs 14 days; confirm residency and privacy policy
-before launch. Do not keep raw IP addresses in product analytics. Security abuse data has a
+31 days, daily aggregates 13 months, operational logs 14 days; freeze policy before launch.
+There is no owner residency requirement. Do not keep raw IP addresses in analytics. Abuse data has a
 separate restricted retention decision and must not silently reuse analytics data.
 
 At-least-once processing requires deduplication and an explicit replay horizon. The dedup retention
 must exceed every allowed redelivery/replay horizon, or older batches are refused and rebuilt
 from an isolated source. At high traffic, one relational receipt per click forever is unacceptable.
 Q10 must prove bounded storage and aggregate correctness with duplicates, late and out-of-order
-events. A crash before durable intake may lose a click under D09; expose gaps and distinguish
-observed drops from unmeasurable crash loss. Never advertise these counts as financial-grade.
+events under [the durable-click contract](durable-clicks.md). No successful GET redirect may precede
+durable acknowledgment. Delayed/stale analytics must be visible; missing accepted events trigger
+reconciliation and an incident, not an accepted coverage-gap mode. These are not billing meters
+or proof of destination visits. Raw event retention is finite and separate from durable capture.
 
 Account deletion removes ownership/private data and follows the confirmed link-retention policy.
 Keep tombstones to prevent reassignment. Deletion must propagate through aggregates, raw event

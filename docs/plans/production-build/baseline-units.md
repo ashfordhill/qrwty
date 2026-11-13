@@ -35,8 +35,9 @@ empty starting state and begin usage collection before implementation.
 **Writes:** original Excalidraw diagrams, ADRs, interface/schema specs; no application bodies.
 
 Draw public redirect versus guest/account paths, store owners, session/identity boundary,
-telemetry/queue isolation and cloud placement. Specify transaction/idempotency, cache freshness,
-event version/replay and failure behavior. Use the same names/contracts as the neutral pack;
+durable publication before 302, independent consumers/archive, billing and GCP placement. Specify
+transactions/idempotency, cache freshness, signed webhooks, entitlements, replay and failure behavior.
+Use the same names/contracts as the neutral pack;
 do not import A's diagrams as an implementation recipe. High-level shared design inputs are
 disclosed as shared preparation. Record dependency/library choices and alternatives.
 
@@ -51,8 +52,10 @@ unexplained; editable drawings open/render. **Commit:** `B01: design independent
 Implement strict config validation, HTTP admission/timeouts/errors, structured redacted logs,
 graceful shutdown, health/readiness, bounded connection pools, TLS verification and secret injection.
 Use established clients; do not invent cryptography or database protocols. Implement a scoped
-transaction API with rollback. Test real managed DB/cache/broker/OIDC against the same selected
-services, under the same bounded probe budget as A. Record migrations and least-privilege grants.
+transaction API with rollback and bounded raw-body access before JSON parsing. Test Cloud SQL,
+Memorystore, Pub/Sub/Cloud Storage archive and managed OIDC against the same selected services,
+including Cloud Run HTTP and worker hosting, under the same bounded probe budget as A. Record
+migrations, IAM, protected ingress, least-privilege grants and durable acknowledgment behavior.
 Teardown disposable resources. Runtime failures must not leak secrets or kill unrelated paths.
 
 **Checks:** independent unit/integration tests; G-equivalent cloud requirements from neutral pack;
@@ -85,15 +88,17 @@ credential errors rather than anonymous fallback. Handle account deletion under 
 
 ## B05 — Redirect path and cache
 
-**Goal:** identical public routing contract and independence from broker/identity.
-**Writes:** lookup/cache/responder and edge route map with their tests.
+**Goal:** identical routing contract with mandatory durable event before 302, no identity/payment dependency.
+**Writes:** lookup/cache/publisher/responder and edge route map with tests.
 
 Implement 302/no-store, exact destinations, HEAD/405 and status semantics. Enforce authoritative
 version, absolute validation deadline and expiry on every cache hit. Bound cache calls, fallback
-admission and coalescing; guard stale-fill races. No broker or identity startup dependency.
-Add optional bounded telemetry sender interface, then fault it. Store public routing views only.
+admission and coalescing; guard stale-fill races. Publish stable-ID sanitized events and wait for
+durable ACK; retry same ID within bounds. Missing/unknown ACK or full publisher returns 503 without
+Location. Recheck policy/expiry after waiting. No after-response capture, bot sampling or sign-in
+dependency. Follow durable-clicks.md and reconcile every successful GET against retained events.
 
-**Checks:** A07–A09/F01/F02/F04/F05; same freshness bound across replicas.
+**Checks:** A07–A09/A24 publisher subset, F01–F06 publisher cases; same freshness bound across replicas.
 **Commit:** `B05: implement independent redirect service`.
 
 ## B06 — Abuse and moderation
@@ -110,16 +115,46 @@ block/unblock plus cache propagation, shared-NAT users and outage behavior.
 
 ## B07 — Analytics pipeline
 
-**Goal:** same count definitions, privacy/retention and loss boundary.
-**Writes:** independent intake/publisher/consumer/aggregate/query implementation.
+**Goal:** same durable-capture, count, archive, replay and retention contracts.
+**Writes:** independent consumer/archive/aggregate/query implementation.
 
-Build bounded buffer/batches, authenticated intake, confirmation semantics and versioned events.
-Implement explicit dedup/replay horizon and bounded retention; size it for the agreed tier.
-Expose owner-scoped aggregates/export/freshness/coverage. Prove correctness after duplicate,
-late, poison and replayed events, including kill between commit and ACK. Do not use A code.
+Use B05's confirmed event path, then independent archive delivery and atomic dedup/aggregate
+commit before consumer ACK. Disable subscription expiry; implement bounded retention/replay,
+durable quarantine, archive lag/backlog gates and preservation before expiry. Size for the same
+tier. Expose owned aggregates/export/freshness/delay. Prove correctness after duplicate, late,
+poison and replayed events and kill between commit and ACK. Lost accepted records are incidents.
 
-**Checks:** A06/A10–A13/A15/F03/F06/F08, known-stream reconciliation and storage-growth proof.
+**Checks:** A06/A10–A13/A15/A24/F03/F06/F08/F09, reconciliation and storage-growth proof.
 **Commit:** `B07: implement independent analytics`.
+
+## B07a — Independently implement subscription billing
+
+**Goal:** hosted sandbox Checkout/portal, signed durable inbox and reliable subscription state.
+**Writes:** Billing API/schema/provider adapters/jobs and tests; no A implementation access.
+
+Follow billing-contract.md. Map verified accounts to server-owned customers/prices, enforce CSRF
+and return-URL allowlist, and prevent duplicate active subscriptions under concurrent checkout.
+Verify raw bytes/signature before parsing; inbox commit before 2xx, duplicate IDs idempotent.
+Implement fenced/leased reconciliation against canonical provider state with bounded retries,
+nightly repair and no browser-return authority. Test forged/changed requests, wrong customer,
+lost acknowledgment, stale worker, provider outage and out-of-order delivery. Use sandbox only.
+
+**Checks:** A19–A21/F10 provider/inbox cases, real sandbox compatibility. Preserve failures.
+**Commit:** `B07a: implement independent subscription billing`.
+
+## B07b — Independently enforce free and paid tiers
+
+**Goal:** same entitlement matrix, exact quotas and subscription lifecycle as A.
+**Writes:** independently authored policy/grants/usage SQL and account/deletion handlers.
+
+Use frozen price/limit configuration. Authorize workload entitlement calls, bound grants by
+revision/deadline, enforce usage with create/claim/idempotency in one Links transaction. Preserve
+usage across plan changes and deletion. Apply server-side export/lookback restrictions. Implement
+paid-through, grace, canceled/free and deletion retries; no unlimited outage extension. Published
+links and durable click recording survive downgrade and payment-provider outage. Record a runbook.
+
+**Checks:** A06/A22/A23/F07/F10; race requests/claims/upgrades across replicas and test grace expiry.
+**Commit:** `B07b: enforce independent account tiers`.
 
 ## B08 — Independently implement the approved UI
 
@@ -127,11 +162,12 @@ late, poison and replayed events, including kill between commit and ACK. Do not 
 **Writes:** `web/`, required BFF adaptation, UI tests and screenshots.
 
 Use the common selected visual direction/tokens/assets and UX contract. Implement create/result,
-copy/QR, sign-in/claim, library/edit/disable and analytics/export, with every error state. No copied
+copy/QR, sign-in/claim, library/edit/disable, analytics/export and pricing/upgrade/portal/cancel,
+with every design-brief state. B07a/B07b must pass before final integration. No copied
 A components, client code or screenshot-driven source extraction. Count all UI work separately.
 Verify accessibility, responsive/dark/solid/reduced-motion variants, QR scans and mobile performance.
 
-**Checks:** A01/A04/A14/U02–U08; owner review uses the same rubric as A.
+**Checks:** A01/A04/A14/A19–A23/U02–U08; owner review uses the same rubric as A.
 **Commit:** `B08: implement independent QRWTY UI`.
 
 ## B09 — Independently deploy equivalent staging
@@ -140,7 +176,8 @@ Verify accessibility, responsive/dark/solid/reduced-motion variants, QR scans an
 **Writes:** `infra/`, release/secret/backup/telemetry configuration and evidence.
 
 Prepare priced plan, obtain any missing approval and use dedicated environment/credentials.
-Deploy private stores, protected ingress, multi-AZ tasks, digest-pinned images and controlled
+Deploy the same GCP services with private stores, protected ingress, regional redundancy,
+Pub/Sub/archive policy, digest-pinned images and controlled
 migrations. Demonstrate release rollback and credential rotation. Record fixed/variable cost,
 quotas, inventory and teardown. Do not reuse A IaC or mutate `qrwty.io`.
 
@@ -151,7 +188,7 @@ quotas, inventory and teardown. Do not reuse A IaC or mutate `qrwty.io`.
 **Goal:** meet the same resilience/security gate, including actual failures.
 **Writes:** independent fault harness/runbooks, findings/fixes and evidence.
 
-Run F01–F08 on multiple replicas with the same fault schedule and data. Force failover, restore
+Run F01–F10 on multiple replicas with the same fault schedule and data. Force failover, restore
 isolated PITR, reconcile committed records and deletion/tombstone behavior. Exercise authorized
 alerts and review auth, isolation, URL handling, origin restrictions, dependencies and images.
 Fix issues within the unit or commission a bounded corrective unit; keep failed evidence.
@@ -190,7 +227,7 @@ claimed. **Commit:** `B12: record independent maintenance and final metrics`.
 **Writes:** release pack and, if selected, approved cutover/observation evidence.
 
 Produce the same priced release/rollback pack as A. If B is selected for `qrwty.io`, follow Q18's
-neutral release requirements. Otherwise retain its isolated reference deployment for the agreed
+neutral release and live-billing requirements. Otherwise retain its isolated reference deployment for the agreed
 comparison period, then destroy costly resources only under the accepted retention plan while
 preserving source and sanitized evidence. Record actual 30-day observations only after collected.
 

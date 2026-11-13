@@ -42,8 +42,10 @@ those gates. Do not run a competing suite on another agent's reserved ports/reso
 **Goal:** remove requirements ambiguity before two builds start.
 **Input:** this plan and owner answers. **Writes:** docs/benchmarks and agreed contracts only.
 
-- Resolve the six steering questions. Record accepted defaults, changed decisions, regions,
-  release tier, cloud/load caps, retention/deletion policy and notification scope.
+- Preserve confirmed owner answers in revision 2; resolve only remaining budget/model/pricing
+  choices. Freeze GCP region, release tier, caps, retention/deletion/grace and notification scope.
+  Include durable-clicks.md and billing-contract.md in the neutral input pack; do not freeze a
+  lossy analytics contract or defer billing. Prices/limits cannot be inferred from test fixtures.
 - Pin a common runtime/language, execution model/settings and review protocol; record unknown
   provider usage capabilities and how they will be captured before any implementation call.
 - Create a neutral pack manifest with SHA-256 for product, API/SLO, design and black-box test
@@ -65,9 +67,11 @@ execution until the needed choice is made. **Commit:** `Q00: freeze QRWTY experi
 - Re-read latest Jeeves handoff/catalog/playbook. Record commit and registry identity, installed
   templates and observed pending plans. Don't borrow an uncommitted generator change.
 - Create **QRWTY · production candidate v1**, preserving existing projects. Follow the tile/link
-  and lane inventory in architecture.md, including the Session API and Sessions store.
+  and lane inventory in architecture.md, including Session/Sessions and Billing API/Billing/Stripe.
 - Add modules and ownership through ordinary supported actions. Link API sign-in Optional;
-  Account API Required; Redirect has neither identity nor broker dependency. Use stubs honestly.
+  Account API Required; Billing API has explicit customer versus signed-webhook authorization.
+  Redirect has a required click channel and no identity dependency. Use installed channel choices
+  for the diagnostic export; record Pub/Sub support pending G12 rather than inventing a provider.
 - Turn Runnable processes on. Save/reopen, check all connections by mouse and inspect the
   generation report. Record each module as Template/Part/Stub/refused with its reason.
 - Export original design, derived blueprint and simple/detailed images with provenance. Keep
@@ -101,9 +105,10 @@ failure; diagram round trip. **Done:** reproducible diagnostic baseline, not pro
 **Depends:** Q02. **Goal:** a bounded generation/runtime compatibility contract.
 **Writes:** capability report and proposed Jeeves gap units only in this assignment.
 
-- Exercise G01–G11 in minimal disposable generated fixtures. Confirm HTTP status/headers already
+- Exercise G01–G13 in minimal disposable generated fixtures. Confirm HTTP status/headers already
   work; don't duplicate an installed seam. Probe transaction, auth audience, TLS/endpoints,
-  migration, broker failure and startup coupling with actual code paths.
+  migration, bounded durable publishing, recovery and startup coupling with actual code paths.
+  Probe native Pub/Sub semantics/worker hosting and unchanged raw webhook body access explicitly.
 - For each deficiency distinguish generic reusable mechanism from QRWTY policy and deployment.
   Record the smallest failing test and proposed file/interface owner. Check completed BR/GS
   evidence; don't reimplement another agent's fix from an outdated snapshot.
@@ -123,15 +128,17 @@ named. **Done:** implemented-needed/deferred/not-needed decisions and linked ass
 
 - Prepare a small resource plan with region, versions, duration, cost ceiling and teardown.
   Use approved spending/credentials; if missing, finish the reviewable plan first.
-- Exercise real managed PostgreSQL/Valkey/RabbitMQ TLS and auth from an exported container;
+- Exercise Cloud SQL and selected Memorystore TLS/auth, Pub/Sub IAM/regional publisher/consumer
+  ACK behavior and independent Cloud Storage archive export from the exported runtime;
   migrate with the restricted role and verify runtime users cannot migrate or read forbidden data.
 - Test candidate managed OIDC issuer, JWKS, audience and rotation with the generated guard. Choose
   a provider only after token compatibility and account-flow/cost review. No auth bypass workaround.
-- Demonstrate startup, credential injection and restart without local hostname assumptions.
-  Compare Cloudflare-native alternative in a short ADR; hybrid remains default if justified.
+- Demonstrate Cloud Run HTTP startup/drain and worker-pool pull-consumer hosting without a fake
+  HTTP port. Verify region support/replica control; document a Compute Engine group fallback only
+  if needed. Prove protected ingress and no default-hostname bypass. GCP remains the owner choice.
 - Capture costs/inventory, remove temporary resources and verify teardown. No production DNS.
 
-**Checks:** G01/G03/G06/G09/G10, D02 subset; no secrets in artifacts. **Done:** real compatibility
+**Checks:** G01/G03/G04/G06/G09/G10/G12, D02 subset; no secrets in artifacts. **Done:** real compatibility
 evidence and exact provider/version choices, or explicit blocking gap. **Commit:**
 `Q04: verify QRWTY cloud runtime compatibility`.
 
@@ -140,7 +147,9 @@ evidence and exact provider/version choices, or explicit blocking gap. **Commit:
 **Depends:** Q04 and needed Jeeves fixes. **Goal:** immutable before-product measurement point.
 **Writes:** new `app/` untouched export, measurement tool wrapper, docs and root command wiring.
 
-- Regenerate from the saved diagram using the pinned clean registry; compare studio/CLI outputs.
+- If generic fixes change supported provider/module choices, update and resave the real diagram
+  through supported paths, keep the Q02 as-found artifacts, and record new provenance. Regenerate
+  using the pinned clean registry; compare studio/CLI outputs.
   Export to new `app/`, refusing an existing app rather than overwriting it.
 - Ensure no product behavior, product SQL or UI is present in this baseline. Commit the exact
   payload/manifest. Record baseline full commit hash in a subsequent evidence reference; never
@@ -190,19 +199,25 @@ diagnostic smoke, with no product-completion claim. **Commit:** `Q05: freeze QRW
 
 ## Q08 — Redirect correctness and cache failure
 
-**Depends:** Q07. **Goal:** fast, safe public routing independent of sign-in and telemetry.
-**Writes:** Redirect product modules, cache binding hooks, edge mapping and tests.
+**Depends:** Q07 and G12 verified in Q04. **Goal:** safe routing with a durable click before each 302.
+**Writes:** Redirect modules, awaited publisher/event schema, cache hooks, edge mapping and tests.
 
 - Implement host+slug lookup using least-privilege route view, 302/no-store, HEAD, 404/403/410/503
   semantics. Validate response headers; reserve routes and reject spoofed forwarded identity/host.
 - Apply absolute validation deadline/version/expiry on every hit. Add bounded cache calls,
   miss coalescing and DB admission. Prove stale fill cannot overwrite newer state.
-- Keep identity/broker imports and startup probes out of Redirect. Telemetry is an optional
-  bounded sender interface; a failing implementation cannot change response success.
+- Keep identity and payment dependencies out of Redirect. Publish sanitized event with stable ID
+  and await durable ACK before 302, including cache hits. Bound queue/batch/retries/deadline; reuse
+  ID on retry. No ACK/unknown ACK/overflow means 503 without Location. Recheck expiry/freshness
+  after waiting. HEAD does not emit. Follow durable-clicks.md; no after-response buffer fallback.
+- Fault publication at startup and mid-request; reconcile captured successful GET responses to
+  durable events. Liveness must recover without crash loops. Record committed-attempt/response
+  ambiguity honestly; no exactly-once browser visit claim. Q10 adds consumers and archive gates.
 - Run multi-replica update/disable/block races and cache/DB faults, including stalled sockets.
   Update redirect-failure diagram from observations if the contract-approved design changed.
 
-**Checks:** A07–A09/F01/F02/F04/F05; p99 sample clearly labeled local. **Commit:**
+**Checks:** A07–A09/A24 publisher subset, F01–F06 applicable publisher cases; local p99 labeled.
+**Commit:**
 `Q08: implement resilient public redirects`.
 
 ## Q09 — Abuse controls and operational moderation
@@ -225,35 +240,76 @@ diagnostic smoke, with no product-completion claim. **Commit:** `Q05: freeze QRW
 
 ## Q10 — Bounded click ingestion and account analytics
 
-**Depends:** Q09. **Goal:** useful analytics without coupling redirect availability to the broker.
-**Writes:** intake/worker product modules, analytics SQL, read routes and event lifecycle diagram.
+**Depends:** Q09. **Goal:** reconcile durably accepted events into bounded account analytics.
+**Writes:** consumer/analytics modules, archive configuration, SQL, read routes and lifecycle diagram.
 
-- Define versioned click/batch schema, stable IDs and eligibility rules; avoid raw IP, full URL,
-  cookies and authorization. Internal intake authenticates requests and bounds batch/body/rate.
-- Implement bounded redirect buffer/batch sender with overflow counters. Intake acknowledges
-  only after persistent confirmed publish to an existing durable queue; refuse unroutable
-  returns, and ACK consumption only after commit. No unbounded per-request promise chain.
+- Extend Q08's versioned event schema without breaking deployed readers; preserve IDs/timestamps.
+  Record bot GETs durably, then derive filtered counts; no raw IP/full URL/cookies/authorization.
+- Implement consumer ACK only after atomic dedup/aggregate commit. Configure and exercise the
+  independent archive subscription, durable quarantine, replay and deletion/retention behavior.
+  Explicitly disable subscription inactivity expiry and check required subscriptions/permissions.
 - Choose and document dedup/replay/retention mechanism against the tier's event volume. Prove
   bounded growth before enabling an existing event-counter template. Distinguish ordered batch
   identities, event identities and database transaction scope; never claim exactly-once delivery.
-- Implement time-bucket aggregates, owner-authorized queries, freshness/coverage and bounded CSV.
-  Retention jobs run under the store owner; test missed cleanup and recovery as well as happy path.
+- Implement time-bucket aggregates, owner-authorized queries, freshness/delay and bounded CSV.
+  Retention jobs run under the store owner; test missed cleanup/recovery, archive lag, backlog
+  age, safety gates and emergency preservation before expiry. Stopping new traffic cannot save
+  an already old backlog. Missing accepted events are an incident, not an acceptable gap.
 - Save event lifecycle Excalidraw, storage-growth calculation and query/ingest sample. If the L1
   candidate needs an analytical store/stream, commission a specific measured unit before claiming L1.
 
-**Checks:** A06/A10–A13/A15, F03/F06/F08; kill after commit before ACK; known-stream reconciliation.
+**Checks:** A06/A10–A13/A15/A24, F03/F06/F08/F09; kill after commit before ACK; known-stream reconciliation.
 **Commit:** `Q10: implement bounded click analytics`.
+
+## Q10a — Subscription provider and durable webhook inbox
+
+**Depends:** Q10, G13 and Q00's billing scope. **Goal:** real sandbox Checkout/portal and reliable
+subscription state. **Writes:** Billing API hooks, product SQL, provider adapter and lifecycle tests.
+
+- Follow billing-contract.md. Implement server-owned customer/price mapping, idempotent Checkout
+  creation and portal sessions with verified subject, CSRF and allowed return URLs. Concurrent
+  requests must not create duplicate active subscriptions. Use sandbox IDs only in test fixtures.
+- Verify Stripe signature over exact raw bytes before parsing. Store inbox durably before 2xx;
+  duplicate provider IDs are harmless, DB failure is retryable. Test wrong signature, changed
+  bytes, wrong customer and lost webhook acknowledgment. Never require OIDC for the signed webhook.
+- Implement repeat-safe inbox/reconciliation jobs with bounded retries, lease fencing and current
+  provider-state retrieval. Prove out-of-order events and expired workers cannot regress state.
+  Reconcile nightly and on stuck checkout; no paid access based on browser return parameters.
+- Capture sandbox lifecycle evidence and update billing-lifecycle Excalidraw. No real charge,
+  live email or secret committed; generic seam issues return to separately assigned Jeeves units.
+
+**Checks:** A19/A20/A21, G13, F10 provider/inbox cases; unit and real sandbox integration evidence.
+**Commit:** `Q10a: implement reliable subscription billing`.
+
+## Q10b — Entitlements, quotas and subscription transitions
+
+**Depends:** Q10a. **Goal:** enforce free/paid policy correctly across replicas and outages.
+**Writes:** product tier policy, Billing/Link/Account hooks, usage SQL and lifecycle tests.
+
+- Freeze actual tier limits with Q00; keep price IDs/config out of diagrams and generated files.
+  Issue versioned, bounded entitlement grants; internal calls require workload authorization.
+- Enforce owned-create/claim usage with idempotency in the Links transaction. Race grants, plan
+  changes and requests across replicas. Upgrades/downgrades cannot reset usage or refund creation
+  allowance through deletion. Enforce gated analytics/export at the server, not only in the UI.
+- Implement paid-through/cancel/past-due/grace/free transitions, finite stale-state rules, failure
+  explanations and deletion/cancellation retries. Never disable existing links or relax durable
+  clicks because payment failed. Redirect must work when the billing service/provider is down.
+- Record the concrete entitlement matrix and subscription runbook. Keep invoice/tax/payment
+  records and retention separate from click analytics; prepare live configuration for Q18 review.
+
+**Checks:** A06/A22/A23, F07/F10; multi-replica quota/claim races and cancellation/deletion recovery.
+**Commit:** `Q10b: enforce individual free and paid tiers`.
 
 ## Q11 — Owner-reviewable visual design
 
-**Depends:** stable public API from Q07–Q10; may explore after Q00 without final integration.
+**Depends:** stable public API from Q07–Q10b; may explore after Q00 without final integration.
 **Goal:** settle the visual direction before implementing every screen.
 **Writes:** `docs/design/` sketches, local prototypes, tokens and review record; no production UI.
 
 - Follow design-brief.md. Study current selected competitors by task, date and concrete weakness;
   don't clone their layouts or reuse a generic component theme as the whole design.
 - Present two coherent directions with real-length content: create/result/library/analytics,
-  desktop/mobile/light/dark and core error states. Add an Excalidraw UI flow sheet.
+  pricing/upgrade/billing, desktop/mobile/light/dark and core error states. Add an Excalidraw flow sheet.
 - Include reduced-motion/solid-surface treatment and a practical QR export sample. Measure the
   proposed glass rendering cost in the prototype on the agreed mobile profile.
 - Save the owner's choice and specific corrections. When feedback images arrive, preserve them
@@ -264,50 +320,55 @@ and implementable tokens, not “owner probably likes this.” **Commit:** `Q11:
 
 ## Q12 — Complete the UI
 
-**Depends:** Q11 selection and Q10. **Goal:** complete the designed user journeys.
+**Depends:** Q11 selection and Q10b. **Goal:** complete the designed user journeys.
 **Writes:** `web/`, product BFF integration only as required, browser tests and screenshots.
 
 - Implement create/result/copy/QR without login; sign-in-and-claim; owned library/edit/status;
-  analytics/export; public error pages. Include every state in design-brief.md.
+  analytics/export; pricing/upgrade/confirming/portal/cancellation/downgrade; public error pages.
+  Include every state in design-brief.md. Guest copy/QR never waits for an upgrade.
 - Keep browser source excluded from backend scope; separately count UI TS/JS/CSS/markup.
   Code splitting isolates dashboard/analytics; redirects never require the dashboard bundle.
 - Run mouse/touch, keyboard/screen-reader and responsive/light/dark/low-motion checks. Decode
   exports and record real-device screen/print scans. Avoid capture of real accounts or secrets.
 - Save performance profile and owner review evidence. Resolve visible issues before handoff.
 
-**Checks:** A01/A04/A14/U02–U08, complete local e2e + build. **Commit:** `Q12: complete QRWTY product UI`.
+**Checks:** A01/A04/A14/A19–A23/U02–U08, complete local e2e + build. **Commit:** `Q12: complete QRWTY product UI`.
 
 ## Q13 — Reproducible cloud staging
 
 **Depends:** Q12 and approved concrete cloud plan. **Goal:** an actual staging deployment.
 **Writes:** `infra/`, delivery scripts, dashboards/runbooks and evidence, no public DNS cutover.
 
-- Build IaC from Q04's verified bindings: edge/ALB/private tasks/stores, restricted roles,
+- Build IaC from Q04's verified GCP bindings: protected ingress/Cloud Run/worker hosting/Cloud SQL/
+  Memorystore/PubSub/archive, restricted roles,
   secret injection, backups, logs, budgets and certificates. Save plan before apply.
-- Set independent task limits, multi-AZ placement, health/readiness, drain and image-digest
+- Set independent instance limits, regional redundancy, health/readiness, drain and image-digest
   rollback. Migrations are a controlled job, never every request pod racing at startup.
 - Protect origin, expose only intended routes, use separate arm/staging credentials and data.
   CI uses federated credentials; no long-lived keys in repo or build arguments.
 - Apply within authorization, run a cloud product smoke, demonstrate release rollback and
   rotation. Record inventory, exact costs and teardown/restore instructions.
 
-**Checks:** D01–D03/D10, cloud A01/A06/A07/A14. **Commit:** `Q13: deploy reproducible QRWTY staging`.
+**Checks:** D01–D03/D10, cloud A01/A06/A07/A14/A24 and sandbox billing smoke.
+**Commit:** `Q13: deploy reproducible QRWTY staging`.
 
 ## Q14 — Failure, restore and security gates
 
 **Depends:** Q13. **Goal:** establish recovery behavior before expensive scale tests.
 **Writes:** fault harness/runbooks, security findings, sanitized evidence and necessary scoped fixes.
 
-- Run F01–F08 with 2+ copies and real managed providers. Save fault start/stop, observed service
+- Run F01–F10 with multiple copies and real managed providers. Save fault start/stop, observed service
   health, identity/queue/DB outcomes and independent state reconciliation.
 - Restore a backup/PITR into isolated infrastructure; verify claims/tombstones and deletion replay.
-  Force AZ/database/cache failover and measure recovery against the actual target.
+  Force supported database/cache failovers and inject application/network faults. Measure actual
+  regional service behavior; identify provider-managed zonal failure modes that cannot be forced
+  in the account rather than claiming an entire Cloud Run or Pub/Sub zone was killed.
 - Run auth/isolation/parser/SSRF/origin/credential/dependency/image review; fix exploitable high
   or critical issues. A generator issue returns to an assigned Jeeves unit, not a local patch.
 - Exercise configured owner alert route with authorized notifications; finish runbooks and privacy
   behavior review. Costs and failed attempts stay in ledger.
 
-**Checks:** D02–D05/D07–D09 and F01–F08. **Commit:** `Q14: verify QRWTY failure and restore behavior`.
+**Checks:** D02–D05/D07–D09 and F01–F10. **Commit:** `Q14: verify QRWTY failure and restore behavior`.
 
 ## Q15 — Capacity, cost and regional recovery
 
@@ -337,7 +398,7 @@ pinned configuration. Do not ask A's agent to copy its app and delete the manife
 hooks, generated tests, IaC or postmortem fixes enter the baseline context. Neutral requirement
 amendments go to both arms with actual rework charged. Both deployment environments remain separate.
 
-**Checks:** B00–B13 completed with their evidence, equivalent release tier and missing telemetry
+**Checks:** B00–B13 including B07a/B07b completed with evidence, equivalent release tier and missing usage
 disclosed. **Commit here:** evidence references only, after baseline commits exist.
 
 ## Q17 — Maintenance trial and final comparison
@@ -364,6 +425,8 @@ disclosed. **Commit here:** evidence references only, after baseline commits exi
 
 - Present exact images/infra delta, tier, cost, unresolved findings, rollback and backup restore
   evidence. Do all preparation before requesting any missing final cutover decision.
+- Include real billing price IDs, merchant setup, policy/limits, webhook secret/endpoint, sandbox
+  lifecycle results and live-mode smoke procedure. Do not place a real charge merely to test.
 - Apply gradual traffic where supported, run external anonymous/account/QR probes and rollback
   on agreed error-budget/latency/security thresholds. Keep baseline comparison hostname isolated.
 - Check real cost/traffic/abuse behavior, run retention/backup schedules and monitor SLOs. Record

@@ -20,7 +20,7 @@ quality or operating efficiency. Two builds are a case study, not a statisticall
 The common high-level architecture can be supplied to both arms. That measures implementation
 and orchestration under a fixed design. If the owner wants to compare architecture discovery as
 well, run a separate product-brief-only experiment; don't mix the conclusions. Likewise, an
-all-Cloudflare baseline against an AWS generated app is a stack comparison, not a clean test of
+all-Cloudflare baseline against a GCP generated app is a stack comparison, not a clean test of
 Jeeves. Record it as an exploratory third variant if desired.
 
 Q00/Q16 create a neutral experiment pack containing only the agreed requirements, service

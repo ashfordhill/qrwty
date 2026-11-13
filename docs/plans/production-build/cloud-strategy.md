@@ -1,53 +1,60 @@
 # Cloud strategy and scale proof
 
-Proposed reference deployment: Cloudflare at the public edge, containerized Node services on
-AWS ECS/Fargate, managed Postgres/Valkey/RabbitMQ and a managed OIDC provider. Docker is a packaging
-format here. The production properties come from the application contracts, managed storage,
-placement, networking, backups, release process and observed recovery.
+Revision 2 follows the owner's GCP preference, with no stated residency restriction. Proposed
+reference: Cloudflare edge and static UI; Node containers on Cloud Run; Cloud SQL PostgreSQL,
+Pub/Sub, optional Memorystore cache and Cloud Storage. Billing uses a tested managed provider.
+Docker packages processes; correct code, managed durability, recovery and operating evidence
+establish the production properties. No cloud account, resources or deployment were created.
 
-Cloudflare can also host substantial stateful applications using Workers and its storage/queue
-services. “Cloudflare cannot do enterprise” is not a useful premise. An all-Cloudflare design
-could work, but current Jeeves output is not a Workers/Durable Objects runtime. Choose it only
-after comparing compatibility work, consistency, limits and measured cost. Kubernetes is not a
-prerequisite for this application.
+Cloudflare can host substantial applications with Workers and stateful services. An all-Cloudflare
+implementation remains technically credible, but is not the selected comparison target. Existing
+Jeeves output is Node/Postgres/Valkey/RabbitMQ-oriented: GCP is not a hostname-only change.
+G12 must provide real Pub/Sub support; this work counts in Jeeves's experiment cost. Kubernetes
+is not required. See [cost options](budget-options.md) and [durability](durable-clicks.md).
 
 ## Reference topology
 
 See [editable cloud diagram](../../diagrams/cloud-deployment.excalidraw) and
-[rendered diagram](../../diagrams/cloud-deployment.svg). These are planned resources.
+[rendered diagram](../../diagrams/cloud-deployment.svg). All resources below are planned.
 
 | Boundary | Proposed service | Required production property |
 | --- | --- | --- |
-| DNS, TLS, edge defense | Cloudflare DNS/proxy/WAF; suitable paid plan if limits require it | DNS ownership, certificate renewal, tested origin protection and abuse limits |
-| Public UI | Cloudflare static hosting | Immutable hashed assets, deploy rollback, no secrets in browser bundle |
-| Public routing | Thin Worker or equivalent edge route configuration | Allowlisted host/path/method, browser 302 no-store, trusted forwarding, bounded origin timeouts |
-| Regional ingress | AWS ALB | TLS, authenticated/restricted Cloudflare origin path, only intended service routes |
-| Backend processes | ECS/Fargate in private subnets across at least 2 AZs | Independent scaling for Redirect; at least 2 healthy copies per critical request service; non-root, drain, task restart and deployment rollback |
-| Links / Sessions | RDS PostgreSQL Multi-AZ | Writer authority, restricted roles, encryption, PITR, migration lock and measured failover |
-| Hot routes / Admission | ElastiCache for Valkey | TLS/auth and failover; cache optional on redirect reads, creation admission fails safely |
-| Click events | Amazon MQ for RabbitMQ cluster | TLS, publisher confirms, tested queue type/version, bounded backlog and dead-letter handling |
-| Analytics | Separate logical Postgres DB initially; separate capacity from Links when measured | Partition/retention strategy, constrained queries, no starving redirect lookups |
-| Identity | Managed OIDC, selection in Q04 | Token compatibility, rotation/revocation behavior, recovery/email flow and MAU pricing |
-| Artifacts / backups | S3 with private access and lifecycle rules | Restore-tested exports/backups, encryption and explicit retention |
-| Secrets / access | Secrets Manager + workload roles, KMS | No static cloud key in repo/image; least privilege, rotation proof |
-| Delivery / telemetry | Image registry, CI using federated identity, OpenTelemetry + selected metrics/log backend | Traceable image digests, bounded log volume, actionable alerts and rollback |
+| DNS, TLS, defense | Cloudflare DNS/proxy/WAF | Certificate renewal, origin protection, distributed abuse limits; quote actual plan |
+| UI | Cloudflare static hosting | Immutable assets, rollback, no browser secrets |
+| Public routing | Thin Cloudflare Worker or equivalent route configuration | Allowlisted hosts/methods/routes, trusted forwarding, bounded timeouts; no cached final redirect |
+| GCP ingress | External HTTPS load balancer with serverless NEGs or verified authenticated invocation | Disable/restrict default Cloud Run public bypass; prove the exact Cloudflare-to-origin authentication and routing in Q04 |
+| HTTP processes | Regional Cloud Run services, proposed us-central1 | Independent redirect scaling, measured warm minimums/concurrency/max instances, drain, non-root images and rollback; managed regional placement rather than invented zone-pinned tasks |
+| Background consumers | Cloud Run worker pools, subject to G12/Q04 region/lifecycle proof | Always-running pull consumer without an HTTP listener; explicit replicas and tested backlog scaling. If incompatible, use a regional Compute Engine managed instance group with the same container and record the cost/operational delta |
+| Links / Sessions / Billing | Cloud SQL PostgreSQL regional HA | Restricted separate logical DB roles; encryption, PITR, migrations, tested failover; one owning writer per domain |
+| Analytics | Separate logical Postgres DB initially; separate capacity before interference | Time partitions, bounded dedup/retention/query work; large-event storage redesign only from measured limits |
+| Hot routes / Admission | Managed Memorystore Redis/Valkey option proven against actual client | TLS/auth/network compatibility, optional redirect cache, safe distributed creation admission; exact edition/version and quote chosen in Q04 |
+| Click events | Pub/Sub topic and subscriptions, explicit regional storage policy | Durable ACK required before 302; 31-day proposed retention; subscriber expiry disabled, least privilege, replay/DLQ and health gates |
+| Raw sanitized archive | Independent Pub/Sub Cloud Storage export subscription | Batched files, dedup-aware replay, lag alarms, tested failure/recovery and explicit lifecycle; no one-object-per-click design |
+| Identity | Managed OIDC, selected after compatibility probe | Audience/JWKS/rotation/recovery compatibility, MFA option and MAU/email costs; GCP Identity Platform is a candidate, not an assumed fit |
+| Payments | Stripe Checkout / Billing / Customer Portal, proposed | Signed raw webhook, durable inbox, reconciled entitlements, sandbox proof and separate fee quote |
+| Private artifacts / recovery | Cloud Storage and managed Cloud SQL backups | Restrict deletes/access, encryption, retention and restore-tested backup; backup location stated explicitly |
+| Secrets / access / delivery | Secret Manager, workload IAM, Artifact Registry, federated CI | No static service keys; short-lived workload identity, digest-pinned releases and rotation |
+| Telemetry / jobs | Cloud Monitoring/Logging + OpenTelemetry, authenticated scheduler/jobs | Cost-bounded technical logs, actionable alerts, owning-service cleanup/reconciliation jobs; never sample required click records |
 
-ECS supports AZ balancing, RDS's synchronous standby provides failover rather than read capacity,
-and Amazon MQ supports multi-AZ clusters. Those capabilities must be configured and exercised,
-not assumed from service names. [ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-rebalancing.html),
-[RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZSingleStandby.html),
-[Amazon MQ](https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/best-practices-broker-setup.html).
+Cloud SQL HA uses synchronous regional replication; Cloud Run HTTP services and worker pools
+have distinct runtime contracts. A worker that has no listener must not be deployed as if it were
+an HTTP service. Verify current worker-pool availability and scaling; do not assume HTTP
+request autoscaling applies. [Cloud SQL HA](https://docs.cloud.google.com/sql/docs/postgres/high-availability),
+[Cloud Run resource model](https://docs.cloud.google.com/run/docs/resource-model),
+[worker scaling](https://docs.cloud.google.com/run/docs/configuring/workerpools/manual-scaling).
 
-A DB role owns only its logical domain. A single RDS cluster can initially host several logical
-databases without sharing credentials; monitor analytics interference and move it before the
-scale gate if necessary. A second AZ is not a second region. The single-region reference cannot
-claim continuous service through a regional outage.
+The Cloudflare origin protection mechanism must be demonstrated, not just an IP filter around an
+otherwise public run.app URL. Webhook ingress requires Stripe signature validation independently
+of edge authentication. Cloud Run request-based CPU allocation is not a durable background job
+mechanism. Choose billing/runtime settings for each process explicitly and await publication in
+request scope. [Billing settings](https://docs.cloud.google.com/run/docs/configuring/billing-settings).
 
-External runtime configuration is a required generic seam, not deployment settings on the Jeeves
-canvas. Never turn off TLS validation, emulate local DNS names with a public hosts hack, embed
-secrets in generated code, or give runtime users a database owner login to make managed services
-work. Network listeners inside isolated containers follow the platform needs; local host ports
-stay loopback. This does not change Jeeves studio's `127.0.0.1` binding rule.
+A shared Cloud SQL instance can initially host restricted logical databases; monitor analytics
+and billing interference and separate capacity when needed. Enforce private networking, managed
+DB connections, verified TLS, scoped runtime IAM and a separately authorized migration role.
+No hosts-file tricks, disabled TLS, broad database owner credentials or secrets in generated
+source. Runtime endpoint bindings are generic mechanisms; sizes, regions and IAM are IaC outside
+Jeeves. Isolated container listeners follow platform rules; the Jeeves studio still binds locally.
 
 ## Capacity assumptions, not TinyURL measurements
 
@@ -90,9 +97,10 @@ SLOs are release targets, not results or an SLA promise. Freeze them before buil
 | Create/account APIs | 99.9%; p99 ≤ 1 s excluding interactive identity/step-up time | Still count backend failures; cap request/provider deadlines and disclose scanning latency |
 | Edit/block propagation | No redirect with old allowed state after 60 s | Start at durable commit; multi-location probes and cached-copy timestamp inspection |
 | Expiry | No redirect after recorded expiry, within documented clock bound | Enforced locally on every hit; no extra TTL grace |
-| Analytics freshness | p95 ≤ 60 s while pipeline healthy | Event time to query-visible aggregate; stale/coverage indicator during faults |
+| Analytics freshness | p95 ≤ 60 s while pipeline healthy | Event time to query-visible aggregate; delayed/stale indicator during faults; missing accepted events are an incident |
 | Data recovery | AZ failover target RPO 0 for acknowledged link commits; RTO ≤ 5 min | Forced failover and verification, not a vendor guarantee |
-| Regional disaster | Proposed RPO ≤ 5 min; RTO ≤ 60 min only after warm-standby drill | Measured replication lag and promotion/traffic-fencing sequence |
+| Regional disaster, link DB | Proposed RPO ≤ 5 min; RTO ≤ 60 min only after warm-standby drill | Measured replication lag and promotion/fencing; this does not authorize silent click loss |
+| Click recording | Every eligible successful GET has durable event ACK before 302 | Acknowledge under regional multi-zone provider contract; no sampling; see durable-click fault envelope |
 
 99.99% over 30 days allows about 4.32 minutes of unavailability; 99.9% allows 43.2 minutes. A short
 load test cannot establish a 30-day SLO. Account/API outage budgets do not justify killing the
@@ -102,73 +110,65 @@ budget; report it. Faster regional continuity requires a separate design and cos
 ## Cache and failure contract
 
 Start with origin-served redirects behind Cloudflare. Cache static UI freely; no final redirect
-response cache in front of the click-observation point. Introduce Worker route-metadata caching
-only when it meets the same correctness tests and the measured benefit warrants it.
+response cache before the mandatory click-observation point. Worker route-metadata caching is a
+later measured optimization subject to identical policy and durability tests.
 
-Cache entries include link version, destination, allowed state, expiry and an **absolute**
-`validatedUntil` derived from a read of the authoritative writer (proposed max age 30 s). Copying
-through Redis/edge never extends that deadline. Reject stale/corrupt entries; don't cache misses
-initially. Updates may invalidate early, but max age is the correctness backstop. Test an old
-read racing with a newer write; conditional version checks prevent a stale fill replacing a
-newer entry. Never promise instantaneous global revocation from eventual cache storage.
+Cache entries contain version, destination, allowed state, expiry and an **absolute**
+`validatedUntil` from the authoritative writer (proposed maximum age 30 seconds). Copying entries
+never extends that deadline. Ignore stale/corrupt entries; do not cache misses initially. Early
+invalidation is an optimization; the fixed deadline bounds correctness. Conditional version
+checks prevent a slow old read replacing a newer cache entry. After waiting for durable publish,
+recheck expiry/freshness before responding. The overall revocation bound remains 60 seconds.
 
-Cloudflare KV is eventually consistent, including negative reads, so it cannot by itself meet
-this authoritative update/revocation contract. Cache API deletion is local, not a global purge.
-These are design constraints, not reasons to exclude Cloudflare.
-[KV](https://developers.cloudflare.com/kv/concepts/how-kv-works/),
+Cloudflare KV's eventual consistency and location-local Cache API deletion are insufficient on
+their own for the authoritative policy contract. [KV](https://developers.cloudflare.com/kv/concepts/how-kv-works/),
 [Cache API](https://developers.cloudflare.com/workers/runtime-apis/cache/).
 
 | Failure | Redirect behavior | Other behavior |
 | --- | --- | --- |
-| Valkey slow/down | Time-bounded bypass; authoritative DB read under admission limit | No unbounded concurrent DB stampede; create fails closed if mandatory admission state unavailable |
-| DB unavailable | Serve only entries still inside their original validation and expiry deadlines; then 503 | No create acknowledgment, edits or claims; reconnect without manual code restart |
-| Identity unavailable | Redirect unaffected | New login fails clearly; existing session follows bounded token/JWKS rules, never bypasses validation |
-| Telemetry/broker unavailable | Redirect unaffected; bounded local batch attempt may drop | Pipeline reports degraded coverage; no unbounded RAM, retry loop or request queue |
-| One worker killed | Redirect unaffected | Confirmed accepted batches replay without duplicate aggregates |
-| Invalid event | Redirect unaffected | Quarantine with reason, bounded retry, alert; next valid item proceeds |
-| Region lost | Cache may provide only its remaining short validity window | Fence old writer, recover/promote one authority; no active-active writes by accident |
-| Cloudflare/Internet outage | No claim of automatic independent-provider failover | Document dependency and recovery; second CDN only if justified and separately tested |
+| Cache slow/down | Bounded bypass and authoritative read under DB admission | Prevent stampede; required creation admission fails safely |
+| Links DB unavailable | Only still-valid metadata may resolve; durable event ACK remains mandatory; otherwise 503 | No false create/edit/claim success; reconnect without patching code |
+| Identity or Stripe unavailable | No dependency; redirects continue if route and click storage are healthy | Account/billing follows verified state and finite entitlement/grace deadlines |
+| Pub/Sub publish unavailable or ACK unknown | 503, no Location; bounded retry/backpressure; no fail-open mode | Same event ID for retries; automatic recovery without crash loops |
+| Analytics worker/DB unavailable | Continue while durable retention/recovery safety holds | Backlog grows; show delayed analytics; catch up and reconcile without duplicate counts |
+| Archive lag / retention danger | Safety gate can stop new redirects; never discard accepted backlog | Recover/drain/archive existing backlog before expiry; missing accepted record is an incident |
+| Poison event | Already durable; no effect on subsequent valid processing | Durable quarantine, bounded retry, alert and repaired replay |
+| Region lost | Do not assume a remaining route cache can replace unavailable durable ingestion | Fence link writer, recover exact accepted-event set; synchronous multi-region click durability needs a separate design |
+| Cloudflare/Internet outage | No independent-CDN continuity claim | Document dependency and recovery; add a second CDN only through a tested design |
 
-The optional telemetry call must not use an unbounded `Promise` per click. Redirect owns a bounded
-buffer and scheduled batch sender; loss and buffer pressure are observable. No await of broker
-confirm in the redirect response. Intake authenticates service requests, rejects oversize batches
-and only reports acceptance after durable broker confirmation **and successful routing to an
-existing durable subscriber queue**. Verify persistent delivery, queue replication/type,
-publisher returns for unroutable messages, dead-letter policy and consumer ACK after transaction
-commit. A broker confirm for an unroutable publish is not proof that an event was stored.
-A restart can lose a redirect's
-unconfirmed buffer; publish that limitation. If the owner chooses lossless capture, redesign
-before implementation rather than quietly relabeling best-effort events.
+[Durable clicks](durable-clicks.md) defines the request order, duplicate semantics, archive,
+retention and regional failure envelope. Delayed analytics and unavailable publication are different
+faults: only the latter immediately prevents a redirect. Include publication latency in every
+redirect histogram and failed ACK in the availability/error budget. The 99.99% target is a goal
+requiring proof; adding a synchronous dependency makes it harder, not automatically satisfied.
 
 ## Deployment progression and cost
 
-1. **Q04 disposable compatibility probe:** smallest bounded environment with real TLS endpoints,
-   managed identity and migration privileges. Capture findings, teardown and costs. This is not HA.
-2. **Q13 staging:** separate credentials/data/hostnames per arm; reproducible IaC, private stores,
-   observable services, migration/release jobs and rollback. No production DNS switch.
-3. **Q14–Q15 HA and capacity:** multi-AZ placement, failover, restores, queue recovery and tiered
-   load. The tested topology, resource sizes and image digests are saved with every result.
-4. **Q18 public deployment:** review exact bill estimate, image/infra plan, backup evidence and
-   unresolved findings; gradual traffic and an explicit rollback. Use `qrwty.io` for the selected
-   arm only. The comparison deployment has its own hostname and synthetic data; never replay
-   private customer traffic into it without a separate policy.
-5. **Regional evolution:** before a global-resilience claim, build a warm standby, measure
-   replication lag, fence writes, promote and verify revocation/tombstones. Partitioning and
-   edge-resolved metadata follow profiling, not an enterprise checklist.
+1. **Q04 disposable probe:** real GCP TLS/IAM, Cloud Run HTTP and consumer hosting, Cloud SQL,
+   Pub/Sub ACK/replay/archive and managed identity. Bound duration, price, instances and teardown.
+   A small probe is not HA or scale evidence.
+2. **Q13 staging:** independent projects/credentials/data/hostnames per arm; reproducible IaC,
+   secrets, private stores, migration/release jobs, warm capacity and operational telemetry.
+3. **Q14–Q15 reliability and load:** actual regional failover, restore, durability/backlog tests and
+   authorized capacity tiers. Save topology, sizes, quotas and image digests with every run.
+4. **Q18 selected release:** exact estimate, IaC/images, recovery/security evidence, live billing
+   configuration and unresolved findings reviewed; gradual `qrwty.io` cutover with rollback.
+   Baseline uses an isolated hostname and synthetic data, not copied private customer traffic.
+5. **Regional evolution:** measure failover/lag and fence writers. Warm asynchronous standby is
+   not zero-loss multi-region click publication. Any stronger requirement has its own design,
+   latency tests, pricing and acceptance gates before a claim.
 
-IaC must produce a reviewable plan before any paid apply. A concrete resource list, region,
-maximum task counts, quotas, expected duration, rollback and teardown must accompany approval.
-Use the owner's prior approved cap when one exists; do not repeatedly ask for already authorized
-spend. No account, credentials or budget was verified in this planning unit.
+A paid apply needs a concrete reviewed plan and available authorized cap. The user's GCP
+preference is recorded; no spend cap or account permissions were inferred. Use earlier approvals
+when provided. Budgets alerts alone do not stop charges; configure limits while preserving
+backlog/recovery capacity. Test notifications need the owner's selected destination/scope.
 
-Build a dated calculator worksheet for **both** arms, low/expected/burst and outage/replay cases:
+The [budget worksheet](budget-options.md) gives options and dated component prices. Q13 expands it:
 
-`monthly = edge requests+CPU + container vCPU/RAM-hours + ALB/NAT/endpoints/egress + DB/IOPS/storage
-+ cache + broker + identity MAU/email + observability + backups + standby + support`.
+`monthly = edge + request/compute + ingress/network + DB/storage/backup + cache + event delivery
++ retained topic/archive bytes + analytics + identity/email/reputation + observability + standby`.
 
-Include fixed HA costs at zero traffic, AWS-to-Cloudflare transfer, logs per redirect, NAT,
-duplicate environments and test seed/cleanup costs. Show cost per million successful redirects,
-per thousand new links and per active account. Quote current official prices and plan limits;
-never use “free tier” as the full scale budget. Reference:
-[Fargate pricing](https://aws.amazon.com/fargate/pricing/),
-[Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/).
+Include both arms' actual live hours, attack/replay costs, payload sizes, retained data, log volume
+and teardown. Payment/Billing fees and model costs are separate. Report cost per million durable
+successful redirects, thousand new links and active account. No free-tier or component-only row
+is a total enterprise deployment quote.
