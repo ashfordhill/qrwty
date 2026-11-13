@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "asOf": "2026-11-13",
+  "status": "planning-only",
+  "applicationGenerated": false,
+  "savedJeevesDiagram": false,
+  "deployed": false,
+  "arms": {
+    "jeeves": {
+      "generatedBaselineCommit": null,
+      "completedCommit": null,
+      "generatedBaselineLoc": null,
+      "retainedTemplateLoc": null,
+      "postTemplateLoc": null,
+      "removedTemplateLoc": null,
+      "backendLoc": null,
+      "uiLoc": null,
+      "templateSharePercent": null
+    },
+    "baseline": {
+      "repository": null,
+      "completedCommit": null,
+      "backendLoc": null,
+      "uiLoc": null,
+      "templateSharePercent": null
+    }
+  },
+  "sharedPlanningUsage": {
+    "coverage": "unavailable",
+    "modelId": null,
+    "inputTokens": null,
+    "outputTokens": null,
+    "costUsd": null,
+    "reason": "Exact runtime model identity and provider usage counters were not exposed for this planning unit. Do not infer zero usage or a model snapshot."
+  }
+}

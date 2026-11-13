@@ -40,3 +40,60 @@ I asked several frontier AI models to research the business idea. Their semi-slo
 ## Future moves
 
 Qrwty can still serve as a guinea pig for a software design generation project I'm working on - if a large chunk of the infrastructure can be generated well for a service like this, then great. Further exploration would (hopefully) not take as much time.
+
+## Production build experiment
+
+The [phased build plan](docs/plans/production-build/README.md) defines a public link/QR service
+with anonymous quick links, account-owned management and analytics, a real cloud deployment and
+two comparable implementations: [with Jeeves](docs/plans/production-build/units.md) and
+[without Jeeves](docs/plans/production-build/baseline-units.md).
+
+**Status: planning only.** The application has not been generated, built or deployed. The first
+application phase saves the architecture in Jeeves before generating into this repository.
+The drawing below is a proposed Excalidraw explanation, not a saved Jeeves diagram or runtime
+verification. The actual Jeeves diagram and export will be linked here when Q01–Q02 complete.
+
+![Proposed QRWTY system: public redirects, anonymous/account operations and isolated click analytics](docs/diagrams/system-overview.svg)
+
+[Editable Excalidraw](docs/diagrams/system-overview.excalidraw) ·
+[Guest ownership](docs/diagrams/guest-ownership.svg) ·
+[Redirect failures](docs/diagrams/redirect-failure.svg) ·
+[Cloud deployment](docs/diagrams/cloud-deployment.svg) ·
+[All diagram sources](docs/diagrams/README.md)
+
+The [cloud strategy](docs/plans/production-build/cloud-strategy.md) proposes Cloudflare plus
+managed regional services and separates launch, large-service load proof and regional recovery.
+The [UI brief](docs/plans/production-build/design-brief.md) calls for an original, restrained
+Liquid Glass interface, with owner review before full UI implementation.
+
+### Source and effort measurement
+
+Counts are pending, rather than estimated. Backend and UI are deliberately separate. “Template
+share” measures retained generated backend source, not the percentage of the whole product or
+the time saved. [Counting and comparison protocol](docs/plans/production-build/comparison.md) ·
+[Machine-readable status](docs/benchmarks/status.json)
+
+| Source measure | Jeeves-assisted QRWTY | Independent QRWTY |
+| --- | ---: | ---: |
+| Untouched reusable generated backend baseline LOC | Not generated | Not applicable |
+| Retained generated backend LOC | Not measured | Not applicable |
+| Backend LOC written after generation / independently | Not measured | Not measured |
+| Removed or replaced baseline LOC | Not measured | Not applicable |
+| Final backend production LOC | Not measured | Not measured |
+| Template share of final backend | Not measured | Not applicable |
+| UI source LOC (JS/TS, CSS and markup subtotals) | Not built | Not built |
+| Product SQL / infrastructure / scripts / tests | Separate counts pending | Separate counts pending |
+
+| Effort and outcome | Jeeves-assisted QRWTY | Independent QRWTY |
+| --- | --- | --- |
+| Exact models and execution settings | To be pinned | Same controlled settings |
+| Model requests, prompts and tokens | Recording protocol defined; no build run | Recording protocol defined; no build run |
+| Template development / application / UI effort | Separate totals pending | Independent effort pending |
+| Human review time and failed attempts | To be recorded | To be recorded |
+| Provider-reported / estimated model cost | Pending, distinguished | Pending, distinguished |
+| Proven traffic tier / cloud cost | Not deployed | Not deployed |
+| Recovery, security and maintenance-change results | Not run | Not run |
+
+The plan includes [questions for the owner](docs/plans/production-build/README.md#owner-steering-questions)
+on budgets, cloud/geography, guest-link permanence, analytics durability, release scope and the
+comparison model. Existing research above remains background; it is not the release checklist.

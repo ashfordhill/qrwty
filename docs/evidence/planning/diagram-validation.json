@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-13",
+  "renderer": "@excalidraw/excalidraw@0.18.0",
+  "node": "v24.21.0",
+  "playwright": "1.63.0",
+  "viewport": {
+    "width": 1600,
+    "height": 1200
+  },
+  "results": [
+    {
+      "name": "system-overview",
+      "elements": 52,
+      "reopened": true,
+      "mouseDrag": true,
+      "pageErrors": [],
+      "assets": {
+        "excalidraw": {
+          "bytes": 47537,
+          "sha256": "248cf90da0fd7ff941ac144bc09a26b4e5244f4f7f14762de1c7d8448a167fa7"
+        },
+        "svg": {
+          "bytes": 51041,
+          "sha256": "153a9a84d1fbb76852adeaadf3b3179111c5d5bd1b69f4abc7a16fb9e5beb485"
+        },
+        "png": {
+          "bytes": 338796,
+          "sha256": "163e0a5f56e411e72d64acc9e7139103276fcc911766dd4a23cb78aa4a30832f"
+        }
+      }
+    },
+    {
+      "name": "guest-ownership",
+      "elements": 37,
+      "reopened": true,
+      "mouseDrag": true,
+      "pageErrors": [],
+      "assets": {
+        "excalidraw": {
+          "bytes": 33920,
+          "sha256": "6c7d00bd346383dcdf550dc98054ea830496baffa8999cf560802949f16c965a"
+        },
+        "svg": {
+          "bytes": 40248,
+          "sha256": "9e6cff86a749e242b9d844f0c1a57b0483387a2b37b52504abe125cdd88c2b6c"
+        },
+        "png": {
+          "bytes": 291288,
+          "sha256": "5a36f2b2720cfdddf038451f6a54aafaab375795bc790750f6fc92abbd020151"
+        }
+      }
+    },
+    {
+      "name": "redirect-failure",
+      "elements": 39,
+      "reopened": true,
+      "mouseDrag": true,
+      "pageErrors": [],
+      "assets": {
+        "excalidraw": {
+          "bytes": 36035,
+          "sha256": "5e2ff58d10faff14d62db0df18324c92a179d646728372d3da6d0877f068d4cd"
+        },
+        "svg": {
+          "bytes": 42971,
+          "sha256": "3536616e4f115dc21b804788e393bce9383ca1d71226ec648fd4f01cb9c05547"
+        },
+        "png": {
+          "bytes": 315679,
+          "sha256": "9e071c12110d6b1f6dbcb8f8079f6a470e949abaa7506e049fe6e3d271f75f1a"
+        }
+      }
+    },
+    {
+      "name": "cloud-deployment",
+      "elements": 45,
+      "reopened": true,
+      "mouseDrag": true,
+      "pageErrors": [],
+      "assets": {
+        "excalidraw": {
+          "bytes": 41627,
+          "sha256": "6446cc812ccff6165494cdd4f034d11306206ddb347211ad36fbc5167f65c300"
+        },
+        "svg": {
+          "bytes": 46812,
+          "sha256": "29f0e2cb6cbff7b1dbcbb51260290f8abac417899995e8070ca20cb8fade2dc8"
+        },
+        "png": {
+          "bytes": 332927,
+          "sha256": "0f7c4472b9050af907bcbc8e0ee49000f3449b4ecebd62f5f2c51677335676b6"
+        }
+      }
+    }
+  ]
+}
