@@ -1,4 +1,4 @@
-# QRWTY-driven generator gaps: QG01–QG16
+# QRWTY-driven generator gaps: QG01–QG20
 
 **Status:** proposed 2026-11-14 by QRWTY unit Q03 (arm A) from Jeeves at `59bfbc6` (SO08),
 registry `08e0c945…d322d`. Written from the code and from probes of generated output
@@ -8,34 +8,46 @@ coordinator copies each unit into Jeeves as its own plan (suggested folder
 Jeeves agent. That agent works under Jeeves's `AGENTS.md`, does only its unit, commits it and
 stops. All of this work is charged to QRWTY arm A's template-development ledger.
 
+**Amended** 2026-11-14 by Q03b from the [Q03 review](../../evidence/q03/review.md): QG06 (R3),
+QG07's owner decision (R9), QG10 (R8), QG12 (R1) and the new units QG17–QG20. The readings
+this needed are in [Q03b notes](#q03b-notes).
+
 ## Order and status
 
-Numbered in dependency order. "Local" means needed before QRWTY's local build can pass (Q04/Q05
-and the product units named); "cloud" means needed only for managed services (Q12a/Q13);
-"deferred" means not needed now, with the reason.
+QG01–QG16 are numbered in dependency order; QG17–QG20 come from the Q03 review and continue the
+numbers. "Local" means needed before QRWTY's local build can pass (Q04/Q05 and the product units
+named); "cloud" means needed only for managed services (Q12a/Q13); "deferred" means not needed
+now, with the reason. "Assign now?" is the review's section 5, with the amendments it asked for
+applied.
 
-| Unit | Title | Status | Depends | Jeeves owner decision first | QRWTY units waiting |
-| --- | --- | --- | --- | --- | --- |
-| QG01 | Route stubs see the exact request bytes and send repeated headers | Local | — | No | Q07, Q10a |
-| QG02 | The application's own Compose override is a documented seam | Local | — | No | Q06–Q10b, Q12 |
-| QG03 | The application owns its package dependencies | Local | — | **Yes** | Q10a |
-| QG04 | Stub caches use the bounded Valkey client | Local | — | Minor (startup rule) | Q04, Q08 |
-| QG05 | The application image runs as a non-root user | Local | — | No | Q04 |
-| QG06 | Store and tile endpoints come from the environment | Local | — | **Yes** (D1) | Q04 |
-| QG07 | Pub/Sub channels and stub publishers | Local | QG06 | Minor (pins) | Q04, Q08 |
-| QG08 | Stub loops consume Pub/Sub subscriptions | Local | QG07 | No | Q04, Q10 |
-| QG09 | Generated-system tests for Pub/Sub channels | Local | QG08 | No | Q04 |
-| QG10 | Verified TLS bindings and an insecure-endpoint refusal | Local (R01 runs it locally) | QG06, QG07 | No | Q04, Q12 |
-| QG11 | The sign-in audience comes from the environment | Cloud | QG06 | No | Q12a |
-| QG12 | Migrations run with a non-superuser admin, one at a time | Cloud | — | No | Q12a, Q13 |
-| QG13 | Database stubs get a scoped transaction | Deferred: one-statement product SQL functions are atomic today (probe `/fn`) | — | — | — |
-| QG14 | A scheduled trigger for Worker stubs | Deferred: QRWTY uses authenticated scheduled owner calls with leases | — | Yes | — |
-| QG15 | Per-route exposure on a public tile | Deferred: QRWTY moves internal routes to an internal tile and owns its edge | — | Yes | — |
-| QG16 | Startup with a lost broker or publisher, and a bounded drain | Deferred: Jeeves BR plan left startup to a later owner decision; QG04 removes the observed drain hang | QG04, QG07 | **Yes** | — |
+| Unit | Title | Status | Depends | Jeeves owner decision first | QRWTY units waiting | Assign now? |
+| --- | --- | --- | --- | --- | --- | --- |
+| QG01 | Route stubs see the exact request bytes and send repeated headers | Local | — | No | Q07, Q10a | Yes |
+| QG02 | The application's own Compose override is a documented seam | Local | — | No | Q06–Q10b, Q12 | Yes |
+| QG03 | The application owns its package dependencies | Local | — | **Yes** | Q10a | After owner decision 1; not on the critical path (`.jeeves/overrides.json` serves Q10a meanwhile) |
+| QG04 | Stub caches use the bounded Valkey client | Local | — | Minor (startup rule) | Q04, Q08 | After owner decision 3, either answer (a no drops invariant 2) |
+| QG05 | The application image runs as a non-root user | Local | — | No | Q04 | Yes |
+| QG06 | Store and tile endpoints come from the environment | Local | — | **Yes** (D1) | Q04 | After owner decision 2 (R3 applied) |
+| QG07 | Pub/Sub channels and stub publishers | Local | QG06 | No (pins are a note) | Q04, Q08 | After QG06 |
+| QG08 | Stub loops consume Pub/Sub subscriptions | Local | QG07 | No | Q04, Q10 | After QG07 |
+| QG09 | Generated-system tests for Pub/Sub channels | Local | QG08 | No | Q05 (not Q04's start) | After QG08 |
+| QG10 | Verified TLS bindings and an insecure-endpoint refusal | Local (R01 runs it locally) | QG04, QG06, QG07 | No | Q04, Q12 | After QG04, QG06 and QG07 (R8 applied) |
+| QG11 | The sign-in audience comes from the environment | Cloud | QG06 | No | Q12a | Yes (cloud) |
+| QG12 | Migrations run with a non-superuser admin, one at a time | Cloud | — | No | Q12a, Q13 | Yes (cloud; R1 applied) |
+| QG13 | Database stubs get a scoped transaction | Deferred: one-statement product SQL functions are atomic today (probe `/fn`) | — | — | — | No (deferred) |
+| QG14 | A scheduled trigger for Worker stubs | Deferred: QRWTY uses authenticated scheduled owner calls with leases | — | Yes | — | No (deferred) |
+| QG15 | Per-route exposure on a public tile | Deferred: QRWTY moves internal routes to an internal tile and owns its edge | — | Yes | — | No (deferred) |
+| QG16 | Startup with a lost broker or publisher, and a bounded drain | Deferred: Jeeves BR plan left startup to a later owner decision; QG04 removes the observed drain hang | QG04, QG07 | **Yes** | — | No (deferred) |
+| QG17 | Database calls settle while PostgreSQL stalls | Local (before Q04, with QG04) | — | No | Q04 | Yes |
+| QG18 | A client-side query timeout counts as unreachable | Local, after the owner | QG17 | **Yes** (store-outage Decision) | — (the review names none) | After the owner's answer (decision 6) |
+| QG19 | The admission's 503 answers carry `Retry-After` | Local | — | No | — (the review names none) | Yes |
+| QG20 | External API and Identity tiles give stubs a configured HTTP client | Local, after the owner | QG06 | **Yes** | Q07, Q09, if confirmed | After the owner's answer (decision 7); before Q07/Q09 if yes |
 
-QG01–QG06 and QG12 are independent and can run in any order; the Pub/Sub chain QG06 → QG07 →
-QG08 → QG09 is the longest. Landing QG11 and QG12 before QRWTY's Q05 baseline freeze avoids a
-later regeneration of the frozen baseline.
+QG01–QG06, QG12, QG17 and QG19 are independent and can run in any order; QG10 waits for QG04,
+QG06 and QG07, QG18 for QG17, and QG20 for QG06; the Pub/Sub chain QG06 → QG07 → QG08 → QG09 is
+the longest. QG17 lands before Q04, with QG04. QG09 is required before Q05's freeze, not before
+Q04's start. Landing QG11 and QG12 before QRWTY's Q05 baseline freeze avoids a later
+regeneration of the frozen baseline.
 
 ## Why
 
@@ -62,9 +74,17 @@ the probes found, each as small as one fresh agent can finish.
    Toxiproxy faults and same-image promotion stay blocked).
 3. **QG04:** a stub's cache that is down at startup no longer stops the process, as PF07 decided
    for the cache read. Confirm, or keep the stub probe fatal (QG04 then drops its invariant 2).
-4. **QG07:** the Pub/Sub SDK and emulator pins below are the ones QRWTY's neutral oracle uses;
-   they enter every export's lock file (like `hls.js` today).
+4. **QG07 (a note, not a decision):** pins follow the existing convention; every provider SDK
+   already ships in each export. The Pub/Sub SDK and emulator pins below are the ones QRWTY's
+   neutral oracle uses; they enter every export's lock file (like `hls.js` today).
 5. **QG14–QG16:** deferred; each needs a decision before it is planned in detail.
+6. **QG18:** `Query read timeout` (QG17's client-side bound) joins the store-outage Decision's
+   list of unreachable errors, so a worker whose database stalls keeps its attempt; a stall that
+   never ends then cycles for ever, as any outage does under the Decision. Confirm, or keep the
+   list as it is.
+7. **QG20:** an External API or Identity link gives a stub a real HTTP client, with the base URL
+   from the environment, instead of today's `unavailable` proxy. Confirm, or keep product
+   `fetch` adapters (Q03's remedy; nothing then changes).
 
 ## Not in this plan
 
@@ -77,6 +97,7 @@ the probes found, each as small as one fresh agent can finish.
 | Batch delivery to loop stubs, event-counter receipt retention | Capacity work (QRWTY Q15); the counter limit stays a Jeeves known limit |
 | A UI for generated applications | Outside Jeeves |
 | Unused generated material (FFmpeg stages, unused dependencies) | No correctness effect; QRWTY's Q05 reports it as unused |
+| RabbitMQ TLS | QRWTY has no broker after QG07; QG10's TLS bindings are for databases and caches only |
 
 ## Rules for every unit
 
@@ -411,8 +432,9 @@ is `HOT_ROUTES`):
 | Another application tile a stub calls | `JEEVES_TILE_<ID>_URL` | `http://app-<id>:3000` |
 
 **Validation**, when a client is built and before any probe: a host is 1–253 characters of
-`[A-Za-z0-9.-]` (the cache read's stricter existing check in `createValkeyCache` stays), or for
-a database an absolute path (a Unix socket directory, as `pg` reads it);
+`[A-Za-z0-9.-]` (`createValkeyCache`'s check becomes this same rule, since QG04 routes stub
+caches through it), or for a database an absolute path (a Unix socket directory, as `pg` reads
+it);
 a port is an integer 1–65535; a URL is absolute `http:` or `https:` with no credentials, query or
 fragment. Missing or invalid: startup fails with `Invalid endpoint <variable name>` (never the
 value) through the existing `startup-failed` line.
@@ -422,6 +444,8 @@ value) through the existing `startup-failed` line.
   (`databaseClient`, the broker binding, `cacheClient`, `httpTarget`)
 - `jeeves-generator/templates/local-v2/assets/src/features/service-resources.ts.template`
   (`pool()` and the broker binding of mounted templates)
+- `jeeves-generator/templates/local-v2/assets/src/runtime/valkey.ts.template`
+  (`createValkeyCache`'s host check)
 - `jeeves-generator/src/v2/http-wiring.ts` (the cache read's Valkey binding), `client-wiring.ts`
   (`httpTarget(...)` calls), `local.ts` (each `app-*` service's `environment`: exactly the
   variables its process reads), `tile-processes.ts` (the report)
@@ -442,9 +466,10 @@ the environment. No code path falls back to a compiled host. Setup scripts keep 
 reads, sorted; the generated README lists them per process.
 
 **Emitted output.** With processes on: `src/runtime/module-clients.ts`, `src/processes/*.ts`,
-`src/features/service-resources.ts`, `compose.yaml`, `README.md`, `.jeeves/report.json`. Pinned
-(processes off): `src/features/service-resources.ts`, `compose.yaml`, `README.md`,
-`.jeeves/report.json`, `.jeeves/manifest.json`; any other: stop.
+`src/features/service-resources.ts`, `src/runtime/valkey.ts` (where an export has it),
+`compose.yaml`, `README.md`, `.jeeves/report.json`. Pinned (processes off):
+`src/features/service-resources.ts`, `src/runtime/valkey.ts` (frozen-v2, v2-module-design),
+`compose.yaml`, `README.md`, `.jeeves/report.json`, `.jeeves/manifest.json`; any other: stop.
 
 **Offline tests.** `databaseClient` with `JEEVES_DATABASE_LINKS_HOST=db.internal` and
 `_PORT=6432` passes them to `createPostgres` (fake); missing → rejects `Invalid endpoint
@@ -656,7 +681,7 @@ as SO02 did. **Commit:** `QG09: generated-system tests for Pub/Sub channels`.
 requires a refusal for disabled TLS verification and for an emulator endpoint; its effect is in
 cloud (Memorystore in-transit encryption, Cloud SQL over a private address, `https` for tiles and
 the issuer).
-**Depends:** QG06, QG07.
+**Depends:** QG04, QG06, QG07.
 
 **Goal:** a database or cache binding can require verified TLS with a given CA, and one switch
 makes a process refuse any plain-text or emulator endpoint at startup.
@@ -750,19 +775,28 @@ script's text (where `migrate.mjs` is already read, for example `product-sql.tes
 2. Read `rolsuper` of `current_user` once. When false, after creating each database owner role
    (and for an owner role that already exists), run `GRANT <owner> TO CURRENT_USER WITH INHERIT
    FALSE, SET TRUE` (PostgreSQL 16+ syntax; the pinned server is 17.11), quoted with `quote`.
-3. Nothing else changes: roles, databases, grants, files, history, messages.
+3. Run `REVOKE ALL ON DATABASE … FROM PUBLIC` and each `GRANT CONNECT ON DATABASE … TO <login>`
+   as the owner: on the admin connection `SET ROLE <owner>` before them and `RESET ROLE` after
+   (quoted with `quote`), so a non-superuser admin's statements are not warnings.
+4. Nothing else changes: roles, databases, grants, files, history, messages.
 
 **Invariants.** A superuser admin behaves exactly as today; a non-superuser CREATEDB CREATEROLE
 admin completes; two concurrent first runs both exit 0; a repeat applies nothing new; `INHERIT
-FALSE` keeps the owners' privileges away from the admin's own session.
+FALSE` keeps the owners' privileges away from the admin's own session; after a non-superuser
+run, `has_database_privilege(current_user, <db>, 'CONNECT')` is false and `pg_database.datacl`
+has no PUBLIC (`=`) entry.
 
 **Emitted output.** `scripts/migrate.mjs` (all three pins) and `.jeeves/manifest.json`.
-**Offline test:** the emitted script holds the lock and the conditional grant (fails before).
+**Offline test:** the emitted script holds the lock and the conditional grant, and runs the
+database-level `REVOKE` and `GRANT CONNECT` between `SET ROLE <owner>` and `RESET ROLE` (fails
+before).
 **Required regressions:** check, e2e, build; Docker phase `--suite=core` and
 `--suite=regeneration` (setup and update in place).
 **Docker proof:** QRWTY's Q03 steps (`docs/evidence/q03/commands/README.md` step 14) against the
-new script: the non-superuser run passes without a manual grant; two concurrent first runs both
-pass; a third applies nothing.
+new script: the non-superuser run passes without a manual grant, and after it every database's
+`datacl` has no PUBLIC (`=`) entry and `has_database_privilege(<admin>, <db>, 'CONNECT')` is
+false (exit codes alone don't show this); two concurrent first runs both pass; a third applies
+nothing.
 **Commit:** `QG12: migrations run with a non-superuser admin, one at a time`.
 
 ---
@@ -802,3 +836,158 @@ bounds a drain in production. **If needed:** a publisher or consumer that can't 
 logs `unavailable` and keeps retrying every 5 s instead of failing startup (requests that publish
 answer 503 meanwhile), and `runProcess` ends a drain after a fixed bound with a `drain-failed`
 line. Needs the owner's decision.
+
+---
+
+## Units from the Q03 review: QG17–QG20
+
+Copied verbatim from the [Q03 review](../../evidence/q03/review.md), section 6. In them, "the
+review" and "this review" mean that report; its section 2 holds the stalled-PostgreSQL probe.
+They follow this plan's Rules and Regeneration proof. QG17 and QG19 are ready. **QG18 and QG20
+need the Jeeves owner first** (decisions 6 and 7).
+
+### QG17 — Database calls settle while PostgreSQL stalls (ready; local, before Q04)
+
+**Goal:** a stub's or template's query on a connection whose server has stopped answering
+rejects within a fixed bound, the pool discards that connection, and a drain no longer waits on
+it. **Found (review).** With `docker pause` on PostgreSQL and one warm pooled connection,
+`SELECT 1` on the generated options is still pending after 12 s and `pool.end()` after 5 s;
+`statement_timeout` is enforced by the server, which is frozen. With pg's `query_timeout: 2500`
+the query rejects `Query read timeout` at 2.5 s, pg-pool removes the client (`_release` with an
+error → `_remove`), and `pool.end()` resolves at once.
+**Files.** `templates/local-v2/assets/src/runtime/postgres.ts.template` (one option);
+`src/v2/module-clients.test.ts` or the test that asserts `createPostgres`'s options (if none
+reads the emitted file, add one as SO01's `composition.test.ts` test does); `jeeves-generator/README.md`
+(the sentence on a stub's database client's deadlines); `docs/studio.md` if it names the
+statement timeout; `docs/template-gaps.md` Known limits: SO03's "a stalled (not stopped)
+database" item becomes a row "Fixed in QG17" (add the row if the review's item was never copied).
+**Invariants.** 1. `createPostgres` passes `query_timeout: options.statementTimeoutMs + 500` to
+`pg.Pool`, so a healthy server's `statement_timeout` (SQLSTATE `57014`) still wins and the client
+bound fires only when no reply comes. 2. Nothing else about the pool changes (`max`,
+`connectionTimeoutMillis`, `statement_timeout`, the `error` listener callers add). 3. Both
+callers (`databaseClient` in `module-clients.ts.template`, `pool()` in
+`service-resources.ts.template`) get it through `createPostgres`; neither is edited.
+4. `migrate.mjs` and the setup scripts are unchanged (long migrations are legitimate).
+**Emitted output.** `src/runtime/postgres.ts` (pinned: frozen-v2, v2-module-design) and
+`.jeeves/manifest.json`; any other: stop.
+**Offline tests.** The emitted `postgres.ts` passes `query_timeout` equal to the statement timeout
+plus 500 (fails before); with a fake `pg.Pool` constructor the option value is 2500 for
+`statementTimeoutMs: 2000`.
+**Required regressions:** check, e2e, build; Docker phase `--suite=core`, `--suite=faults`
+(SO02's database row must still pass: a **stopped** server reports `57P01`/`ECONNRESET`, which is
+unchanged). **Docker proof:** the probe export built; a scratch PostgreSQL 17.11 (pinned digest);
+`node` script on the built `dist/runtime/postgres.js` as this review's: warm one connection,
+`docker pause`, a query rejects `Query read timeout` within 3 s, `pool.totalCount` is 0,
+`pool.end()` resolves within 1 s; `docker unpause`; remove the container by name. **Limit to
+record:** pg destroys the stalled socket only in pipeline mode; otherwise the discarded client's
+socket closes when the network recovers (FIN) or TCP gives up, so sockets can accumulate during a
+long stall and return to baseline after it.
+**Commit:** `QG17: database calls settle while PostgreSQL stalls`.
+
+### QG18 — A client-side query timeout counts as unreachable (needs the owner)
+
+**Why the owner:** it adds to the store-outage Decision's list, as SO05 said of SO06. **Goal:**
+`unreachable()` in `delivery.ts.template` answers true for an error whose message is exactly
+`Query read timeout` (pg's client-side timeout, QG17), so a worker whose database stalls waits 5 s
+and keeps the attempt instead of spending its retries. **The catch for the owner:** a stall that
+never ends then cycles for ever, as any outage does under the Decision; a query that is merely
+slow (over 2.5 s but under the server's `statement_timeout`) is not affected because the server's
+`57014` comes first. **Files:** `delivery.ts.template`; `src/v2/primitives.test.ts` (true for
+`new Error("Query read timeout")`, false for `new Error("Query read timeout exceeded")` and for a
+`NonRetryable` wrapping it); pins `.jeeves/manifest.json`, `src/runtime/delivery.ts`;
+`docs/plans/store-outage/units.md` Decision (one bullet, in the owner's words);
+`jeeves-generator/README.md`'s list of what counts as unreachable. **Checks:** check, e2e, build;
+`--suite=faults`. **Commit:** `QG18: a client-side query timeout counts as unreachable`.
+
+### QG19 — The admission's 503 answers carry `Retry-After` (ready; local)
+
+**Goal:** the three 503s the generated runtime answers on its own (`UNAVAILABLE` while not
+accepting, `OVERLOADED` at the concurrency limit, `DEADLINE` at the request timeout) carry
+`Retry-After: 1`, so a client's bounded retry needs no product code; a stub's own 503 keeps its
+own value. **Found (Q03 F23, review R6).** `createAdmission` throws `HttpError`s and
+`createHttpService`'s error handler sends `{ error, message }` with no header; durable-clicks
+requires a bounded `Retry-After` on every failure path including "exhausted capacity", which a
+stub cannot shape. **Files.** `templates/local-v2/assets/src/runtime/http.ts.template`
+(`setErrorHandler`: when `error instanceof HttpError && error.statusCode === 503`, set
+`Retry-After` to `"1"` unless the reply already has one); tests in `src/v2/tile-processes.test.ts`
+(the block that loads the emitted `http.ts`): a handler that never resolves → 503 `DEADLINE` with
+`retry-after: 1`; a route called while not accepting → 503 `UNAVAILABLE` with it; a 503 thrown by
+a handler as `HttpError(503, …)` also gets it; a 404 and a 400 do not. Docs:
+`jeeves-generator/README.md` where the three codes are listed. **Invariants.** Status codes,
+bodies and the `Cache-Control: no-store` hook are unchanged; the value is fixed (one second).
+**Emitted output.** `src/runtime/http.ts` (pinned) and `.jeeves/manifest.json`.
+**Required regressions:** check, e2e, build; `--suite=wiring`. **Commit:** `QG19: the admission's
+503 answers carry Retry-After`.
+
+### QG20 — External API and Identity tiles give stubs a configured HTTP client (needs the owner)
+
+**Why the owner:** today an External API or Identity link gives a stub an `unavailable` proxy by
+design ("isn't provisioned locally", "an Identity isn't provisioned for stubs"); this makes both
+real clients, with the base URL from the environment. Confirm, or keep product `fetch` adapters
+(Q03's remedy; nothing then changes). **Goal:** for a stub's link to an External API tile,
+`dependencies[...].<slot>` is `httpTarget`-like with base `JEEVES_EXTERNAL_<ID>_URL` (required,
+validated as QG06 validates a URL; QG10's `https:` refusal applies), **without** the internal-call
+mark (an outside call keeps the normal retries, SO04); for a link to the Identity tile, base
+`OIDC_ISSUER` (already in the guarded tile's environment; QG06 adds it to a stub tile that links
+the Identity) **with** the mark (a provisioned service is waited out). **Depends:** QG06.
+**Files.** `module-clients.ts.template` (an `externalTarget(base)` beside `httpTarget`, no mark;
+`httpTarget` unchanged), `src/v2/client-wiring.ts` (the `identity` and `external-api` branches:
+emit the targets instead of `unavailable`; the Identity branch keeps `unavailable` only when the
+design has no Identity binding), `src/v2/local.ts` (Compose `environment`: nothing for an External
+API locally — the value is the application's, through `compose.override.yaml`, so startup fails
+`Invalid endpoint JEEVES_EXTERNAL_<ID>_URL` until it is set; `OIDC_ISSUER` for a stub tile linking
+the Identity), `tile-processes.ts` (report: `stores[].provisioned` text for both),
+tests `client-wiring.test.ts`, `module-clients.test.ts`, docs (`jeeves-generator/README.md`
+Provisioning for stubs table; `docs/studio.md`; `docs/template-gaps.md`: GS09's "no installed
+external-API client" row, if present, becomes Fixed). **Invariants.** A stub with no such link is
+unchanged; the `unavailable` proxy stays for CDN tiles and for an application tile that runs no
+process; `request(path, init)` passes `init` through so a stub can bound a call with
+`AbortSignal.timeout`; no credential is read by the client (the stub adds its own header from a
+`SECRET_DIR` file). **Emitted output.** `src/runtime/module-clients.ts`, the linking process files,
+`compose.yaml`, `README.md`, `.jeeves/report.json`; pinned paths: none expected (processes off);
+if `processes-off.test.ts` fails, Rule 7. **Offline tests.** The probe fixture's `front.ts` has
+`externalTarget(...)` for `provider` and the marked target for `identity` instead of
+`unavailable`; `externalTarget` does not set the mark on a rejected `fetch`; startup with the
+variable unset fails naming it. **Required regressions:** check, e2e, build; `--suite=wiring`.
+**Regeneration proof:** shared; in `after-probe`, `…/front-probe/provider` with
+`JEEVES_EXTERNAL_PROVIDER_URL` pointing at a loopback server answers that server's status instead
+of 501. **Commit:** `QG20: External API and Identity tiles give stubs a configured HTTP client`.
+
+---
+
+## Q03b notes
+
+The readings Q03b needed where the review's section 6 left a choice. Nothing else the review
+says was turned into an amendment.
+
+- **Commit name.** The assignment packet's name is used; section 6 suggested `Q03b: amend the QG
+  briefs from the review`.
+- **QG07 is not split.** The review calls the split optional ("consider QG07a/QG07b", R9;
+  "optional split", section 5), and its Q03b steps neither split QG07 nor write the two briefs,
+  so QG07's brief is unchanged. If the coordinator splits it when copying, the review's line is
+  QG07a for the control and export plumbing and QG07b for the publisher runtime (section 3.4).
+- **Where R9 lands.** QG07's brief never names the owner decision, so R9 changes only decision 4
+  (now a note; its number is kept so decisions 1–3 and 5 keep theirs) and the Order table.
+- **R3's emitted output.** Section 6 adds `valkey.ts.template` to QG06's Files only. Editing it
+  changes the emitted `src/runtime/valkey.ts`, which is pinned in frozen-v2 and
+  v2-module-design (Jeeves `jeeves-generator/src/v2/fixtures/processes-off.json` at `59bfbc6`),
+  so QG06's Emitted output lists that file too; without it the shared regeneration proof would
+  stop QG06 on its own change. The review adds no offline test for the relaxed rule; a cache
+  host `10.1.2.3` being accepted is the obvious one.
+- **R8's "Not in this plan".** QG10 has no section of that name, so the RabbitMQ TLS row is in
+  this plan's shared table, which every QG agent reads (Rule 1).
+- **R1 with a superuser admin.** Step 3 applies to every admin, as section 6 writes it.
+  PostgreSQL performs a superuser's GRANT or REVOKE as though the object's owner had issued it,
+  so a superuser run leaves today's ACL and "a superuser admin behaves exactly as today" holds.
+- **Decisions 6 and 7.** The headings of QG18 and QG20 say they need the owner. The Decisions
+  section lists them too, in their briefs' words, because Rule 1 sends every agent there.
+- **Order table.** QG18 depends on QG17: the review names no dependency, but the error QG18
+  classifies exists only once QG17 sets `query_timeout`. The review names no waiting QRWTY unit
+  for QG18 or QG19, so the column says that instead of guessing one. For QG20, section 5 says
+  "before Q07/Q09" and section 6 "before Q07"; the table follows section 5 (Q07 uses the Identity
+  link, Q09 the reputation adapter's External API). QG09 now waits on Q05, not Q04 (sections 3.4
+  and 5).
+- **Not done here.** R7 (F22 is a Jeeves limit, class J) and R11 (cite GS09's external-API gap,
+  SO03's open item 3 and PF review follow-up 10; the oracle adapter must not recover a copy with
+  `pnpm start`) are for when the coordinator copies briefs into Jeeves. Section 6 gives Q03b no
+  step for them, and F22's class in `capabilities.md` stays Q03's record.

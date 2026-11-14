@@ -390,3 +390,38 @@ its amendment; the rest in Q03's order after their decisions.
 **Evidence and cleanup.** Scratch only; container `q03r-pg` removed by name with its volume;
 Docker inventory equal before and after; no Jeeves file or project changed; no secret printed.
 Writes: the report and this entry.
+
+## 2026-11-14 (UTC) — Q03b: apply the capability review's amendments to the Jeeves gap briefs
+
+Arm A, Q03b, attempt 1 (ledger `a-0447`, role repair), from QRWTY `c2a2339`. Jeeves `59bfbc6` was
+read only, to confirm `migrate.mjs` lines 41 and 46, `valkey.ts.template` line 17 and the pins of
+`src/runtime/valkey.ts`. No Jeeves file or project changed.
+
+**Changed.** [jeeves-gaps.md](plans/production-build/jeeves-gaps.md) only. **R1**, QG12: a new
+step 3 runs the database-level `REVOKE … FROM PUBLIC` and `GRANT CONNECT` as the owner (`SET ROLE`
+… `RESET ROLE`), old step 3 is now 4, plus the ACL invariant, the offline test of the `SET ROLE`
+lines and the Docker proof's ACL assertion. **R3**, QG06: `createValkeyCache`'s check becomes QG06's
+host rule; `valkey.ts.template` added to Files, and `src/runtime/valkey.ts` to Emitted output (it
+is pinned in frozen-v2 and v2-module-design). **R8**, QG10: Depends is QG04, QG06, QG07; the shared
+"Not in this plan" table gains RabbitMQ TLS. **R9**, decision 4 (QG07's pins) is a note; QG07 is
+not split (the review calls the split optional). QG17–QG20 appended byte for byte from review §6;
+QG18 and QG20 are owner decisions 6 and 7. The Order table gains the four rows and an "Assign
+now?" column from review §5. The readings this needed are in the file's "Q03b notes".
+
+**Checks.** Briefs that the review doesn't name (QG01–QG05, QG08, QG09, QG11, QG13–QG16) and QG07's
+brief are byte-identical to `c2a2339` (a per-section comparison of HEAD and the working tree);
+QG17–QG20 equal review lines 252–357; `git diff --check` clean; the file's six links resolve;
+ledger `validate` OK.
+
+**Notes.** R7: F22 (the generated edge rewrites `Host` and passes `X-Forwarded-For`) is a Jeeves
+limit (J), not product policy; `capabilities.md` keeps Q03's Q, and the coordinator should record it
+as J when copying the briefs (with R11's citations). Where the Order table and `capabilities.md` §5
+now differ: §5 puts QG09 before Q04, but the table puts it before Q05 and not before Q04's start
+(review §3.4, §5); §5 has no QG17–QG20, but the table puts QG17 before Q04 and QG20 before Q07/Q09
+if confirmed; §5's owner decisions are QG03, QG06 and QG16, but the table also marks QG14, QG15,
+QG18 and QG20, QG04 as minor, and QG07 no longer. Two differences predate Q03b: §5 says Q06 needs
+QG01's types, and Q13 needs QG11, but the table lists neither. The packet's commit name replaces
+the review's suggested `Q03b: amend the QG briefs from the review`.
+
+**Next.** The coordinator asks the Jeeves owner for decisions 1–3, 6 and 7. QG01, QG02, QG05,
+QG11, QG12, QG17 and QG19 can be assigned now.
