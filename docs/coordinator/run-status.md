@@ -52,15 +52,19 @@ Plan-level limits (5-hour and 7-day percentages) come from the status line.
 
 | QG01 | 2 (a1 blocked by the coordinator's fixture lint, fixed in Jeeves `8f46066`) | Jeeves `64d0d3b` | batch review QGR1 later | passed; `rawBody` on route stubs, array header values; 916 tests, e2e 74, wiring and identity suites pass; pins http.ts + manifest only |
 
+| N02 | 1 | `66cc867` (B `7bb9246`) | not a review point | passed; ledger R12 accepts a hash matching any committed version; pack v1.2 manifest `5414d6ef…054b`; installed in both arms |
+
+| B01 | 1+2 | baseline `e3be001` | B04/B05 reviews later | passed; 13 ADRs, 12 specs, 7 Excalidraw drawings rendered; a1 stopped on the R12 flaw, a2 finished after N02; usage imported (`caa61c2`) |
+
 ## Active attempt
 
-B01 running (dispatched after QG01); then QG02.
+QG02 next.
 
 ## Queue (next eligible first)
 
 1. Jeeves QG batch, no owner decision needed: QG01, QG02, QG05, QG11, QG12 (amended), QG17, QG19,
    each a fresh agent in Jeeves (plan `docs/plans/qrwty-gaps/units.md`, Jeeves `c2c8127`), then QGR1 (Fable review).
-2. B01 — independent architecture (B), interleaved after QG01. Pending owner decisions: QG03 (app owns package.json /
+2. B02 — runtime and cloud bindings locally (B), interleaved; B02 also updates B's AGENTS.md pack identity and verify:pack script to v1.2. Pending owner decisions: QG03 (app owns package.json /
    lockfile, or amend billing to node:crypto + fetch), QG06 (endpoints from environment, D1),
    QG04 (stub cache down at startup no longer stops the process), QG07 (Pub/Sub pins; the review says precedent settles it), QG18 (`Query read timeout` as unreachable), QG20 (env-configured HTTP client for External API/Identity tiles).
 3. Each arm adopts pack v1.1 (copy, verify, record the hash) before reporting any A/F/R/U row.
