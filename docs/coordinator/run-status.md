@@ -66,17 +66,17 @@ Plan-level limits (5-hour and 7-day percentages) come from the status line.
 
 | QG17 | 1 | Jeeves `fd1ea77` | QGR1 later | passed; pg `query_timeout` = statement timeout + 500 ms; stalled DB rejects at 2.5 s and `pool.end()` resolves; core 4/4, faults 5/5. Side effect: a stall now spends a worker attempt (QG18, owner decision 6, would count it as unreachable) |
 
-| B04 | 1 | baseline `14c773a` | Fable review next | passed (core); A05 7/7, A06 18/18, A14 6/6, A02/R03 still pass; A04 browser step, A07/A08, A15/F07 blocked by later units; remainder B04b (backup/restore commands, reapply-erasures job, restore gate) |
+| B04 | 1 | baseline `14c773a` | `d2f9c27` passed-with-findings (Fable): F1 medium (revoked sessions keep profile after deletion), F2–F6 low; proposed B04c (ready), scheduler + manifest freshness into B04b (ready), oracle A06 jar fix (shared pack) | passed (core); A05 7/7, A06 18/18, A14 6/6, A02/R03 still pass; A04 browser step, A07/A08, A15/F07 blocked by later units; remainder B04b (backup/restore commands, reapply-erasures job, restore gate) |
 
 ## Active attempt
 
-B04 review (Fable) next, then QG19, B04b, B05.
+QG19 next.
 
 ## Queue (next eligible first)
 
 1. Jeeves QG batch, no owner decision needed: QG01, QG02, QG05, QG11, QG12 (amended), QG17, QG19,
    each a fresh agent in Jeeves (plan `docs/plans/qrwty-gaps/units.md`, Jeeves `c2c8127`), then QGR1 (Fable review).
-2. B04 — sessions and ownership (B, Fable review after), interleaved. Pending owner decisions: QG03 (app owns package.json /
+2. B04c — deletion hardening (F1–F3 of the B04 review). 3. B04b — backup/restore commands, reapply-erasures job, restore gate, local scheduler for jobs, adapter manifest refreshed on `up`. 4. N03 — shared pack v1.3: fix oracle A06's cookie-jar reuse (F5), both arms adopt. 5. QG12, QG11, then QGR1. 6. B05 (redirect path; Fable review after). Pending owner decisions: QG03 (app owns package.json /
    lockfile, or amend billing to node:crypto + fetch), QG06 (endpoints from environment, D1),
    QG04 (stub cache down at startup no longer stops the process), QG07 (Pub/Sub pins; the review says precedent settles it), QG18 (`Query read timeout` as unreachable), QG20 (env-configured HTTP client for External API/Identity tiles).
 3. Each arm adopts pack v1.1 (copy, verify, record the hash) before reporting any A/F/R/U row.
