@@ -2,6 +2,11 @@
 
 Planning revision 3 · 2026-11-13 · **local build first; $0 new cloud/service spending now**.
 
+Execution entry: [detailed coordinator prompt](coordinator-prompt.md) for fresh sequential
+subagents, with [readiness findings](readiness.md). Q00/local preparation can start; a stable
+Jeeves authoring/export window and the later visual review remain explicit gates. The prompt
+does not launch agents merely by being stored in the repo.
+
 Build QRWTY as a real public link and QR service, then measure how much Jeeves helped. A visitor
 can make a quick link without signing in. An account owns saved links, edits and analytics.
 Production quality means tested behavior under concurrency, failure, abuse and recovery, plus

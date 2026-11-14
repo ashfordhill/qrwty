@@ -109,3 +109,37 @@ suite, local release rehearsal, provider probe or cloud apply was claimed to run
 Jeeves design in a safe authoring window. Both apps and their deployment packs can be built
 locally under the plan before cloud activation. No new app/cloud resources or charges in this
 planning unit. Owner `.docs/`, old handoffs/evidence and concurrent Jeeves work are preserved.
+
+## 2026-11-13 — Sequential coordinator prompt and readiness check
+
+**Request and result.** Owner asked for a detailed prompt for the agent that will execute the
+build through fresh sequential subagents, conditional on readiness. Saved the
+[coordinator prompt](plans/production-build/coordinator-prompt.md) and
+[readiness check](plans/production-build/readiness.md), linked from the plan and root README.
+The prompt is prepared for a later owner launch; no coordinator/subagent/build unit was started.
+
+**Readiness.** Q00 and neutral/local preparation can start. During inspection Jeeves advanced
+from `29458cf` to `c51e1a1` (new UF01–UF06 planning commit), while AGENTS/PLAN still named SO01–SO03
+and runtime/template/test paths were dirty. A stable committed authoring/export window remains
+required before Q01/Q02. The prompt requires reinspection, preserves other coordinators' work and
+allows eligible independent B work after Q00. G01–G13 still require an actual capability audit;
+the later Q11 visual selection and $0 cloud boundary remain real gates.
+
+**Prompt controls.** One fresh child at a time with no inherited conversation; scoped task/return
+packets; no recursive delegation; matched review/repair rules; neutral-pack isolation for B;
+resumable coordinator state; all-attempt prompt/model/usage accounting; immutable generated
+baseline and separate backend/UI/support counts. Local default fixtures can be recorded without
+inventing live prices or a known model identity. The local milestone is separate from the final
+deployment/maintenance comparison. Required template fixes remain separately assigned Jeeves
+units after the active work releases the checkout.
+
+**Checks.** Local Markdown targets/anchors, JSON/scene/SVG parsing, 15 unchanged diagram hashes,
+22/17 unit sequences, 68 acceptance IDs, ten coordinator sections, original README prefix,
+append-only handoff and historical evidence preservation, seven unchanged core unit/product
+contracts and `git diff --check` passed. [Evidence](evidence/coordinator-prompt/checks.md) and
+[results](evidence/coordinator-prompt/document-validation.json). No application/Jeeves test suite
+was run for this documentation-only unit; no Jeeves source or diagram asset changed.
+
+**Next.** Give the saved prompt to the execution coordinator. It starts Q00 and proceeds through
+eligible local work; it must not copy its whole A/Jeeves-aware context to baseline workers.
+No cloud spending, app creation or measurement result was implied by preparing this prompt.

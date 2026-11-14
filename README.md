@@ -59,6 +59,10 @@ containers, real GCP adapters, migrations and infrastructure definitions during 
 Later deployment should promote the same artifacts through configuration, secrets and provisioning.
 Real managed-service compatibility, recovery and scale checks remain pending until cloud activation.
 
+Start execution with the [coordinator prompt](docs/plans/production-build/coordinator-prompt.md)
+and [readiness check](docs/plans/production-build/readiness.md): one fresh subagent at a time,
+independent implementations, measured work and explicit review gates.
+
 ![Proposed QRWTY system: durable click before redirect, guest links and free/paid accounts](docs/diagrams/system-overview.svg)
 
 [Editable Excalidraw](docs/diagrams/system-overview.excalidraw) ·

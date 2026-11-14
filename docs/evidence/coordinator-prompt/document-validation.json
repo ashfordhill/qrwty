@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-13",
+  "markdownFiles": 24,
+  "relativeLinkTargets": 110,
+  "anchors": 6,
+  "brokenLinks": [],
+  "diagramHashChecks": 15,
+  "assistedUnits": 22,
+  "baselineUnits": 17,
+  "readmeOriginalPrefixPreserved": true,
+  "acceptanceIds": 68,
+  "historicalEvidenceFilesUnchanged": 9,
+  "handoffAppendOnly": true,
+  "budgetAndPendingStatusValid": true,
+  "coordinatorSections": 10,
+  "unchangedCoreContractFiles": 7
+}

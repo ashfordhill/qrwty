@@ -40,7 +40,9 @@ execution time without importing A, under the owner's then-current workflow rule
 Do not leak a discovery to one arm only. A defect in common requirements yields a versioned
 amendment to both arms, with the rework charged to both actual runs. An implementation bug stays
 with its arm. Record build order and reviewer knowledge. Prefer a reviewer who did not implement
-the code when the owner assigns one; this plan does not authorize spawning agents now.
+the code when the owner assigns one. The owner's launch of the
+[coordinator prompt](coordinator-prompt.md) authorizes fresh sequential implementation/review
+agents; reading or storing a plan by itself does not start that execution.
 
 ## Baselines and template development
 
