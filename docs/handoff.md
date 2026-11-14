@@ -360,3 +360,33 @@ coordinator's.
 **Next.** The coordinator obtains the Jeeves owner's decisions and assigns QG units in Jeeves
 (QG01–QG06 and QG12 are independent; QG06 → QG07 → QG08 → QG09 → QG10 is the critical path).
 Q04 waits for QG04–QG10; no QRWTY unit is eligible until then except independent neutral work.
+
+## 2026-11-14 (UTC) — Q03 review: audit of the generation capability report
+
+Arm A, Q03-review, attempt 1, from QRWTY `e88dcb8` and Jeeves `59bfbc6`, by an agent that did not
+implement Q03. **Passed with findings**; report in [evidence/q03/review.md](evidence/q03/review.md).
+
+**Checked.** Every Jeeves line Q03 cites, against the source; re-ran G02 (`/tx`, `/fn`) on the
+export's built `createPostgres` against a disposable PostgreSQL 17.11 (same results); confirmed
+G07, G08 and G11 from the emitted code and edge configuration; ran two probes Q03 did not: a
+**stalled** PostgreSQL (a query on the generated pool options is still pending after 12 s and
+`pool.end()` after 5 s; pg's `query_timeout` bounds both at 2.5 s) and QG12's non-superuser path
+(`REVOKE ALL ON DATABASE … FROM PUBLIC` and `GRANT CONNECT` are only warnings for a non-owner
+admin, so PUBLIC keeps CONNECT; as the owner they take effect).
+
+**Findings.** Medium: QG12 as written leaves databases open to PUBLIC in cloud (amend: run the
+database-level grants as the owner); a stalled database has no bound and no product seam (new unit
+QG17); QG06 keeps `createValkeyCache`'s leading-letter host check, which QG04's stub cache would
+then apply to a cache IP (amend QG06). Low: F12's remedy pushes a small generic client seam onto
+product `fetch` adapters (QG20, owner); `Query read timeout` is not in SO01's unreachable list
+(QG18, owner); the admission's 503s carry no `Retry-After` (QG19); F22 is a Jeeves limit, not
+product policy; QG10 should depend on QG04; QG07's pins decision is settled by precedent. Owner
+decisions QG03, QG04 and QG06 are real. Safe to assign now: QG01, QG02, QG05, QG11; QG12 only after
+its amendment; the rest in Q03's order after their decisions.
+
+**Proposed units.** Q03b (apply the amendments to jeeves-gaps.md, ready), QG17 (ready), QG18
+(owner), QG19 (ready), QG20 (owner); exact briefs in the report.
+
+**Evidence and cleanup.** Scratch only; container `q03r-pg` removed by name with its volume;
+Docker inventory equal before and after; no Jeeves file or project changed; no secret printed.
+Writes: the report and this entry.
