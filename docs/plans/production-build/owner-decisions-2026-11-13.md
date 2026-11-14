@@ -98,3 +98,36 @@ business. This section wins over sections 1, 2, 5, 6 and 8 where they conflict.
 - **Jeeves work in parallel:** once A's generation baseline is frozen (Q05), Jeeves may change for
   its own improvement plan. A's later units use only the frozen export and don't read Jeeves plans
   or commits made after Q05.
+
+## 10. Amendment, 2026-11-14 late evening: the cut is withdrawn; deploy early and often
+
+The owner withdrew §9's cut: "we can still do the things that were cut … I just don't want to
+have to pause Jeeves progress for the QRWTY stuff." §9 is void, except its last bullet (Jeeves work
+in parallel), which this section restates. Sections 1–8 apply again, as changed here.
+
+- **Full scope again.** The UI (Q11, Q12, B08, both skins), managed-service checks (Q12a, B08a),
+  staging (Q13, B09), every per-unit review of section 6 and the unmerged billing units are back.
+  So are Jeeves QG10, QG18, QG21, QG22, QG23 and QG25.
+- **Three lanes.** Jeeves, arm A (qrwty) and arm B (qrwty-baseline) each run one agent at a time,
+  in parallel. Jeeves never waits for QRWTY. After its QRWTY units, it continues with its own
+  improvement plan (JP00 → `docs/plans/qrwty-lessons/`).
+- **A's frozen baseline.** Q05 generates A's export from the Jeeves commit that ends QGR2, read from
+  that commit rather than from Jeeves HEAD, so later Jeeves work doesn't move it. A takes a later
+  Jeeves change only to fix a gap that A itself finds, and the update is recorded. The final report
+  also regenerates QRWTY's diagram on the Jeeves of the day, which gives a "Jeeves now" template
+  share next to A's frozen one.
+- **qrwty.io now, then redeploy as the build grows.** The owner wants qrwty.io to show something
+  now, and to keep deploying from there; redeploying periodically is itself a test.
+  - **S01 (shared, now):** a Cloudflare Worker on qrwty.io (Free plan) serves a placeholder page
+    and a build-info endpoint. No GCP yet.
+  - **A:** Q12a and Q13 move up to run right after Q05: a walking-skeleton staging deployment of
+    A's export on GCP behind the qrwty.io Worker.
+  - **B:** B08a and B09 move up to run right after B06, at `b.qrwty.io`.
+  - **After that:** every later unit of each arm ends with a redeploy and a cloud smoke check of
+    what exists so far. The UI is deployed when Q12 and B08 land.
+  - **Q13 and B09** now serve the public hostnames. This replaces "no public DNS cutover" and "do not
+    mutate qrwty.io" for these hostnames only. Payments stay in Stripe test mode. Q18's production
+    cutover stays out of the run.
+- **Spending.** Before any GCP resource exists, the first GCP unit creates the billing budget with
+  alerts at $10, $25 and $50 (section 1). Both arms share the trial project, and B's resources are
+  prefixed `qrwtyb-`. The trial credit pays for everything; nothing is upgraded.
