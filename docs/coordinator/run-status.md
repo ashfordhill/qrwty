@@ -58,15 +58,17 @@ Plan-level limits (5-hour and 7-day percentages) come from the status line.
 
 | QG02 | 1 | Jeeves `954e8c4` | QGR1 later | passed; README documents `compose.override.yaml`; Docker proof: override env reaches app-front, survives stop/start; note: `pnpm start` doesn't start override-only services |
 
+| B02 | 1 | baseline `10d9d08` | not a review point | passed with R03 pending (needs B03/B04's public entry and routes; re-run after B04); R01 3/3, R02 2/2; 202 unit, 25 integration, 9 container tests; OpenTofu staging stack written, not applied |
+
 ## Active attempt
 
-B02 running; then QG05.
+QG05 next.
 
 ## Queue (next eligible first)
 
 1. Jeeves QG batch, no owner decision needed: QG01, QG02, QG05, QG11, QG12 (amended), QG17, QG19,
    each a fresh agent in Jeeves (plan `docs/plans/qrwty-gaps/units.md`, Jeeves `c2c8127`), then QGR1 (Fable review).
-2. B02 — runtime and cloud bindings locally (B), interleaved; B02 also updates B's AGENTS.md pack identity and verify:pack script to v1.2. Pending owner decisions: QG03 (app owns package.json /
+2. B03 — durable anonymous links (B), interleaved; then B04 († review), re-run R03. Pending owner decisions: QG03 (app owns package.json /
    lockfile, or amend billing to node:crypto + fetch), QG06 (endpoints from environment, D1),
    QG04 (stub cache down at startup no longer stops the process), QG07 (Pub/Sub pins; the review says precedent settles it), QG18 (`Query read timeout` as unreachable), QG20 (env-configured HTTP client for External API/Identity tiles).
 3. Each arm adopts pack v1.1 (copy, verify, record the hash) before reporting any A/F/R/U row.
