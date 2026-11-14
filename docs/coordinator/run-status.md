@@ -62,15 +62,17 @@ Plan-level limits (5-hour and 7-day percentages) come from the status line.
 
 | QG05 | 1 | Jeeves `181bb97` | QGR1 later | passed; `USER node` in app and media stages; uid 1000 proven; suite all 13/14 (B10 failed on the known WSL2 clock jump; regeneration rerun 1/1) |
 
+| B03 | 1 | baseline `4961ac2` | not a review point | passed; A02 7/7, R03 42/42 (B02's pending row now passes); A03/A09 blocked by B05/B06, F07 by B04/B07a/B07b; two-replica races and SIGKILL retries pass |
+
 ## Active attempt
 
-B03 next, then QG17.
+QG17 next, then B04.
 
 ## Queue (next eligible first)
 
 1. Jeeves QG batch, no owner decision needed: QG01, QG02, QG05, QG11, QG12 (amended), QG17, QG19,
    each a fresh agent in Jeeves (plan `docs/plans/qrwty-gaps/units.md`, Jeeves `c2c8127`), then QGR1 (Fable review).
-2. B03 — durable anonymous links (B), interleaved; then B04 († review), re-run R03. Pending owner decisions: QG03 (app owns package.json /
+2. B04 — sessions and ownership (B, Fable review after), interleaved. Pending owner decisions: QG03 (app owns package.json /
    lockfile, or amend billing to node:crypto + fetch), QG06 (endpoints from environment, D1),
    QG04 (stub cache down at startup no longer stops the process), QG07 (Pub/Sub pins; the review says precedent settles it), QG18 (`Query read timeout` as unreachable), QG20 (env-configured HTTP client for External API/Identity tiles).
 3. Each arm adopts pack v1.1 (copy, verify, record the hash) before reporting any A/F/R/U row.
