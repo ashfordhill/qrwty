@@ -44,21 +44,20 @@ Plan-level limits (5-hour and 7-day percentages) come from the status line.
 
 | N01 | 1 | `9f1d9d4` | not a review point | passed; pack v1.1 manifest `5ffae9f2…df6a`; Node pin 24.21.0 bookworm-slim; 47 row modules; self-test 48/48 cases, 31/31 faults detected; usage imported (164 requests) |
 
-| Q03 | 1 | `5740e6e` | review pending (Fable) | passed; G-decision table; QG01–QG16 briefs in `docs/plans/production-build/jeeves-gaps.md` (QG01–QG10 local, QG11–QG12 cloud, QG13–QG16 deferred); new F16–F26; usage imported |
+| Q03 | 1 | `5740e6e` | `47ae6d5` passed-with-findings (Fable, `claude-fable-5-1`): R1 QG12 leaves PUBLIC CONNECT, R2 stalled PostgreSQL unbounded → QG17, R3 QG06/QG04 host check conflict; proposed Q03b, QG17, QG19 ready; QG18, QG20 need the owner | passed; G-decision table; QG01–QG16 briefs in `docs/plans/production-build/jeeves-gaps.md` (QG01–QG10 local, QG11–QG12 cloud, QG13–QG16 deferred); new F16–F26; usage imported |
 
 ## Active attempt
 
-Q03 review (Fable xhigh), next.
+Q03b next.
 
 ## Queue (next eligible first)
 
-1. Q03 review (Fable xhigh).
-2. Jeeves QG units that need no owner decision: QG01 (raw request bytes, repeated headers), QG02
-   (Compose override seam), QG05 (USER node), QG12 (non-superuser migration admin, cluster lock),
-   then a Fable review of that batch. Pending owner decisions: QG03 (app owns package.json /
+1. Q03b — apply the review's amendments (R1, R3, R8, R9; add QG17–QG20) to `jeeves-gaps.md` (A, repair).
+2. B00 — create `qrwty-baseline` from pack v1.1 (B).
+3. Jeeves QG batch, no owner decision needed: QG01, QG02, QG05, QG11, QG12 (amended), QG17, QG19,
+   each a fresh agent in Jeeves, then a Fable review of the batch. Pending owner decisions: QG03 (app owns package.json /
    lockfile, or amend billing to node:crypto + fetch), QG06 (endpoints from environment, D1),
-   QG04 (stub cache down at startup no longer stops the process), QG07 (Pub/Sub pins).
-3. B00 — create `qrwty-baseline` from pack v1.1 (B), interleaved with the QG units.
+   QG04 (stub cache down at startup no longer stops the process), QG07 (Pub/Sub pins; the review says precedent settles it), QG18 (`Query read timeout` as unreachable), QG20 (env-configured HTTP client for External API/Identity tiles).
 3. Each arm adopts pack v1.1 (copy, verify, record the hash) before reporting any A/F/R/U row.
 4. Then A: Q02 → Q03 (Fable review) → gap units → Q04 → Q05 (Fable review) …; B: B01 → … interleaved.
 
