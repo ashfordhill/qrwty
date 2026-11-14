@@ -60,9 +60,11 @@ Plan-level limits (5-hour and 7-day percentages) come from the status line.
 
 | B02 | 1 | baseline `10d9d08` | not a review point | passed with R03 pending (needs B03/B04's public entry and routes; re-run after B04); R01 3/3, R02 2/2; 202 unit, 25 integration, 9 container tests; OpenTofu staging stack written, not applied |
 
+| QG05 | 1 | Jeeves `181bb97` | QGR1 later | passed; `USER node` in app and media stages; uid 1000 proven; suite all 13/14 (B10 failed on the known WSL2 clock jump; regeneration rerun 1/1) |
+
 ## Active attempt
 
-QG05 next.
+B03 next, then QG17.
 
 ## Queue (next eligible first)
 
