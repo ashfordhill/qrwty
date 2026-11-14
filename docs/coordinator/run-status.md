@@ -50,9 +50,11 @@ Plan-level limits (5-hour and 7-day percentages) come from the status line.
 
 | B00 | 1 | baseline `34bcf82` | not a review point | passed; `qrwty-baseline` created (local, no remote), pack v1.1 verified (`5ffae9f2…`), toolchain pinned (Node 24.21.0); usage imported into B's ledger (`6fb78a4`). **Environmental exposure:** every subagent starts in the coordinator's working directory (`/home/ash/github/jeeves`), so its starting context includes Jeeves `AGENTS.md`, Jeeves git status/log subjects and the coordinator's memory index; no A source, tests, IaC, evidence or prompts. The Agent tool offers no working-directory option; disclosed in B's handoff and to be listed as a comparison limitation. |
 
+| QG01 | 2 (a1 blocked by the coordinator's fixture lint, fixed in Jeeves `8f46066`) | Jeeves `64d0d3b` | batch review QGR1 later | passed; `rawBody` on route stubs, array header values; 916 tests, e2e 74, wiring and identity suites pass; pins http.ts + manifest only |
+
 ## Active attempt
 
-QG01 (Jeeves) next.
+B01 running (dispatched after QG01); then QG02.
 
 ## Queue (next eligible first)
 
