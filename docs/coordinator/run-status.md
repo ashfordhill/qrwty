@@ -64,9 +64,11 @@ Plan-level limits (5-hour and 7-day percentages) come from the status line.
 
 | B03 | 1 | baseline `4961ac2` | not a review point | passed; A02 7/7, R03 42/42 (B02's pending row now passes); A03/A09 blocked by B05/B06, F07 by B04/B07a/B07b; two-replica races and SIGKILL retries pass |
 
+| QG17 | 1 | Jeeves `fd1ea77` | QGR1 later | passed; pg `query_timeout` = statement timeout + 500 ms; stalled DB rejects at 2.5 s and `pool.end()` resolves; core 4/4, faults 5/5. Side effect: a stall now spends a worker attempt (QG18, owner decision 6, would count it as unreachable) |
+
 ## Active attempt
 
-QG17 next, then B04.
+B04 next, then QG19.
 
 ## Queue (next eligible first)
 
