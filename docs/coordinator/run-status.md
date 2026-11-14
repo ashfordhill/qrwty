@@ -46,15 +46,16 @@ Plan-level limits (5-hour and 7-day percentages) come from the status line.
 
 | Q03 | 1 | `5740e6e` | `47ae6d5` passed-with-findings (Fable, `claude-fable-5-1`): R1 QG12 leaves PUBLIC CONNECT, R2 stalled PostgreSQL unbounded → QG17, R3 QG06/QG04 host check conflict; proposed Q03b, QG17, QG19 ready; QG18, QG20 need the owner | passed; G-decision table; QG01–QG16 briefs in `docs/plans/production-build/jeeves-gaps.md` (QG01–QG10 local, QG11–QG12 cloud, QG13–QG16 deferred); new F16–F26; usage imported |
 
+| Q03b | 1 | `ccaca7d` | repair of the Q03 review's findings | passed; R1/R3/R8/R9 applied; QG17–QG20 appended; assignable now: QG01, QG02, QG05, QG11, QG12, QG17, QG19 |
+
 ## Active attempt
 
-Q03b next.
+B00 next.
 
 ## Queue (next eligible first)
 
-1. Q03b — apply the review's amendments (R1, R3, R8, R9; add QG17–QG20) to `jeeves-gaps.md` (A, repair).
-2. B00 — create `qrwty-baseline` from pack v1.1 (B).
-3. Jeeves QG batch, no owner decision needed: QG01, QG02, QG05, QG11, QG12 (amended), QG17, QG19,
+1. B00 — create `qrwty-baseline` from pack v1.1 (B).
+2. Jeeves QG batch, no owner decision needed: QG01, QG02, QG05, QG11, QG12 (amended), QG17, QG19,
    each a fresh agent in Jeeves, then a Fable review of the batch. Pending owner decisions: QG03 (app owns package.json /
    lockfile, or amend billing to node:crypto + fetch), QG06 (endpoints from environment, D1),
    QG04 (stub cache down at startup no longer stops the process), QG07 (Pub/Sub pins; the review says precedent settles it), QG18 (`Query read timeout` as unreachable), QG20 (env-configured HTTP client for External API/Identity tiles).
