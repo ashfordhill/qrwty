@@ -7,10 +7,10 @@
   "savedJeevesDiagram": false,
   "deployed": false,
   "neutralPack": {
-    "version": "v1",
-    "path": "docs/benchmarks/neutral-pack/v1/",
-    "manifestSha256": "834ff75206531b1742a0677f2b8aadfa7848a4aedada6c354bdbbe4e04765736",
-    "frozenBy": "Q00"
+    "version": "v1.1",
+    "path": "docs/benchmarks/neutral-pack/v1.1/",
+    "manifestSha256": "5ffae9f2627b61db5445859cbc97c491c3bf83e165029e97f8c26139f53edf6a",
+    "frozenBy": "N01"
   },
   "ledgers": {
     "shared": "docs/benchmarks/runs/qrwty-r1-20261114/shared/events.jsonl",

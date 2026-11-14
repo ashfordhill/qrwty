@@ -265,3 +265,41 @@ from the image build remain (no prune). Not run: valid-token request, drain, fau
 attempt `a-0154` started; usage and `commits.after` are the coordinator's.
 
 **Next.** Q03 (audit generic gaps and commission exact fixes).
+
+## 2026-11-14 (UTC) — N01: build the neutral acceptance oracle (pack v1.1)
+
+Shared ledger, attempt 1 (`shared-0081`), implementer with no arm context. Read only the v1 pack, the
+run ledger README, `AGENTS.md` and public documentation and registries.
+
+- **Pack v1.1** at `docs/benchmarks/neutral-pack/v1.1/`: a copy of v1 (34 files byte-identical) plus
+  `oracle/` and `evidence/n01/`; 151 files. **Manifest SHA-256
+  `5ffae9f2627b61db5445859cbc97c491c3bf83e165029e97f8c26139f53edf6a`** (v1 stays
+  `834ff752…5736`, unchanged). Three files amended: `frozen/decisions.md` (the coordinator's Node
+  amendment: 24.21.0 and `node:24.21.0-bookworm-slim`, digest `sha256:d6aa754f…7b20`, new §11),
+  `README.md` (v1.1) and `verify_pack.py` (ignores an installed `oracle/node_modules/`; anchor
+  checks for every `authored-*` file). `status.json` pack fields now name v1.1.
+- **Oracle**: TypeScript on Node 24.21.0, run without a build step. Components: byte-exact HTTP
+  client (no redirect following, OIDC form sign-in, CSRF and idempotency helpers), capture proxy,
+  Pub/Sub capture (`@google-cloud/pubsub` 6.3.2), Toxiproxy 2.13.0 driver (own code), stateful
+  Stripe fixture (works with the official SDK) and webhook signer, Web Risk fixture, Playwright
+  browser driver (destinations never fetched) with jsQR 1.4.0 / pngjs 7.0.0, clock and command
+  runner, result writer. 47 row modules (A01–A24, F01–F10, R01–R06, U02–U08), the adapter schema,
+  the UI-name schema, and `oracle/README.md` (adapter fields, command and `inspect` contracts,
+  result format, contract readings).
+- **Checks**: `pnpm check` exit 0 (Biome, tsc, 39 unit tests); integration tests 3/3 against the
+  pinned emulator, Toxiproxy and Chromium; full self-test 48/48 cases matched, **31/31 deliberate
+  faults reported failed**; fresh-copy install with `--frozen-lockfile` and `pnpm check` pass;
+  `verify_pack.py` OK (also `--against-git .`, 26 copies), `sha256sum -c SHA256SUMS` OK, v1 verify OK
+  and untouched; all 219 locked packages are at least 14 days old (newest 2026-10-29). Evidence:
+  `docs/benchmarks/neutral-pack/v1.1/evidence/n01/`. Docker: `n01-selftest-pubsub` and
+  `n01-selftest-toxiproxy` (host network) and their two images were removed by name.
+- **Live-arm rows** (implemented, not self-tested): A11–A13, A15, A19, A21–A23, F01, F02, F04–F10,
+  R01–R06, U02–U08. A01's flow and U02–U08 stay `blocked` until the Q11 amendment freezes the
+  accessible-name list (`--ui-names`).
+- **For the coordinator** (`oracle/README.md`, "Contract readings"): the oracle accepts 404,
+  403 or 409 for A06's foreign claim; a 503 for an uncertain publish must carry
+  `QRWTY-Click-Event` to pass A24; free/paid is read from `policy`; F01 uses an extra fault point
+  `corrupt-route-cache`; the edge credential header is `X-Oracle-Edge-Token`; `issueToken`,
+  `subscriptionCheck`, `replayQuarantine` and `ordinaryBuildAndTest` are adapter commands the plan's
+  list did not name. Any of these can change in a later pack version.
+- **Next**: each arm adopts v1.1 (copy, verify, record the hash) before reporting an A, F, R or U row.
