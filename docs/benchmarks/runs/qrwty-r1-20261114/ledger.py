@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""QRWTY run ledger tool, schema version 1. Python 3.10+, standard library only.
+"""QRWTY run ledger tool, schema version 1. Python 3.10+, standard library and the git CLI only.
 
   ledger.py validate [RUN_DIR] [--repo-root DIR] [--json]
   ledger.py self-test
@@ -12,6 +12,8 @@ RUN_DIR is docs/benchmarks/runs/<run-id>/ and defaults to this script's director
 is RUN_DIR/<a|b|shared>/events.jsonl. Paths inside records are relative to the repository root.
 Writers validate the whole ledger plus the new lines before appending; nothing is rewritten.
 See README.md beside this script for the record kinds and the cross-record rules (R1-R16).
+R12 (amended in neutral pack v1.2): a recorded artifact hash matches the working-tree file or
+any version of that path committed in the repository's Git history (git log / git show).
 """
 
 from __future__ import annotations
@@ -20,6 +22,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -231,6 +234,48 @@ class Schema:
 # --------------------------------------------------------------------------- validation
 
 
+class CommittedVersions:
+    """SHA-256 of every committed version of a path in HEAD's Git history (rule R12).
+
+    One instance lives for one validation run, so each path's history is read at most once.
+    Outside a Git checkout, or without the git CLI, no committed version is known.
+    """
+
+    def __init__(self, repo_root: Path):
+        self.repo_root = repo_root
+        self.cache: dict[str, set[str]] = {}
+        try:
+            self.available = self._git("rev-parse", "--is-inside-work-tree").strip() == b"true"
+        except (OSError, subprocess.CalledProcessError):
+            self.available = False
+
+    def _git(self, *args) -> bytes:
+        return subprocess.run(
+            ["git", "-C", str(self.repo_root), "--literal-pathspecs", *args],
+            check=True,
+            capture_output=True,
+        ).stdout
+
+    def digests(self, rel_path: str) -> set[str]:
+        if not self.available:
+            return set()
+        if rel_path not in self.cache:
+            found: set[str] = set()
+            try:
+                commits = self._git("log", "--format=%H", "--", rel_path).decode().split()
+            except (OSError, subprocess.CalledProcessError):
+                commits = []
+            for commit in commits:
+                try:
+                    # "./" makes the path relative to repo_root, like the pathspec above.
+                    blob = self._git("show", "--no-textconv", f"{commit}:./{rel_path}")
+                except (OSError, subprocess.CalledProcessError):
+                    continue  # the commit deleted the path
+                found.add(hashlib.sha256(blob).hexdigest())
+            self.cache[rel_path] = found
+        return self.cache[rel_path]
+
+
 class Report:
     def __init__(self):
         self.errors: list[str] = []
@@ -238,12 +283,19 @@ class Report:
         self.counts: dict[str, dict[str, int]] = {}
         self.pending: list[str] = []
         self.open_attempts: list[str] = []
+        self.committed_matches: list[str] = []
+        self.versions: CommittedVersions | None = None
 
     def error(self, where, message):
         self.errors.append(f"{where}: {message}")
 
     def warn(self, where, message):
         self.warnings.append(f"{where}: {message}")
+
+    def committed_versions(self, repo_root: Path) -> CommittedVersions:
+        if self.versions is None or self.versions.repo_root != repo_root:
+            self.versions = CommittedVersions(repo_root)
+        return self.versions
 
 
 def merged_attempts(records):
@@ -319,14 +371,27 @@ def check_fields(record, where, report, repo_root: Path):
 
 
 def check_artifact(artifact, where, report, repo_root: Path):
+    """R12: a recorded hash matches the working-tree file or a committed version of its path.
+
+    Evidence such as a handoff file keeps growing after it is recorded; the version that was
+    recorded stays provable from Git history. A hash that no version has is an error.
+    """
     if not isinstance(artifact, dict) or not isinstance(artifact.get("path"), str):
         return
-    path = repo_root / artifact["path"]
+    rel_path = artifact["path"]
+    path = repo_root / rel_path
     if not path.is_file():
-        report.warn(where, f"[R12] referenced file not present here: {artifact['path']}")
+        report.warn(where, f"[R12] referenced file not present here: {rel_path}")
         return
-    if artifact.get("sha256") and sha256_file(path) != artifact["sha256"]:
-        report.error(where, f"[R12] sha256 mismatch for {artifact['path']}")
+    digest = artifact.get("sha256")
+    if not digest or sha256_file(path) == digest:
+        return
+    if digest in report.committed_versions(repo_root).digests(rel_path):
+        report.committed_matches.append(f"{where}: {rel_path}")
+        return
+    report.error(
+        where, f"[R12] sha256 mismatch for {rel_path} (no working-tree or committed version has it)"
+    )
 
 
 def validate_lines(lines, ledger, run_id, schema, report, repo_root: Path, label):
@@ -491,6 +556,7 @@ def print_report(report: Report, as_json: bool):
                     "warnings": report.warnings,
                     "pendingUsage": report.pending,
                     "openAttempts": report.open_attempts,
+                    "committedVersionMatches": report.committed_matches,
                 },
                 indent=2,
             )
@@ -503,6 +569,8 @@ def print_report(report: Report, as_json: bool):
         print(f"pending usage: {item}")
     for item in report.open_attempts:
         print(f"open attempt: {item}")
+    for item in report.committed_matches:
+        print(f"matches a committed version (R12): {item}")
     for item in report.warnings:
         print(f"warning: {item}")
     for item in report.errors:
@@ -937,22 +1005,81 @@ def _mutations():
 
 _DELETE = object()
 
+LIVING_FILE = "docs/handoff.md"
+
+
+def _r12_fixture(repo: Path, plain: Path) -> dict[str, str]:
+    """Build the R12 history fixture and return the hashes the cases record.
+
+    repo is a Git checkout whose docs/handoff.md was committed, then appended and committed
+    again, then appended once more without a commit (a later unit at work). plain holds the same
+    appended file with no Git history. The global and system Git configuration is ignored.
+    """
+    env = {**os.environ, "GIT_CONFIG_GLOBAL": os.devnull, "GIT_CONFIG_NOSYSTEM": "1"}
+    identity = ["-c", "user.name=ledger self-test", "-c", "user.email=self-test@example.invalid"]
+
+    def git(*args):
+        subprocess.run(["git", "-C", str(repo), *identity, *args], check=True, capture_output=True, env=env)
+
+    first = "# Handoff\n\n## U00\n\nRecorded by U00.\n"
+    entries = (first, "\n## U01\n\nAppended and committed by U01.\n", "\n## U02\n\nAppended by U02, not committed.\n")
+    for root in (repo, plain):
+        (root / "docs").mkdir(parents=True)
+        (root / "records.jsonl").write_text('{"requestId": "msg_1"}\n', encoding="utf-8")
+    git("init", "-q")
+    (repo / LIVING_FILE).write_text(first, encoding="utf-8")
+    git("add", LIVING_FILE)
+    git("commit", "-q", "-m", "U00")
+    with open(repo / LIVING_FILE, "a", encoding="utf-8") as handle:
+        handle.write(entries[1])
+    git("commit", "-q", "-a", "-m", "U01")
+    with open(repo / LIVING_FILE, "a", encoding="utf-8") as handle:
+        handle.write(entries[2])
+    (plain / LIVING_FILE).write_text("".join(entries), encoding="utf-8")
+
+    def sha(text: str) -> str:
+        return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+    return {"recorded": sha(first), "forged": sha(first + "\nA line no version has.\n")}
+
+
+def _r12_cases(repo: Path, plain: Path, hashes: dict[str, str]):
+    """(name, repository root, evidence item, expected) where expected is pass, error or warn."""
+    return [
+        ("living file appended after recording", repo, {"path": LIVING_FILE, "sha256": hashes["recorded"]}, "pass"),
+        ("forged hash that no version has", repo, {"path": LIVING_FILE, "sha256": hashes["forged"]}, "error"),
+        ("missing file", repo, {"path": "docs/missing.md", "sha256": hashes["recorded"]}, "warn"),
+        ("appended living file outside a Git checkout", plain, {"path": LIVING_FILE, "sha256": hashes["recorded"]}, "error"),
+    ]
+
 
 def cmd_self_test() -> int:
     schema = Schema()
     run_id = "self-test-run"
     failures = 0
 
-    def run(records):
+    def run(records, root: Path | None = None):
         report = Report()
         lines = []
         for i, record in enumerate(records):
             text = record if isinstance(record, str) else json.dumps(record)
             lines.append((i + 1, text))
+        if root is not None:
+            validate_lines(lines, "shared", run_id, schema, report, root, "self-test")
+            return report
         with tempfile.TemporaryDirectory() as tmp:
             (Path(tmp) / "records.jsonl").write_text('{"requestId": "msg_1"}\n', encoding="utf-8")
             validate_lines(lines, "shared", run_id, schema, report, Path(tmp), "self-test")
         return report
+
+    def r12_outcome(report: Report, expected: str) -> bool:
+        r12_errors = [e for e in report.errors if "[R12]" in e]
+        r12_warnings = [w for w in report.warnings if "[R12]" in w]
+        if expected == "pass":
+            return not report.errors and not r12_warnings and len(report.committed_matches) == 1
+        if expected == "error":
+            return bool(r12_errors) and not report.committed_matches
+        return not report.errors and bool(r12_warnings)
 
     base = run(_base_records(run_id))
     if base.errors:
@@ -970,6 +1097,27 @@ def cmd_self_test() -> int:
         else:
             failures += 1
             print(f"FAIL did not reject {name} (expected {code}); errors: {report.errors}")
+    with tempfile.TemporaryDirectory() as tmp:
+        repo, plain = Path(tmp) / "repo", Path(tmp) / "plain"
+        try:
+            hashes = _r12_fixture(repo, plain)
+        except (OSError, subprocess.CalledProcessError) as exc:
+            failures += 1
+            print(f"FAIL could not build the R12 Git fixture (needs the git CLI): {exc}")
+        else:
+            verbs = {"pass": "accepts", "error": "rejects", "warn": "warns on"}
+            for name, root, evidence, expected in _r12_cases(repo, plain, hashes):
+                records = _base_records(run_id)
+                records[0]["evidence"] = [evidence]
+                report = run(records, root)
+                if r12_outcome(report, expected):
+                    print(f"ok   {verbs[expected]} {name} [R12]")
+                else:
+                    failures += 1
+                    print(
+                        f"FAIL expected R12 to {expected} for {name}; errors: {report.errors}; "
+                        f"warnings: {report.warnings}; committed matches: {report.committed_matches}"
+                    )
     print("SELF-TEST OK" if not failures else f"SELF-TEST FAILED: {failures}")
     return 1 if failures else 0
 

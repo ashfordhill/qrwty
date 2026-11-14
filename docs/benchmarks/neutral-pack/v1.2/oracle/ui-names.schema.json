@@ -1,0 +1,50 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "qrwty-neutral-oracle/ui-names.schema.json",
+	"title": "Frozen accessible-name list for browser rows (A01, A04, U02-U08)",
+	"description": "Delivered by the pack amendment that carries Q11's design assets. Keys are the oracle's logical controls (src/browser/names.ts); values are the ARIA role and exact accessible name shared by both arms and both skins.",
+	"type": "object",
+	"additionalProperties": false,
+	"required": ["version", "names"],
+	"properties": {
+		"version": { "type": "string", "minLength": 1 },
+		"names": {
+			"type": "object",
+			"minProperties": 1,
+			"additionalProperties": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["role", "name"],
+				"properties": {
+					"role": {
+						"type": "string",
+						"enum": [
+							"button",
+							"link",
+							"textbox",
+							"heading",
+							"status",
+							"alert",
+							"dialog",
+							"list",
+							"listitem",
+							"table",
+							"row",
+							"img",
+							"region",
+							"navigation",
+							"main",
+							"combobox",
+							"checkbox",
+							"radio",
+							"tab",
+							"switch",
+							"menuitem"
+						]
+					},
+					"name": { "type": "string", "minLength": 1 }
+				}
+			}
+		}
+	}
+}

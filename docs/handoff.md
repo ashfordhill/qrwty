@@ -425,3 +425,31 @@ the review's suggested `Q03b: amend the QG briefs from the review`.
 
 **Next.** The coordinator asks the Jeeves owner for decisions 1–3, 6 and 7. QG01, QG02, QG05,
 QG11, QG12, QG17 and QG19 can be assigned now.
+
+## N02: ledger evidence may cite a committed version (pack v1.2), 2026-11-14
+
+- **Changed.** Ledger rule R12 (`ledger.py`): a recorded `{path, sha256}` now passes when the
+  working-tree file **or** any committed version of that path in `HEAD`'s Git history has the hash
+  (`git log --format=%H -- <path>`, then `git show <commit>:./<path>`; read only on a working-tree
+  mismatch and cached per path for one validation run). A hash that no version has is still an
+  error, a missing file is still a warning, and outside a Git checkout only the working-tree file
+  counts. `validate` lists each record accepted through a committed version. Reason: living
+  evidence such as `docs/handoff.md` failed R12 on the next append, and the writers then refused
+  every new line. Pack **v1.2** (`docs/benchmarks/neutral-pack/v1.2/`, manifest SHA-256
+  `5414d6ef8bbb43834c4f1ff45e8cff0f2903ccf284aaf6098fa4af820f26054b`) is v1.1 with only
+  `ledger/ledger.py`, `ledger/README.md` (new "Rule changes" section), `frozen/decisions.md` (§11
+  v1.2 row) and the pack README changed. This run's `ledger.py` and `README.md` are the v1.2
+  copies, `status.json` points at v1.2, and both arms received the same files.
+- **Checked.** `ledger.py self-test`: the base ledger and all 28 existing rejection cases keep
+  their results; four new R12 cases pass (living file appended after recording accepted, forged
+  hash rejected, missing file warns, same appended file outside a Git checkout rejected). With the
+  history lookup disabled, the living-file case fails, so the case really exercises the new path.
+  `ledger.py validate` passes on this run. `verify_pack.py` passes for v1.2 (also with
+  `--against-git .`: 26 copies), v1 and v1.1 are unchanged and still verify. `git diff --check`
+  is clean.
+- **Next.** The oracle is byte-identical, so its results still report pack `v1.1` (decisions
+  §11 explains this). The v1.2 manifest was built by a v1.2 adaptation of N01's
+  `build_manifest.py` (same algorithm with v1.1 as the base; it refuses new files and changes
+  outside those four files). The adaptation is not part of the pack: `verify_pack.py` is the check.
+  The ledger now needs the `git` CLI for R12's history check. `commits.after` of `shared-0248` is
+  left to the coordinator.

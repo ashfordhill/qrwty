@@ -1,0 +1,6 @@
+# The oracle is its own workspace root so it installs from its pack copy.
+# Every resolved package, direct or transitive, must be at least 14 days old (20160 minutes).
+minimumReleaseAge: 20160
+# No dependency needs an install script; protobufjs's postinstall only prints a version notice.
+allowBuilds:
+  protobufjs: false

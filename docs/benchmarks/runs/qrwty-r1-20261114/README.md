@@ -2,7 +2,8 @@
 
 Append-only effort records for the first QRWTY build run, following the ledger section of the
 comparison protocol. Frozen by Q00 on 2026-11-14 (UTC), schema version 1. Usage that a tool did
-not report stays `null`, never `0`.
+not report stays `null`, never `0`. Rule R12 was amended in neutral pack v1.2 on 2026-11-14
+([rule changes](#rule-changes)); the schema and every other rule are unchanged.
 
 ## Where each ledger lives
 
@@ -21,7 +22,7 @@ other arm's repository.
 | File | Purpose |
 | --- | --- |
 | `events.schema.json` | JSON Schema of the four record kinds. Unknown keys are rejected |
-| `ledger.py` | Validator and the append helpers below. Python 3.10+, standard library only |
+| `ledger.py` | Validator and the append helpers below. Python 3.10+, standard library only, plus the `git` CLI for R12's history check |
 | `<ledger>/events.jsonl` | One JSON object per line, in append order |
 | `usage/<ledger>/<unit>-<role>-a<n>.records.jsonl` | Saved output of `transcript-usage.py --records` for one attempt (derived numbers only) |
 
@@ -147,12 +148,23 @@ in a later update. Transcripts are never copied into Git: they can hold tool out
 | R7 | Coverage matches the counters: reported means all four plus count and source; unavailable means all null with a reason |
 | R8–R10 | Actual model IDs, Agent-tool totals and reported cost each need a source |
 | R11 | Assignment path and hash go together; a present file must match its hash |
-| R12 | Any referenced artifact with a hash must match; a missing file is a warning |
+| R12 | Any referenced artifact with a hash must match the working-tree file **or** a version of that path committed in the repository's Git history; a hash that no version has is an error; a missing file is a warning. Outside a Git checkout only the working-tree file counts |
 | R13 | An attempt does not end before it starts |
 | R14 | Reported totals equal the sum of the attempt's request records; models match |
 | R15 | No value that looks like a secret (Stripe, Google, GitHub, Slack keys, private keys, bearer tokens) |
 | R16 | Valid JSON without duplicate keys |
 | R17 | Timestamps are real dates |
+
+## Rule changes
+
+| Date (UTC) | Pack | Rule | Change | Reason |
+| --- | --- | --- | --- | --- |
+| 2026-11-14 | v1.2 (unit N02) | R12 | A recorded `{path, sha256}` passes when the working-tree file has that hash, or when any committed version of the path in the history of `HEAD` has it (`git log --format=%H -- <path>`, then `git show <commit>:./<path>` for each commit). A hash that matches neither is still an error, and a missing file is still a warning. Outside a Git checkout, or without `git`, only the working-tree check applies. Each path's history is read at most once per validation run, and only when the working-tree hash differs | Some evidence is a living file that later units append to, such as `docs/handoff.md`. Under the old rule the next append broke validation, and the writers (which validate the whole ledger first) then refused every new line, so that unit could neither record its evidence nor finish. The recorded version stays provable from Git; a hash no version ever had is still rejected |
+
+`validate` lists each artifact accepted through a committed version (`matches a committed version
+(R12)`, or `committedVersionMatches` with `--json`). `self-test` covers the change: a living file
+appended after recording passes, a forged hash that no version has fails, a missing file warns,
+and the same appended file outside a Git checkout fails.
 
 ## Seeded records
 
