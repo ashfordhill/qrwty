@@ -67,15 +67,15 @@ independent implementations, measured work and explicit review gates.
 
 ### Saved Jeeves diagram
 
-The backend as saved in Jeeves: project **QRWTY · production candidate v1**, revision 83, Simple
-view, exported by the studio ([Q01 checks](docs/evidence/q01/checks.md)). Jeeves generates code
+The backend as saved in Jeeves: project **QRWTY · production candidate v1**, revision 83, Detailed
+view (each tile's modules shown), exported by the studio ([Q01 checks](docs/evidence/q01/checks.md)). Jeeves generates code
 from this diagram: 3 of its 14 modules come from a template (Sign-in) and 11 are stubs to
 write. The [as-found export](docs/evidence/q02/checks.md) builds and starts healthy, and every
 product route still answers 501: a diagnostic baseline, not the application.
 
-![QRWTY backend saved in Jeeves: Session API, Link API, Redirect service, Account API, Billing API and Analytics worker with their databases, caches, click queue, identity and external APIs](docs/evidence/q01/jeeves/QRWTY-production-candidate-v1-r83.png)
+![QRWTY backend saved in Jeeves (Detailed view, with each tile's modules): Session API, Link API, Redirect service, Account API, Billing API and Analytics worker with their databases, caches, click queue, identity and external APIs](docs/evidence/q01/jeeves/QRWTY-production-candidate-v1-r83-detailed.png)
 
-[Detailed view](docs/evidence/q01/jeeves/QRWTY-production-candidate-v1-r83-detailed.png) ·
+[Simple view](docs/evidence/q01/jeeves/QRWTY-production-candidate-v1-r83.png) ·
 [Saved source JSON](docs/evidence/q01/jeeves/QRWTY-production-candidate-v1-r83-source.json) ·
 [Blueprint v3](docs/evidence/q01/jeeves/blueprint-v3-r83.json) ·
 [Generation report](docs/evidence/q01/jeeves/generation-preview-r83.json) ·
