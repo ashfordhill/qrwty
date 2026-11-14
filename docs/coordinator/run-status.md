@@ -68,9 +68,11 @@ Plan-level limits (5-hour and 7-day percentages) come from the status line.
 
 | B04 | 1 | baseline `14c773a` | `d2f9c27` passed-with-findings (Fable): F1 medium (revoked sessions keep profile after deletion), F2–F6 low; proposed B04c (ready), scheduler + manifest freshness into B04b (ready), oracle A06 jar fix (shared pack) | passed (core); A05 7/7, A06 18/18, A14 6/6, A02/R03 still pass; A04 browser step, A07/A08, A15/F07 blocked by later units; remainder B04b (backup/restore commands, reapply-erasures job, restore gate) |
 
+| QG19 | 1 | Jeeves `d02ae85` | QGR1 later | passed; `Retry-After: 1` on HttpError 503s (admission UNAVAILABLE/OVERLOADED/DEADLINE); wiring 2/2; other 503s (fallback, healthz, edge) still without it, recorded |
+
 ## Active attempt
 
-QG19 next.
+QG12 running; then QG11, QGR1, B04c, B04b, N03, batch 2 (QG03, QG04, QG06–QG10, QG18, QG20, QGR2), Q04, Q05.
 
 ## Queue (next eligible first)
 
@@ -99,3 +101,8 @@ QG19 next.
 
 - Q14/Q15 failover, load and regional tests (need a spend decision beyond staging).
 - Backup/restore and SLA rows on the Cloud SQL trial instance (no backups on a trial instance).
+
+## Owner decisions, 2026-11-14 morning
+
+- History rewrite to clear push protection (done, `docs/coordinator/history-rewrite-2026-11-14.md`).
+- QG03, QG06, QG04, QG18, QG20: all yes (Jeeves plan batch 2, `3a0cee3`).
