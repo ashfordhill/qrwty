@@ -42,17 +42,17 @@ Plan-level limits (5-hour and 7-day percentages) come from the status line.
 
 | Q02 | 1 | `dae40da` | not a review point | passed; studio and CLI exports byte-identical (84 paths); offline tsc build clean; first-run 12 services healthy; stubs 501; new gaps F11–F15; usage imported (122 requests) |
 
+| N01 | 1 | `9f1d9d4` | not a review point | passed; pack v1.1 manifest `5ffae9f2…df6a`; Node pin 24.21.0 bookworm-slim; 47 row modules; self-test 48/48 cases, 31/31 faults detected; usage imported (164 requests) |
+
 ## Active attempt
 
-None (Q02 accepted 2026-11-14 ~06:50Z).
+None (N01 accepted 2026-11-14 ~08:00Z).
 
 ## Queue (next eligible first)
 
-1. N01 — shared pack v1.1: align the Node pin with the generator (it emits Node 24.21.0 on
-   `node:24.21.0-bookworm-slim`; v1 says 24.22.2 Alpine; Vitest/Biome/Playwright are not emitted
-   by the generator and stay pack choices) and build the neutral oracle tooling. Before B00.
-2. Q03 — audit generic gaps F1–F15 and commission exact Jeeves fixes (A), then its Fable review.
-3. B00 — create `qrwty-baseline` from pack v1.1 (B).
+1. Q03 — audit generic gaps F1–F15 and commission exact Jeeves fixes (A), then its Fable review.
+2. B00 — create `qrwty-baseline` from pack v1.1 (B).
+3. Each arm adopts pack v1.1 (copy, verify, record the hash) before reporting any A/F/R/U row.
 4. Then A: Q02 → Q03 (Fable review) → gap units → Q04 → Q05 (Fable review) …; B: B01 → … interleaved.
 
 ## Owner decisions and pending owner input
