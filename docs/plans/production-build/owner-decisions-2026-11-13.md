@@ -77,3 +77,24 @@ says otherwise.
 The owner will walk through the project after the run. Keep the root README current with real
 diagrams (Excalidraw sources and renders), measured tables, how to run each arm locally and how
 the staging deployment is reached, plus a short walkthrough of the main flows.
+
+## 9. Amendment, 2026-11-14 evening: the run is cut to what evaluates Jeeves
+
+The owner's aim is to evaluate Jeeves; QRWTY is a test subject that is unlikely to become a
+business. This section wins over sections 1, 2, 5, 6 and 8 where they conflict.
+
+- **Out of the run (both arms):** the UI and staging. A: Q11, Q12 and its review, Q12a, Q13.
+  B: B08 and its review, B08a, B09. Nothing is provisioned on GCP or Cloudflare; the trial credit
+  and the qrwty.io zone stay unused. Section 5 (both skins) no longer applies.
+- **Reviews (section 6):** A is reviewed after Q07 and Q08, matching B's reviews after B04 and B05;
+  then one backend review per arm at the end (A after Q10b, B after B07b), and a review of the
+  final report. No other per-unit reviews. Reviewer-proposed repairs still run.
+- **Merged units:** Q10a with Q10b, and B07a with B07b, each one unit and one commit.
+- **Jeeves:** batch 2 ends at QG07, QG08, QG09, QG20, then QGR2. QG10, QG18, QG21, QG22, QG23 and
+  QG25 move to the post-QRWTY Jeeves backlog.
+- **The report (section 8):** a final report replaces the staging walkthrough: backend LOC and
+  template share (source-loc-v2, UI excluded), the A/B effort and oracle comparison over the cut
+  scope, and the ranked Jeeves gap backlog. The scope change mid-run is a comparison limitation.
+- **Jeeves work in parallel:** once A's generation baseline is frozen (Q05), Jeeves may change for
+  its own improvement plan. A's later units use only the frozen export and don't read Jeeves plans
+  or commits made after Q05.
