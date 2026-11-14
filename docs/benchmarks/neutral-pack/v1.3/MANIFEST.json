@@ -1,0 +1,1703 @@
+{
+  "pack": "qrwty-neutral-pack",
+  "version": "v1.3",
+  "runId": "qrwty-r1-20261114",
+  "frozenBy": "N03 attempt 1",
+  "frozenAt": "2026-11-14T19:13:22Z",
+  "sourceRepository": "qrwty",
+  "sourceCommit": "128246a9d95cf63ab0040506de50f59c060f308b",
+  "basedOn": {
+    "version": "v1.2",
+    "manifestSha256": "5414d6ef8bbb43834c4f1ff45e8cff0f2903ccf284aaf6098fa4af820f26054b",
+    "path": "docs/benchmarks/neutral-pack/v1.2/"
+  },
+  "hashAlgorithm": "sha256",
+  "identity": "SHA-256 of this MANIFEST.json file, recorded outside the pack",
+  "readAllowlist": [
+    "docs/benchmarks/neutral-pack/v1.3/"
+  ],
+  "precedence": [
+    "files/docs/plans/production-build/owner-decisions-2026-11-13.md",
+    "frozen/",
+    "files/ (read with frozen/decisions.md section 2)"
+  ],
+  "amendments": [
+    {
+      "version": "v1.1",
+      "date": "2026-11-14",
+      "decidedBy": "coordinator",
+      "file": "frozen/decisions.md",
+      "change": "Node.js 24.22.2 -> 24.21.0; container base node:24.22.2-alpine -> node:24.21.0-bookworm-slim",
+      "reason": "the Jeeves generator arm A must use emits Node 24.21.0 and node:24.21.0-bookworm-slim; the arms share one runtime"
+    },
+    {
+      "version": "v1.1",
+      "date": "2026-11-14",
+      "decidedBy": "N01 (oracle-tooling-plan.md)",
+      "file": "oracle/",
+      "change": "adds the executable neutral oracle and evidence/n01/",
+      "reason": "the plan's deliverable"
+    },
+    {
+      "version": "v1.2",
+      "date": "2026-11-14",
+      "decidedBy": "coordinator, for both arms (unit N02)",
+      "file": "ledger/ledger.py",
+      "change": "rule R12: a recorded artifact hash passes when the working-tree file or any committed version of that path in the repository's Git history has it; a hash no version has is still an error, a missing file still a warning, and outside a Git checkout only the working-tree file counts; four R12 self-test cases; ledger/README.md documents the change and frozen/decisions.md section 11 records it",
+      "reason": "living evidence files that later units append to, such as docs/handoff.md, failed R12 on the next append, and the ledger writers then refused every new record"
+    },
+    {
+      "version": "v1.3",
+      "date": "2026-11-14",
+      "decidedBy": "owner (history rewrite); coordinator, for both arms (unit N03)",
+      "file": "oracle/selftest/double.ts, oracle/src/fixtures/stripe-signer.ts, oracle/test/observe.test.ts, oracle/test/stripe.test.ts",
+      "change": "five Stripe-key-shaped test literals are string concatenations with the same runtime values, as the 2026-11-14 history rewrite left them; the manifest is regenerated so every file verifies",
+      "reason": "GitHub push protection rejected the literals; after the rewrite these four files no longer match the v1.1 and v1.2 manifests, so v1.3 supersedes both"
+    },
+    {
+      "version": "v1.3",
+      "date": "2026-11-14",
+      "decidedBy": "coordinator, for both arms (unit N03)",
+      "file": "oracle/src/rows/A06.ts",
+      "change": "the check 'invalid session cookie on create' sends a present but invalid cookie: the cookie names are read once after sign-in, the revoked-session actor gets a copy of the jar, the garbage actor has its own jar with every name set to a value the arm never issued and gets the CSRF token directly, and the check fails when no cookie name was sent; new self-test case A06-unknown-cookie (double mode a06-unknown-cookie-guest) must be reported failed; oracle build 1.3.0, results report pack v1.3; frozen/decisions.md section 11 records it",
+      "reason": "A06 gave the revoked-session actor the original jar by reference; an arm that clears the revoked cookie in its 401 emptied it, so the garbage create carried no cookie (cookieNames: []) and the check proved nothing"
+    }
+  ],
+  "ignoredWhenVerifying": [
+    "__pycache__",
+    "node_modules"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7449,
+      "sha256": "6575d1630b8a39702b63b9f7cc397ac39338bfd73663d9e304444343089c5b66",
+      "role": "pack readme",
+      "origin": "authored-n03",
+      "fromV1": "amended",
+      "fromV1.1": "amended",
+      "fromV1.2": "amended"
+    },
+    {
+      "path": "b/execution-brief.md",
+      "bytes": 9263,
+      "sha256": "62a4b5ece97ed4a65fb629cdbc439d25ebf7c89d13ddda4c4b4e982b32988be9",
+      "role": "B execution brief",
+      "origin": "authored-q00",
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "evidence/n01/README.md",
+      "bytes": 3933,
+      "sha256": "2c00c043366b13a6578c0cd919a0b8ac9e864fd737ee5ed9a4794a837f3d6410",
+      "role": "N01 build and check evidence",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "evidence/n01/build_manifest.py",
+      "bytes": 4609,
+      "sha256": "52e7e77a8dd8d9f428e972211e5d290736ce7c249cc5a31dd2b2c9d603f8e540",
+      "role": "N01 build and check evidence",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "evidence/n01/check.txt",
+      "bytes": 525,
+      "sha256": "f16d3a654f7b71f9b1968e821a65f5dade82a1734b8910875466d0b4510d9c50",
+      "role": "N01 build and check evidence",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "evidence/n01/fresh-copy.txt",
+      "bytes": 954,
+      "sha256": "062512fc8e623fab953be360c4446dbe30e73a6cd44c31e2ba01409ceaa6f0a8",
+      "role": "N01 build and check evidence",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "evidence/n01/integration.txt",
+      "bytes": 379,
+      "sha256": "393a8bb9b24c829eed756642b00afe627c86c24b1758080a4af316dc48edf0e1",
+      "role": "N01 build and check evidence",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "evidence/n01/pin_dates.py",
+      "bytes": 1423,
+      "sha256": "7141572bd88376daddcd22b65545259fef74bc72cf4f0474ae0088cd0d785a4f",
+      "role": "N01 build and check evidence",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "evidence/n01/pins.json",
+      "bytes": 40140,
+      "sha256": "ec675e178898ce9ded645d17256842664d30f90f1aedbe22eb31898657c036b9",
+      "role": "N01 build and check evidence",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "evidence/n01/selftest/results.jsonl",
+      "bytes": 186220,
+      "sha256": "40613ae4e32190f23ae0fd776df16331c99b263e4be5b9975a71968035eb0dbe",
+      "role": "N01 build and check evidence",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "evidence/n01/selftest/run.log",
+      "bytes": 3274,
+      "sha256": "42e154cdf2d33e658408e0be8d108263b1c6ab392a719250a7f569a92f962170",
+      "role": "N01 build and check evidence",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "evidence/n01/selftest/selftest-results.json",
+      "bytes": 16024,
+      "sha256": "6ac41a269a5b5034b77690cde0d03b653cf54c12f6aa0fc97af325d7f5e9a905",
+      "role": "N01 build and check evidence",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "evidence/n01/selftest/selftest-summary.md",
+      "bytes": 5892,
+      "sha256": "b8b115b0f92a4c89a314bfade62b2363d91c82c7316838bcc2366542e333e133",
+      "role": "N01 build and check evidence",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "evidence/n03/README.md",
+      "bytes": 5537,
+      "sha256": "5fb7b833516a46217a6c4ee075b54724e6904bfe378958309132f6f6d4d946ec",
+      "role": "N03 build and check evidence",
+      "origin": "authored-n03"
+    },
+    {
+      "path": "evidence/n03/a06-proof/checks.jsonl",
+      "bytes": 3576,
+      "sha256": "a507de03ab27a8ec434688d67c33610f0316d6a77e4cce02031b116717470425",
+      "role": "N03 build and check evidence",
+      "origin": "authored-n03"
+    },
+    {
+      "path": "evidence/n03/a06-proof/new-A06-summary.md",
+      "bytes": 798,
+      "sha256": "4028a454538d76e74a93c17fe0bff69d0541a3f9f1908b411af8067f24f227dc",
+      "role": "N03 build and check evidence",
+      "origin": "authored-n03"
+    },
+    {
+      "path": "evidence/n03/a06-proof/old-A06-summary.md",
+      "bytes": 767,
+      "sha256": "8e9a1e68f4f0ea8fb8c2090db4cc2ebec19527d9448f0c7563f72ed2b090117f",
+      "role": "N03 build and check evidence",
+      "origin": "authored-n03"
+    },
+    {
+      "path": "evidence/n03/build_manifest.py",
+      "bytes": 6547,
+      "sha256": "6e93802463b99998f9a8e9ebde309e52b5f9c8f17d92cac1cca5e597b2acbe3d",
+      "role": "N03 build and check evidence",
+      "origin": "authored-n03"
+    },
+    {
+      "path": "evidence/n03/check.txt",
+      "bytes": 525,
+      "sha256": "4b2370bb10ca8d46f81593f036fd0d24b9f4b02daa1d4b5c392ef29dd4b83474",
+      "role": "N03 build and check evidence",
+      "origin": "authored-n03"
+    },
+    {
+      "path": "evidence/n03/credential-scan.txt",
+      "bytes": 750,
+      "sha256": "4f18419624f742c084b7f485b339891bed7d14c33a177c9b9d4cf86e81a4be28",
+      "role": "N03 build and check evidence",
+      "origin": "authored-n03"
+    },
+    {
+      "path": "evidence/n03/integration.txt",
+      "bytes": 379,
+      "sha256": "5c5427ba97a45c47f04688908e09d329466282b3ee784a5876f7421f8f478d73",
+      "role": "N03 build and check evidence",
+      "origin": "authored-n03"
+    },
+    {
+      "path": "evidence/n03/selftest/results.jsonl",
+      "bytes": 184476,
+      "sha256": "face4ce6aba6a2b4b39a8b52dc15be4cf79710846b594ea4b96ced1a0400d25c",
+      "role": "N03 build and check evidence",
+      "origin": "authored-n03"
+    },
+    {
+      "path": "evidence/n03/selftest/run.log",
+      "bytes": 3348,
+      "sha256": "0b3b92058387c63f6e584c5c61f4e3db566893f497d70845d7128f58c4db7896",
+      "role": "N03 build and check evidence",
+      "origin": "authored-n03"
+    },
+    {
+      "path": "evidence/n03/selftest/selftest-results.json",
+      "bytes": 16337,
+      "sha256": "69c3dd58c46c1c8666f6fb1ba5b6a45204d4a7892a031ed1db9e659a67044973",
+      "role": "N03 build and check evidence",
+      "origin": "authored-n03"
+    },
+    {
+      "path": "evidence/n03/selftest/selftest-summary.md",
+      "bytes": 6018,
+      "sha256": "d82d2a6d9513e349ca0e94ee6147c9b5b2438896c26db22b845c0ea899303e1e",
+      "role": "N03 build and check evidence",
+      "origin": "authored-n03"
+    },
+    {
+      "path": "files/docs/diagrams/README.md",
+      "bytes": 3539,
+      "sha256": "6d73e0ad4e78008b3123831e0f5c89b20be58b4e0ff25d07fae7f920ed86755b",
+      "role": "diagram conventions",
+      "origin": {
+        "copyOf": "docs/diagrams/README.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/billing-lifecycle.excalidraw",
+      "bytes": 35345,
+      "sha256": "e523682e35083a3661bd9c0e15cfee5c44821656da92be131415a95ac3f2b828",
+      "role": "shared explanatory diagram (excalidraw)",
+      "origin": {
+        "copyOf": "docs/diagrams/billing-lifecycle.excalidraw",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/billing-lifecycle.png",
+      "bytes": 346156,
+      "sha256": "e203a9499242b3e2408586e4be91d818e9e6bb5c0ae50f040992785349614d7e",
+      "role": "shared explanatory diagram (png)",
+      "origin": {
+        "copyOf": "docs/diagrams/billing-lifecycle.png",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/billing-lifecycle.svg",
+      "bytes": 41407,
+      "sha256": "af714351125557e75463deff3bbb9d4a87a684f3956aa9c84addb288fab4524f",
+      "role": "shared explanatory diagram (svg)",
+      "origin": {
+        "copyOf": "docs/diagrams/billing-lifecycle.svg",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/cloud-deployment.excalidraw",
+      "bytes": 45570,
+      "sha256": "b0935137446d1928b8c94c11e567851e24f201ed4cd1f666fd9b46f5632695f0",
+      "role": "high-level topology (excalidraw)",
+      "origin": {
+        "copyOf": "docs/diagrams/cloud-deployment.excalidraw",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/cloud-deployment.png",
+      "bytes": 370356,
+      "sha256": "3e7b1847e97e43a79222008d47e83f5277c1d26b1bca2731d2b2e93577591bfa",
+      "role": "high-level topology (png)",
+      "origin": {
+        "copyOf": "docs/diagrams/cloud-deployment.png",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/cloud-deployment.svg",
+      "bytes": 51180,
+      "sha256": "3e5453ac44a9cebd7af7fed4be46de2456d25a563b9b4ccdf4456786131beb50",
+      "role": "high-level topology (svg)",
+      "origin": {
+        "copyOf": "docs/diagrams/cloud-deployment.svg",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/guest-ownership.excalidraw",
+      "bytes": 33901,
+      "sha256": "fea5d3ced958ce1d948803eeac4fef5ae10f08aea8660c43d720e247b930cd31",
+      "role": "shared explanatory diagram (excalidraw)",
+      "origin": {
+        "copyOf": "docs/diagrams/guest-ownership.excalidraw",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/guest-ownership.png",
+      "bytes": 286521,
+      "sha256": "5aec82798fd466584fa00effbb615494b3938326b2fa0b09cacdf8dfbf3ab699",
+      "role": "shared explanatory diagram (png)",
+      "origin": {
+        "copyOf": "docs/diagrams/guest-ownership.png",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/guest-ownership.svg",
+      "bytes": 40445,
+      "sha256": "a7b75ffa8ac10b1a4b99d10739558666b5d9845220369cd66839bb7defcf6a44",
+      "role": "shared explanatory diagram (svg)",
+      "origin": {
+        "copyOf": "docs/diagrams/guest-ownership.svg",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/redirect-failure.excalidraw",
+      "bytes": 35404,
+      "sha256": "1a9e92a46ba2be6703dc01e3e3c9526137b4dcbc917a621cec86536d5921e128",
+      "role": "shared explanatory diagram (excalidraw)",
+      "origin": {
+        "copyOf": "docs/diagrams/redirect-failure.excalidraw",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/redirect-failure.png",
+      "bytes": 345739,
+      "sha256": "2a333a43f9a8c9b0f8312b92ce77b3e8ae86c9122f269eb483b43597052c710f",
+      "role": "shared explanatory diagram (png)",
+      "origin": {
+        "copyOf": "docs/diagrams/redirect-failure.png",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/redirect-failure.svg",
+      "bytes": 42390,
+      "sha256": "6f27968154bec0b069945edf63613640e6a68970c576d802ec570580afdc9e95",
+      "role": "shared explanatory diagram (svg)",
+      "origin": {
+        "copyOf": "docs/diagrams/redirect-failure.svg",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/system-overview.excalidraw",
+      "bytes": 58550,
+      "sha256": "a9a0a416757c2d4a0abb266e80817298cd654ba5d19d299c84215153f8f62c27",
+      "role": "high-level topology (excalidraw)",
+      "origin": {
+        "copyOf": "docs/diagrams/system-overview.excalidraw",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/system-overview.png",
+      "bytes": 400632,
+      "sha256": "a94adb6f1e2036291e8a36da075740102b9d6ea3ed06764515b8325fc64a38e1",
+      "role": "high-level topology (png)",
+      "origin": {
+        "copyOf": "docs/diagrams/system-overview.png",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/diagrams/system-overview.svg",
+      "bytes": 61912,
+      "sha256": "8845b37652407990db16fd6c5b5a5d6b567e409ff640bcc423619d191a1bcbe5",
+      "role": "high-level topology (svg)",
+      "origin": {
+        "copyOf": "docs/diagrams/system-overview.svg",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/plans/production-build/acceptance.md",
+      "bytes": 14806,
+      "sha256": "4e4e103d8c294b8c3939cc693e6d8d9ffa6a0ee867eb02c7f371c2f783e886ee",
+      "role": "acceptance contract",
+      "origin": {
+        "copyOf": "docs/plans/production-build/acceptance.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/plans/production-build/architecture.md",
+      "bytes": 15187,
+      "sha256": "b56149ed625381e97288699c71f1e5341451f614fddd46a368b5210acca2f812",
+      "role": "architecture contract",
+      "origin": {
+        "copyOf": "docs/plans/production-build/architecture.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/plans/production-build/baseline-units.md",
+      "bytes": 16386,
+      "sha256": "695c3b1e19cbbbed28bc2b94d02269987701d407182450425c1f3ff9ca8d86b1",
+      "role": "B unit plan",
+      "origin": {
+        "copyOf": "docs/plans/production-build/baseline-units.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/plans/production-build/billing-contract.md",
+      "bytes": 8337,
+      "sha256": "2634dcf3fa7e658114c6adc6c93d1d160155087b7b2b5a29bff693a01315a141",
+      "role": "billing contract",
+      "origin": {
+        "copyOf": "docs/plans/production-build/billing-contract.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/plans/production-build/cloud-strategy.md",
+      "bytes": 16715,
+      "sha256": "009cc0b2782edb4551b99a3b9d825269182a22714bc239c38c796ff51cf203c4",
+      "role": "cloud strategy",
+      "origin": {
+        "copyOf": "docs/plans/production-build/cloud-strategy.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/plans/production-build/design-brief.md",
+      "bytes": 7174,
+      "sha256": "c703e6b4ace5a2d57acf7eaef55c0e53c4a80dc73981ae79dda07b7f98f66c7b",
+      "role": "design brief",
+      "origin": {
+        "copyOf": "docs/plans/production-build/design-brief.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/plans/production-build/durable-clicks.md",
+      "bytes": 8322,
+      "sha256": "e65722eefe3396825fd5332baf6f489f17f18c6573e45b747eb103e9890695dd",
+      "role": "durable-click contract",
+      "origin": {
+        "copyOf": "docs/plans/production-build/durable-clicks.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/plans/production-build/local-to-cloud.md",
+      "bytes": 9046,
+      "sha256": "815db0d8d3175cfe89b4d73ccc362a05ed02356fc634c3b0ee28cd8d6cc4c52b",
+      "role": "local-to-cloud contract",
+      "origin": {
+        "copyOf": "docs/plans/production-build/local-to-cloud.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/plans/production-build/owner-decisions-2026-11-13.md",
+      "bytes": 4913,
+      "sha256": "be4b296d3154a3d940c9ff5a1d5aeb8d88916e40ae9a923032f6817a5815a194",
+      "role": "owner decisions",
+      "origin": {
+        "copyOf": "docs/plans/production-build/owner-decisions-2026-11-13.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "files/docs/plans/production-build/product-contract.md",
+      "bytes": 13003,
+      "sha256": "678b3ef35a6deb56ce1b7b7057f565e37df5c088200c6b31ea945ba2fabd1b1f",
+      "role": "product contract",
+      "origin": {
+        "copyOf": "docs/plans/production-build/product-contract.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      },
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "frozen/acceptance-oracle.md",
+      "bytes": 19661,
+      "sha256": "6e91ce7cb8bb24e0f0535a57b179c0275653fb14c813b70334d03fd3bfd6d132",
+      "role": "black-box acceptance specification",
+      "origin": "authored-q00",
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "frozen/decisions.md",
+      "bytes": 25329,
+      "sha256": "2e7c41fca24062fbb9bab1147f67a86046ecdd251ae3193e3999f13a68391763",
+      "role": "frozen decisions",
+      "origin": "authored-n03",
+      "fromV1": "amended",
+      "fromV1.1": "amended",
+      "fromV1.2": "amended"
+    },
+    {
+      "path": "frozen/http-contract.md",
+      "bytes": 10877,
+      "sha256": "a6a0afb9475003adf00c6a4655f2c1b075f64452da2679f75ddac96ef0a04a60",
+      "role": "external HTTP and event contract",
+      "origin": "authored-q00",
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "frozen/loc-method.md",
+      "bytes": 4223,
+      "sha256": "cb253ef929b1f5ca22c5e0fde3202844ed9f86fae6827cff93d8045e9be12169",
+      "role": "source-count method",
+      "origin": "authored-q00",
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "frozen/oracle-tooling-plan.md",
+      "bytes": 5967,
+      "sha256": "9e39aa96bd923904a308dea2214040f447c9802efada1bba97eac51ff7b0358f",
+      "role": "neutral oracle tooling plan",
+      "origin": "authored-q00",
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "ledger/README.md",
+      "bytes": 11483,
+      "sha256": "be66b9f1c31122306de63892c01d1920c913a63a6c40f492ca53f2e453de771e",
+      "role": "ledger documentation",
+      "origin": "authored-n02",
+      "fromV1": "amended",
+      "fromV1.1": "amended",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "ledger/events.schema.json",
+      "bytes": 14487,
+      "sha256": "759c0ba3ecad694db2a4fb1013896bdab1caf2ad6e0b519e1e1d76c64450139b",
+      "role": "ledger schema",
+      "origin": "authored-q00",
+      "fromV1": "identical",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "ledger/ledger.py",
+      "bytes": 51018,
+      "sha256": "eb8f138beffc86a7e2b724193683994af210c18384da06a26649091691ea6533",
+      "role": "ledger validator and helpers",
+      "origin": "authored-n02",
+      "fromV1": "amended",
+      "fromV1.1": "amended",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/.gitignore",
+      "bytes": 14,
+      "sha256": "4d56952b0fb13bf8f9b6c13a6d4c34a075bac3af447636a1df4335d7576e2f97",
+      "role": "oracle tool configuration",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/README.md",
+      "bytes": 16381,
+      "sha256": "5e5e9557a4cb950f5e0bda162686c7133d557e9d81d30263a067e0857c3c386d",
+      "role": "oracle readme: running, adapter manifest, result format",
+      "origin": "authored-n03",
+      "fromV1.1": "amended",
+      "fromV1.2": "amended"
+    },
+    {
+      "path": "oracle/adapter.schema.json",
+      "bytes": 9568,
+      "sha256": "c0ae6ee17a5bf274dba8659ee30c805e86f0486351ae78bbd6b66e168e59caaf",
+      "role": "schema of an arm's oracle-adapter.json",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/biome.json",
+      "bytes": 252,
+      "sha256": "1d938e0bfa870e3d42a9f2c6013b92f3f2d3295f629ef06f2137310031d2509c",
+      "role": "oracle tool configuration",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/package.json",
+      "bytes": 1000,
+      "sha256": "7f3e23e739ffedf79980e5e0589e2feaea25b1a4b99b205eb4dbb3a0c0694218",
+      "role": "oracle dependency pins",
+      "origin": "authored-n03",
+      "fromV1.1": "amended",
+      "fromV1.2": "amended"
+    },
+    {
+      "path": "oracle/pnpm-lock.yaml",
+      "bytes": 63842,
+      "sha256": "29ff3604a29bf91ffa4a794de326c44d45fc589f19c79e7f547127ca4461fd0b",
+      "role": "oracle dependency pins",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/pnpm-workspace.yaml",
+      "bytes": 322,
+      "sha256": "2d7b0fb892cbf8396beaec5b40a89dbe7dc4450d51319522b2820fe98681fdb9",
+      "role": "oracle dependency pins",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/selftest/cases.ts",
+      "bytes": 7794,
+      "sha256": "7c50d6094fc1e74c3cd599ffd4f3040eede583c0f898f9fa1bdcdec857ab51c9",
+      "role": "oracle self-test",
+      "origin": "authored-n03",
+      "fromV1.1": "amended",
+      "fromV1.2": "amended"
+    },
+    {
+      "path": "oracle/selftest/ctl.ts",
+      "bytes": 659,
+      "sha256": "b18bd1b5fb88790b160b82a2a9e9082f7bdc5a81d17553594977d9addae99d72",
+      "role": "oracle self-test",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/selftest/double.ts",
+      "bytes": 42256,
+      "sha256": "a4eba0511a49f662bbc518da53987f4b53985154cc5e89c3edb6c55951b91dc6",
+      "role": "oracle self-test",
+      "origin": "authored-n03",
+      "fromV1.1": "amended",
+      "fromV1.2": "amended"
+    },
+    {
+      "path": "oracle/selftest/run.ts",
+      "bytes": 9988,
+      "sha256": "5dfbbe63cd0f536de92f2ed1b91c22bf54d430bd1ab1ef422ded2c55f2f160fd",
+      "role": "oracle self-test",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/selftest/ui-names.selftest.json",
+      "bytes": 511,
+      "sha256": "0b6d6b6b943c42ad7067934724af4757bb49c4254b838f89e6208ef92b6b276d",
+      "role": "oracle self-test",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/adapter.ts",
+      "bytes": 5000,
+      "sha256": "a31390d1383ff0aa5f068b5e3b903b9aec197ff224662a68e7278b0bcd76768f",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/browser/driver.ts",
+      "bytes": 3926,
+      "sha256": "8f507d2f1cb7a851e9c1ff26b228b98ec76e128fc2265b4b5d359f21546e40e8",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/browser/names.ts",
+      "bytes": 1673,
+      "sha256": "38d901843a5eed935043cc82055372d415b1fa3db43aac95b91b539aaf258ca9",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/browser/qr.ts",
+      "bytes": 1852,
+      "sha256": "6a0f68839f29ca9d2d2d45e7b16c9daa779d767ee3b26774d0c2d2bbf052c489",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/cli.ts",
+      "bytes": 3510,
+      "sha256": "3f6209be1612c60304ebd708f280012c0367bdb71eabae0aa70b0c79b42aecbf",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/client/client.ts",
+      "bytes": 5788,
+      "sha256": "ecd55a3b734cb92ddc85090f7b7713aae464716f0eddc32fc4f4d5c81d89b001",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/client/raw.ts",
+      "bytes": 7078,
+      "sha256": "cc25234cde5ec8ee3570b839ab6e524d9d4ad119d26991f5b9d540959eeab5fb",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/client/session.ts",
+      "bytes": 9202,
+      "sha256": "520b53629995ea57d23fec6c0d7a8a703362c8ab1885f27b0c798aacb9443bab",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/context.ts",
+      "bytes": 7103,
+      "sha256": "1c59e55cb6303afd084ae91f1f6fe9efeb3ba0c40b819b2e1a3cc690fc2f9fc7",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/faults/clock.ts",
+      "bytes": 1250,
+      "sha256": "13d0871492f9f133c887d3f99714e9feacc665bed2a2d5ba263ce8f8a10b96a9",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/faults/commands.ts",
+      "bytes": 3991,
+      "sha256": "efaca3a991fff7e9d33ff5273e3e293ccab3210c170d8e3fde82b226671625b2",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/faults/toxiproxy.ts",
+      "bytes": 4248,
+      "sha256": "f4ca025faadab8c081a4040e6f806350c5fd145ca50f2ca18ae0c5273bcc6c0d",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/fixtures/accounts.ts",
+      "bytes": 242,
+      "sha256": "f1c6baf615c7d78202591328ab159e1e159852ef73486d4b085b91bf05937ec7",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/fixtures/clicks.ts",
+      "bytes": 3648,
+      "sha256": "578090a83c1c0b10ca6bde7f890cfa22cfbf053639804a84d3b0ad3f4a1e1de8",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/fixtures/destinations.ts",
+      "bytes": 3160,
+      "sha256": "2d23f9fff32c3a64d2ad3e04d9b55f55fb907d67b34b1ca6219dc56f378939f7",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/fixtures/poison.ts",
+      "bytes": 1065,
+      "sha256": "2e95e543d155b4a985565575d993992207b9029dbb50afb920edfced80b4588f",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/fixtures/stripe-signer.ts",
+      "bytes": 2285,
+      "sha256": "338d2398c54f1459a86632ba567ccb9804e0e52bcb346f5489a703a43fc41e97",
+      "role": "oracle component",
+      "origin": "authored-n03",
+      "fromV1.1": "amended",
+      "fromV1.2": "amended"
+    },
+    {
+      "path": "oracle/src/fixtures/stripe.ts",
+      "bytes": 25070,
+      "sha256": "7cacb5f062c534c6a94f0db2a9689fde313efe086082f42054de4219edc17ac5",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/fixtures/webrisk.ts",
+      "bytes": 3571,
+      "sha256": "bd8dd185364685ef284233bb3f44939c65ec5db304a1b8f6500306f11cdaba26",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/observe/capture-proxy.ts",
+      "bytes": 4242,
+      "sha256": "989e84dd493a2c62b21a6df95ebefbf10fb4c894e480a64822efd39cd18c5388",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/observe/pubsub-capture.ts",
+      "bytes": 4605,
+      "sha256": "0e7ae2f59ffc78ee0faecbafdeacd0514d58a049be35a0068d3c5dc944180db1",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/observe/results.ts",
+      "bytes": 3421,
+      "sha256": "8144d25707681b9bc88c90781209aace959ad8952a9d0b84836f01614e969c7a",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/redact.ts",
+      "bytes": 2237,
+      "sha256": "39b462f7e4d7041f0c6fa466c01cd23834dfe031a9ce14032b252e4d7d549e2f",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A01.ts",
+      "bytes": 4026,
+      "sha256": "4f9d5e82a6ee2d8afe85c543ec2936dda4b16d2da67ac03f489c8ca376d1fedc",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A02.ts",
+      "bytes": 2983,
+      "sha256": "dfc37e849a5f6051e38a98a2ace70fb73ca0e70468de3ffb4fe86e2e490281f6",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A03.ts",
+      "bytes": 3570,
+      "sha256": "b6f4a3e1d4cf065864d70ca96b0f3845ee8e9622954e43fef63b713fc3064940",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A04.ts",
+      "bytes": 4616,
+      "sha256": "3162fe04f14d57490e406c9cc0e7c0fc88e0bb43c9be4a419e3665c42a762451",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A05.ts",
+      "bytes": 3352,
+      "sha256": "33792b3ba9635caee6f83deb16ce6eeaeff6c230e0045b2ecf6f4d43f1e92eb1",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A06.ts",
+      "bytes": 6085,
+      "sha256": "4eb4cb081ce806f60c3cc74fa021bf19f5da7c091cf8b8c2185eed0474c21de5",
+      "role": "oracle row module",
+      "origin": "authored-n03",
+      "fromV1.1": "amended",
+      "fromV1.2": "amended"
+    },
+    {
+      "path": "oracle/src/rows/A07.ts",
+      "bytes": 5612,
+      "sha256": "19049e00475920a2f1a3c7a3ad8ae1f1d487213856de9df5c94de82ee0e80714",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A08.ts",
+      "bytes": 3597,
+      "sha256": "466e08037baa67e4f2788eee570b5930d1e5884ea9066a5859918bfd92b02954",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A09.ts",
+      "bytes": 7799,
+      "sha256": "806f51b8c50d851ca21d8ea54b5cb81d06058a8b312eb4596cc4f38758a7e716",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A10.ts",
+      "bytes": 6644,
+      "sha256": "28cc8a95d11ab56f12a04fc180b67085ba5f5bf907d530da5fece38b64b9d308",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A11.ts",
+      "bytes": 2985,
+      "sha256": "3763517217f311bdb78382f20eeeb90d3dbdac9b4b7075b7754127345a37ba8c",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A12.ts",
+      "bytes": 4754,
+      "sha256": "39b6201f6452ff9fad52de2240877f46fcc05a9fb93bee90bb60d6fe388a09e2",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A13.ts",
+      "bytes": 4985,
+      "sha256": "b1e80e2733c25c003a1a3eab26e0cda3e55f13832119914293f334c4ab9ea7f2",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A14.ts",
+      "bytes": 5722,
+      "sha256": "cadec8a49262756b0d50f0a5c3f17d530829feb28aa00819d98c0bf8dd9ec983",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A15.ts",
+      "bytes": 4585,
+      "sha256": "79fd93f7c49d5986274f33b6f50c934c7ea2d973e36431c4ae629c165020eb0c",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A16.ts",
+      "bytes": 4855,
+      "sha256": "73931d9a0106ff5303dfe4ff7c1c56244eff940b63a10ab4c9cd318f289b13ca",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A17.ts",
+      "bytes": 3597,
+      "sha256": "f7a1e24c185945ef7e4379b70707554f3826933b5b49e4ebae4120db7dd98176",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A18.ts",
+      "bytes": 6795,
+      "sha256": "ebc18d6b656cc41a639388b94bbc4cca1f67adc495c12e9114ba74404b675093",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A19.ts",
+      "bytes": 4909,
+      "sha256": "8e2c64ed3eea0e0913b9b92c4c20bbfb5817b46f7899129c732fd14888f7bac0",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A20.ts",
+      "bytes": 4079,
+      "sha256": "3f7ea77b555eb8849082283f6233d9e07b6bf9dbc153d2e654f45eb9ec824075",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A21.ts",
+      "bytes": 4672,
+      "sha256": "1c7462969b4efebcde1500316174f59642958b7df90278443b079a2e58aeff50",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A22.ts",
+      "bytes": 5829,
+      "sha256": "42b998370bb23a3f2623c05f869a84119e1d40d668d4db5cb9dd62b04cb8d5a2",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A23.ts",
+      "bytes": 5539,
+      "sha256": "a3df123f36d4457ba72291a7b512deb5f19f0c38b542072d9ef93bbed4a0c5f3",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/A24.ts",
+      "bytes": 8077,
+      "sha256": "1919cd3bf60d3e37c790919bd634f3bac452fc34ba234f4145fe0434ca1829a0",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/F01.ts",
+      "bytes": 4098,
+      "sha256": "1c0227360019c8d10aeb803d1f7e15aeffdc2633a25361b5f0edc111b73a0ace",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/F02.ts",
+      "bytes": 3613,
+      "sha256": "71de6df72380dee91a12f17ff91a0d2ebb741192eb2f9bf9d6626ddc38c73630",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/F03.ts",
+      "bytes": 4637,
+      "sha256": "b6bb194d6081aa548f1f4db69d9ce2562b56cb3c7d019adccd342f49b80a7efa",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/F04.ts",
+      "bytes": 3216,
+      "sha256": "08ac1cda338cb323460bd2fefa20545f7f72273108dec4a1dc19cbd82ef408be",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/F05.ts",
+      "bytes": 3398,
+      "sha256": "e12daea62576da5dc55348b748c5e57aba1c6a7e8a473edab4be217d84ae6298",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/F06.ts",
+      "bytes": 4147,
+      "sha256": "5af884e446416a621c02340bfaeb3559a811eda19820e37977ca13c52e2c867f",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/F07.ts",
+      "bytes": 1349,
+      "sha256": "c4f1a1671541dbb938b12c955e4542ffee6867779a528e3c6e704ae95dd0af56",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/F08.ts",
+      "bytes": 860,
+      "sha256": "caaad278d6c99c031c1c6f1a927f9a08b763f59ecfb7ad6e57c29a3e7551c992",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/F09.ts",
+      "bytes": 3563,
+      "sha256": "ecbfaa084350074189a9bb29abb49a140a1e783e00accdd513543d75a7c28c12",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/F10.ts",
+      "bytes": 4387,
+      "sha256": "9a71487e24ac70ad740ee7ddad39a56e19d6598261212ca4b549ba35305e7883",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/R01.ts",
+      "bytes": 2126,
+      "sha256": "97d0d0027c9a353b722ecf5d9dcaff69965ec5b6f6253fdd25c347f1c8eb4c9b",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/R02.ts",
+      "bytes": 1849,
+      "sha256": "c2f21433e0d3256f8e04bd07e0e61c075ce4f979d8bd9d1caa39e7bdcc4ba5e0",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/R03.ts",
+      "bytes": 3500,
+      "sha256": "a387b3f0c2a30bed36656e516394d79bf86fc05e9b10e4f0ffa17d62999ceab5",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/R04.ts",
+      "bytes": 2354,
+      "sha256": "04ea75d4e0e1a683668da44e13166155d6ebafa94b9d7e07f62b8c37af1ad78d",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/R05.ts",
+      "bytes": 2994,
+      "sha256": "78aa3841fb15a9fed86bd2a4806534964186e13987b84c20af837f73fb12f465",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/R06.ts",
+      "bytes": 2000,
+      "sha256": "a62b5153ee5fec611108d15c3ef8c55820d7d1cb5d6c662b0ceafe9e59339f74",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/U02.ts",
+      "bytes": 4077,
+      "sha256": "531320a7951223984e5ef11a044981cad0dd8569eb3519d011f1883d77fff842",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/U03.ts",
+      "bytes": 3793,
+      "sha256": "3e52a55119682c3c9efebfa3991f8fc0279821681aaccb1612bbb76aca077a62",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/U04.ts",
+      "bytes": 3096,
+      "sha256": "c33e1b0792773832f305c83b2221b184afa38c384c3e2824c051904528d283b1",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/U05.ts",
+      "bytes": 4419,
+      "sha256": "ab81fba725f65b8a79045120704159ba22c8b9cfc107ac3d503755f3b9dff700",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/U06.ts",
+      "bytes": 3342,
+      "sha256": "3d8b11077b41687eef850035230f0b37614eec591c34dad7660dda82a1fae57b",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/U07.ts",
+      "bytes": 4480,
+      "sha256": "4c374a3aa30825c12775bd812d08faf626d9fe9b39e13e0b2da21d51509651a4",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/U08.ts",
+      "bytes": 3792,
+      "sha256": "de25b2a0c5e1ef7e3c567ea424b225a574e91bc2f4203cbcea91ed84876a405f",
+      "role": "oracle row module",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/index.ts",
+      "bytes": 2003,
+      "sha256": "4e8e440870d5818f550a4bb109dfcfc0a851bb5ffaa14d7b37ad5bfaece87964",
+      "role": "oracle row helpers",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/lib/env.ts",
+      "bytes": 1054,
+      "sha256": "c5dd1401f066d928e5f37a0b7a624131cf9004420a00d27e261804ea1202ef86",
+      "role": "oracle row helpers",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/lib/flows.ts",
+      "bytes": 10711,
+      "sha256": "ff387b81792493af0a2fc4970ee5307b465c585a32919f39dc839db85d0bffc3",
+      "role": "oracle row helpers",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/lib/jwt.ts",
+      "bytes": 1371,
+      "sha256": "9fe9bf1e76dff309da9dc3a13871bb2065994b47f1a1d25b23a29fb9a8e41526",
+      "role": "oracle row helpers",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/lib/row.ts",
+      "bytes": 980,
+      "sha256": "7e353d00678ec38c4843fc75b0741e392a405c41632e0a8164d3a2c5f66d1b4b",
+      "role": "oracle row helpers",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/rows/lib/ui.ts",
+      "bytes": 4061,
+      "sha256": "5fde56c628655cc8a3a2c6c5048ec67c49384788bbfa69d55704acf4267970cd",
+      "role": "oracle row helpers",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/runner.ts",
+      "bytes": 6058,
+      "sha256": "6deb929ce0c0eb38162b08e030a8cd7e7c90a2043492ea835c9b35613e7575f8",
+      "role": "oracle component",
+      "origin": "authored-n03",
+      "fromV1.1": "amended",
+      "fromV1.2": "amended"
+    },
+    {
+      "path": "oracle/src/schema.ts",
+      "bytes": 3526,
+      "sha256": "633943a6f04830e7f9e87f426e0cc393873f02146d12b8822749a4a1a4ec902d",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/src/types.ts",
+      "bytes": 3482,
+      "sha256": "6c9b73bfbb302ef33572d1a6c38d2abe29ef29b453c8331fa36dc4fd96f2044e",
+      "role": "oracle component",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/test/adapter.test.ts",
+      "bytes": 3217,
+      "sha256": "9e916e791cd56f14e5c2856decd73604c386e4f63e84d6226ab5dd5aed4c8a5e",
+      "role": "oracle unit and integration tests",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/test/client.test.ts",
+      "bytes": 4754,
+      "sha256": "827958f983848b1c8ddf2e982e9e9484001e3b5aa56229f9f00a475f1416a537",
+      "role": "oracle unit and integration tests",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/test/faults.test.ts",
+      "bytes": 4015,
+      "sha256": "32dd56292206b838e8327bf14ee8a6448235f0693161789b7fd2dc6c50d95576",
+      "role": "oracle unit and integration tests",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/test/fixtures.test.ts",
+      "bytes": 3279,
+      "sha256": "d3f3198bdfef23138f26265a263ed19768ac88e1671650bc7a6243010f793123",
+      "role": "oracle unit and integration tests",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/test/helpers.ts",
+      "bytes": 1547,
+      "sha256": "0945e3cdee76a560cd4f1d88682e8f5e22f5af4430062580dc1257f4a35ae479",
+      "role": "oracle unit and integration tests",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/test/integration/components.test.ts",
+      "bytes": 4874,
+      "sha256": "e7e809aa71ede87b38ca1dc82bd84665bb64009c8a300377b43ae5241f6a936e",
+      "role": "oracle unit and integration tests",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/test/observe.test.ts",
+      "bytes": 4725,
+      "sha256": "73cb02fd212d752adde852541ac15dff524dc81bd84283361e04b51f184d055e",
+      "role": "oracle unit and integration tests",
+      "origin": "authored-n03",
+      "fromV1.1": "amended",
+      "fromV1.2": "amended"
+    },
+    {
+      "path": "oracle/test/rows.test.ts",
+      "bytes": 3196,
+      "sha256": "05735ba699cb88d9c5bfa4fef60a344b33a1a6aa7a111af317166fc7df41af81",
+      "role": "oracle unit and integration tests",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/test/stripe.test.ts",
+      "bytes": 6710,
+      "sha256": "109f1957fec2c8594f64c82f32e9b33f4f34a11fc7fcf88528896ab224948d41",
+      "role": "oracle unit and integration tests",
+      "origin": "authored-n03",
+      "fromV1.1": "amended",
+      "fromV1.2": "amended"
+    },
+    {
+      "path": "oracle/tsconfig.json",
+      "bytes": 539,
+      "sha256": "3837569ba3f671665fd0bfd576fe7cdfa013a449c1ffb52e630a2a4c4645d037",
+      "role": "oracle tool configuration",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/ui-names.schema.json",
+      "bytes": 1272,
+      "sha256": "f9e596cd32b2295a1a86781bd2d7fbf6b760a465f6fe68d28f6a4ab384fc7cc2",
+      "role": "schema of the frozen UI name list",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "oracle/vitest.config.ts",
+      "bytes": 350,
+      "sha256": "254e90b431d17810d96056ff7824978ac008fae42e8e4d0fcfd8ecd0a5ebb972",
+      "role": "oracle tool configuration",
+      "origin": "authored-n01",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    },
+    {
+      "path": "verify_pack.py",
+      "bytes": 7857,
+      "sha256": "c7ff4d18eadc88a17318ee4160582a511cd7c212e35fd2346f1ccd8b18f02b5b",
+      "role": "pack verifier",
+      "origin": "authored-n01",
+      "fromV1": "amended",
+      "fromV1.1": "identical",
+      "fromV1.2": "identical"
+    }
+  ],
+  "excluded": [
+    {
+      "category": "A source (app/, web/, infra/)",
+      "present": false
+    },
+    {
+      "category": "Generated payloads, generated tests, generation reports, saved Jeeves designs",
+      "present": false
+    },
+    {
+      "category": "Jeeves generator internals: the Jeeves repository and docs/plans/production-build/snapshot-and-sources.md",
+      "present": true,
+      "reason": "snapshot-and-sources.md names generator files, stub interfaces and provider seams"
+    },
+    {
+      "category": "A handoffs and evidence: docs/handoff.md, docs/evidence/",
+      "present": true,
+      "reason": "A-side history; Q01+ handoffs do not exist yet"
+    },
+    {
+      "category": "A IaC",
+      "present": false
+    },
+    {
+      "category": "A repair or incident history",
+      "present": false
+    },
+    {
+      "category": "QRWTY Git history, including an earlier application removed in November 2026",
+      "present": true
+    },
+    {
+      "category": "Coordinator state, prompts and tools: docs/coordinator/",
+      "present": true
+    },
+    {
+      "category": "Orchestration: units.md, coordinator-prompt.md, readiness.md, the plan README.md",
+      "present": true,
+      "reason": "A's unit plan and coordinator instructions, not shared requirements"
+    },
+    {
+      "category": "comparison.md",
+      "present": true,
+      "reason": "B-relevant rules restated in frozen/; holds A-process detail and the withheld maintenance challenge"
+    },
+    {
+      "category": "budget-options.md and its rate worksheet",
+      "present": true,
+      "reason": "future cost options; mentions generator output"
+    },
+    {
+      "category": "business-analysis/, root README.md, owner .docs/",
+      "present": true,
+      "reason": "background research and owner material, not requirements; .docs/ is never read"
+    }
+  ],
+  "outsidePackReferences": [
+    {
+      "from": "files/docs/diagrams/README.md",
+      "target": "../evidence/plan-revision-2/checks.md",
+      "reason": "excluded planning evidence (diagram verification record of revision 2)"
+    },
+    {
+      "from": "files/docs/plans/production-build/cloud-strategy.md",
+      "target": "budget-options.md",
+      "reason": "excluded future cost reference; its fairness rule (separate per-arm environments) is in decisions §5"
+    },
+    {
+      "from": "files/docs/plans/production-build/cloud-strategy.md",
+      "target": "budget-options.md",
+      "reason": "excluded future cost reference; its fairness rule (separate per-arm environments) is in decisions §5"
+    }
+  ]
+}

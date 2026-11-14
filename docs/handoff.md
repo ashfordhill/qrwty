@@ -463,3 +463,46 @@ The old-to-new commit map, the reason and the consequences are in
 four files no longer match the v1.1/v1.2 manifests; pack v1.3 (N03) supersedes both. The
 pre-rewrite history is kept locally at `refs/backup/pre-rewrite-20261114`.
 **Checks.** A scan of every commit being pushed found no credential-shaped string; ledger validate OK.
+
+## N03: pack v1.3 (clean oracle literals, A06 cookie fix), 2026-11-14
+
+- **Changed.** Pack **v1.3** (`docs/benchmarks/neutral-pack/v1.3/`, manifest SHA-256
+  `81f04065337a5eb964010c1f6fc3f1cec124ddbca9ab2b7a91ceefb985fb7401`, 163 files) is a
+  self-contained copy of v1.2 with two changes. (a) The four oracle files that the history rewrite
+  changed (`oracle/selftest/double.ts`, `oracle/src/fixtures/stripe-signer.ts`,
+  `oracle/test/stripe.test.ts`, `oracle/test/observe.test.ts`) are carried as v1.2's working tree
+  has them, and the regenerated manifest verifies every file. (b) A06's check "invalid session
+  cookie on create" now sends a present but invalid cookie. The bug: the revoked-session actor got
+  the original jar by reference (`stale.client.jar = revokedJar`) and the garbage actor read its
+  cookie names from that jar afterwards, so an arm that clears the revoked cookie in its 401 left
+  the garbage create cookieless (`cookieNames: []`). Now the names are read once after sign-in, the
+  revoked actor gets `revokedJar.clone()`, the garbage actor has its own jar with every name set to
+  `oracle-invalid-session-value` and gets the CSRF token directly (its only request), and the check
+  fails when no name was sent. New self-test case `A06-unknown-cookie` (double mode
+  `a06-unknown-cookie-guest`: refuses and clears a revoked cookie, answers a cookieless mutation
+  401, turns a never-issued session ID into a guest 201) must be `failed`. The oracle build is
+  `1.3.0` and results report pack `v1.3` (v1.2's rule: the label names the oracle build).
+  `frozen/decisions.md` §11 has the v1.3 row; the pack README's "Changes from v1.2" table says
+  v1.1 and v1.2 are superseded because these four files no longer verify; `evidence/n03/` holds the
+  proof, the check outputs, the credential scan and `build_manifest.py`. `status.json` points at
+  v1.3. qrwty-baseline `6e349f4` adds `docs/neutral-pack/v1.3/` (no `node_modules`). The ledger
+  tools are byte-identical to v1.2, so neither arm's run copy changes.
+- **Checked.** Proof of the fix: with v1.2's `A06.ts` in a scratch copy of the v1.3 oracle,
+  `A06-unknown-cookie` is reported `passed` (MISMATCH, `cookieNames: []`, 401 `unauthenticated`);
+  with v1.3's it is `failed` (`cookieNames: ["qs"]`, guest 201), and A06-good, A06-foreign and
+  A06-guest keep their results both times. Full self-test (Pub/Sub emulator, Toxiproxy, Chromium):
+  49/49 cases matched, 32/32 faults detected; the 48 v1.2 cases keep their expected results.
+  `pnpm check` (Biome, TypeScript, 39 unit tests) and `pnpm test:integration` (3) pass, also
+  `pnpm install --frozen-lockfile` and `pnpm check` in a fresh copy without `node_modules`.
+  `verify_pack.py` passes for v1.3 here (also `--against-git .`: 26 copies), in a fresh copy and in
+  qrwty-baseline. v1, v1.1 and v1.2 are unchanged against `HEAD` (v1 verifies; v1.1 and v1.2
+  report the same eight errors on the four rewritten files as before). A credential-shape scan of
+  v1.3 (the ledger's R15 patterns plus Stripe test publishable keys, GitHub fine-grained, AWS, npm
+  and JWT shapes) finds nothing; `git diff --check` is clean in both repositories.
+- **Next.** An arm that recorded A06 with the v1.1 oracle reruns it from its v1.3 copy: those
+  results never sent the garbage cookie. `commits.after` of `shared-0312` and both arms' adoption
+  records are left to the coordinator. Read for this unit: packs v1 to v1.2, the rewrite note, the
+  ledger README, `AGENTS.md`, this file's N02 entry and the coordinator entry after it (for the
+  format), and the N01/N02 ledger records; no arm source, evidence, review or handoff and no Jeeves
+  file. The session started with foreign Jeeves context (`AGENTS.md`, Git status, a memory index);
+  it was ignored.
