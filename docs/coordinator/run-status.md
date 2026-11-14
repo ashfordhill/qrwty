@@ -108,3 +108,4 @@ QG12 running; then QG11, QGR1, B04c, B04b, N03, batch 2 (QG03, QG04, QG06–QG10
 - QG03, QG06, QG04, QG18, QG20: all yes (Jeeves plan batch 2, `3a0cee3`).
 - **Two lanes (owner, 2026-11-14 ~11:30 CST):** lane 1 = Jeeves QG units then A (qrwty); lane 2 = B (qrwty-baseline). One agent per repository at a time; N03 and Q11 slot into whichever lane is free. Overlapping work is recorded with wall time and agent time separately (comparison.md). This overrides the coordinator prompt's 'one child at a time'.
 - **README diagrams (owner, 2026-11-14):** embed the Detailed view; Simple only as a link. Q05 and the final report follow this.
+- **Pack v1.3 (N03, af06312; B adopted 6e349f4), 2026-11-14 19:15Z:** manifest `81f04065…7401`. Supersedes v1.1/v1.2. Both arms use v1.3 from their next oracle run and rerun A06 (the old A06 never sent the garbage cookie).
