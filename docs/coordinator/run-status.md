@@ -56,9 +56,11 @@ Plan-level limits (5-hour and 7-day percentages) come from the status line.
 
 | B01 | 1+2 | baseline `e3be001` | B04/B05 reviews later | passed; 13 ADRs, 12 specs, 7 Excalidraw drawings rendered; a1 stopped on the R12 flaw, a2 finished after N02; usage imported (`caa61c2`) |
 
+| QG02 | 1 | Jeeves `954e8c4` | QGR1 later | passed; README documents `compose.override.yaml`; Docker proof: override env reaches app-front, survives stop/start; note: `pnpm start` doesn't start override-only services |
+
 ## Active attempt
 
-QG02 next.
+B02 running; then QG05.
 
 ## Queue (next eligible first)
 
