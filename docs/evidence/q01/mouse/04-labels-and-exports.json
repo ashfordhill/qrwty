@@ -1,0 +1,110 @@
+{
+  "labels": {
+    "redirect-service-links": {
+      "text": "Reads public routes on a cache miss",
+      "revision": 75
+    },
+    "redirect-service-hot-routes": {
+      "text": "Reads routes, fills on a miss",
+      "revision": 76
+    },
+    "redirect-service-click-events": {
+      "text": "Publishes clicks and awaits the ACK",
+      "revision": 77
+    },
+    "click-events-analytics-worker": {
+      "text": "Delivers clicks",
+      "revision": 78
+    },
+    "analytics-worker-analytics": {
+      "text": "Writes aggregates",
+      "revision": 79
+    },
+    "link-api-links": {
+      "text": "Writes links",
+      "revision": 80
+    },
+    "account-api-links": {
+      "text": "Reads the owner view",
+      "revision": 81
+    },
+    "account-api-analytics": {
+      "text": "Reads click aggregates",
+      "revision": 82
+    },
+    "session-api-sessions": {
+      "text": "Reads and writes sessions",
+      "revision": 83
+    }
+  },
+  "files": {
+    "QRWTY-production-candidate-v1-r83.png": {
+      "bytes": 397653,
+      "sha256": "5384d2182a2aef752178dcc4d739808779dbba4a84c5c89c47e332802696473b"
+    },
+    "QRWTY-production-candidate-v1-r83-capture.json": {
+      "bytes": 23268,
+      "sha256": "ffa8e5f364f8b6960f68704d263bb36992d71f3a4619f5596c292a6699450f42"
+    },
+    "QRWTY-production-candidate-v1-r83-detailed.png": {
+      "bytes": 588945,
+      "sha256": "826a9efba1c0beb311b2aa45cd95bcd50e41ae7c3f722584f11ded5c3ed6f965"
+    },
+    "QRWTY-production-candidate-v1-r83-detailed-capture.json": {
+      "bytes": 47254,
+      "sha256": "21760cb0b7707da41eb36966d8941aa2b95ccfb170eab1891faa45304805b395"
+    },
+    "QRWTY-production-candidate-v1-r83-source.json": {
+      "bytes": 43527,
+      "sha256": "4c16e0ca42e7f96ba16d08565334ea6c4db3dc9d189a44c36df6bcc17a0a5d50"
+    }
+  },
+  "revisionAtExport": 83,
+  "simple": {
+    "revision": 83,
+    "image": {
+      "filename": "QRWTY-production-candidate-v1-r83.png",
+      "sha256": "5384d2182a2aef752178dcc4d739808779dbba4a84c5c89c47e332802696473b",
+      "width": 2496,
+      "height": 2788,
+      "scale": 2,
+      "margin": 32,
+      "background": "#e8f4fa",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "w": 1248,
+        "h": 1394
+      },
+      "font": "Nunito Variable",
+      "embeddedFontCssSha256": "f8eec7af9098771a705fa759c8df6faa7031d2a4f58c2d15f6eb793bbf79709d"
+    },
+    "tiles": 19,
+    "lines": 27
+  },
+  "detailed": {
+    "revision": 83,
+    "image": {
+      "filename": "QRWTY-production-candidate-v1-r83-detailed.png",
+      "sha256": "826a9efba1c0beb311b2aa45cd95bcd50e41ae7c3f722584f11ded5c3ed6f965",
+      "width": 3776,
+      "height": 2884,
+      "scale": 2,
+      "margin": 32,
+      "background": "#e8f4fa",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "w": 1888,
+        "h": 1442
+      },
+      "font": "Nunito Variable",
+      "embeddedFontCssSha256": "f8eec7af9098771a705fa759c8df6faa7031d2a4f58c2d15f6eb793bbf79709d"
+    },
+    "view": "detailed",
+    "tiles": 19,
+    "lines": 35
+  },
+  "ownershipText": "Source & diagnostics\n\nSaved schema v3 · revision 83. Read-only: the saved source, and who owns and may read each store.\n\nDownload source JSON\nOwnership & access · 4 owners\nFull saved source",
+  "revisionAfter": 83
+}

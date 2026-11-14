@@ -1,0 +1,560 @@
+[
+  {
+    "index": 0,
+    "command": {
+      "type": "addModule",
+      "host": "session-api",
+      "kind": "custom",
+      "name": "Sign-in flow",
+      "description": "OIDC authorization code with PKCE, state and nonce; creates, refreshes and revokes cookie sessions (Secure, HttpOnly). Keeps the guest claim proof flow in the same tab."
+    },
+    "status": 200,
+    "revision": 28
+  },
+  {
+    "index": 1,
+    "command": {
+      "type": "connectModule",
+      "module": "session-api-sign-in-flow",
+      "slot": "uses",
+      "target": {
+        "tile": "identity"
+      }
+    },
+    "status": 200,
+    "revision": 29
+  },
+  {
+    "index": 2,
+    "command": {
+      "type": "connectModule",
+      "module": "session-api-sign-in-flow",
+      "slot": "uses",
+      "target": {
+        "tile": "sessions"
+      }
+    },
+    "status": 200,
+    "revision": 30
+  },
+  {
+    "index": 3,
+    "command": {
+      "type": "addModule",
+      "host": "session-api",
+      "kind": "custom",
+      "name": "API forwarding",
+      "description": "Checks the session cookie and CSRF on mutations, then forwards the bearer token (none on guest create) to Link, Account and Billing APIs. Refreshes tokens with Identity."
+    },
+    "status": 200,
+    "revision": 31
+  },
+  {
+    "index": 4,
+    "command": {
+      "type": "connectModule",
+      "module": "session-api-api-forwarding",
+      "slot": "uses",
+      "target": {
+        "tile": "sessions"
+      }
+    },
+    "status": 200,
+    "revision": 32
+  },
+  {
+    "index": 5,
+    "command": {
+      "type": "connectModule",
+      "module": "session-api-api-forwarding",
+      "slot": "uses",
+      "target": {
+        "tile": "identity"
+      }
+    },
+    "status": 200,
+    "revision": 33
+  },
+  {
+    "index": 6,
+    "command": {
+      "type": "connectModule",
+      "module": "session-api-api-forwarding",
+      "slot": "uses",
+      "target": {
+        "tile": "link-api"
+      }
+    },
+    "status": 200,
+    "revision": 34
+  },
+  {
+    "index": 7,
+    "command": {
+      "type": "connectModule",
+      "module": "session-api-api-forwarding",
+      "slot": "uses",
+      "target": {
+        "tile": "account-api"
+      }
+    },
+    "status": 200,
+    "revision": 35
+  },
+  {
+    "index": 8,
+    "command": {
+      "type": "connectModule",
+      "module": "session-api-api-forwarding",
+      "slot": "uses",
+      "target": {
+        "tile": "billing-api"
+      }
+    },
+    "status": 200,
+    "revision": 36
+  },
+  {
+    "index": 9,
+    "command": {
+      "type": "addModule",
+      "host": "link-api",
+      "kind": "auth-guard",
+      "name": "Sign-in",
+      "description": "Optional: guest create sends no token and is anonymous; an invalid or expired token is 401. Owner, claim and operator routes still check the verified subject."
+    },
+    "status": 200,
+    "revision": 37
+  },
+  {
+    "index": 10,
+    "command": {
+      "type": "connectModule",
+      "module": "link-api-sign-in",
+      "slot": "identity",
+      "target": {
+        "tile": "identity"
+      }
+    },
+    "status": 200,
+    "revision": 38
+  },
+  {
+    "index": 11,
+    "command": {
+      "type": "addModule",
+      "host": "link-api",
+      "kind": "custom",
+      "name": "Link operations",
+      "description": "Create (guest or owned) with CSPRNG slugs, idempotency keys and admission; claim with one-time proof; If-Match edits; tombstone deletes. Reputation check and entitlement grant first."
+    },
+    "status": 200,
+    "revision": 39
+  },
+  {
+    "index": 12,
+    "command": {
+      "type": "connectModule",
+      "module": "link-api-link-operations",
+      "slot": "uses",
+      "target": {
+        "tile": "links"
+      }
+    },
+    "status": 200,
+    "revision": 40
+  },
+  {
+    "index": 13,
+    "command": {
+      "type": "connectModule",
+      "module": "link-api-link-operations",
+      "slot": "uses",
+      "target": {
+        "tile": "admission-cache"
+      }
+    },
+    "status": 200,
+    "revision": 41
+  },
+  {
+    "index": 14,
+    "command": {
+      "type": "connectModule",
+      "module": "link-api-link-operations",
+      "slot": "uses",
+      "target": {
+        "tile": "reputation-api"
+      }
+    },
+    "status": 200,
+    "revision": 42
+  },
+  {
+    "index": 15,
+    "command": {
+      "type": "connectModule",
+      "module": "link-api-link-operations",
+      "slot": "uses",
+      "target": {
+        "tile": "billing-api"
+      }
+    },
+    "status": 200,
+    "revision": 43
+  },
+  {
+    "index": 16,
+    "command": {
+      "type": "addModule",
+      "host": "link-api",
+      "kind": "custom",
+      "name": "Abuse and moderation",
+      "description": "Bounded public abuse reports (202, no disposition shown) and block or unblock under a separate operator permission. A report alone never disables a link."
+    },
+    "status": 200,
+    "revision": 44
+  },
+  {
+    "index": 17,
+    "command": {
+      "type": "connectModule",
+      "module": "link-api-abuse-and-moderation",
+      "slot": "uses",
+      "target": {
+        "tile": "links"
+      }
+    },
+    "status": 200,
+    "revision": 45
+  },
+  {
+    "index": 18,
+    "command": {
+      "type": "connectModule",
+      "module": "link-api-abuse-and-moderation",
+      "slot": "uses",
+      "target": {
+        "tile": "admission-cache"
+      }
+    },
+    "status": 200,
+    "revision": 46
+  },
+  {
+    "index": 19,
+    "command": {
+      "type": "addModule",
+      "host": "redirect-service",
+      "kind": "custom",
+      "name": "Resolve and redirect",
+      "description": "Host + slug via Hot routes, else the Links public view; state and expiry; publish the click and await its ACK; recheck; then 302 with no-store. Otherwise 404/410/403, or 503 with no Location."
+    },
+    "status": 200,
+    "revision": 47
+  },
+  {
+    "index": 20,
+    "command": {
+      "type": "connectModule",
+      "module": "redirect-service-resolve-and-redirect",
+      "slot": "uses",
+      "target": {
+        "tile": "links"
+      }
+    },
+    "status": 200,
+    "revision": 48
+  },
+  {
+    "index": 21,
+    "command": {
+      "type": "connectModule",
+      "module": "redirect-service-resolve-and-redirect",
+      "slot": "uses",
+      "target": {
+        "tile": "hot-routes"
+      }
+    },
+    "status": 200,
+    "revision": 49
+  },
+  {
+    "index": 22,
+    "command": {
+      "type": "connectModule",
+      "module": "redirect-service-resolve-and-redirect",
+      "slot": "uses",
+      "target": {
+        "tile": "click-events"
+      }
+    },
+    "status": 200,
+    "revision": 50
+  },
+  {
+    "index": 23,
+    "command": {
+      "type": "addModule",
+      "host": "account-api",
+      "kind": "auth-guard",
+      "name": "Sign-in",
+      "description": "Required: every route needs a valid token. Each query is scoped to the verified subject, cursors included."
+    },
+    "status": 200,
+    "revision": 51
+  },
+  {
+    "index": 24,
+    "command": {
+      "type": "connectModule",
+      "module": "account-api-sign-in",
+      "slot": "identity",
+      "target": {
+        "tile": "identity"
+      }
+    },
+    "status": 200,
+    "revision": 52
+  },
+  {
+    "index": 25,
+    "command": {
+      "type": "addModule",
+      "host": "account-api",
+      "kind": "data-access",
+      "name": "My links",
+      "description": "Cursor pages (at most 50, by created_at and id) of the caller's own links from the Links owner view."
+    },
+    "status": 200,
+    "revision": 53
+  },
+  {
+    "index": 26,
+    "command": {
+      "type": "connectModule",
+      "module": "account-api-my-links",
+      "slot": "database",
+      "target": {
+        "tile": "links"
+      }
+    },
+    "status": 200,
+    "revision": 54
+  },
+  {
+    "index": 27,
+    "command": {
+      "type": "addModule",
+      "host": "account-api",
+      "kind": "custom",
+      "name": "Link analytics",
+      "description": "Owner-only counts, ranges, freshness and bounded CSV export. Checks ownership in the Links owner view and the tier's lookback and export allowance with Billing API."
+    },
+    "status": 200,
+    "revision": 55
+  },
+  {
+    "index": 28,
+    "command": {
+      "type": "connectModule",
+      "module": "account-api-link-analytics",
+      "slot": "uses",
+      "target": {
+        "tile": "links"
+      }
+    },
+    "status": 200,
+    "revision": 56
+  },
+  {
+    "index": 29,
+    "command": {
+      "type": "connectModule",
+      "module": "account-api-link-analytics",
+      "slot": "uses",
+      "target": {
+        "tile": "analytics"
+      }
+    },
+    "status": 200,
+    "revision": 57
+  },
+  {
+    "index": 30,
+    "command": {
+      "type": "connectModule",
+      "module": "account-api-link-analytics",
+      "slot": "uses",
+      "target": {
+        "tile": "billing-api"
+      }
+    },
+    "status": 200,
+    "revision": 58
+  },
+  {
+    "index": 31,
+    "command": {
+      "type": "addModule",
+      "host": "billing-api",
+      "kind": "auth-guard",
+      "name": "Sign-in",
+      "description": "Optional, so Stripe reaches the webhook without a token. Customer routes still require a signed-in owner; the webhook is authorized by its Stripe signature instead."
+    },
+    "status": 200,
+    "revision": 59
+  },
+  {
+    "index": 32,
+    "command": {
+      "type": "connectModule",
+      "module": "billing-api-sign-in",
+      "slot": "identity",
+      "target": {
+        "tile": "identity"
+      }
+    },
+    "status": 200,
+    "revision": 60
+  },
+  {
+    "index": 33,
+    "command": {
+      "type": "addModule",
+      "host": "billing-api",
+      "kind": "custom",
+      "name": "Customer billing",
+      "description": "Signed-in owner only: plan status, hosted Checkout and portal sessions from allowlisted prices, allowed return URLs and idempotency keys. CSRF is checked by Session API."
+    },
+    "status": 200,
+    "revision": 61
+  },
+  {
+    "index": 34,
+    "command": {
+      "type": "connectModule",
+      "module": "billing-api-customer-billing",
+      "slot": "uses",
+      "target": {
+        "tile": "billing"
+      }
+    },
+    "status": 200,
+    "revision": 62
+  },
+  {
+    "index": 35,
+    "command": {
+      "type": "connectModule",
+      "module": "billing-api-customer-billing",
+      "slot": "uses",
+      "target": {
+        "tile": "stripe-api"
+      }
+    },
+    "status": 200,
+    "revision": 63
+  },
+  {
+    "index": 36,
+    "command": {
+      "type": "addModule",
+      "host": "billing-api",
+      "kind": "custom",
+      "name": "Payment events",
+      "description": "No session: verifies the Stripe signature over the raw body bytes, stores the event in the inbox before 2xx, then reconciles subscriptions from Stripe under a lease."
+    },
+    "status": 200,
+    "revision": 64
+  },
+  {
+    "index": 37,
+    "command": {
+      "type": "connectModule",
+      "module": "billing-api-payment-events",
+      "slot": "uses",
+      "target": {
+        "tile": "billing"
+      }
+    },
+    "status": 200,
+    "revision": 65
+  },
+  {
+    "index": 38,
+    "command": {
+      "type": "connectModule",
+      "module": "billing-api-payment-events",
+      "slot": "uses",
+      "target": {
+        "tile": "stripe-api"
+      }
+    },
+    "status": 200,
+    "revision": 66
+  },
+  {
+    "index": 39,
+    "command": {
+      "type": "addModule",
+      "host": "billing-api",
+      "kind": "custom",
+      "name": "Entitlements",
+      "description": "Entitlement grants valid for at most 60 seconds, for Link API and Account API only. Fails closed for paid-gated operations when no valid grant exists."
+    },
+    "status": 200,
+    "revision": 67
+  },
+  {
+    "index": 40,
+    "command": {
+      "type": "connectModule",
+      "module": "billing-api-entitlements",
+      "slot": "uses",
+      "target": {
+        "tile": "billing"
+      }
+    },
+    "status": 200,
+    "revision": 68
+  },
+  {
+    "index": 41,
+    "command": {
+      "type": "addModule",
+      "host": "analytics-worker",
+      "kind": "custom",
+      "name": "Click aggregator",
+      "description": "Validates and deduplicates each click event within a bounded horizon, updates aggregates and acknowledges after commit. Poison events go to quarantine, never dropped."
+    },
+    "status": 200,
+    "revision": 69
+  },
+  {
+    "index": 42,
+    "command": {
+      "type": "connectModule",
+      "module": "analytics-worker-click-aggregator",
+      "slot": "uses",
+      "target": {
+        "tile": "click-events"
+      }
+    },
+    "status": 200,
+    "revision": 70
+  },
+  {
+    "index": 43,
+    "command": {
+      "type": "connectModule",
+      "module": "analytics-worker-click-aggregator",
+      "slot": "uses",
+      "target": {
+        "tile": "analytics"
+      }
+    },
+    "status": 200,
+    "revision": 71
+  }
+]

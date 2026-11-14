@@ -1,0 +1,316 @@
+{
+  "format": "qrwty-q01-provenance-v1",
+  "run": "qrwty-r1-20261114",
+  "unit": "Q01",
+  "attempt": 1,
+  "project": {
+    "id": "d1e59607-0616-418d-83d5-4cfe5bcb4b11",
+    "name": "QRWTY · production candidate v1",
+    "revision": 83,
+    "createdAt": "2026-11-14T06:12:58.462Z",
+    "updatedAt": "2026-11-14T06:17:46.460Z",
+    "database": "owner's jeeves database through the dev API on 127.0.0.1:4310"
+  },
+  "source": {
+    "schemaVersion": 3,
+    "canonicalSha256": "a3c978d1dc3f29229e942f7f73394ff4ff2fbc3d09ea4da12189d5202c9d753b",
+    "hashEncoding": "UTF-8 JSON with recursively sorted object keys; array order preserved",
+    "normalizedInputSha256": "0584c9516e1b7fb289044ebf5ac8832e70f9ac23ee932e41a32cc465931d72c3"
+  },
+  "jeeves": {
+    "commit": "59bfbc6b4c9cc149cc7760555cf753c7485c59d7",
+    "subject": "SO08: say which outside calls keep the normal retries",
+    "trackedChangesUnderJeevesAndGenerator": "none except a mode change (100644 to 100755) on jeeves/scripts/e2e-docker.sh, owner's",
+    "generatorSourcesInReport": "163 source files listed in report.implementations; all equal their blobs at HEAD",
+    "webRenderer": {
+      "appVersion": "0.1.0",
+      "commit": "73bd4a8496d43a64b46b5d7e97a381de1de80653",
+      "trackedTreeDirtyAtBuild": true,
+      "mode": "development",
+      "treeVerification": "Development server: verify Git identity/tree at capture; HMR can change source after startup.",
+      "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36"
+    },
+    "webRendererNote": "The owner's Vite dev server started at 73bd4a8 (2026-11-10) and serves the working tree through HMR; the tree audit above is the commit identity of the capture.",
+    "apiServer": "tsx watch src/main.ts; its worker last restarted 2026-11-14T05:18:59Z, 17 s before the SO08 commit (05:19:16Z), when the committed files were already saved; the report's generator sources equal HEAD"
+  },
+  "registry": {
+    "sha256": "08e0c945be87ff3218680027056660890be4e6dcacce4c32144c65ea33ad322d",
+    "generator": {
+      "id": "jeeves-v2",
+      "version": "0.1.0-experimental.1"
+    },
+    "runtime": {
+      "id": "local-runtime",
+      "version": "0.1.0",
+      "sha256": "71dcdadd55b30121d87b5fbf89c77494ac56146bd6333a22e473c3ff4555eaec"
+    },
+    "processesInstalled": true,
+    "presets": [
+      {
+        "id": "video-feature",
+        "version": "0.1.0",
+        "sha256": "43d6a466112af41457881e22754a7a809577ca755af9376c4eabb1fea2956833"
+      }
+    ],
+    "installedTemplates": [
+      {
+        "id": "module-stub",
+        "version": "0.1.0",
+        "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d"
+      },
+      {
+        "id": "owned-multipart",
+        "version": "0.1.0",
+        "sha256": "c5c035bbf4f6a75edb612506f8d26aca03e90df528647f999362a97142e3b2c7"
+      },
+      {
+        "id": "asset-lifecycle",
+        "version": "0.1.0",
+        "sha256": "01f968341b295c089bc200a0528559d5d4522fcf0dd76fbcd7929340c5d0d186"
+      },
+      {
+        "id": "video-hls",
+        "version": "0.1.0",
+        "sha256": "4af9b570774b6d4c590806b3fd66fe0492dc18651d73c464544f26a78340acdb"
+      },
+      {
+        "id": "positive-cache-read",
+        "version": "0.1.0",
+        "sha256": "0b72d5a1dfb6789a7f46932f4faf9f11e2fb8e8baac03e02c2989271463c274c"
+      },
+      {
+        "id": "event-counter",
+        "version": "0.1.0",
+        "sha256": "ecd5f9cc6abcee0fa0c73dfc2422550ee19c6676f0e09b20ef1e4ab3e17e1635"
+      },
+      {
+        "id": "search-projection",
+        "version": "0.1.0",
+        "sha256": "5e81e6a9752692577618d092e301b79aa6131679605e8cccf409cf26d2616ae3"
+      },
+      {
+        "id": "search-query",
+        "version": "0.1.0",
+        "sha256": "013de6d4c984a46be6ee1b26ad43ce240b42cd9fe96dbe086f72749e63abb624"
+      },
+      {
+        "id": "verified-identity",
+        "version": "0.1.0",
+        "sha256": "c321a5d7392e9a9a15cf73d8cf2db427b5533150e33d716c47c5edb49ad7e492"
+      },
+      {
+        "id": "favorites",
+        "version": "0.1.0",
+        "sha256": "f3c7a75b1ee3a94fff16e2e84f63ee3ac65f6125e995454efe442c1ec84304e8"
+      }
+    ],
+    "selectedTemplates": [
+      {
+        "selection": "session-api-sign-in-flow",
+        "ref": {
+          "id": "module-stub",
+          "version": "0.1.0",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d"
+        }
+      },
+      {
+        "selection": "session-api-api-forwarding",
+        "ref": {
+          "id": "module-stub",
+          "version": "0.1.0",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d"
+        }
+      },
+      {
+        "selection": "link-api-sign-in",
+        "ref": {
+          "id": "verified-identity",
+          "version": "0.1.0",
+          "sha256": "c321a5d7392e9a9a15cf73d8cf2db427b5533150e33d716c47c5edb49ad7e492"
+        }
+      },
+      {
+        "selection": "link-api-link-operations",
+        "ref": {
+          "id": "module-stub",
+          "version": "0.1.0",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d"
+        }
+      },
+      {
+        "selection": "link-api-abuse-and-moderation",
+        "ref": {
+          "id": "module-stub",
+          "version": "0.1.0",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d"
+        }
+      },
+      {
+        "selection": "redirect-service-resolve-and-redirect",
+        "ref": {
+          "id": "module-stub",
+          "version": "0.1.0",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d"
+        }
+      },
+      {
+        "selection": "account-api-sign-in",
+        "ref": {
+          "id": "verified-identity",
+          "version": "0.1.0",
+          "sha256": "c321a5d7392e9a9a15cf73d8cf2db427b5533150e33d716c47c5edb49ad7e492"
+        }
+      },
+      {
+        "selection": "account-api-my-links",
+        "ref": {
+          "id": "module-stub",
+          "version": "0.1.0",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d"
+        }
+      },
+      {
+        "selection": "account-api-link-analytics",
+        "ref": {
+          "id": "module-stub",
+          "version": "0.1.0",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d"
+        }
+      },
+      {
+        "selection": "billing-api-sign-in",
+        "ref": {
+          "id": "verified-identity",
+          "version": "0.1.0",
+          "sha256": "c321a5d7392e9a9a15cf73d8cf2db427b5533150e33d716c47c5edb49ad7e492"
+        }
+      },
+      {
+        "selection": "billing-api-customer-billing",
+        "ref": {
+          "id": "module-stub",
+          "version": "0.1.0",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d"
+        }
+      },
+      {
+        "selection": "billing-api-payment-events",
+        "ref": {
+          "id": "module-stub",
+          "version": "0.1.0",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d"
+        }
+      },
+      {
+        "selection": "billing-api-entitlements",
+        "ref": {
+          "id": "module-stub",
+          "version": "0.1.0",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d"
+        }
+      },
+      {
+        "selection": "analytics-worker-click-aggregator",
+        "ref": {
+          "id": "module-stub",
+          "version": "0.1.0",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d"
+        }
+      }
+    ]
+  },
+  "export": {
+    "previewStatus": "experimental-partial",
+    "archive": {
+      "filename": "jeeves-local-v2-experimental.zip",
+      "format": "zip-store-v1",
+      "bytes": 3817527,
+      "sha256": "dcaff3aa004e3b2a04b09c2162e7b7c5295c13f4927d3ece31af9339b2a3cd14",
+      "manifestSha256": "c1868eab7b324a4db222f63715e73c16cc23c1c47aab94df337e1f58e6eb9632",
+      "files": 84,
+      "payloadBytes": 3805071
+    },
+    "zipDownloadedToScratchOnly": {
+      "filename": "jeeves-local-v2-experimental.zip",
+      "bytes": 3817527,
+      "sha256": "dcaff3aa004e3b2a04b09c2162e7b7c5295c13f4927d3ece31af9339b2a3cd14"
+    },
+    "zipNote": "Downloaded by mouse to a scratch directory to read the emitted toolchain pins; not committed. Q02 freezes the as-found export."
+  },
+  "artifacts": {
+    "design": {
+      "file": "QRWTY-production-candidate-v1-r83-source.json",
+      "how": "Export diagram, Source & diagnostics, Download source JSON (by mouse)",
+      "role": "original round-trippable saved source"
+    },
+    "blueprint": {
+      "file": "blueprint-v3-r83.json",
+      "how": "GET /projects/<id>/blueprint?version=3",
+      "role": "derived read-only view",
+      "v2": "GET /projects/<id>/blueprint answered 422 UNSUPPORTED_BLUEPRINT_CONTENT; kept as blueprint-v2-refusal-r83.json"
+    },
+    "simple": {
+      "file": "QRWTY-production-candidate-v1-r83.png",
+      "capture": "QRWTY-production-candidate-v1-r83-capture.json",
+      "capturedAt": "2026-11-14T06:17:47.751Z",
+      "width": 2496,
+      "height": 2788,
+      "how": "Simple view, Export diagram, PNG, Download capture details (by mouse)"
+    },
+    "detailed": {
+      "file": "QRWTY-production-candidate-v1-r83-detailed.png",
+      "capture": "QRWTY-production-candidate-v1-r83-detailed-capture.json",
+      "capturedAt": "2026-11-14T06:17:54.044Z",
+      "width": 3776,
+      "height": 2884,
+      "how": "Detailed view, Export diagram, PNG, Download capture details (by mouse)"
+    },
+    "generationReport": {
+      "file": "generation-preview-r83.json",
+      "how": "Generate project, Preview scaffold (by mouse); the response body as received",
+      "role": "preview response holding report, modules, templates, registry and archive identity"
+    },
+    "installedSupport": {
+      "file": "generation-support.json",
+      "how": "GET /generation-support before the project was created"
+    }
+  },
+  "files": {
+    "QRWTY-production-candidate-v1-r83-capture.json": {
+      "bytes": 23268,
+      "sha256": "ffa8e5f364f8b6960f68704d263bb36992d71f3a4619f5596c292a6699450f42"
+    },
+    "QRWTY-production-candidate-v1-r83-detailed-capture.json": {
+      "bytes": 47254,
+      "sha256": "21760cb0b7707da41eb36966d8941aa2b95ccfb170eab1891faa45304805b395"
+    },
+    "QRWTY-production-candidate-v1-r83-detailed.png": {
+      "bytes": 588945,
+      "sha256": "826a9efba1c0beb311b2aa45cd95bcd50e41ae7c3f722584f11ded5c3ed6f965"
+    },
+    "QRWTY-production-candidate-v1-r83-source.json": {
+      "bytes": 43527,
+      "sha256": "4c16e0ca42e7f96ba16d08565334ea6c4db3dc9d189a44c36df6bcc17a0a5d50"
+    },
+    "QRWTY-production-candidate-v1-r83.png": {
+      "bytes": 397653,
+      "sha256": "5384d2182a2aef752178dcc4d739808779dbba4a84c5c89c47e332802696473b"
+    },
+    "blueprint-v2-refusal-r83.json": {
+      "bytes": 2975,
+      "sha256": "d5beb284de232b991efd88b17c130c671511847d82ffce3c3fc3994e924e7cd0"
+    },
+    "blueprint-v3-r83.json": {
+      "bytes": 96247,
+      "sha256": "27733c864bfe68b80fc17b62f6d273f52c287f9191c7e7e9bfebdd3684b8cfde"
+    },
+    "generation-preview-r83.json": {
+      "bytes": 822268,
+      "sha256": "853f7ee6b167cf111304fcc129456ffff53defd2e3cdc92c14556d40575a74d0"
+    },
+    "generation-support.json": {
+      "bytes": 24783,
+      "sha256": "cf91135a993cc6238b22c81ee13a4a4982d8bb93bdb85f740c412d47ca685c46"
+    }
+  }
+}

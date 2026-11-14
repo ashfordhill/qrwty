@@ -1,0 +1,73 @@
+{
+  "labels": {},
+  "files": {
+    "QRWTY-production-candidate-v1-r83.png": {
+      "bytes": 397653,
+      "sha256": "5384d2182a2aef752178dcc4d739808779dbba4a84c5c89c47e332802696473b"
+    },
+    "QRWTY-production-candidate-v1-r83-capture.json": {
+      "bytes": 23268,
+      "sha256": "0ceca8f829b6dc346a3f371c93c7188eac535db751a44f28d9e07afc5cdbe5c3"
+    },
+    "QRWTY-production-candidate-v1-r83-detailed.png": {
+      "bytes": 588945,
+      "sha256": "826a9efba1c0beb311b2aa45cd95bcd50e41ae7c3f722584f11ded5c3ed6f965"
+    },
+    "QRWTY-production-candidate-v1-r83-detailed-capture.json": {
+      "bytes": 47254,
+      "sha256": "d2e87467fa5b9ddf27d2a5579e01272cc2ef7c854029321c73bb3afca7665432"
+    },
+    "QRWTY-production-candidate-v1-r83-source.json": {
+      "bytes": 43527,
+      "sha256": "4c16e0ca42e7f96ba16d08565334ea6c4db3dc9d189a44c36df6bcc17a0a5d50"
+    }
+  },
+  "revisionAtExport": 83,
+  "simple": {
+    "revision": 83,
+    "image": {
+      "filename": "QRWTY-production-candidate-v1-r83.png",
+      "sha256": "5384d2182a2aef752178dcc4d739808779dbba4a84c5c89c47e332802696473b",
+      "width": 2496,
+      "height": 2788,
+      "scale": 2,
+      "margin": 32,
+      "background": "#e8f4fa",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "w": 1248,
+        "h": 1394
+      },
+      "font": "Nunito Variable",
+      "embeddedFontCssSha256": "f8eec7af9098771a705fa759c8df6faa7031d2a4f58c2d15f6eb793bbf79709d"
+    },
+    "tiles": 19,
+    "lines": 27
+  },
+  "detailed": {
+    "revision": 83,
+    "image": {
+      "filename": "QRWTY-production-candidate-v1-r83-detailed.png",
+      "sha256": "826a9efba1c0beb311b2aa45cd95bcd50e41ae7c3f722584f11ded5c3ed6f965",
+      "width": 3776,
+      "height": 2884,
+      "scale": 2,
+      "margin": 32,
+      "background": "#e8f4fa",
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "w": 1888,
+        "h": 1442
+      },
+      "font": "Nunito Variable",
+      "embeddedFontCssSha256": "f8eec7af9098771a705fa759c8df6faa7031d2a4f58c2d15f6eb793bbf79709d"
+    },
+    "view": "detailed",
+    "tiles": 19,
+    "lines": 35
+  },
+  "ownershipText": "Source & diagnostics\n\nSaved schema v3 · revision 83. Read-only: the saved source, and who owns and may read each store.\n\nDownload source JSON\nOwnership & access · 4 owners\nFull saved source",
+  "revisionAfter": 83
+}

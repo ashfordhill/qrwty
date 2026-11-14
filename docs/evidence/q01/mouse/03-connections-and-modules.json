@@ -1,0 +1,709 @@
+{
+  "project": "d1e59607-0616-418d-83d5-4cfe5bcb4b11",
+  "revision": 74,
+  "tiles": {
+    "Open link": [
+      "From User: calls",
+      "To Redirect service, Microservice: calls"
+    ],
+    "Create, manage & pay": [
+      "From User: calls",
+      "To Session API, Microservice: calls",
+      "To Billing API, Microservice: calls"
+    ],
+    "Session API": [
+      "From Create, manage & pay, Action: calls",
+      "To Identity, Identity: calls",
+      "To Sessions, Database: writes",
+      "To Link API, Microservice: calls",
+      "To Account API, Microservice: calls",
+      "To Billing API, Microservice: calls"
+    ],
+    "Identity": [
+      "From Session API, Microservice: calls",
+      "From Billing API, Microservice: calls",
+      "From Link API, Microservice: calls",
+      "From Account API, Microservice: calls"
+    ],
+    "Sessions": [
+      "From Session API, Microservice: writes"
+    ],
+    "Link API": [
+      "From Session API, Microservice: calls",
+      "To Links, Database: writes",
+      "To Identity, Identity: calls",
+      "To Admission cache, Cache: writes",
+      "To Reputation API, External API: calls",
+      "To Billing API, Microservice: calls"
+    ],
+    "Account API": [
+      "From Session API, Microservice: calls",
+      "To Identity, Identity: calls",
+      "To Links, Database: reads",
+      "To Analytics, Database: reads",
+      "To Billing API, Microservice: calls"
+    ],
+    "Billing API": [
+      "From Create, manage & pay, Action: calls",
+      "From Session API, Microservice: calls",
+      "From Link API, Microservice: calls",
+      "From Account API, Microservice: calls",
+      "To Identity, Identity: calls",
+      "To Billing, Database: writes",
+      "To Stripe API, External API: calls"
+    ],
+    "Links": [
+      "From Redirect service, Microservice: reads",
+      "From Link API, Microservice: writes",
+      "From Account API, Microservice: reads"
+    ],
+    "Admission cache": [
+      "From Link API, Microservice: writes"
+    ],
+    "Reputation API": [
+      "From Link API, Microservice: calls"
+    ],
+    "Redirect service": [
+      "From Open link, Action: calls",
+      "To Links, Database: reads",
+      "To Hot routes, Cache: writes",
+      "To Click events, Message channel: publishes"
+    ],
+    "Hot routes": [
+      "From Redirect service, Microservice: writes"
+    ],
+    "Click events": [
+      "From Redirect service, Microservice: publishes",
+      "To Analytics worker, Worker service: consumes"
+    ],
+    "Analytics worker": [
+      "From Click events, Message channel: consumes",
+      "To Analytics, Database: writes"
+    ],
+    "Analytics": [
+      "From Analytics worker, Worker service: writes",
+      "From Account API, Microservice: reads"
+    ],
+    "Billing": [
+      "From Billing API, Microservice: writes"
+    ],
+    "Stripe API": [
+      "From Billing API, Microservice: calls"
+    ]
+  },
+  "lines": {
+    "redirect-service-click-events": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Redirect service",
+        "Click events",
+        "Publishes",
+        "Interaction",
+        "Asynchronous (dashed)",
+        "Arrow",
+        "Publisher → channel",
+        "Action"
+      ]
+    },
+    "click-events-analytics-worker": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Click events",
+        "Analytics worker",
+        "Consumes",
+        "Interaction",
+        "Asynchronous (dashed)",
+        "Arrow",
+        "Channel → consumer",
+        "Action"
+      ]
+    },
+    "@actor-download": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Open link",
+        "The user's Consume action, which starts the download lane. The line goes with the action.",
+        "User",
+        "Open link"
+      ]
+    },
+    "@actor-upload": {
+      "chose": true,
+      "inspector": [
+        "Inspector",
+        "Create, manage & pay",
+        "The user's Produce action, which starts the upload lane. The line goes with the action.",
+        "User",
+        "Create, manage & pay"
+      ]
+    },
+    "download-redirect-service": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Open link",
+        "Lane entry, download lane",
+        "Open link",
+        "Redirect service"
+      ]
+    },
+    "upload-session-api": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Create, manage & pay",
+        "Lane entry, upload lane",
+        "Create, manage & pay",
+        "Session API"
+      ]
+    },
+    "upload-billing-api": {
+      "chose": true,
+      "inspector": [
+        "Inspector",
+        "Create, manage & pay",
+        "Lane entry, upload lane",
+        "Create, manage & pay",
+        "Billing API"
+      ]
+    },
+    "redirect-service-links": {
+      "chose": true,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Redirect service",
+        "Links",
+        "Reads & writes",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "redirect-service-hot-routes": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Redirect service",
+        "Hot routes",
+        "Reads & writes",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "analytics-worker-analytics": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Analytics worker",
+        "Analytics",
+        "Reads & writes",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "session-api-identity": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Session API",
+        "Identity",
+        "Calls",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "session-api-sessions": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Session API",
+        "Sessions",
+        "Reads & writes",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "session-api-link-api": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Session API",
+        "Link API",
+        "Calls",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "session-api-account-api": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Session API",
+        "Account API",
+        "Calls",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "session-api-billing-api": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Session API",
+        "Billing API",
+        "Calls",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "billing-api-identity": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Billing API",
+        "Identity",
+        "Calls",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "billing-api-billing": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Billing API",
+        "Billing",
+        "Reads & writes",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "billing-api-stripe-api": {
+      "chose": true,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Billing API",
+        "Stripe API",
+        "Calls",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "link-api-links": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Link API",
+        "Links",
+        "Reads & writes",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "link-api-identity": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Link API",
+        "Identity",
+        "Calls",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "link-api-admission-cache": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Link API",
+        "Admission cache",
+        "Reads & writes",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "link-api-reputation-api": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Link API",
+        "Reputation API",
+        "Calls",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "link-api-billing-api": {
+      "chose": true,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Link API",
+        "Billing API",
+        "Calls",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "account-api-identity": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Account API",
+        "Identity",
+        "Calls",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "account-api-links": {
+      "chose": true,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Account API",
+        "Links",
+        "Reads & writes",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "account-api-analytics": {
+      "chose": false,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Account API",
+        "Analytics",
+        "Reads & writes",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    },
+    "account-api-billing-api": {
+      "chose": true,
+      "inspector": [
+        "Inspector",
+        "Connection",
+        "Account API",
+        "Billing API",
+        "Calls",
+        "Interaction",
+        "Request / response (solid)",
+        "Arrow",
+        "Caller → target",
+        "Action"
+      ]
+    }
+  },
+  "modules": {
+    "session-api-sign-in-flow": {
+      "status": "stub",
+      "text": [
+        "Inspector",
+        "Session API",
+        "Name",
+        "Custom",
+        "You write it",
+        "Your own logic, with no template.",
+        "Description",
+        "Remove module"
+      ]
+    },
+    "session-api-api-forwarding": {
+      "status": "stub",
+      "text": [
+        "Inspector",
+        "Session API",
+        "Name",
+        "Custom",
+        "You write it",
+        "Your own logic, with no template.",
+        "Description",
+        "Remove module"
+      ]
+    },
+    "link-api-sign-in": {
+      "status": "template",
+      "text": [
+        "Inspector",
+        "Link API",
+        "Name",
+        "Auth guard",
+        "Generated",
+        "Sign-in",
+        "Description",
+        "Options",
+        "Sign-in",
+        "Required",
+        "Optional",
+        "Optional: a caller without a token is anonymous.",
+        "Remove module"
+      ]
+    },
+    "link-api-link-operations": {
+      "status": "stub",
+      "text": [
+        "Inspector",
+        "Link API",
+        "Name",
+        "Custom",
+        "You write it",
+        "Your own logic, with no template.",
+        "Description",
+        "Remove module"
+      ]
+    },
+    "link-api-abuse-and-moderation": {
+      "status": "stub",
+      "text": [
+        "Inspector",
+        "Link API",
+        "Name",
+        "Custom",
+        "You write it",
+        "Your own logic, with no template.",
+        "Description",
+        "Remove module"
+      ]
+    },
+    "redirect-service-resolve-and-redirect": {
+      "status": "stub",
+      "text": [
+        "Inspector",
+        "Redirect service",
+        "Name",
+        "Custom",
+        "You write it",
+        "Your own logic, with no template.",
+        "Description",
+        "Remove module"
+      ]
+    },
+    "account-api-sign-in": {
+      "status": "template",
+      "text": [
+        "Inspector",
+        "Account API",
+        "Name",
+        "Auth guard",
+        "Generated",
+        "Sign-in",
+        "Description",
+        "Options",
+        "Sign-in",
+        "Required",
+        "Optional",
+        "Optional: a caller without a token is anonymous.",
+        "Remove module"
+      ]
+    },
+    "account-api-my-links": {
+      "status": "stub",
+      "text": [
+        "Inspector",
+        "Account API",
+        "Name",
+        "Data access",
+        "You write it",
+        "No template in Account API uses it.",
+        "Description",
+        "Remove module"
+      ]
+    },
+    "account-api-link-analytics": {
+      "status": "stub",
+      "text": [
+        "Inspector",
+        "Account API",
+        "Name",
+        "Custom",
+        "You write it",
+        "Your own logic, with no template.",
+        "Description",
+        "Remove module"
+      ]
+    },
+    "billing-api-sign-in": {
+      "status": "template",
+      "text": [
+        "Inspector",
+        "Billing API",
+        "Name",
+        "Auth guard",
+        "Generated",
+        "Sign-in",
+        "Description",
+        "Options",
+        "Sign-in",
+        "Required",
+        "Optional",
+        "Optional: a caller without a token is anonymous.",
+        "Remove module"
+      ]
+    },
+    "billing-api-customer-billing": {
+      "status": "stub",
+      "text": [
+        "Inspector",
+        "Billing API",
+        "Name",
+        "Custom",
+        "You write it",
+        "Your own logic, with no template.",
+        "Description",
+        "Remove module"
+      ]
+    },
+    "billing-api-payment-events": {
+      "status": "stub",
+      "text": [
+        "Inspector",
+        "Billing API",
+        "Name",
+        "Custom",
+        "You write it",
+        "Your own logic, with no template.",
+        "Description",
+        "Remove module"
+      ]
+    },
+    "billing-api-entitlements": {
+      "status": "stub",
+      "text": [
+        "Inspector",
+        "Billing API",
+        "Name",
+        "Custom",
+        "You write it",
+        "Your own logic, with no template.",
+        "Description",
+        "Remove module"
+      ]
+    },
+    "analytics-worker-click-aggregator": {
+      "status": "stub",
+      "text": [
+        "Inspector",
+        "Analytics worker",
+        "Name",
+        "Custom",
+        "You write it",
+        "Your own logic, with no template.",
+        "Description",
+        "Remove module"
+      ]
+    }
+  },
+  "menu": "Project: QRWTY · production candidate v1",
+  "simpleNodes": 19,
+  "simpleEdges": 27,
+  "edgeIds": [
+    "redirect-service-click-events",
+    "click-events-analytics-worker",
+    "@actor-download",
+    "@actor-upload",
+    "download-redirect-service",
+    "upload-session-api",
+    "upload-billing-api",
+    "redirect-service-links",
+    "redirect-service-hot-routes",
+    "analytics-worker-analytics",
+    "session-api-identity",
+    "session-api-sessions",
+    "session-api-link-api",
+    "session-api-account-api",
+    "session-api-billing-api",
+    "billing-api-identity",
+    "billing-api-billing",
+    "billing-api-stripe-api",
+    "link-api-links",
+    "link-api-identity",
+    "link-api-admission-cache",
+    "link-api-reputation-api",
+    "link-api-billing-api",
+    "account-api-identity",
+    "account-api-links",
+    "account-api-analytics",
+    "account-api-billing-api"
+  ],
+  "after": 74,
+  "pageErrors": []
+}

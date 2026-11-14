@@ -191,3 +191,43 @@ the coordinator's extraction (ledger `shared-0007`); `commits.after` is the coor
 
 **Next.** Q01 when a safe Jeeves window exists, otherwise B00. Queue N01 (neutral oracle) before
 any acceptance row is reported passed.
+
+## 2026-11-14 (UTC) — Q01: save the QRWTY Jeeves architecture
+
+**Changed.** New studio project **QRWTY · production candidate v1**
+(`d1e59607-0616-418d-83d5-4cfe5bcb4b11`, revision 83) in the owner's `jeeves` database, created by
+mouse; tiles, links and modules sent through the canvas's command path (`buildSupportedAuthoringCommand`
+→ `POST /operations`); Sign-in settings, Runnable processes, line labels and every export by
+mouse. Two actions (Open link; Create, manage & pay), 16 tiles, 27 links, 14 modules, as in
+architecture.md's inventory. No Jeeves file changed; no other project changed. Evidence:
+[q01 checks](evidence/q01/checks.md), artifacts and provenance in `evidence/q01/jeeves/`.
+
+**Generation.** 3 Generated (Sign-in, `verified-identity`: Link API Optional, Account API Required,
+Billing API Optional), 0 Building block, 11 You write it (10 Custom, 1 Data access), 0 Refused.
+Preview: experimental-partial, 0 findings, 11 required custom gaps, six runnable processes; public
+edge = Session API, Billing API, Redirect service. Redirect service has no identity link and its
+handler holds Links (read), Hot routes and Click events (publish).
+
+**Checks.** Studio loads; the owner's TinyURL study project renders (11 tiles, 11 lines); the
+project reloads; all 18 tiles/actions' Connections and all 27 lines checked by mouse (0 failures);
+14 module pages; source JSON = `GET /design` = preview source (canonical SHA-256 `a3c978d1…753b`);
+re-export after reload byte-identical; `sha256sum -c SHA256SUMS` passes.
+
+**Differences.** One action per lane and one entry per tile, so Session API's single entry is in
+the upload lane; multi-dependency handlers are Custom (a stub only gets its own slots' clients);
+Click events stays a RabbitMQ work queue (mode and provider have no control); artifacts live in
+`evidence/q01/jeeves/` under Jeeves's file names, not `docs/architecture/jeeves/`; blueprint v2
+refuses the design, v3 is saved.
+
+**For Q03.** F1–F10 in the checks: Pub/Sub absent (G12), no raw request body (G13), whole public
+tiles incl. Billing API's internal Entitlements (G08), no in-tile composition of stubs (G04/G10),
+no topic mode control, Session API gets no OIDC config (G03/G10), no scheduled trigger (G11),
+event counter and positive cache read unsuitable (G07/G05).
+
+**Toolchain.** The generator emits Node **24.21.0** (`engines`, `node:24.21.0-bookworm-slim`),
+pnpm 12.16.1, TypeScript 7.0.2, `@types/node` 24.19.2, and no Vitest, Biome or Playwright. Pack v1
+pins Node 24.22.2 on Alpine: the coordinator decides pack v1.1 before B02. The pack is unchanged.
+`ledger.py validate` reports one error outside this unit: `shared-0006` evidence hash mismatch for
+the coordinator's `docs/coordinator/state.md`.
+
+**Next.** Q02 (freeze the as-found export and publish the saved diagram).

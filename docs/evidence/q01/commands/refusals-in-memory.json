@@ -1,0 +1,130 @@
+{
+  "second entry for Session API (download lane)": {
+    "command": {
+      "type": "linkTiles",
+      "from": {
+        "lane": "download"
+      },
+      "to": "session-api",
+      "linkId": "download-session-api"
+    },
+    "outcome": "refused by builder",
+    "message": "Session API already starts the upload lane; a tile has one entry."
+  },
+  "Stripe API calls Billing API (reverse provider link)": {
+    "command": {
+      "type": "linkTiles",
+      "from": {
+        "tile": "stripe-api"
+      },
+      "to": "billing-api",
+      "linkId": "stripe-api-billing-api"
+    },
+    "outcome": "refused by builder",
+    "message": "Billing API already leads to Stripe API; linking them would make a loop."
+  },
+  "new Billing-kind tile": {
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "billing-api"
+      },
+      "side": "after",
+      "tile": {
+        "id": "payments",
+        "name": "Payments",
+        "kind": "billing"
+      },
+      "linkId": "billing-api-payments"
+    },
+    "outcome": "refused by builder",
+    "message": "A new tile can't be Billing: new tiles are the link fan's kinds (Microservice, Worker service, Uploads, Identity, Database, Search index, Cache, Object storage, Message channel, CDN, External API). Existing Billing tiles keep working. For payments, add a Service that owns its payment records and calls the provider as an External API."
+  },
+  "Click events as a topic (mode)": {
+    "command": {
+      "type": "edit",
+      "element": "click-events",
+      "settings": {
+        "kind": "queue",
+        "mode": "topic",
+        "provider": "unspecified"
+      }
+    },
+    "outcome": "refused by builder",
+    "message": "mode has no installed, useful editable consumer for this target/value. Existing intent is preserved; explicitly requested custom behavior must be recorded as a generation gap."
+  },
+  "Click events on Google Cloud (provider)": {
+    "command": {
+      "type": "edit",
+      "element": "click-events",
+      "settings": {
+        "kind": "queue",
+        "mode": "work-queue",
+        "provider": "google-cloud"
+      }
+    },
+    "outcome": "refused by builder",
+    "message": "provider has no installed, useful editable consumer for this target/value. Existing intent is preserved; explicitly requested custom behavior must be recorded as a generation gap."
+  },
+  "Redirect responder connected to Click events": {
+    "command": {
+      "type": "addModule",
+      "host": "redirect-service",
+      "kind": "redirect-responder",
+      "name": "Redirect responder"
+    },
+    "outcome": "accepted in memory (not saved)",
+    "follow": {
+      "connect": "refused by builder",
+      "message": "Redirect responder can't connect; a Redirect responder takes no connections."
+    }
+  },
+  "Event publisher in Redirect service on Click events": {
+    "command": {
+      "type": "addModule",
+      "host": "redirect-service",
+      "kind": "event-publisher",
+      "name": "Click publisher"
+    },
+    "outcome": "accepted in memory (not saved)",
+    "follow": {
+      "connect": "accepted",
+      "status": {
+        "module": "redirect-service-click-publisher",
+        "name": "Click publisher",
+        "host": "redirect-service",
+        "kind": "event-publisher",
+        "unconnected": [
+          "outbox"
+        ],
+        "status": "stub",
+        "selection": "redirect-service-click-publisher",
+        "reason": "No Generated module in Redirect service uses it, so you write it."
+      },
+      "tile": [
+        {
+          "module": "redirect-service-resolve-and-redirect",
+          "name": "Resolve and redirect",
+          "host": "redirect-service",
+          "kind": "custom",
+          "unconnected": [],
+          "status": "stub",
+          "selection": "redirect-service-resolve-and-redirect",
+          "reason": "Your own logic: you write it."
+        },
+        {
+          "module": "redirect-service-click-publisher",
+          "name": "Click publisher",
+          "host": "redirect-service",
+          "kind": "event-publisher",
+          "unconnected": [
+            "outbox"
+          ],
+          "status": "stub",
+          "selection": "redirect-service-click-publisher",
+          "reason": "No Generated module in Redirect service uses it, so you write it."
+        }
+      ]
+    }
+  }
+}

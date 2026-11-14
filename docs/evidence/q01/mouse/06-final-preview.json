@@ -1,0 +1,19 @@
+{
+  "revision": 83,
+  "previewSha256": "853f7ee6b167cf111304fcc129456ffff53defd2e3cdc92c14556d40575a74d0",
+  "archive": {
+    "filename": "jeeves-local-v2-experimental.zip",
+    "format": "zip-store-v1",
+    "bytes": 3817527,
+    "sha256": "dcaff3aa004e3b2a04b09c2162e7b7c5295c13f4927d3ece31af9339b2a3cd14",
+    "manifestSha256": "c1868eab7b324a4db222f63715e73c16cc23c1c47aab94df337e1f58e6eb9632",
+    "files": 84,
+    "payloadBytes": 3805071
+  },
+  "zip": {
+    "filename": "jeeves-local-v2-experimental.zip",
+    "bytes": 3817527,
+    "sha256": "dcaff3aa004e3b2a04b09c2162e7b7c5295c13f4927d3ece31af9339b2a3cd14"
+  },
+  "revisionAfter": 83
+}

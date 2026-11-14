@@ -1,0 +1,447 @@
+[
+  {
+    "index": 0,
+    "command": {
+      "type": "addAction",
+      "lane": "download",
+      "name": "Open link",
+      "system": {
+        "name": "QRWTY",
+        "description": "Public short links and QR codes. Guests create links without signing in; accounts own, edit and analyse theirs; individual free and paid plans. A redirect is sent only after its click is durably acknowledged."
+      }
+    },
+    "status": 200,
+    "revision": 1
+  },
+  {
+    "index": 1,
+    "command": {
+      "type": "addAction",
+      "lane": "upload",
+      "name": "Create, manage & pay"
+    },
+    "status": 200,
+    "revision": 2
+  },
+  {
+    "index": 2,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "lane": "upload"
+      },
+      "side": "after",
+      "tile": {
+        "id": "session-api",
+        "name": "Session API",
+        "kind": "service",
+        "description": "Same-origin browser facade: OIDC code + PKCE sign-in, cookie sessions and CSRF. Forwards a valid bearer token (none on guest create) to the Link, Account and Billing APIs; never invents an identity header."
+      },
+      "linkId": "upload-session-api"
+    },
+    "status": 200,
+    "revision": 3
+  },
+  {
+    "index": 3,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "session-api"
+      },
+      "side": "after",
+      "tile": {
+        "id": "identity",
+        "name": "Identity",
+        "kind": "identity",
+        "description": "Verified account identity over OIDC. Local Keycloak while testing; the managed issuer is a deployment compatibility decision."
+      },
+      "linkId": "session-api-identity"
+    },
+    "status": 200,
+    "revision": 4
+  },
+  {
+    "index": 4,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "session-api"
+      },
+      "side": "after",
+      "tile": {
+        "id": "sessions",
+        "name": "Sessions",
+        "kind": "database",
+        "description": "Encrypted tokens, session expiry and revocation state. A separate restricted PostgreSQL logical database, written only by Session API and never queried by the Redirect service."
+      },
+      "linkId": "session-api-sessions"
+    },
+    "status": 200,
+    "revision": 5
+  },
+  {
+    "index": 5,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "session-api"
+      },
+      "side": "after",
+      "tile": {
+        "id": "link-api",
+        "name": "Link API",
+        "kind": "service",
+        "description": "Guest create, claim with one-time proof, owned edits and deletes, abuse reports and operator decisions. Sole writer of Links; asks Billing API for entitlement grants on owned operations."
+      },
+      "linkId": "session-api-link-api"
+    },
+    "status": 200,
+    "revision": 6
+  },
+  {
+    "index": 6,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "session-api"
+      },
+      "side": "after",
+      "tile": {
+        "id": "account-api",
+        "name": "Account API",
+        "kind": "service",
+        "description": "Signed-in reads: the caller's own links and their analytics. Reads the Links owner view and Analytics, checks entitlements with Billing API, and forwards no writes."
+      },
+      "linkId": "session-api-account-api"
+    },
+    "status": 200,
+    "revision": 7
+  },
+  {
+    "index": 7,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "session-api"
+      },
+      "side": "after",
+      "tile": {
+        "id": "billing-api",
+        "name": "Billing API",
+        "kind": "service",
+        "description": "Hosted Checkout and portal, a signature-verified Stripe webhook inbox, subscription reconciliation and entitlement grants. Sole writer of Billing."
+      },
+      "linkId": "session-api-billing-api"
+    },
+    "status": 200,
+    "revision": 8
+  },
+  {
+    "index": 8,
+    "command": {
+      "type": "linkTiles",
+      "from": {
+        "lane": "upload"
+      },
+      "to": "billing-api",
+      "linkId": "upload-billing-api"
+    },
+    "status": 200,
+    "revision": 9
+  },
+  {
+    "index": 9,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "link-api"
+      },
+      "side": "after",
+      "tile": {
+        "id": "links",
+        "name": "Links",
+        "kind": "database",
+        "description": "Durable routes, ownership, claim and idempotency data and tombstones. PostgreSQL; the public route view and the account owner view have separate grants."
+      },
+      "linkId": "link-api-links"
+    },
+    "status": 200,
+    "revision": 10
+  },
+  {
+    "index": 10,
+    "command": {
+      "type": "linkTiles",
+      "from": {
+        "tile": "link-api"
+      },
+      "to": "identity",
+      "linkId": "link-api-identity"
+    },
+    "status": 200,
+    "revision": 11
+  },
+  {
+    "index": 11,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "link-api"
+      },
+      "side": "after",
+      "tile": {
+        "id": "admission-cache",
+        "name": "Admission cache",
+        "kind": "cache",
+        "description": "Approximate distributed abuse and admission counters (Valkey). Durable hard account limits stay in Links transactions."
+      },
+      "linkId": "link-api-admission-cache"
+    },
+    "status": 200,
+    "revision": 12
+  },
+  {
+    "index": 12,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "link-api"
+      },
+      "side": "after",
+      "tile": {
+        "id": "reputation-api",
+        "name": "Reputation API",
+        "kind": "external-api",
+        "description": "Destination reputation check before a link is created. Unavailable means a retryable 503 on create; existing redirects continue."
+      },
+      "linkId": "link-api-reputation-api"
+    },
+    "status": 200,
+    "revision": 13
+  },
+  {
+    "index": 13,
+    "command": {
+      "type": "linkTiles",
+      "from": {
+        "tile": "link-api"
+      },
+      "to": "billing-api",
+      "linkId": "link-api-billing-api"
+    },
+    "status": 200,
+    "revision": 14
+  },
+  {
+    "index": 14,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "lane": "download"
+      },
+      "side": "after",
+      "tile": {
+        "id": "redirect-service",
+        "name": "Redirect service",
+        "kind": "service",
+        "description": "Resolves host and slug, checks state and expiry, awaits the durable click acknowledgment, then answers 302. No sign-in or payment dependency."
+      },
+      "linkId": "download-redirect-service"
+    },
+    "status": 200,
+    "revision": 15
+  },
+  {
+    "index": 15,
+    "command": {
+      "type": "linkTiles",
+      "from": {
+        "tile": "redirect-service"
+      },
+      "to": "links",
+      "linkId": "redirect-service-links"
+    },
+    "status": 200,
+    "revision": 16
+  },
+  {
+    "index": 16,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "redirect-service"
+      },
+      "side": "after",
+      "tile": {
+        "id": "hot-routes",
+        "name": "Hot routes",
+        "kind": "cache",
+        "description": "Short-lived route metadata with a bounded freshness deadline (Valkey). Replaceable, never the source of truth."
+      },
+      "linkId": "redirect-service-hot-routes"
+    },
+    "status": 200,
+    "revision": 17
+  },
+  {
+    "index": 17,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "redirect-service"
+      },
+      "side": "after",
+      "tile": {
+        "id": "click-events",
+        "name": "Click events",
+        "kind": "queue",
+        "description": "Click events, durably acknowledged before each redirect. Production transport is GCP Pub/Sub, pending G12; the local export uses the installed broker. The archive subscription is deployment."
+      },
+      "linkId": "redirect-service-click-events"
+    },
+    "status": 200,
+    "revision": 18
+  },
+  {
+    "index": 18,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "click-events"
+      },
+      "side": "after",
+      "tile": {
+        "id": "analytics-worker",
+        "name": "Analytics worker",
+        "kind": "worker",
+        "description": "Validates, deduplicates and aggregates click events, expires bounded data and acknowledges only after its transaction commits. Sole writer of Analytics."
+      },
+      "linkId": "click-events-analytics-worker"
+    },
+    "status": 200,
+    "revision": 19
+  },
+  {
+    "index": 19,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "analytics-worker"
+      },
+      "side": "after",
+      "tile": {
+        "id": "analytics",
+        "name": "Analytics",
+        "kind": "database",
+        "description": "Click aggregates plus bounded deduplication data. A separate PostgreSQL logical database, read by Account API."
+      },
+      "linkId": "analytics-worker-analytics"
+    },
+    "status": 200,
+    "revision": 20
+  },
+  {
+    "index": 20,
+    "command": {
+      "type": "linkTiles",
+      "from": {
+        "tile": "account-api"
+      },
+      "to": "identity",
+      "linkId": "account-api-identity"
+    },
+    "status": 200,
+    "revision": 21
+  },
+  {
+    "index": 21,
+    "command": {
+      "type": "linkTiles",
+      "from": {
+        "tile": "account-api"
+      },
+      "to": "links",
+      "linkId": "account-api-links"
+    },
+    "status": 200,
+    "revision": 22
+  },
+  {
+    "index": 22,
+    "command": {
+      "type": "linkTiles",
+      "from": {
+        "tile": "account-api"
+      },
+      "to": "analytics",
+      "linkId": "account-api-analytics"
+    },
+    "status": 200,
+    "revision": 23
+  },
+  {
+    "index": 23,
+    "command": {
+      "type": "linkTiles",
+      "from": {
+        "tile": "account-api"
+      },
+      "to": "billing-api",
+      "linkId": "account-api-billing-api"
+    },
+    "status": 200,
+    "revision": 24
+  },
+  {
+    "index": 24,
+    "command": {
+      "type": "linkTiles",
+      "from": {
+        "tile": "billing-api"
+      },
+      "to": "identity",
+      "linkId": "billing-api-identity"
+    },
+    "status": 200,
+    "revision": 25
+  },
+  {
+    "index": 25,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "billing-api"
+      },
+      "side": "after",
+      "tile": {
+        "id": "billing",
+        "name": "Billing",
+        "kind": "database",
+        "description": "Customer mappings, webhook inbox, subscription and entitlement revisions, reconciliation jobs and action idempotency. Restricted PostgreSQL logical database; no card data."
+      },
+      "linkId": "billing-api-billing"
+    },
+    "status": 200,
+    "revision": 26
+  },
+  {
+    "index": 26,
+    "command": {
+      "type": "addTile",
+      "from": {
+        "tile": "billing-api"
+      },
+      "side": "after",
+      "tile": {
+        "id": "stripe-api",
+        "name": "Stripe API",
+        "kind": "external-api",
+        "description": "Hosted payments and subscriptions (test mode). Its signed webhook reaches Billing API through the Create, manage & pay entry, not a line out of this tile."
+      },
+      "linkId": "billing-api-stripe-api"
+    },
+    "status": 200,
+    "revision": 27
+  }
+]
