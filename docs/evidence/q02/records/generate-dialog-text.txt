@@ -1,0 +1,184 @@
+Generate experimental project
+
+Experimental project export · Selected source · local v2
+
+Generate the selected saved design using installed templates. Preview lists actual support and required custom hooks.
+
+Preview checks this canvas against the saved source. No project edits are made. Experimental export does not certify strict TinyURL readiness or runtime behavior.
+
+Runnable processes
+
+Each Service, Uploads and Worker tile runs as its own process in the exported stack.
+
+Modules · 14
+Sign-in flow in Session API
+
+Stub
+Your own logic, with no template.
+
+API forwarding in Session API
+
+Stub
+Your own logic, with no template.
+
+Sign-in in Link API
+
+Template
+Sign-in
+
+Link operations in Link API
+
+Stub
+Your own logic, with no template.
+
+Abuse and moderation in Link API
+
+Stub
+Your own logic, with no template.
+
+Resolve and redirect in Redirect service
+
+Stub
+Your own logic, with no template.
+
+Sign-in in Account API
+
+Template
+Sign-in
+
+My links in Account API
+
+Stub
+No template in Account API uses it.
+
+Link analytics in Account API
+
+Stub
+Your own logic, with no template.
+
+Sign-in in Billing API
+
+Template
+Sign-in
+
+Customer billing in Billing API
+
+Stub
+Your own logic, with no template.
+
+Payment events in Billing API
+
+Stub
+Your own logic, with no template.
+
+Entitlements in Billing API
+
+Stub
+Your own logic, with no template.
+
+Click aggregator in Analytics worker
+
+Stub
+Your own logic, with no template.
+
+Selected bindings and settings are supported by the installed registry. Preview checks emitted consumers and custom gaps.
+
+Ready: 84 files · 3728 KiB ZIP · 14 selected template entries.
+
+Partial assembly · custom work required. Required hooks remain incomplete. This ZIP is an extension starting point; every application tile still starts as its own process.
+
+Processes · 6 · runnable
+
+Edge app-edge: /api/billing-api/, /api/redirect-service/, /api/session-api/
+
+Account API app-account-api · HTTP, internal
+
+GET /healthz, GET /modules/account-api-sign-in/me, ANY /modules/account-api-my-links, ANY /modules/account-api-my-links/*, ANY /modules/account-api-link-analytics, ANY /modules/account-api-link-analytics/*
+
+Provisioned: Analytics (database, read), Links (database, read)
+
+Analytics worker app-analytics-worker · worker
+
+loop on click-events
+
+Provisioned: Analytics (database, read-write), Click events (queue, consume)
+
+Product SQL: Click aggregator → infra/postgres/analytics/modules/analytics-worker-click-aggregator.sql
+
+Billing API app-billing-api · HTTP, public · at /api/billing-api/
+
+GET /healthz, GET /modules/billing-api-sign-in/me, ANY /modules/billing-api-customer-billing, ANY /modules/billing-api-customer-billing/*, ANY /modules/billing-api-payment-events, ANY /modules/billing-api-payment-events/*, ANY /modules/billing-api-entitlements, ANY /modules/billing-api-entitlements/*
+
+Provisioned: Billing (database, read-write)
+
+Product SQL: Customer billing → infra/postgres/billing/modules/billing-api-customer-billing.sql, Payment events → infra/postgres/billing/modules/billing-api-payment-events.sql, Entitlements → infra/postgres/billing/modules/billing-api-entitlements.sql
+
+Link API app-link-api · HTTP, internal
+
+GET /healthz, GET /modules/link-api-sign-in/me, ANY /modules/link-api-link-operations, ANY /modules/link-api-link-operations/*, ANY /modules/link-api-abuse-and-moderation, ANY /modules/link-api-abuse-and-moderation/*
+
+Provisioned: Admission cache (cache, read-write), Links (database, read-write)
+
+Product SQL: Link operations → infra/postgres/links/modules/link-api-link-operations.sql, Abuse and moderation → infra/postgres/links/modules/link-api-abuse-and-moderation.sql
+
+Redirect service app-redirect-service · HTTP, public · at /api/redirect-service/
+
+GET /healthz, ANY /modules/redirect-service-resolve-and-redirect, ANY /modules/redirect-service-resolve-and-redirect/*
+
+Provisioned: Click events (queue, publish), Hot routes (cache, read-write), Links (database, read)
+
+Session API app-session-api · HTTP, public · at /api/session-api/
+
+GET /healthz, ANY /modules/session-api-sign-in-flow, ANY /modules/session-api-sign-in-flow/*, ANY /modules/session-api-api-forwarding, ANY /modules/session-api-api-forwarding/*
+
+Provisioned: Sessions (database, read-write)
+
+Product SQL: Sign-in flow → infra/postgres/sessions/modules/session-api-sign-in-flow.sql, API forwarding → infra/postgres/sessions/modules/session-api-api-forwarding.sql
+
+Support & custom gaps · 11 required
+Required · custom: Write Link analytics in src/modules/account-api/account-api-link-analytics.ts; its stub throws "Not implemented".
+Required · custom: Write My links in src/modules/account-api/account-api-my-links.ts; its stub throws "Not implemented".
+Required · custom: Write Click aggregator in src/modules/analytics-worker/analytics-worker-click-aggregator.ts; its stub throws "Not implemented".
+Required · custom: Write Customer billing in src/modules/billing-api/billing-api-customer-billing.ts; its stub throws "Not implemented".
+Required · custom: Write Entitlements in src/modules/billing-api/billing-api-entitlements.ts; its stub throws "Not implemented".
+Required · custom: Write Payment events in src/modules/billing-api/billing-api-payment-events.ts; its stub throws "Not implemented".
+Required · custom: Write Abuse and moderation in src/modules/link-api/link-api-abuse-and-moderation.ts; its stub throws "Not implemented".
+Required · custom: Write Link operations in src/modules/link-api/link-api-link-operations.ts; its stub throws "Not implemented".
+Required · custom: Write Resolve and redirect in src/modules/redirect-service/redirect-service-resolve-and-redirect.ts; its stub throws "Not implemented".
+Required · custom: Write API forwarding in src/modules/session-api/session-api-api-forwarding.ts; its stub throws "Not implemented".
+Required · custom: Write Sign-in flow in src/modules/session-api/session-api-sign-in-flow.ts; its stub throws "Not implemented".
+session-api-sign-in-flow · implemented
+Emitted consumers
+session-api-api-forwarding · implemented
+Emitted consumers
+link-api-sign-in · implemented
+Emitted consumers
+link-api-link-operations · implemented
+Emitted consumers
+link-api-abuse-and-moderation · implemented
+Emitted consumers
+redirect-service-resolve-and-redirect · implemented
+Emitted consumers
+account-api-sign-in · implemented
+Emitted consumers
+account-api-my-links · implemented
+Emitted consumers
+account-api-link-analytics · implemented
+Emitted consumers
+billing-api-sign-in · implemented
+Emitted consumers
+billing-api-customer-billing · implemented
+Emitted consumers
+billing-api-payment-events · implemented
+Emitted consumers
+billing-api-entitlements · implemented
+Emitted consumers
+analytics-worker-click-aggregator · implemented
+Emitted consumers
+Local adapter limits
+Source, versions & strict compatibility
+
+Extract into a new directory and follow README. Existing work is not merged; provision runtime secrets separately.
+
+Preview scaffold
+Download project ZIP

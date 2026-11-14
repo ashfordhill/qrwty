@@ -1,0 +1,387 @@
+$ node scripts/local.mjs first-run
+ Image q02-qrwty-studio-app Building 
+ Image q02-qrwty-studio-app Building 
+ Image q02-qrwty-studio-app Building 
+ Image q02-qrwty-studio-app Building 
+ Image q02-qrwty-studio-app Building 
+ Image q02-qrwty-studio-app Building 
+ Image q02-qrwty-studio-app Building 
+ Image q02-qrwty-studio-app Building 
+ Image q02-qrwty-studio-app Built 
+ Image q02-qrwty-studio-app Built 
+ Image q02-qrwty-studio-app Built 
+ Image q02-qrwty-studio-app Built 
+ Image q02-qrwty-studio-app Built 
+ Image q02-qrwty-studio-app Built 
+ Image q02-qrwty-studio-app Built 
+ Image q02-qrwty-studio-app Built 
+#1 [internal] load local bake definitions
+#1 reading from stdin 5.21kB done
+#1 DONE 0.0s
+
+#2 [app-analytics-worker internal] load build definition from Dockerfile
+#2 DONE 0.0s
+
+#2 [app-redirect-service internal] load build definition from Dockerfile
+#2 transferring dockerfile:
+#2 transferring dockerfile: 1.65kB done
+#2 DONE 0.2s
+
+#3 [app-redirect-service internal] load metadata for docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+#3 DONE 0.4s
+
+#4 [app-billing-api internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 72B done
+#4 DONE 0.2s
+
+#5 [app-redirect-service internal] load build context
+#5 ...
+
+#6 [app-redirect-service app  1/10] FROM docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+#6 resolve docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20 0.1s done
+#6 DONE 0.2s
+
+#5 [app-redirect-service internal] load build context
+#5 transferring context: 206.96kB 0.0s done
+#5 DONE 0.3s
+
+#7 [setup-broker app  2/10] WORKDIR /app
+#7 CACHED
+
+#8 [setup-broker app  3/10] RUN npm install --global pnpm@12.16.1
+#8 CACHED
+
+#9 [setup-broker app  4/10] COPY package.json pnpm-lock.yaml ./
+#9 CACHED
+
+#10 [setup-broker app  5/10] RUN pnpm install --frozen-lockfile --ignore-scripts
+#10 CACHED
+
+#11 [setup-broker app  6/10] COPY tsconfig.json ./
+#11 CACHED
+
+#12 [app-link-api app  7/10] COPY src ./src
+#12 DONE 0.2s
+
+#13 [app-redirect-service app  8/10] RUN pnpm build
+#13 0.521 $ tsc -p tsconfig.json
+#13 DONE 1.0s
+
+#14 [app-session-api app  9/10] COPY scripts ./scripts
+#14 DONE 0.2s
+
+#15 [app-billing-api app 10/10] COPY infra ./infra
+#15 DONE 0.3s
+
+#16 [setup-migrate] exporting to image
+#16 exporting layers
+#16 exporting layers 1.8s done
+#16 exporting manifest sha256:e916e4a0a00cbab58904fc293276cba2a9c513f4ae8a5e795b866ad651f6faf9
+#16 exporting manifest sha256:e916e4a0a00cbab58904fc293276cba2a9c513f4ae8a5e795b866ad651f6faf9 0.5s done
+#16 exporting config sha256:14f50ed425f59c6abeda136a9538b04d36fbe53ada332a12d7e0a6ec8861b8b0
+#16 exporting config sha256:14f50ed425f59c6abeda136a9538b04d36fbe53ada332a12d7e0a6ec8861b8b0 0.6s done
+#16 exporting attestation manifest sha256:46238148d6bbf2b6a730cf5826cc888b366e0395e52afec47fc57c3efda268de
+#16 exporting attestation manifest sha256:46238148d6bbf2b6a730cf5826cc888b366e0395e52afec47fc57c3efda268de 0.7s done
+#16 exporting manifest list sha256:63cb761d02a154e4d288ea6140a037516101ca67a636a9add3c2826c8ff8a0b6
+#16 exporting manifest list sha256:63cb761d02a154e4d288ea6140a037516101ca67a636a9add3c2826c8ff8a0b6 0.4s done
+#16 naming to docker.io/library/q02-qrwty-studio-app:latest
+#16 naming to docker.io/library/q02-qrwty-studio-app:latest 0.5s done
+#16 unpacking to docker.io/library/q02-qrwty-studio-app:latest
+#16 ...
+
+#17 [setup-broker] exporting to image
+#17 exporting layers 1.9s done
+#17 exporting manifest sha256:e632c8778aad3cb6021e527ab4893479debe7758e90819d9c9b59ebcc7b01d2d 0.6s done
+#17 exporting config sha256:0e10886ba88a315ea5b8157515fcd04c86b5055978ed665bb79b5dedfd11f0f3 0.6s done
+#17 exporting attestation manifest sha256:cee4d210771bc8b9b5eeda3e7761334ebc05ac08179037c3248e7ca0e0fa62e8 0.8s done
+#17 exporting manifest list sha256:59ec485cbdfed948749e3629492bb89f75c3b30cca5df5872d9e1ced825ce678 0.5s done
+#17 naming to docker.io/library/q02-qrwty-studio-app:latest 0.1s done
+#17 ...
+
+#18 [app-link-api] exporting to image
+#18 exporting layers 2.0s done
+#18 exporting manifest sha256:867fb85f1b283ce475875c6af207f831f630ad737ffc197157bde9be0a1cf0eb 0.6s done
+#18 exporting config sha256:22e19a663e4a233a77d75247031bfad3122f7766c4c2497f5b22d9d380813199 0.6s done
+#18 exporting attestation manifest sha256:6d6d3ae0b12c21b8d7ef433c631a76868341e7967bca7bc597548363f4be7e8e 0.7s done
+#18 exporting manifest list sha256:9e3db53908bb37ec09878e77e81d04566ed3a39353f7943981f5a0a5796e5435 0.6s done
+#18 naming to docker.io/library/q02-qrwty-studio-app:latest 0.1s done
+#18 ...
+
+#19 [app-redirect-service] exporting to image
+#19 exporting layers 1.9s done
+#19 exporting manifest sha256:ac1ad5e8a8a591c541d4298568ba5cfe1c30b45df8df80e2c137aad73d4542d7 0.6s done
+#19 exporting config sha256:67fb0f664a7039b06951b1641dc538b907177dda20f2a6134ad1dfebad2e2d08 0.6s done
+#19 exporting attestation manifest sha256:defa6a97a90a89db1316fcdc9607a7c952fdb8a09b79d4500c1ba8ba686d16c5 0.8s done
+#19 exporting manifest list sha256:a99fdbfaa36fbb87e16ba4836757e2897276bd01f4b1b1e31d14c511dbdcdee6 0.5s done
+#19 naming to docker.io/library/q02-qrwty-studio-app:latest 0.2s done
+#19 ...
+
+#20 [app-analytics-worker] exporting to image
+#20 exporting layers 1.9s done
+#20 exporting manifest sha256:146bc77410e90ce59154f554e413cf7e59d14432a0358645fe601144d84c44bd 0.6s done
+#20 exporting config sha256:e19f1f8bf8c0b6534a6a136710df51231785315d0ad7bb469361bbd587af8057 0.6s done
+#20 exporting attestation manifest sha256:ebf7121f699de00c83f66eb9e1a649e9d16c2ea031d44a3f1e3052f78dcc508e 0.8s done
+#20 exporting manifest list sha256:0d8baf7859d71b904ead6b470981699630f953669d274f939ee16a104ad62d1f 0.5s done
+#20 naming to docker.io/library/q02-qrwty-studio-app:latest 0.2s done
+#20 ...
+
+#21 [app-account-api] exporting to image
+#21 exporting layers 1.9s done
+#21 exporting manifest sha256:440effc4df9f8fd25f38f74b958870192a01d23eb1659a2d71c02e496ed52f4e 0.6s done
+#21 exporting config sha256:fe51d39ae47c40611d7cbaa76b7eeebf9d5bc658606eade63cbdd9bd45cb9866 0.6s done
+#21 exporting attestation manifest sha256:f3c1922db525f18963fe41e2eb37b5b6426e5d22ede7b2dd7689c7e8dfe2f33a 0.8s done
+#21 exporting manifest list sha256:27dac97e6c40ffaab5b20bdbd5feb95c540b487fb504619fcaee39c4ac687cfc 0.6s done
+#21 naming to docker.io/library/q02-qrwty-studio-app:latest 0.1s done
+#21 ...
+
+#22 [app-session-api] exporting to image
+#22 exporting layers 1.9s done
+#22 exporting manifest sha256:c22e56b576ec2d26a8ddfbf07a37132ed8f1320f50c15ad7575c10459081f8a3 0.6s done
+#22 exporting config sha256:41fd0a3c9e8abbc7030cf373e68a4a938ab9eb24cd3440b9cdb9a31e2f3fead2 0.6s done
+#22 exporting attestation manifest sha256:25beba3218d077ae2eea69c8643cce003f38d7e840bc8b3091b4e831780853af 0.8s done
+#22 exporting manifest list sha256:e7a24a675417059d00fd0563656be2cec28a4cf9ce5d37a282338021db442af1 0.5s done
+#22 naming to docker.io/library/q02-qrwty-studio-app:latest 0.2s done
+#22 ...
+
+#23 [app-billing-api] exporting to image
+#23 exporting layers 1.9s done
+#23 exporting manifest sha256:6bfe6b254451f2187c6d5f2b852335fd67e62189ce1ddb59529b713488eecab6 0.6s done
+#23 exporting config sha256:6aca573ee531e0e4fc8a5a46e9363671558abca169d4d7f5bc5338d46fd8cbc5 0.6s done
+#23 exporting attestation manifest sha256:6becc36353157a7e4b608072f72f295734189a3cdbdf8f047f8a62fc3f61f603 0.8s done
+#23 exporting manifest list sha256:34f66c17e2be66e8071e01127c6bea0a2d58bcaa854d51877684229e0c0fe629 0.5s done
+#23 naming to docker.io/library/q02-qrwty-studio-app:latest 0.2s done
+#23 ...
+
+#22 [app-session-api] exporting to image
+#22 unpacking to docker.io/library/q02-qrwty-studio-app:latest 11.3s done
+#22 DONE 16.7s
+
+#23 [app-billing-api] exporting to image
+#23 unpacking to docker.io/library/q02-qrwty-studio-app:latest 11.4s done
+#23 DONE 16.7s
+
+#21 [app-account-api] exporting to image
+#21 unpacking to docker.io/library/q02-qrwty-studio-app:latest 11.4s done
+#21 ...
+
+#19 [app-redirect-service] exporting to image
+#19 unpacking to docker.io/library/q02-qrwty-studio-app:latest 11.4s done
+#19 DONE 16.8s
+
+#20 [app-analytics-worker] exporting to image
+#20 unpacking to docker.io/library/q02-qrwty-studio-app:latest 11.4s done
+#20 DONE 16.9s
+
+#17 [setup-broker] exporting to image
+#17 unpacking to docker.io/library/q02-qrwty-studio-app:latest 11.4s done
+#17 DONE 16.8s
+
+#16 [setup-migrate] exporting to image
+#16 unpacking to docker.io/library/q02-qrwty-studio-app:latest 11.5s done
+#16 DONE 16.8s
+
+#18 [app-link-api] exporting to image
+#18 unpacking to docker.io/library/q02-qrwty-studio-app:latest 11.4s done
+#18 DONE 16.9s
+
+#21 [app-account-api] exporting to image
+#21 DONE 16.9s
+
+#24 [app-session-api] resolving provenance for metadata file
+#24 ...
+
+#25 [setup-migrate] resolving provenance for metadata file
+#25 DONE 1.1s
+
+#26 [app-account-api] resolving provenance for metadata file
+#26 DONE 0.8s
+
+#27 [app-redirect-service] resolving provenance for metadata file
+#27 DONE 0.5s
+
+#28 [app-billing-api] resolving provenance for metadata file
+#28 DONE 1.9s
+
+#24 [app-session-api] resolving provenance for metadata file
+#24 DONE 2.0s
+
+#29 [app-analytics-worker] resolving provenance for metadata file
+#29 DONE 0.2s
+
+#30 [setup-broker] resolving provenance for metadata file
+#30 DONE 1.4s
+
+#31 [app-link-api] resolving provenance for metadata file
+#31 DONE 0.0s
+ Network q02-qrwty-studio_default Creating 
+ Volume q02-qrwty-studio_cache-admission-cache Creating 
+ Volume q02-qrwty-studio_cache-hot-routes Creating 
+ Volume q02-qrwty-studio_cache-hot-routes Creating 
+ Volume q02-qrwty-studio_cache-admission-cache Creating 
+ Network q02-qrwty-studio_default Creating 
+ Volume q02-qrwty-studio_postgres-data Creating 
+ Volume q02-qrwty-studio_postgres-data Creating 
+ Volume q02-qrwty-studio_broker-data Creating 
+ Volume q02-qrwty-studio_broker-data Creating 
+ Volume q02-qrwty-studio_cache-hot-routes Created 
+ Volume q02-qrwty-studio_cache-hot-routes Created 
+ Volume q02-qrwty-studio_cache-admission-cache Created 
+ Volume q02-qrwty-studio_cache-admission-cache Created 
+ Volume q02-qrwty-studio_broker-data Created 
+ Volume q02-qrwty-studio_broker-data Created 
+ Volume q02-qrwty-studio_postgres-data Created 
+ Volume q02-qrwty-studio_postgres-data Created 
+ Network q02-qrwty-studio_default Created 
+ Network q02-qrwty-studio_default Created 
+ Container q02-qrwty-studio-local-postgres-1 Creating 
+ Container q02-qrwty-studio-local-broker-1 Creating 
+ Container q02-qrwty-studio-cache-admission-cache-1 Creating 
+ Container q02-qrwty-studio-cache-hot-routes-1 Creating 
+ Container q02-qrwty-studio-local-postgres-1 Created 
+ Container q02-qrwty-studio-cache-hot-routes-1 Created 
+ Container q02-qrwty-studio-cache-admission-cache-1 Created 
+ Container q02-qrwty-studio-local-broker-1 Created 
+ Container q02-qrwty-studio-local-broker-1 Starting 
+ Container q02-qrwty-studio-local-postgres-1 Starting 
+ Container q02-qrwty-studio-cache-admission-cache-1 Starting 
+ Container q02-qrwty-studio-cache-hot-routes-1 Starting 
+ Container q02-qrwty-studio-local-broker-1 Started 
+ Container q02-qrwty-studio-local-postgres-1 Started 
+ Container q02-qrwty-studio-cache-admission-cache-1 Started 
+ Container q02-qrwty-studio-cache-hot-routes-1 Started 
+ Container q02-qrwty-studio-local-broker-1 Waiting 
+ Container q02-qrwty-studio-cache-hot-routes-1 Waiting 
+ Container q02-qrwty-studio-cache-admission-cache-1 Waiting 
+ Container q02-qrwty-studio-local-postgres-1 Waiting 
+ Container q02-qrwty-studio-local-postgres-1 Healthy 
+ Container q02-qrwty-studio-local-broker-1 Healthy 
+ Container q02-qrwty-studio-cache-admission-cache-1 Healthy 
+ Container q02-qrwty-studio-cache-hot-routes-1 Healthy 
+ Container q02-qrwty-studio-setup-migrate-run-4ca6d053dd41 Creating 
+ Container q02-qrwty-studio-setup-migrate-run-4ca6d053dd41 Created 
+Applied infra/postgres/analytics/000-foundation.sql
+Applied infra/postgres/analytics/modules/analytics-worker-click-aggregator.sql
+Applied infra/postgres/billing/000-foundation.sql
+Applied infra/postgres/billing/modules/billing-api-customer-billing.sql
+Applied infra/postgres/billing/modules/billing-api-entitlements.sql
+Applied infra/postgres/billing/modules/billing-api-payment-events.sql
+Applied infra/postgres/links/000-foundation.sql
+Applied infra/postgres/links/modules/link-api-abuse-and-moderation.sql
+Applied infra/postgres/links/modules/link-api-link-operations.sql
+Applied infra/postgres/sessions/000-foundation.sql
+Applied infra/postgres/sessions/modules/session-api-api-forwarding.sql
+Applied infra/postgres/sessions/modules/session-api-sign-in-flow.sql
+Applied infra/postgres/identity/000-foundation.sql
+Migrations current; setup-only owners and exact runtime credentials preserved.
+ Container q02-qrwty-studio-local-postgres-1 Running 
+ Container q02-qrwty-studio-identity-identity-1 Creating 
+ Container q02-qrwty-studio-identity-identity-1 Created 
+ Container q02-qrwty-studio-local-postgres-1 Waiting 
+ Container q02-qrwty-studio-local-postgres-1 Healthy 
+ Container q02-qrwty-studio-identity-identity-1 Starting 
+ Container q02-qrwty-studio-identity-identity-1 Started 
+ Container q02-qrwty-studio-local-postgres-1 Waiting 
+ Container q02-qrwty-studio-identity-identity-1 Waiting 
+ Container q02-qrwty-studio-local-postgres-1 Healthy 
+ Container q02-qrwty-studio-identity-identity-1 Healthy 
+ Container q02-qrwty-studio-setup-broker-run-4885012c073d Creating 
+ Container q02-qrwty-studio-setup-broker-run-4885012c073d Created 
+Selected durable broker declarations asserted without reset.
+ Container q02-qrwty-studio-cache-admission-cache-1 Running 
+ Container q02-qrwty-studio-cache-hot-routes-1 Running 
+ Container q02-qrwty-studio-local-broker-1 Running 
+ Container q02-qrwty-studio-local-postgres-1 Running 
+ Container q02-qrwty-studio-identity-identity-1 Running 
+ Container q02-qrwty-studio-app-link-api-1 Creating 
+ Container q02-qrwty-studio-app-session-api-1 Creating 
+ Container q02-qrwty-studio-app-analytics-worker-1 Creating 
+ Container q02-qrwty-studio-app-billing-api-1 Creating 
+ Container q02-qrwty-studio-app-redirect-service-1 Creating 
+ Container q02-qrwty-studio-app-account-api-1 Creating 
+ Container q02-qrwty-studio-app-link-api-1 Created 
+ Container q02-qrwty-studio-app-session-api-1 Created 
+ Container q02-qrwty-studio-app-analytics-worker-1 Created 
+ Container q02-qrwty-studio-app-billing-api-1 Created 
+ Container q02-qrwty-studio-app-redirect-service-1 Created 
+ Container q02-qrwty-studio-app-edge-1 Creating 
+ Container q02-qrwty-studio-app-account-api-1 Created 
+ Container q02-qrwty-studio-app-edge-1 Created 
+ Container q02-qrwty-studio-local-postgres-1 Waiting 
+ Container q02-qrwty-studio-local-postgres-1 Waiting 
+ Container q02-qrwty-studio-local-postgres-1 Waiting 
+ Container q02-qrwty-studio-cache-hot-routes-1 Waiting 
+ Container q02-qrwty-studio-local-broker-1 Waiting 
+ Container q02-qrwty-studio-local-postgres-1 Waiting 
+ Container q02-qrwty-studio-local-broker-1 Waiting 
+ Container q02-qrwty-studio-local-postgres-1 Healthy 
+ Container q02-qrwty-studio-cache-hot-routes-1 Healthy 
+ Container q02-qrwty-studio-local-postgres-1 Healthy 
+ Container q02-qrwty-studio-local-broker-1 Healthy 
+ Container q02-qrwty-studio-local-postgres-1 Healthy 
+ Container q02-qrwty-studio-local-postgres-1 Healthy 
+ Container q02-qrwty-studio-app-redirect-service-1 Starting 
+ Container q02-qrwty-studio-local-postgres-1 Waiting 
+ Container q02-qrwty-studio-local-broker-1 Healthy 
+ Container q02-qrwty-studio-identity-identity-1 Waiting 
+ Container q02-qrwty-studio-app-analytics-worker-1 Starting 
+ Container q02-qrwty-studio-local-postgres-1 Waiting 
+ Container q02-qrwty-studio-identity-identity-1 Waiting 
+ Container q02-qrwty-studio-app-session-api-1 Starting 
+ Container q02-qrwty-studio-identity-identity-1 Waiting 
+ Container q02-qrwty-studio-local-postgres-1 Waiting 
+ Container q02-qrwty-studio-cache-admission-cache-1 Waiting 
+ Container q02-qrwty-studio-app-redirect-service-1 Started 
+ Container q02-qrwty-studio-identity-identity-1 Healthy 
+ Container q02-qrwty-studio-identity-identity-1 Healthy 
+ Container q02-qrwty-studio-cache-admission-cache-1 Healthy 
+ Container q02-qrwty-studio-identity-identity-1 Healthy 
+ Container q02-qrwty-studio-local-postgres-1 Healthy 
+ Container q02-qrwty-studio-local-postgres-1 Healthy 
+ Container q02-qrwty-studio-app-billing-api-1 Starting 
+ Container q02-qrwty-studio-local-postgres-1 Healthy 
+ Container q02-qrwty-studio-app-link-api-1 Starting 
+ Container q02-qrwty-studio-app-account-api-1 Starting 
+ Container q02-qrwty-studio-app-analytics-worker-1 Started 
+ Container q02-qrwty-studio-app-session-api-1 Started 
+ Container q02-qrwty-studio-app-billing-api-1 Started 
+ Container q02-qrwty-studio-app-redirect-service-1 Waiting 
+ Container q02-qrwty-studio-app-session-api-1 Waiting 
+ Container q02-qrwty-studio-app-billing-api-1 Waiting 
+ Container q02-qrwty-studio-app-link-api-1 Started 
+ Container q02-qrwty-studio-app-account-api-1 Started 
+ Container q02-qrwty-studio-app-redirect-service-1 Healthy 
+ Container q02-qrwty-studio-app-session-api-1 Healthy 
+ Container q02-qrwty-studio-app-billing-api-1 Healthy 
+ Container q02-qrwty-studio-app-edge-1 Starting 
+ Container q02-qrwty-studio-app-edge-1 Started 
+ Container q02-qrwty-studio-app-edge-1 Waiting 
+ Container q02-qrwty-studio-app-link-api-1 Waiting 
+ Container q02-qrwty-studio-identity-identity-1 Waiting 
+ Container q02-qrwty-studio-cache-admission-cache-1 Waiting 
+ Container q02-qrwty-studio-app-account-api-1 Waiting 
+ Container q02-qrwty-studio-local-broker-1 Waiting 
+ Container q02-qrwty-studio-local-postgres-1 Waiting 
+ Container q02-qrwty-studio-app-billing-api-1 Waiting 
+ Container q02-qrwty-studio-app-analytics-worker-1 Waiting 
+ Container q02-qrwty-studio-app-session-api-1 Waiting 
+ Container q02-qrwty-studio-app-redirect-service-1 Waiting 
+ Container q02-qrwty-studio-cache-hot-routes-1 Waiting 
+ Container q02-qrwty-studio-app-redirect-service-1 Healthy 
+ Container q02-qrwty-studio-app-analytics-worker-1 Healthy 
+ Container q02-qrwty-studio-local-postgres-1 Healthy 
+ Container q02-qrwty-studio-cache-admission-cache-1 Healthy 
+ Container q02-qrwty-studio-local-broker-1 Healthy 
+ Container q02-qrwty-studio-app-billing-api-1 Healthy 
+ Container q02-qrwty-studio-app-session-api-1 Healthy 
+ Container q02-qrwty-studio-app-link-api-1 Healthy 
+ Container q02-qrwty-studio-identity-identity-1 Healthy 
+ Container q02-qrwty-studio-app-account-api-1 Healthy 
+ Container q02-qrwty-studio-cache-hot-routes-1 Healthy 
+ Container q02-qrwty-studio-app-edge-1 Healthy 
+Local providers initialized (Compose q02-qrwty-studio); private credentials and volume identities retained. Application readiness remains in .jeeves/report.json.
+
+real	1m37.232s
+user	0m0.779s
+sys	0m0.801s
+exit=0

@@ -1,0 +1,29 @@
+{
+ "tsFiles": 46,
+ "reachedFromProcesses": 44,
+ "unreached": [
+  "src/features/application-bindings.ts",
+  "src/features/service-resources.ts"
+ ],
+ "packagesImportedByReached": [
+  "amqplib",
+  "fastify",
+  "jose",
+  "pg",
+  "redis"
+ ],
+ "packagesImportedAnywhere": [
+  "amqplib",
+  "fastify",
+  "jose",
+  "pg",
+  "redis"
+ ],
+ "declaredDependenciesNeverImported": [
+  "@aws-sdk/client-s3",
+  "@aws-sdk/s3-request-presigner",
+  "@opensearch-project/opensearch",
+  "hls.js",
+  "zod"
+ ]
+}

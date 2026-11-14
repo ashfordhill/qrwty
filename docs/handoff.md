@@ -231,3 +231,37 @@ pins Node 24.22.2 on Alpine: the coordinator decides pack v1.1 before B02. The p
 the coordinator's `docs/coordinator/state.md`.
 
 **Next.** Q02 (freeze the as-found export and publish the saved diagram).
+
+## 2026-11-14 (UTC) — Q02: freeze the as-found QRWTY export
+
+**Changed.** [Q02 evidence](evidence/q02/checks.md): the untouched studio export of **QRWTY ·
+production candidate v1** (revision 83) as a content-addressed ZIP
+(`artifact/sha256-dcaff3aa…a3cd14.zip`, 84 files, manifest `c1868eab…b9632`), a per-file
+[payload manifest](evidence/q02/payload-manifest.json), the commands as run, logs, records and a
+[scope inventory](evidence/q02/scope-inventory.md). Root README: the actual Simple Jeeves image
+and links to its source, report, provenance and the export; the Excalidraw overview is labelled
+explanatory. No Jeeves file or project changed; no stub, hook or SQL was written.
+
+**Checks.** M01 at the as-found scope: pass (design `a3c978d1…`, registry, runtime, templates and
+manifest equal Q01 and the preview; 163 generator sources equal Jeeves HEAD `59bfbc6`). Studio
+(by mouse) and CLI payloads: identical, 84 paths, 3,805,071 bytes. Build of both copies outside
+Jeeves: `pnpm install --frozen-lockfile --ignore-scripts --offline` (0 downloaded) and `pnpm build`
+pass, identical `dist/`. Round trip: reopened by mouse; source JSON, Detailed and Simple PNGs,
+preview body and ZIP byte-identical to Q01's. `sha256sum -c SHA256SUMS` passes.
+
+**Classification.** Runtime (generated): six processes, edge, Postgres/Valkey/RabbitMQ/Keycloak,
+setup, store clients, Sign-in ×3. `first-run` (own Compose project, removed after) started all 12
+services healthy; every stub route answered 501 and the worker dead-lettered a probe message:
+healthy but incomplete. You write it: 11 stub bodies and 8 product SQL files, 0 hook files.
+
+**For Q03.** F1–F10 confirmed where the export shows them; new F11 short-link path only under
+`/api/redirect-service/modules/…` (G08), F12 Stripe/Reputation/Identity are `unavailable` to
+stubs (G10/G03), F13 fixed local hosts, no TLS/IAM (G01), F14 root container (G09), F15 unused
+ffmpeg/media stages, four unimported dependencies and two unreached `src/features` files.
+
+**Notes.** A byte-equal CLI export needs the canonical source bytes; the pretty "Download source
+JSON" changes `.jeeves/inputs/design.json` and the manifest's input hash. BuildKit cache layers
+from the image build remain (no prune). Not run: valid-token request, drain, faults. Ledger
+attempt `a-0154` started; usage and `commits.after` are the coordinator's.
+
+**Next.** Q03 (audit generic gaps and commission exact fixes).

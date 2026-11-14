@@ -1,0 +1,1067 @@
+{
+ "format": "qrwty-q02-payload-manifest-v1",
+ "run": "qrwty-r1-20261114",
+ "unit": "Q02",
+ "note": "Untouched as-found export of Jeeves project d1e59607-0616-418d-83d5-4cfe5bcb4b11 revision 83. rawNonblankLines keeps comments: an inventory size, not source-loc-v2, not G0. No template share is computed here (Q05).",
+ "archive": {
+  "path": "docs/evidence/q02/artifact/sha256-dcaff3aa004e3b2a04b09c2162e7b7c5295c13f4927d3ece31af9339b2a3cd14.zip",
+  "sha256": "dcaff3aa004e3b2a04b09c2162e7b7c5295c13f4927d3ece31af9339b2a3cd14",
+  "format": "zip-store-v1"
+ },
+ "manifestSha256": "c1868eab7b324a4db222f63715e73c16cc23c1c47aab94df337e1f58e6eb9632",
+ "payload": {
+  "files": 84,
+  "bytes": 3805071
+ },
+ "summaryByCategoryAndOwnership": {
+  "backend-src | generated-extension": {
+   "files": 11,
+   "bytes": 7958,
+   "rawNonblankLines": 88
+  },
+  "backend-src | generated-scaffold": {
+   "files": 35,
+   "bytes": 106813,
+   "rawNonblankLines": 2574
+  },
+  "deployment-config | generated-scaffold": {
+   "files": 6,
+   "bytes": 25693,
+   "rawNonblankLines": 341
+  },
+  "docs | generated-scaffold": {
+   "files": 1,
+   "bytes": 3402,
+   "rawNonblankLines": 6
+  },
+  "foundation-sql | generated-scaffold": {
+   "files": 5,
+   "bytes": 585,
+   "rawNonblankLines": 10
+  },
+  "generator-metadata | generated-scaffold": {
+   "files": 1,
+   "bytes": 30881,
+   "rawNonblankLines": 1
+  },
+  "generator-metadata | generator-metadata": {
+   "files": 3,
+   "bytes": 874534,
+   "rawNonblankLines": 3
+  },
+  "generator-metadata | generator-metadata (the manifest itself)": {
+   "files": 1,
+   "bytes": 2676265,
+   "rawNonblankLines": 1
+  },
+  "package-config | generated-scaffold": {
+   "files": 4,
+   "bytes": 44573,
+   "rawNonblankLines": 1095
+  },
+  "product-sql | generated-extension": {
+   "files": 8,
+   "bytes": 8476,
+   "rawNonblankLines": 125
+  },
+  "scripts | generated-scaffold": {
+   "files": 9,
+   "bytes": 25891,
+   "rawNonblankLines": 636
+  }
+ },
+ "unusedGenerated": {
+  "srcUnreachedFromProcessEntries": [
+   "src/features/application-bindings.ts",
+   "src/features/service-resources.ts"
+  ],
+  "declaredDependenciesNotImportedBySrcOrScripts": [
+   "@aws-sdk/s3-request-presigner",
+   "@opensearch-project/opensearch",
+   "hls.js",
+   "zod"
+  ],
+  "declaredDependenciesImportedOnlyByUnusedScripts": {
+   "@aws-sdk/client-s3": "scripts/bootstrap.mjs (object storage bootstrap; this design has no object storage)"
+  },
+  "dockerStagesNotBuiltByCompose": [
+   "ffmpeg",
+   "media (CMD dist/services/media.js, which this export does not emit)"
+  ],
+  "files": [
+   "ffmpeg-os.lock"
+  ]
+ },
+ "files": [
+  {
+   "path": ".dockerignore",
+   "bytes": 32,
+   "sha256": "d66d87fcdbe354c63e4d4e6bd9c8c6809d00ad7828e998314dd29754d11d97d3",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "deployment-config",
+   "scopeNote": "support: Docker/Compose/edge/local infrastructure config",
+   "rawNonblankLines": 4
+  },
+  {
+   "path": ".gitignore",
+   "bytes": 41,
+   "sha256": "4f97f2038e8c1b0e1e21fab5f17c40a8d70bd6ca9ce90ed75c8cf158671c0c3e",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "package-config",
+   "scopeNote": "excluded: manifests, lockfile and build configuration",
+   "rawNonblankLines": 5
+  },
+  {
+   "path": ".jeeves/inputs/design.json",
+   "bytes": 27841,
+   "sha256": "a3c978d1dc3f29229e942f7f73394ff4ff2fbc3d09ea4da12189d5202c9d753b",
+   "ownership": "generator-metadata",
+   "emitter": "assembler",
+   "manifestSha256Matches": true,
+   "category": "generator-metadata",
+   "scopeNote": "excluded: generator metadata",
+   "rawNonblankLines": 1
+  },
+  {
+   "path": ".jeeves/manifest.json",
+   "bytes": 2676265,
+   "sha256": "c1868eab7b324a4db222f63715e73c16cc23c1c47aab94df337e1f58e6eb9632",
+   "ownership": "generator-metadata (the manifest itself)",
+   "emitter": "assembler",
+   "manifestSha256Matches": null,
+   "category": "generator-metadata",
+   "scopeNote": "excluded: generator metadata",
+   "rawNonblankLines": 1
+  },
+  {
+   "path": ".jeeves/normalized.json",
+   "bytes": 30881,
+   "sha256": "6fdeeb9feac0d49cb1bd46550b32178a74f12ac11c3bfe43fdb71ec964e4c5a5",
+   "ownership": "generator-metadata",
+   "emitter": "assembler",
+   "manifestSha256Matches": true,
+   "category": "generator-metadata",
+   "scopeNote": "excluded: generator metadata",
+   "rawNonblankLines": 1
+  },
+  {
+   "path": ".jeeves/report.json",
+   "bytes": 815812,
+   "sha256": "52041cfe23db4a7652e4294eb3c80c2286ad7e1c755afec6f9af9da1b7044a12",
+   "ownership": "generator-metadata",
+   "emitter": "assembler",
+   "manifestSha256Matches": true,
+   "category": "generator-metadata",
+   "scopeNote": "excluded: generator metadata",
+   "rawNonblankLines": 1
+  },
+  {
+   "path": "Dockerfile",
+   "bytes": 1608,
+   "sha256": "9548875e996686fcb905cfefb2296877ca96a57e3b24c49042bca21250570954",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "deployment-config",
+   "scopeNote": "support: Docker/Compose/edge/local infrastructure config",
+   "rawNonblankLines": 29
+  },
+  {
+   "path": "README.md",
+   "bytes": 3402,
+   "sha256": "0700e744547be48ccd5a90bda9ee1d88585e6d095842ea8cf7ef3441ba642088",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "docs",
+   "scopeNote": "support: docs",
+   "rawNonblankLines": 6
+  },
+  {
+   "path": "compose.yaml",
+   "bytes": 10463,
+   "sha256": "48af35e6e5e9695573aa4a0e2b562511f575bd968290881e06d191cf33644361",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "deployment-config",
+   "scopeNote": "support: Docker/Compose/edge/local infrastructure config",
+   "rawNonblankLines": 1
+  },
+  {
+   "path": "diagnostics/generation.json",
+   "bytes": 30881,
+   "sha256": "6fdeeb9feac0d49cb1bd46550b32178a74f12ac11c3bfe43fdb71ec964e4c5a5",
+   "ownership": "generated-scaffold",
+   "emitter": "local.diagnostic",
+   "manifestSha256Matches": true,
+   "category": "generator-metadata",
+   "scopeNote": "excluded: generator metadata",
+   "rawNonblankLines": 1
+  },
+  {
+   "path": "ffmpeg-os.lock",
+   "bytes": 6936,
+   "sha256": "8ec109b1f0d8354d937debaa4f62b387c78d178c6236adc639c8e6183476382d",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "deployment-config",
+   "scopeNote": "support: Docker/Compose/edge/local infrastructure config",
+   "rawNonblankLines": 288
+  },
+  {
+   "path": "infra/edge/nginx.conf",
+   "bytes": 922,
+   "sha256": "edd07f25a200795694ba77519e08035ffc4352e4ce918481307990a2e643445f",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "deployment-config",
+   "scopeNote": "support: Docker/Compose/edge/local infrastructure config",
+   "rawNonblankLines": 18
+  },
+  {
+   "path": "infra/local.json",
+   "bytes": 5732,
+   "sha256": "56d02de5dea0e930b63fb4bfc7c14cd87d07b69b761216f0d76c8f8eaa5a631a",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "deployment-config",
+   "scopeNote": "support: Docker/Compose/edge/local infrastructure config",
+   "rawNonblankLines": 1
+  },
+  {
+   "path": "infra/postgres/analytics/000-foundation.sql",
+   "bytes": 117,
+   "sha256": "aae1cbd63f25d27e2b36ab1c9c892cc4f922bd5a27bb609b4378095ccba8addc",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "foundation-sql",
+   "scopeNote": "support: generated SQL",
+   "rawNonblankLines": 2
+  },
+  {
+   "path": "infra/postgres/analytics/modules/analytics-worker-click-aggregator.sql",
+   "bytes": 1131,
+   "sha256": "6431d2e4784c98140ffafdb5d1750c5507a7f98dc52c63d3b90772e00b33e95e",
+   "ownership": "generated-extension",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "product-sql",
+   "scopeNote": "support: product SQL (application-owned)",
+   "rawNonblankLines": 16
+  },
+  {
+   "path": "infra/postgres/billing/000-foundation.sql",
+   "bytes": 117,
+   "sha256": "aae1cbd63f25d27e2b36ab1c9c892cc4f922bd5a27bb609b4378095ccba8addc",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "foundation-sql",
+   "scopeNote": "support: generated SQL",
+   "rawNonblankLines": 2
+  },
+  {
+   "path": "infra/postgres/billing/modules/billing-api-customer-billing.sql",
+   "bytes": 1037,
+   "sha256": "66ee222ac669fd008e15cf85881a26b36c2becc248325925d397b9c29b30fa16",
+   "ownership": "generated-extension",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "product-sql",
+   "scopeNote": "support: product SQL (application-owned)",
+   "rawNonblankLines": 15
+  },
+  {
+   "path": "infra/postgres/billing/modules/billing-api-entitlements.sql",
+   "bytes": 1021,
+   "sha256": "010dbeaa7d8ce52b540e429dec9d105b426161984cac84e408665e369ab8c5cb",
+   "ownership": "generated-extension",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "product-sql",
+   "scopeNote": "support: product SQL (application-owned)",
+   "rawNonblankLines": 15
+  },
+  {
+   "path": "infra/postgres/billing/modules/billing-api-payment-events.sql",
+   "bytes": 1029,
+   "sha256": "e234c91e4d56a111d2b7a0208ebb3a1ac8e22b42ae8cdefbcd2c6f6f0d5d3f5b",
+   "ownership": "generated-extension",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "product-sql",
+   "scopeNote": "support: product SQL (application-owned)",
+   "rawNonblankLines": 15
+  },
+  {
+   "path": "infra/postgres/identity/000-foundation.sql",
+   "bytes": 117,
+   "sha256": "aae1cbd63f25d27e2b36ab1c9c892cc4f922bd5a27bb609b4378095ccba8addc",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "foundation-sql",
+   "scopeNote": "support: generated SQL",
+   "rawNonblankLines": 2
+  },
+  {
+   "path": "infra/postgres/links/000-foundation.sql",
+   "bytes": 117,
+   "sha256": "aae1cbd63f25d27e2b36ab1c9c892cc4f922bd5a27bb609b4378095ccba8addc",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "foundation-sql",
+   "scopeNote": "support: generated SQL",
+   "rawNonblankLines": 2
+  },
+  {
+   "path": "infra/postgres/links/modules/link-api-abuse-and-moderation.sql",
+   "bytes": 1109,
+   "sha256": "1e4f4d123c550a4a795b0d85f83acb5ac70a89807c10263f2245e1965db84154",
+   "ownership": "generated-extension",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "product-sql",
+   "scopeNote": "support: product SQL (application-owned)",
+   "rawNonblankLines": 17
+  },
+  {
+   "path": "infra/postgres/links/modules/link-api-link-operations.sql",
+   "bytes": 1089,
+   "sha256": "3325efb458b0518df55519cd5d90410dd70f372b5efe2f4ebf48753713a1a4bc",
+   "ownership": "generated-extension",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "product-sql",
+   "scopeNote": "support: product SQL (application-owned)",
+   "rawNonblankLines": 17
+  },
+  {
+   "path": "infra/postgres/sessions/000-foundation.sql",
+   "bytes": 117,
+   "sha256": "aae1cbd63f25d27e2b36ab1c9c892cc4f922bd5a27bb609b4378095ccba8addc",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "foundation-sql",
+   "scopeNote": "support: generated SQL",
+   "rawNonblankLines": 2
+  },
+  {
+   "path": "infra/postgres/sessions/modules/session-api-api-forwarding.sql",
+   "bytes": 1034,
+   "sha256": "59494bf9f91a936718d77a6db6eb9dcf5ca4445fd324034e1ce01889157a7f7b",
+   "ownership": "generated-extension",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "product-sql",
+   "scopeNote": "support: product SQL (application-owned)",
+   "rawNonblankLines": 15
+  },
+  {
+   "path": "infra/postgres/sessions/modules/session-api-sign-in-flow.sql",
+   "bytes": 1026,
+   "sha256": "d74b08cf53e62c520658636e7980e849da32de14d4b34221a6ab00762034f492",
+   "ownership": "generated-extension",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "product-sql",
+   "scopeNote": "support: product SQL (application-owned)",
+   "rawNonblankLines": 15
+  },
+  {
+   "path": "package.json",
+   "bytes": 811,
+   "sha256": "e078d8eb8ddd74c4b3ff25c17a0d0a653b2ac3bc373e621c4bc26a77c4bddb04",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "package-config",
+   "scopeNote": "excluded: manifests, lockfile and build configuration",
+   "rawNonblankLines": 33
+  },
+  {
+   "path": "pnpm-lock.yaml",
+   "bytes": 43379,
+   "sha256": "c37b660e00f7575436c71834fc61e104681c8097bc326c7d11b89b35337138bf",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "package-config",
+   "scopeNote": "excluded: manifests, lockfile and build configuration",
+   "rawNonblankLines": 1042
+  },
+  {
+   "path": "scripts/bootstrap.mjs",
+   "bytes": 1914,
+   "sha256": "ef789a3d8b6a6a8c0b2af5204edb4cbfcdd4b7ce78b968939df6937bd7d1e85f",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "scripts",
+   "scopeNote": "support: scripts",
+   "rawNonblankLines": 45
+  },
+  {
+   "path": "scripts/broker-init.mjs",
+   "bytes": 797,
+   "sha256": "1020b0814dbfceecac52a5ca31779075038983ea3140dec5b88ee6352c2a38a1",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "scripts",
+   "scopeNote": "support: scripts",
+   "rawNonblankLines": 22
+  },
+  {
+   "path": "scripts/common.mjs",
+   "bytes": 1010,
+   "sha256": "5f6d9e022b40f2ba03e82614fd0bae1ae466381d48da20e575908fa59e5a7da8",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "scripts",
+   "scopeNote": "support: scripts",
+   "rawNonblankLines": 24
+  },
+  {
+   "path": "scripts/local.mjs",
+   "bytes": 9354,
+   "sha256": "9942d264b5821185c4a34d8a582abb6b8c771ffd7e96a711ed3155777fcf215b",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "scripts",
+   "scopeNote": "support: scripts",
+   "rawNonblankLines": 243
+  },
+  {
+   "path": "scripts/migrate.mjs",
+   "bytes": 5740,
+   "sha256": "fd311cf3b4a76e4f7109d02a700d0ad56be182cda3b6e7f52355ff173361ba03",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "scripts",
+   "scopeNote": "support: scripts",
+   "rawNonblankLines": 125
+  },
+  {
+   "path": "scripts/products.mjs",
+   "bytes": 3031,
+   "sha256": "5a17661ac10f6337fa75d60ff078786f52d5117feb0601e69776f64e28b5d24f",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "scripts",
+   "scopeNote": "support: scripts",
+   "rawNonblankLines": 54
+  },
+  {
+   "path": "scripts/setup.mjs",
+   "bytes": 2845,
+   "sha256": "754347229f08302ee2e7e628dfc9b98c83495e9c332289422b5d5b8f7ef82894",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "scripts",
+   "scopeNote": "support: scripts",
+   "rawNonblankLines": 87
+  },
+  {
+   "path": "scripts/status.mjs",
+   "bytes": 165,
+   "sha256": "75cb3793c37a5f535b1fda7c459a50d1ab71e8bab32474b6ca8adf195f3ef988",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "scripts",
+   "scopeNote": "support: scripts",
+   "rawNonblankLines": 3
+  },
+  {
+   "path": "scripts/storage-config.mjs",
+   "bytes": 1035,
+   "sha256": "8bfa5ef31e1ac6b639b1391541dbf9892b4da1589679e2fcac1c8947f0505801",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "scripts",
+   "scopeNote": "support: scripts",
+   "rawNonblankLines": 33
+  },
+  {
+   "path": "src/features/application-bindings.ts",
+   "bytes": 768,
+   "sha256": "caa4077c6d229b5a03ea7e792de9c44ba415b3f83770b804f0f3338e23b52253",
+   "ownership": "generated-scaffold",
+   "emitter": "local.video-composition",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src; configurationPaths candidate (YouTube v3 precedent)",
+   "rawNonblankLines": 2,
+   "reachedFromProcessEntries": false
+  },
+  {
+   "path": "src/features/local-bindings.ts",
+   "bytes": 1121,
+   "sha256": "676520c4929cab9d1b225c70eee10f8eb699877b3cb0b5de4b05137b531dc436",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src; configurationPaths candidate (YouTube v3 precedent)",
+   "rawNonblankLines": 2,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/features/service-resources.ts",
+   "bytes": 1146,
+   "sha256": "b6acc356399e613e78052a29de55ca6cc0e90edd253d64100d8a2bc7888e1a31",
+   "ownership": "generated-scaffold",
+   "emitter": "local.video-composition",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 34,
+   "reachedFromProcessEntries": false
+  },
+  {
+   "path": "src/modules/account-api/account-api-link-analytics.slots.ts",
+   "bytes": 1268,
+   "sha256": "e880162f3d38aef3fde9180515d85a3aa3dd622a270fd0a0b8e949f953fcd048",
+   "ownership": "generated-scaffold",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 18,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/account-api/account-api-link-analytics.ts",
+   "bytes": 719,
+   "sha256": "c81f20912b50b2730cd72f0ee7ac0b7fbd70374fc8530dfb938a3754a37cff93",
+   "ownership": "generated-extension",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 8,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/account-api/account-api-my-links.slots.ts",
+   "bytes": 674,
+   "sha256": "aba2f5e9e6bb8af206d9c031c9062f3946bdf735dfda0370ab3a7d0418cf6516",
+   "ownership": "generated-scaffold",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 12,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/account-api/account-api-my-links.ts",
+   "bytes": 630,
+   "sha256": "961bae3f39d09fb97fe101d6e338e4c90a2b6e79ae6f011d1410b7dacec7aa32",
+   "ownership": "generated-extension",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 8,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/analytics-worker/analytics-worker-click-aggregator.slots.ts",
+   "bytes": 1117,
+   "sha256": "acc35b8fff698e326cac1712ce992cc7a1a43668a93b1dc51cf93343654c76eb",
+   "ownership": "generated-scaffold",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 15,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/analytics-worker/analytics-worker-click-aggregator.ts",
+   "bytes": 773,
+   "sha256": "c34af6136fcd84bfddc01dd8bdccd6fe1f43c691b6ae7566321bec0a7f4506e8",
+   "ownership": "generated-extension",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 8,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/billing-api/billing-api-customer-billing.slots.ts",
+   "bytes": 1023,
+   "sha256": "7de0b95bd895659d742cd9531e9f3a3886631f9004e59dcdcacb821a9420898f",
+   "ownership": "generated-scaffold",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 15,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/billing-api/billing-api-customer-billing.ts",
+   "bytes": 734,
+   "sha256": "94bed1fbf54f6c10705f9058edee7bc1ca6254b386657c427fd3f7abc984c9d0",
+   "ownership": "generated-extension",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 8,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/billing-api/billing-api-entitlements.slots.ts",
+   "bytes": 710,
+   "sha256": "166f77fa33b3fa0a1369ad1df843e5679eae8e85b7b0b892da44b3e0e9148a62",
+   "ownership": "generated-scaffold",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 12,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/billing-api/billing-api-entitlements.ts",
+   "bytes": 696,
+   "sha256": "cb0398ca4a86c85c9d6d7ea9265031592910d0d6dfa28d72a1d782e59b065a8f",
+   "ownership": "generated-extension",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 8,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/billing-api/billing-api-payment-events.slots.ts",
+   "bytes": 1015,
+   "sha256": "82a530ecedd97e3e1ee46ee27607572629fddb960fc77c3e7169fa06572c77ac",
+   "ownership": "generated-scaffold",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 15,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/billing-api/billing-api-payment-events.ts",
+   "bytes": 720,
+   "sha256": "eda5669163d34117ef9019a794503db42b59db7674a01c81a88ecbbdabda064f",
+   "ownership": "generated-extension",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 8,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/dependencies.ts",
+   "bytes": 2613,
+   "sha256": "c9629db44ce56025ccf32192120e94f45a65955dc60725e020a2908f76a4eb2e",
+   "ownership": "generated-scaffold",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 56,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/entry.ts",
+   "bytes": 1377,
+   "sha256": "1e9280c466583eea0107f03aa1700b96f5cee761ee4692eda62651c46096041d",
+   "ownership": "generated-scaffold",
+   "emitter": "local.tile-processes",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 34,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/link-api/link-api-abuse-and-moderation.slots.ts",
+   "bytes": 1049,
+   "sha256": "71b0dbc32750bfb16f6abc7c9c823b4bc39d53eb9c7b74c0eeee6e03d8cf94f6",
+   "ownership": "generated-scaffold",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 15,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/link-api/link-api-abuse-and-moderation.ts",
+   "bytes": 725,
+   "sha256": "548f8b75cd1a239a98c04577e09bab934f9d15027a4cb50dd07e417062224af9",
+   "ownership": "generated-extension",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 8,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/link-api/link-api-link-operations.slots.ts",
+   "bytes": 1629,
+   "sha256": "99165be9cfda87bc2f9f2b81f533d17c027d1767f44bfed02649cfa3efa76f64",
+   "ownership": "generated-scaffold",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 21,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/link-api/link-api-link-operations.ts",
+   "bytes": 730,
+   "sha256": "e8e00cd1cdf084e86c33b1235f80ba0b78ef6c483a16fcb42d3b96eae08240c8",
+   "ownership": "generated-extension",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 8,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/redirect-service/redirect-service-resolve-and-redirect.slots.ts",
+   "bytes": 1393,
+   "sha256": "5765b1dab407fcead45b6b04fd75f4d50be68b0d90be841edded6cf30db24747",
+   "ownership": "generated-scaffold",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 18,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/redirect-service/redirect-service-resolve-and-redirect.ts",
+   "bytes": 795,
+   "sha256": "0a51a85e917e87018befc4e6478cd7b535b7c7d46993081c8a5e5f7b49cff6f2",
+   "ownership": "generated-extension",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 8,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/session-api/session-api-api-forwarding.slots.ts",
+   "bytes": 1848,
+   "sha256": "816c7c5d8888a8f95b4e936a6521888e7d27cd726e9fcf5c1cbb889b0df558cc",
+   "ownership": "generated-scaffold",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 24,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/session-api/session-api-api-forwarding.ts",
+   "bytes": 724,
+   "sha256": "a930be5b701d152b97a1c51f5a99864c690684bb388be761a5afca37fef4fdab",
+   "ownership": "generated-extension",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 8,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/session-api/session-api-sign-in-flow.slots.ts",
+   "bytes": 994,
+   "sha256": "45e29e5dfe1d4ed8d4a7101547b99cb4f0156e60142ed9bf358cb9c815f7ab1f",
+   "ownership": "generated-scaffold",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 15,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/modules/session-api/session-api-sign-in-flow.ts",
+   "bytes": 712,
+   "sha256": "189d2ca103c121470082218159e68370b0d01289d145c7d01c55d527db3dcadb",
+   "ownership": "generated-extension",
+   "emitter": "local.module-stubs",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 8,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/processes/account-api.ts",
+   "bytes": 4878,
+   "sha256": "52c659e098dc554bb8a58b7c305a662f93269ebe9aff5ea4a4f7bfd148fd497b",
+   "ownership": "generated-scaffold",
+   "emitter": "local.tile-processes",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 118,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/processes/analytics-worker.ts",
+   "bytes": 2512,
+   "sha256": "e4df22cc6bf5e8a448dec16b053e4cea47d56ef6bca8f7e7ce1b37cdc9c02766",
+   "ownership": "generated-scaffold",
+   "emitter": "local.tile-processes",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 49,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/processes/billing-api.ts",
+   "bytes": 5787,
+   "sha256": "526f505fdeb5b232bd84d22b9690333ad8903e8f703bcd3991b2a518788384ca",
+   "ownership": "generated-scaffold",
+   "emitter": "local.tile-processes",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 133,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/processes/link-api.ts",
+   "bytes": 5162,
+   "sha256": "1a2f20646963babf1cbac474766d532e2e7b5be983947b73085e9794744ee37e",
+   "ownership": "generated-scaffold",
+   "emitter": "local.tile-processes",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 120,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/processes/redirect-service.ts",
+   "bytes": 3199,
+   "sha256": "361428a0ee80cc620b89ee048b6cba5064a4cf6680a7f5bfcf6b056b7ec92426",
+   "ownership": "generated-scaffold",
+   "emitter": "local.tile-processes",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 68,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/processes/session-api.ts",
+   "bytes": 3945,
+   "sha256": "3933bf137a542477717b606b97b2565b324dc1ef66f2b653aa49696dd1827f01",
+   "ownership": "generated-scaffold",
+   "emitter": "local.tile-processes",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 85,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/runtime/admission.ts",
+   "bytes": 2440,
+   "sha256": "17de7157d83777e7281d8fe9b3069fed58597e35df6d37eacf959cca641b9f06",
+   "ownership": "generated-scaffold",
+   "emitter": "local.primitives",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 77,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/runtime/amqp.ts",
+   "bytes": 13005,
+   "sha256": "b0251aab519c9b1ac5bac5d6bd1f6d011b3498eae002644d99c6af362064d0b3",
+   "ownership": "generated-scaffold",
+   "emitter": "local.primitives",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 382,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/runtime/delivery.ts",
+   "bytes": 8762,
+   "sha256": "5a021f18c5936fe45f5873e6343a1c004fb0fac6baee216326075389b7e846eb",
+   "ownership": "generated-scaffold",
+   "emitter": "local.primitives",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 236,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/runtime/http.ts",
+   "bytes": 3768,
+   "sha256": "a3144f33ff3791c342c33caac1fb08bb9872fc322a4f86b13a0a7d977eaf290b",
+   "ownership": "generated-scaffold",
+   "emitter": "local.primitives",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 102,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/runtime/identity.ts",
+   "bytes": 1847,
+   "sha256": "ce012fad6b404d7482048886c640f9b4c24e6b3b68e8bac96b869a44599a4db7",
+   "ownership": "generated-scaffold",
+   "emitter": "local.primitives",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 45,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/runtime/local.ts",
+   "bytes": 733,
+   "sha256": "53429e097013bbf7dad6e581bf523f3035ec358652b9738d62f0b5a6ac310165",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 12,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/runtime/module-clients.ts",
+   "bytes": 7214,
+   "sha256": "d977a1dc2f0adc8b9ab87bdb7a0951ff2996ce3e9507d26e87b90666e2b71119",
+   "ownership": "generated-scaffold",
+   "emitter": "local.tile-processes",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 182,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/runtime/postgres.ts",
+   "bytes": 883,
+   "sha256": "8bbe9e0df36bafa1f73a1bb0abd36aa30fcfd93cde3d1815ae5234840faae7fc",
+   "ownership": "generated-scaffold",
+   "emitter": "local.primitives",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 24,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/runtime/process.ts",
+   "bytes": 3309,
+   "sha256": "505827525af0ed1f57a3c85ab3b9d1a8e0fd56638116c23f2e0b0a30734ef54b",
+   "ownership": "generated-scaffold",
+   "emitter": "local.video-composition",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 118,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/runtime/tile-guard.ts",
+   "bytes": 3602,
+   "sha256": "e983a9b57dff0b898242770016009b54dad4c0af724e85f3393e29f0dc7e98c1",
+   "ownership": "generated-scaffold",
+   "emitter": "local.tile-processes",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 90,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/runtime/tile-http.ts",
+   "bytes": 2674,
+   "sha256": "cc48b02a0544016f2698b8fedad4ed3886e3e4f7068d37412363ac34f0396d0b",
+   "ownership": "generated-scaffold",
+   "emitter": "local.tile-processes",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 72,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/runtime/tile-loop.ts",
+   "bytes": 9861,
+   "sha256": "338ce2478f335d4d69d1f76fdb28423c7d0645f706bb7595921c49cd74af639b",
+   "ownership": "generated-scaffold",
+   "emitter": "local.tile-processes",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 268,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "src/runtime/tile-process.ts",
+   "bytes": 3487,
+   "sha256": "80a485b77c8c29fbb1568181163b4ffb57bc101989962371451c88b666d1cfd7",
+   "ownership": "generated-scaffold",
+   "emitter": "local.tile-processes",
+   "manifestSha256Matches": true,
+   "category": "backend-src",
+   "scopeNote": "backend src (eligible JS/TS production source under src/)",
+   "rawNonblankLines": 85,
+   "reachedFromProcessEntries": true
+  },
+  {
+   "path": "tsconfig.json",
+   "bytes": 342,
+   "sha256": "cb75a166099ee7fd34729d9a132a1858486436054003bd5ac936fa5378d0268d",
+   "ownership": "generated-scaffold",
+   "emitter": "local.foundation",
+   "manifestSha256Matches": true,
+   "category": "package-config",
+   "scopeNote": "excluded: manifests, lockfile and build configuration",
+   "rawNonblankLines": 15
+  }
+ ]
+}

@@ -53,8 +53,8 @@ within the GCP free-trial credit only.** The [neutral pack](docs/benchmarks/neut
 holds the shared inputs both builds use. The application
 has not been generated, built or deployed. The first
 application phase saves the architecture in Jeeves before generating into this repository.
-The drawing below is a proposed Excalidraw explanation, not a saved Jeeves diagram or runtime
-verification. The actual Jeeves diagram and export will be linked here when Q01–Q02 complete.
+The saved Jeeves diagram and its as-found export are linked below. The Excalidraw drawing after
+them is a proposed explanation, not a saved Jeeves diagram or runtime verification.
 
 The [local-to-cloud contract](docs/plans/production-build/local-to-cloud.md) requires production
 containers, real GCP adapters, migrations and infrastructure definitions during the local build.
@@ -64,6 +64,30 @@ Real managed-service compatibility, recovery and scale checks remain pending unt
 Start execution with the [coordinator prompt](docs/plans/production-build/coordinator-prompt.md)
 and [readiness check](docs/plans/production-build/readiness.md): one fresh subagent at a time,
 independent implementations, measured work and explicit review gates.
+
+### Saved Jeeves diagram
+
+The backend as saved in Jeeves: project **QRWTY · production candidate v1**, revision 83, Simple
+view, exported by the studio ([Q01 checks](docs/evidence/q01/checks.md)). Jeeves generates code
+from this diagram: 3 of its 14 modules come from a template (Sign-in) and 11 are stubs to
+write. The [as-found export](docs/evidence/q02/checks.md) builds and starts healthy, and every
+product route still answers 501: a diagnostic baseline, not the application.
+
+![QRWTY backend saved in Jeeves: Session API, Link API, Redirect service, Account API, Billing API and Analytics worker with their databases, caches, click queue, identity and external APIs](docs/evidence/q01/jeeves/QRWTY-production-candidate-v1-r83.png)
+
+[Detailed view](docs/evidence/q01/jeeves/QRWTY-production-candidate-v1-r83-detailed.png) ·
+[Saved source JSON](docs/evidence/q01/jeeves/QRWTY-production-candidate-v1-r83-source.json) ·
+[Blueprint v3](docs/evidence/q01/jeeves/blueprint-v3-r83.json) ·
+[Generation report](docs/evidence/q01/jeeves/generation-preview-r83.json) ·
+[Provenance](docs/evidence/q01/jeeves/provenance.json) ·
+[Export ZIP](docs/evidence/q02/artifact/sha256-dcaff3aa004e3b2a04b09c2162e7b7c5295c13f4927d3ece31af9339b2a3cd14.zip) ·
+[Export classification and build](docs/evidence/q02/checks.md) ·
+[Scope inventory](docs/evidence/q02/scope-inventory.md)
+
+### Explanatory overview (Excalidraw)
+
+Not a Jeeves diagram; nothing is generated from it. It explains product policy and deployment
+that Jeeves does not model.
 
 ![Proposed QRWTY system: durable click before redirect, guest links and free/paid accounts](docs/diagrams/system-overview.svg)
 

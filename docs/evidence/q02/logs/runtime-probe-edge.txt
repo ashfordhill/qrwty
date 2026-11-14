@@ -1,0 +1,15 @@
+GET /healthz -> 200 {"service":"edge","application":"ready"}
+GET /api/session-api/healthz -> 200 {"service":"session-api","application":"ready"}
+GET /api/redirect-service/healthz -> 200 {"service":"redirect-service","application":"ready"}
+GET /api/billing-api/healthz -> 200 {"service":"billing-api","application":"ready"}
+GET /api/link-api/healthz -> 404 {"error":"NOT_FOUND","message":"Route not found."}
+GET /api/account-api/healthz -> 404 {"error":"NOT_FOUND","message":"Route not found."}
+GET /api/redirect-service/modules/redirect-service-resolve-and-redirect/abc123 -> 501 {"error":"NOT_IMPLEMENTED","message":"Not implemented: Resolve and redirect"}
+HEAD /api/redirect-service/modules/redirect-service-resolve-and-redirect/abc123 -> 501 {"error":"NOT_IMPLEMENTED","message":"Not implemented: Resolve and redirect"}
+GET /api/session-api/modules/session-api-sign-in-flow/login -> 501 {"error":"NOT_IMPLEMENTED","message":"Not implemented: Sign-in flow"}
+POST /api/session-api/modules/session-api-api-forwarding/links -> 501 {"error":"NOT_IMPLEMENTED","message":"Not implemented: API forwarding"}
+GET /api/billing-api/modules/billing-api-sign-in/me -> 200 {"signedIn":false}
+GET /api/billing-api/modules/billing-api-sign-in/me -> 401 {"error":"SIGN_IN_REQUIRED","message":"Sign in to continue."}
+POST /api/billing-api/modules/billing-api-payment-events -> 501 {"error":"NOT_IMPLEMENTED","message":"Not implemented: Payment events"}
+GET /api/billing-api/modules/billing-api-entitlements -> 501 {"error":"NOT_IMPLEMENTED","message":"Not implemented: Entitlements"}
+POST /api/billing-api/modules/billing-api-customer-billing/checkout -> 501 {"error":"NOT_IMPLEMENTED","message":"Not implemented: Customer billing"}

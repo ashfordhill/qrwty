@@ -1,0 +1,8 @@
+GET http://app-link-api:3000/healthz ->   HTTP/1.1 200 OK   content-type: application/json; charset=utf-8   cache-control: no-store   content-length: 44   Date: Sat, 14 Nov 2026 06:37:54 GMT   Connection: close    {"service":"link-api","application":"ready"}
+GET http://app-account-api:3000/healthz ->   HTTP/1.1 200 OK   content-type: application/json; charset=utf-8   cache-control: no-store   content-length: 47   Date: Sat, 14 Nov 2026 06:37:54 GMT   Connection: close    {"service":"account-api","application":"ready"}
+GET http://app-link-api:3000/modules/link-api-sign-in/me ->   HTTP/1.1 200 OK   content-type: application/json; charset=utf-8   cache-control: no-store   content-length: 18   Date: Sat, 14 Nov 2026 06:37:54 GMT   Connection: close    {"signedIn":false}
+GET http://app-link-api:3000/modules/link-api-link-operations/links ->   HTTP/1.1 501 Not Implemented wget: server returned error: HTTP/1.1 501 Not Implemented 
+GET http://app-link-api:3000/modules/link-api-abuse-and-moderation/reports ->   HTTP/1.1 501 Not Implemented wget: server returned error: HTTP/1.1 501 Not Implemented 
+GET http://app-account-api:3000/modules/account-api-sign-in/me ->   HTTP/1.1 401 Unauthorized wget: server returned error: HTTP/1.1 401 Unauthorized 
+GET http://app-account-api:3000/modules/account-api-my-links ->   HTTP/1.1 401 Unauthorized wget: server returned error: HTTP/1.1 401 Unauthorized 
+GET http://app-account-api:3000/modules/account-api-link-analytics ->   HTTP/1.1 401 Unauthorized wget: server returned error: HTTP/1.1 401 Unauthorized 

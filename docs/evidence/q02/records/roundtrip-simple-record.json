@@ -1,0 +1,20 @@
+{
+  "project": "d1e59607-0616-418d-83d5-4cfe5bcb4b11",
+  "revisionBefore": 83,
+  "simple": {
+    "nodes": 19,
+    "edges": 27
+  },
+  "png": {
+    "file": "QRWTY-production-candidate-v1-r83.png",
+    "bytes": 397653,
+    "sha256": "5384d2182a2aef752178dcc4d739808779dbba4a84c5c89c47e332802696473b"
+  },
+  "capture": {
+    "file": "QRWTY-production-candidate-v1-r83-capture.json",
+    "bytes": 23268,
+    "sha256": "2d495821bc399056c122d82cdcff65f600fd6e1e2cdbc0a06fed8807036c960f"
+  },
+  "pageErrors": [],
+  "revisionAfter": 83
+}

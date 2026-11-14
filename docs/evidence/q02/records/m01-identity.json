@@ -1,0 +1,16 @@
+{
+ "jeevesHead": "59bfbc6b4c9cc149cc7760555cf753c7485c59d7",
+ "checks": {
+  "inputs/design.json == canonical GET /design bytes": true,
+  "manifest input.sourceSha256 == a3c978d1 (Q01 canonical)": true,
+  "manifest input.sourceCanonicalSha256 == Q01": true,
+  "manifest input.normalizedInputSha256 == Q01": true,
+  "registry sha256 == Q01 == preview": true,
+  "runtime == Q01": true,
+  "generator == Q01": true,
+  "templates == Q01 selectedTemplates": true,
+  "manifest.json sha256 == preview manifestSha256 == Q01": true,
+  "163 generator source files in the manifest equal their blobs at Jeeves HEAD": true
+ },
+ "mismatchedSources": []
+}
