@@ -1,0 +1,35 @@
+// Logical UI controls the browser rows use. The accessible role and name of each is frozen by a
+// later pack amendment (acceptance-oracle.md §6); until then browser rows report `blocked`.
+export const UI_KEYS = {
+	"create.destination": "Destination URL field on the create screen",
+	"create.submit": "Primary create action",
+	"result.shortUrl": "The created short URL (selectable text or read-only field)",
+	"result.copy": "Copy the short URL",
+	"result.open": "Open the short URL",
+	"result.downloadPng": "Download the QR code as PNG",
+	"result.downloadSvg": "Download the QR code as SVG",
+	"result.qr": "QR preview image",
+	"result.save": "Save the link to an account (starts sign-in)",
+	"nav.signIn": "Sign in",
+	"nav.library": "My links",
+	"nav.pricing": "Plans and billing",
+	"library.firstItem": "The newest link in the library",
+	"link.edit": "Edit the selected link",
+	"edit.destination": "Destination field in the edit form",
+	"edit.save": "Save the edit",
+	"link.disable": "Disable the selected link",
+	"link.confirmDisable": "Confirm disabling",
+	"link.analytics": "Open analytics for the selected link",
+	"analytics.export": "Export analytics as CSV",
+	"analytics.delayed": "Delayed-pipeline notice",
+	"billing.upgrade": "Upgrade to the paid plan",
+	"billing.portal": "Manage payment in the hosted portal",
+	"billing.confirming": "Confirming-subscription notice",
+	"billing.grace": "Payment-failed / grace notice",
+	"status.offline": "Offline state message",
+	"status.error": "Generic failure message",
+	"status.rateLimited": "Rate-limited message",
+	"status.sessionExpired": "Session-expired message",
+} as const;
+
+export type UiKey = keyof typeof UI_KEYS;

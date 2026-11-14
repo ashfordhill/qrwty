@@ -1,0 +1,317 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "qrwty-neutral-oracle/adapter.schema.json",
+	"title": "oracle-adapter.json, written by each arm (pack v1.1)",
+	"type": "object",
+	"additionalProperties": false,
+	"required": [
+		"schemaVersion",
+		"arm",
+		"commit",
+		"images",
+		"publicEntry",
+		"edgeTokenEnv",
+		"services",
+		"workers",
+		"commands"
+	],
+	"properties": {
+		"schemaVersion": { "const": 1 },
+		"arm": { "type": "string", "enum": ["a", "b", "selftest"] },
+		"commit": { "type": "string", "pattern": "^[0-9a-f]{7,40}$" },
+		"images": {
+			"type": "object",
+			"additionalProperties": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+		},
+		"publicEntry": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["url", "origin"],
+			"properties": {
+				"url": { "$ref": "#/$defs/httpUrl" },
+				"origin": { "$ref": "#/$defs/origin" }
+			}
+		},
+		"edgeTokenEnv": { "$ref": "#/$defs/envName" },
+		"services": {
+			"type": "object",
+			"minProperties": 1,
+			"additionalProperties": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["roles", "replicas", "health", "readiness"],
+				"properties": {
+					"roles": {
+						"type": "array",
+						"minItems": 1,
+						"items": {
+							"type": "string",
+							"enum": ["redirect", "session", "link", "account", "billing", "edge", "other"]
+						}
+					},
+					"replicas": {
+						"type": "array",
+						"minItems": 1,
+						"items": { "$ref": "#/$defs/replica" }
+					},
+					"health": { "$ref": "#/$defs/path" },
+					"readiness": { "$ref": "#/$defs/path" },
+					"guardedRoutes": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"additionalProperties": false,
+							"required": ["method", "path"],
+							"properties": {
+								"method": { "type": "string", "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"] },
+								"path": { "$ref": "#/$defs/path" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"workers": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["name", "kind"],
+				"properties": {
+					"name": { "$ref": "#/$defs/name" },
+					"kind": { "type": "string", "enum": ["analytics", "billing", "other"] },
+					"container": { "type": "string", "minLength": 1 }
+				}
+			}
+		},
+		"commands": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"start": { "$ref": "#/$defs/command" },
+				"stop": { "$ref": "#/$defs/command" },
+				"kill": { "$ref": "#/$defs/command" },
+				"terminate": { "$ref": "#/$defs/command" },
+				"restart": { "$ref": "#/$defs/command" },
+				"scale": { "$ref": "#/$defs/command" },
+				"reset": { "$ref": "#/$defs/command" },
+				"clock": { "$ref": "#/$defs/command" },
+				"faultPoint": { "$ref": "#/$defs/command" },
+				"backup": { "$ref": "#/$defs/command" },
+				"restore": { "$ref": "#/$defs/command" },
+				"inspect": { "$ref": "#/$defs/command" },
+				"rotateIdentityKey": { "$ref": "#/$defs/command" },
+				"rogueKey": { "$ref": "#/$defs/command" },
+				"issueToken": { "$ref": "#/$defs/command" },
+				"replayQuarantine": { "$ref": "#/$defs/command" },
+				"subscriptionCheck": { "$ref": "#/$defs/command" },
+				"ordinaryBuildAndTest": { "$ref": "#/$defs/command" }
+			}
+		},
+		"faultPoints": {
+			"type": "array",
+			"items": {
+				"type": "string",
+				"enum": [
+					"consumer-exit-after-commit-before-ack",
+					"force-slug-collision",
+					"pause-reconciliation-worker",
+					"corrupt-route-cache",
+					"clear-route-caches"
+				]
+			}
+		},
+		"toxiproxy": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["apiUrl", "proxies"],
+			"properties": {
+				"apiUrl": { "$ref": "#/$defs/httpUrl" },
+				"proxies": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"postgres": { "$ref": "#/$defs/proxyList" },
+						"postgres.links": { "$ref": "#/$defs/proxyList" },
+						"postgres.sessions": { "$ref": "#/$defs/proxyList" },
+						"postgres.billing": { "$ref": "#/$defs/proxyList" },
+						"postgres.analytics": { "$ref": "#/$defs/proxyList" },
+						"valkey": { "$ref": "#/$defs/proxyList" },
+						"pubsub": { "$ref": "#/$defs/proxyList" },
+						"pubsub.publish": { "$ref": "#/$defs/proxyList" },
+						"pubsub.consume": { "$ref": "#/$defs/proxyList" },
+						"issuer": { "$ref": "#/$defs/proxyList" },
+						"stripe": { "$ref": "#/$defs/proxyList" },
+						"webRisk": { "$ref": "#/$defs/proxyList" }
+					}
+				}
+			}
+		},
+		"pubsub": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["emulatorHost", "project", "topic"],
+			"properties": {
+				"emulatorHost": { "type": "string", "pattern": "^[A-Za-z0-9.\\-]+:[0-9]{1,5}$" },
+				"project": { "type": "string", "minLength": 1 },
+				"topic": { "type": "string", "minLength": 1 }
+			}
+		},
+		"identity": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["issuerUrl", "audience", "accounts", "passwordEnv"],
+			"properties": {
+				"issuerUrl": { "$ref": "#/$defs/httpUrl" },
+				"audience": { "type": "string", "minLength": 1 },
+				"accounts": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["alice", "bob", "operator"],
+					"properties": {
+						"alice": { "const": "oracle-alice" },
+						"bob": { "const": "oracle-bob" },
+						"operator": { "const": "oracle-operator" }
+					}
+				},
+				"passwordEnv": { "$ref": "#/$defs/envName" }
+			}
+		},
+		"providers": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"stripe": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["listen", "webhookUrl", "webhookSecretEnv", "priceId"],
+					"properties": {
+						"listen": { "$ref": "#/$defs/listen" },
+						"webhookUrl": { "$ref": "#/$defs/httpUrl" },
+						"webhookSecretEnv": { "$ref": "#/$defs/envName" },
+						"priceId": { "type": "string", "pattern": "^price_[A-Za-z0-9_]+$" }
+					}
+				},
+				"webRisk": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["listen", "deadlineMs"],
+					"properties": {
+						"listen": { "$ref": "#/$defs/listen" },
+						"deadlineMs": { "type": "integer", "minimum": 1, "maximum": 60000 }
+					}
+				}
+			}
+		},
+		"productionProfileCheck": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["command", "processes", "settings"],
+			"properties": {
+				"command": { "$ref": "#/$defs/command" },
+				"processes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/name" } },
+				"settings": {
+					"type": "array",
+					"minItems": 1,
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"required": ["category", "name"],
+						"properties": {
+							"category": {
+								"type": "string",
+								"enum": [
+									"emulator-endpoint",
+									"fake-provider",
+									"development-secret",
+									"tls-verification-disabled",
+									"missing-required-value",
+									"placeholder-credential",
+									"test-hook"
+								]
+							},
+							"name": { "$ref": "#/$defs/name" }
+						}
+					}
+				}
+			}
+		},
+		"deploymentPreparation": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"iacValidate": { "$ref": "#/$defs/command" },
+				"secretInventory": { "$ref": "#/$defs/relPath" },
+				"limitations": { "$ref": "#/$defs/relPath" },
+				"activationBacklog": { "$ref": "#/$defs/relPath" },
+				"imageDigestsByConfiguration": { "$ref": "#/$defs/relPath" },
+				"freshCheckout": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["build", "start", "migrate", "deployRehearsal", "rollback"],
+					"properties": {
+						"build": { "$ref": "#/$defs/command" },
+						"start": { "$ref": "#/$defs/command" },
+						"migrate": { "$ref": "#/$defs/command" },
+						"deployRehearsal": { "$ref": "#/$defs/command" },
+						"rollback": { "$ref": "#/$defs/command" }
+					}
+				}
+			}
+		},
+		"ui": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["skins", "selectSkin"],
+			"properties": {
+				"skins": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/name" } },
+				"selectSkin": {
+					"type": "object",
+					"additionalProperties": false,
+					"required": ["kind", "key"],
+					"properties": {
+						"kind": { "type": "string", "enum": ["query", "storage"] },
+						"key": { "type": "string", "minLength": 1 }
+					}
+				},
+				"namesFile": { "$ref": "#/$defs/relPath" },
+				"humanScans": { "$ref": "#/$defs/relPath" }
+			}
+		},
+		"versions": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": { "previous": { "type": "string", "minLength": 1 } }
+		}
+	},
+	"$defs": {
+		"httpUrl": { "type": "string", "pattern": "^https?://[^\\s/]+(/[^\\s]*)?$" },
+		"origin": { "type": "string", "pattern": "^https?://[^\\s/]+$" },
+		"path": { "type": "string", "pattern": "^/[^\\s]*$" },
+		"relPath": { "type": "string", "pattern": "^[^/\\s][^\\s]*$" },
+		"name": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,99}$" },
+		"envName": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{0,99}$" },
+		"listen": { "type": "string", "pattern": "^[0-9.]+:[0-9]{1,5}$" },
+		"proxyList": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/name" } },
+		"replica": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["name", "url"],
+			"properties": {
+				"name": { "$ref": "#/$defs/name" },
+				"url": { "$ref": "#/$defs/httpUrl" },
+				"container": { "type": "string", "minLength": 1 }
+			}
+		},
+		"command": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["argv"],
+			"properties": {
+				"argv": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+				"cwd": { "$ref": "#/$defs/relPath" },
+				"timeoutMs": { "type": "integer", "minimum": 1000, "maximum": 1800000 }
+			}
+		}
+	}
+}

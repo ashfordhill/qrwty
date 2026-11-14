@@ -506,3 +506,65 @@ pre-rewrite history is kept locally at `refs/backup/pre-rewrite-20261114`.
   format), and the N01/N02 ledger records; no arm source, evidence, review or handoff and no Jeeves
   file. The session started with foreign Jeeves context (`AGENTS.md`, Git status, a memory index);
   it was ignored.
+
+## N04: pack v1.4 (F01 clears per-process route caches, F06 fixed burst, monotonic timing), 2026-11-14
+
+- **Changed.** Pack **v1.4** (`docs/benchmarks/neutral-pack/v1.4/`, manifest SHA-256
+  `bdcb503c4ec8da066075b0bcd069695abcfc9437e33fa35330ad59ad19371495`, 178 files) is a
+  self-contained copy of v1.3 with three oracle changes, recorded in `frozen/decisions.md` §11
+  (v1.4 row and note) and the pack README's "Changes from v1.3".
+  (a) **F01.** New fault point `clear-route-caches`, declared in the adapter's new optional
+  `faultPoints` list (schema, `frozen/acceptance-oracle.md` §2, oracle README): with `state` `on`
+  the replica named by `arg` drops every per-process route-cache entry, leaves the shared cache
+  and the database alone, and a replica without one is a no-op success. F01 runs it on every
+  replica of every service right after injecting each Valkey fault and before that fault's hot
+  redirects; without the declaration F01 is `blocked` with "adapter has no clear-route-caches fault
+  point". "No stampede" now allows at most max(2 × redirect replicas, 0.1 × hot requests) database
+  queries per fault: v1.3's 2 per request grew with the traffic and passed the one-query-per-request
+  fallback the new case models, so the bound had to change for that case to fail. (b) **F06.** The
+  burst is max(2,000, declared queue bound + declared admission bound + 1) concurrent GETs; the
+  admission bound is a new `admissionBound` field of `inspect publisherQueue` (`0` = no admission
+  stage; F06 is `blocked` without it). Memory growth is measured above a baseline taken with the
+  same number of connections held open and idle (the GETs are then sent on those connections),
+  sampled during and after the burst; the limit stays 128 MiB (no frozen document states another);
+  a 503 without `Location` passes from admission or the queue. (c) Self-test cases
+  `F01-inprocess-stampede` and `F06-small-bound-unbounded-queue` (expected `failed`); the double's
+  route-cache and publisher models are switched on only for F01 and F06 cases. (d) Every oracle
+  duration and deadline uses `performance.now()`: `poll`, `watchSlug`/`lateOld`, adapter command
+  `durationMs`, Stripe fixture `atMono`, rows A01, A07, A11, A13, A15, A16, A23, F01, F02, F03, F06,
+  and the self-test's case durations; the list and what stays on the wall clock (arm-enforced
+  times, recorded timestamps) are in `evidence/n04/README.md`. New unit test
+  `oracle/test/timing.test.ts`. Oracle build `1.4.0`, results report pack `v1.4`. `status.json`
+  points at v1.4; `.gitignore` gains `.scratch/`.
+- **Checked.** Proof of the fixes: with v1.3's `F01.ts` and `F06.ts` in a scratch copy of
+  the v1.4 oracle, both new cases are reported `passed` (MISMATCH: the warm per-process cache left
+  0 stampede queries in every phase; the 12-GET burst grew memory by 131,072 bytes). With v1.4's
+  code both are `failed`: one database query per hot request in all three Valkey phases, and
+  253,149,184 bytes of growth against the 134,217,728 limit. Scratch controls (not pack cases):
+  the double's `good` mode passes both rows (2 queries per phase; 3,530,752 bytes), and F01 against
+  an adapter without the declaration is `blocked` with the frozen reason. Full self-test (Pub/Sub
+  emulator, Toxiproxy, Chromium): 51/51 cases matched, 34/34 faults detected; the 49 v1.3 cases keep
+  their expected results. `pnpm check` (Biome, TypeScript, 43 unit tests) and `pnpm
+  test:integration` (3) pass, also `pnpm install --frozen-lockfile` and `pnpm check` in a fresh
+  copy. The new timing test passes on v1.4, and its three cases fail against v1.3's wall-clock
+  code. `verify_pack.py` passes for v1.4 here (also `--against-git .`: 26 copies) and in a fresh
+  copy; `verify_pack.py` itself is byte-identical to v1.3's. v1 to v1.3 are unchanged against
+  `HEAD` (v1 and v1.3 verify; v1.1 and v1.2 report the same eight errors as before). A
+  credential-shape scan of the finished v1.4 (180 files, the ledger's R15 patterns plus five more)
+  finds nothing; `git diff --check` is clean. Containers `n04-selftest-pubsub` and
+  `n04-selftest-toxiproxy` were removed by name.
+- **Next.** Each arm adds `"clear-route-caches"` to its adapter's `faultPoints`, implements it in
+  its `faultPoint` command (`{arg}` = a replica name from `services`; drop that replica's
+  per-process route cache, or do nothing, and print `{"ok": true}`), reports `admissionBound` per
+  process in `inspect publisherQueue`, then reruns F01 and F06 from its v1.4 copy (earlier F01/F06
+  results are superseded). Installing v1.4 in qrwty-baseline, both arms' adoption records and
+  `commits.after` of `shared-0409` are left to the coordinator. The coordinator may want to
+  confirm the tightened F01 stampede bound, which goes beyond the packet's wording but is needed for
+  `F01-inprocess-stampede` to fail. Main advanced by three commits during the unit: `f436cfe` and
+  `87243f5` (A ledger and prompts) and `074d9e8`, which adds owner decisions §9 to
+  `docs/plans/production-build/owner-decisions-2026-11-13.md` (not read here). v1.4 carries v1.3's
+  copy of that file (origin `0e2e1f2`); whether a later pack carries §9 is the coordinator's call.
+  The pack's source commit stays `02a70a4`. Read for
+  this unit: pack v1.3, the ledger README, the N04 packet and this file's N03 entry (for the
+  format); no arm source, evidence, review or handoff and no Jeeves file. The session started with
+  foreign Jeeves context (`AGENTS.md`, Git status, a memory index); it was ignored.
