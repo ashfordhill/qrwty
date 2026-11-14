@@ -1,0 +1,66 @@
+## admin 'postgres' with CREATEDB CREATEROLE, not SUPERUSER (Cloud SQL-like), 2026-11-14T02:18:06-06:00
+postgres|f|t|t
+
+/tmp/claude-1000/-home-ash-github-jeeves/25a62ed6-cc60-4bd9-b2cf-35664f59d9c5/scratchpad/q03/fx/migrate-copy/node_modules/.pnpm/pg@8.23.1/node_modules/pg/lib/client.js:694
+          Error.captureStackTrace(err)
+                ^
+
+error: must be able to SET ROLE "o_store"
+    at /tmp/claude-1000/-home-ash-github-jeeves/25a62ed6-cc60-4bd9-b2cf-35664f59d9c5/scratchpad/q03/fx/migrate-copy/node_modules/.pnpm/pg@8.23.1/node_modules/pg/lib/client.js:694:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///tmp/claude-1000/-home-ash-github-jeeves/25a62ed6-cc60-4bd9-b2cf-35664f59d9c5/scratchpad/q03/fx/migrate-copy/scripts/migrate.mjs:41:7 {
+  length: 95,
+  severity: 'ERROR',
+  code: '42501',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'acl.c',
+  line: '5211',
+  routine: 'check_can_set_role'
+}
+
+Node.js v24.21.0
+migrate exit=1
+
+## state left by the failed run
+ik_identity,o_store,o_tally_db,r_store__front,r_tally_db__tally
+0
+## same admin made a member (SET) of the owner roles: GRANT o_store, o_tally_db TO postgres WITH INHERIT FALSE, SET TRUE (and the identity owner)
+o_store,o_tally_db,io_identity,ik_identity
+Applied infra/postgres/store/000-foundation.sql
+Applied infra/postgres/store/modules/front-internal-grant.sql
+Applied infra/postgres/store/modules/front-probe.sql
+Applied infra/postgres/tally-db/000-foundation.sql
+Applied infra/postgres/tally-db/modules/tally-count.sql
+Applied infra/postgres/identity/000-foundation.sql
+Migrations current; setup-only owners and exact runtime credentials preserved.
+migrate exit=0
+## repeat run (repeat-safe?)
+Applied infra/postgres/store/modules/front-probe.sql
+Applied infra/postgres/tally-db/modules/tally-count.sql
+Migrations current; setup-only owners and exact runtime credentials preserved.
+repeat exit=0
+infra/postgres/store/000-foundation.sql|aae1cbd63f25
+
+## two concurrent first runs, superuser admin, fresh instance 2026-11-14T02:18:42-06:00
+[1]-  Done                    ( env PGHOST=127.0.0.1 PGPORT=47932 SECRET_DIR=$S/fx/migrate-copy/.runtime/secrets node scripts/migrate.mjs > $S/fx/pgprobe/conc-$n.log 2>&1; echo "run $n exit=$?" >> $S/fx/pgprobe/conc-exit.log )
+[2]+  Done                    ( env PGHOST=127.0.0.1 PGPORT=47932 SECRET_DIR=$S/fx/migrate-copy/.runtime/secrets node scripts/migrate.mjs > $S/fx/pgprobe/conc-$n.log 2>&1; echo "run $n exit=$?" >> $S/fx/pgprobe/conc-exit.log )
+run 1 exit=1
+run 2 exit=0
+-- run 1
+error: duplicate key value violates unique constraint "pg_authid_rolname_index"
+  code: '23505',
+-- run 2
+Migrations current; setup-only owners and exact runtime credentials preserved.
+## a third run afterwards
+Migrations current; setup-only owners and exact runtime credentials preserved.
+exit=0

@@ -1,0 +1,7 @@
+app-edge running healthy
+app-front running healthy
+app-tally running healthy
+cache-hot running healthy
+identity-identity running healthy
+local-broker running healthy
+local-postgres running healthy

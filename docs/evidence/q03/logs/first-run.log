@@ -1,0 +1,242 @@
+$ node scripts/local.mjs first-run
+ Image q03-probe-app Building 
+ Image q03-probe-app Building 
+ Image q03-probe-app Building 
+ Image q03-probe-app Building 
+ Image q03-probe-app Built 
+ Image q03-probe-app Built 
+ Image q03-probe-app Built 
+ Image q03-probe-app Built 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.49kB done
+#1 DONE 0.0s
+
+#2 [setup-migrate internal] load build definition from Dockerfile
+#2 transferring dockerfile:
+#2 transferring dockerfile: 1.65kB done
+#2 DONE 0.2s
+
+#3 [app-tally internal] load metadata for docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+#3 DONE 0.4s
+
+#4 [app-tally internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 72B done
+#4 DONE 0.2s
+
+#5 [app-tally internal] load build context
+#5 transferring context: 162.48kB 0.0s done
+#5 DONE 0.2s
+
+#6 [setup-migrate app  1/10] FROM docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20
+#6 resolve docker.io/library/node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20 0.1s done
+#6 DONE 0.2s
+
+#7 [app-front app  3/10] RUN npm install --global pnpm@12.16.1
+#7 CACHED
+
+#8 [app-front app  4/10] COPY package.json pnpm-lock.yaml ./
+#8 CACHED
+
+#9 [app-front app  5/10] RUN pnpm install --frozen-lockfile --ignore-scripts
+#9 CACHED
+
+#10 [app-front app  2/10] WORKDIR /app
+#10 CACHED
+
+#11 [app-front app  6/10] COPY tsconfig.json ./
+#11 CACHED
+
+#10 [app-tally app  2/10] WORKDIR /app
+#10 CACHED
+
+#7 [app-tally app  3/10] RUN npm install --global pnpm@12.16.1
+#7 CACHED
+
+#8 [app-tally app  4/10] COPY package.json pnpm-lock.yaml ./
+#8 CACHED
+
+#9 [app-tally app  5/10] RUN pnpm install --frozen-lockfile --ignore-scripts
+#9 CACHED
+
+#12 [app-front app  7/10] COPY src ./src
+#12 DONE 0.2s
+
+#13 [app-tally app  8/10] RUN pnpm build
+#13 0.598 $ tsc -p tsconfig.json
+#13 DONE 1.1s
+
+#14 [app-front app  9/10] COPY scripts ./scripts
+#14 DONE 0.2s
+
+#15 [setup-broker app 10/10] COPY infra ./infra
+#15 DONE 0.3s
+
+#16 [setup-broker] exporting to image
+#16 exporting layers
+#16 exporting layers 1.5s done
+#16 exporting manifest sha256:d1b947a42705887fdec9363fef5986274b955166723c88ae2dd1e0f58e6f0e31
+#16 exporting manifest sha256:d1b947a42705887fdec9363fef5986274b955166723c88ae2dd1e0f58e6f0e31 0.3s done
+#16 exporting config sha256:d32216983ea49b2dad2d6a4b54c91be4bea3ab16bdbf9cdd296c407ecaeb9add
+#16 exporting config sha256:d32216983ea49b2dad2d6a4b54c91be4bea3ab16bdbf9cdd296c407ecaeb9add 0.3s done
+#16 exporting attestation manifest sha256:636f550041bf367d03489aea40c545dbccc4aeda3212af3684de1ea61409dc87
+#16 exporting attestation manifest sha256:636f550041bf367d03489aea40c545dbccc4aeda3212af3684de1ea61409dc87 0.4s done
+#16 exporting manifest list sha256:fbb1539a92c1ab581b6407a641026cdc133c9865fc96b0a69534d6a263049bc7
+#16 exporting manifest list sha256:fbb1539a92c1ab581b6407a641026cdc133c9865fc96b0a69534d6a263049bc7 0.3s done
+#16 naming to docker.io/library/q03-probe-app:latest
+#16 naming to docker.io/library/q03-probe-app:latest 0.1s done
+#16 unpacking to docker.io/library/q03-probe-app:latest
+#16 ...
+
+#17 [app-tally] exporting to image
+#17 exporting layers 1.5s done
+#17 exporting manifest sha256:dee594ca7c3980971a5a8f421c8ac16a1b3f282ae4057e19aeeabbcc2fc02858 0.3s done
+#17 exporting config sha256:fd8af8115eebb54deb7f465250345879270031674d8cd6860bd3355c7e3929b1 0.3s done
+#17 exporting attestation manifest sha256:c4aa0052043c718f4b03c07c6eeb21abdb341df1a1feefeb6fec10bda6b7a9f6 0.4s done
+#17 exporting manifest list sha256:5fae33d254098808e7b6c081219f404c20a499a8141d42e16c2f84e1ced0066e 0.3s done
+#17 naming to docker.io/library/q03-probe-app:latest 0.1s done
+#17 unpacking to docker.io/library/q03-probe-app:latest 5.2s done
+#17 DONE 8.5s
+
+#16 [setup-broker] exporting to image
+#16 unpacking to docker.io/library/q03-probe-app:latest 5.3s done
+#16 DONE 8.5s
+
+#18 [setup-migrate] exporting to image
+#18 exporting layers 1.4s done
+#18 exporting manifest sha256:ee5b2df6ffcac2f5a8ec644c24db2a266fb112992f234834b6678dcd91fd9cce 0.3s done
+#18 exporting config sha256:4afcc95c61ed20e70688ffafbd256ca2530add9150fabb39413bae0662268245 0.3s done
+#18 exporting attestation manifest sha256:01a8840a335c16053f46f4f3b7b0a9de2bb55066865071cebc92984aa1dc14e1 0.4s done
+#18 exporting manifest list sha256:c05512e0f3d171965b5f1927fc1d70f446caabdae75cb2cdc692ede2892997eb 0.3s done
+#18 naming to docker.io/library/q03-probe-app:latest 0.1s done
+#18 unpacking to docker.io/library/q03-probe-app:latest 5.4s done
+#18 DONE 8.5s
+
+#19 [app-front] exporting to image
+#19 exporting layers 1.5s done
+#19 exporting manifest sha256:9adee610360a2243cb21b14a825f02612cc679c38e3495172861f9b898e7ab66 0.3s done
+#19 exporting config sha256:418d2282ac85d8b29115646e377bdc04eeffd0ea0086e16299efd702a4bfc1e9 0.3s done
+#19 exporting attestation manifest sha256:def9a974d23d977fb9fdd881efd48f6f4f552779062a9dcf1e55b24ab08cff58 0.4s done
+#19 exporting manifest list sha256:777d21609db21558e44765891ae5e46cc329ba469739f0afd0d6ee9269206836 0.3s done
+#19 naming to docker.io/library/q03-probe-app:latest 0.0s done
+#19 unpacking to docker.io/library/q03-probe-app:latest 5.4s done
+#19 DONE 8.6s
+
+#20 [app-tally] resolving provenance for metadata file
+#20 ...
+
+#21 [setup-broker] resolving provenance for metadata file
+#21 DONE 0.5s
+
+#20 [app-tally] resolving provenance for metadata file
+#20 DONE 0.6s
+
+#22 [setup-migrate] resolving provenance for metadata file
+#22 DONE 0.2s
+
+#23 [app-front] resolving provenance for metadata file
+#23 DONE 0.0s
+ Network q03-probe_default Creating 
+ Volume q03-probe_postgres-data Creating 
+ Volume q03-probe_cache-hot Creating 
+ Volume q03-probe_cache-hot Creating 
+ Volume q03-probe_postgres-data Creating 
+ Network q03-probe_default Creating 
+ Volume q03-probe_broker-data Creating 
+ Volume q03-probe_broker-data Creating 
+ Volume q03-probe_cache-hot Created 
+ Volume q03-probe_cache-hot Created 
+ Volume q03-probe_postgres-data Created 
+ Volume q03-probe_postgres-data Created 
+ Volume q03-probe_broker-data Created 
+ Volume q03-probe_broker-data Created 
+ Network q03-probe_default Created 
+ Network q03-probe_default Created 
+ Container q03-probe-local-postgres-1 Creating 
+ Container q03-probe-cache-hot-1 Creating 
+ Container q03-probe-local-broker-1 Creating 
+ Container q03-probe-local-broker-1 Created 
+ Container q03-probe-cache-hot-1 Created 
+ Container q03-probe-local-postgres-1 Created 
+ Container q03-probe-local-postgres-1 Starting 
+ Container q03-probe-local-broker-1 Starting 
+ Container q03-probe-cache-hot-1 Starting 
+ Container q03-probe-local-postgres-1 Started 
+ Container q03-probe-local-broker-1 Started 
+ Container q03-probe-cache-hot-1 Started 
+ Container q03-probe-cache-hot-1 Waiting 
+ Container q03-probe-local-broker-1 Waiting 
+ Container q03-probe-local-postgres-1 Waiting 
+ Container q03-probe-local-postgres-1 Healthy 
+ Container q03-probe-local-broker-1 Healthy 
+ Container q03-probe-cache-hot-1 Healthy 
+ Container q03-probe-setup-migrate-run-969457b8f95e Creating 
+ Container q03-probe-setup-migrate-run-969457b8f95e Created 
+Applied infra/postgres/store/000-foundation.sql
+Applied infra/postgres/store/modules/front-internal-grant.sql
+Applied infra/postgres/store/modules/front-probe.sql
+Applied infra/postgres/tally-db/000-foundation.sql
+Applied infra/postgres/tally-db/modules/tally-count.sql
+Applied infra/postgres/identity/000-foundation.sql
+Migrations current; setup-only owners and exact runtime credentials preserved.
+ Container q03-probe-local-postgres-1 Running 
+ Container q03-probe-identity-identity-1 Creating 
+ Container q03-probe-identity-identity-1 Created 
+ Container q03-probe-local-postgres-1 Waiting 
+ Container q03-probe-local-postgres-1 Healthy 
+ Container q03-probe-identity-identity-1 Starting 
+ Container q03-probe-identity-identity-1 Started 
+ Container q03-probe-local-postgres-1 Waiting 
+ Container q03-probe-identity-identity-1 Waiting 
+ Container q03-probe-local-postgres-1 Healthy 
+ Container q03-probe-identity-identity-1 Healthy 
+ Container q03-probe-setup-broker-run-2c131773de82 Creating 
+ Container q03-probe-setup-broker-run-2c131773de82 Created 
+Selected durable broker declarations asserted without reset.
+ Container q03-probe-local-postgres-1 Running 
+ Container q03-probe-identity-identity-1 Running 
+ Container q03-probe-local-broker-1 Running 
+ Container q03-probe-cache-hot-1 Running 
+ Container q03-probe-app-tally-1 Creating 
+ Container q03-probe-app-front-1 Creating 
+ Container q03-probe-app-tally-1 Created 
+ Container q03-probe-app-front-1 Created 
+ Container q03-probe-app-edge-1 Creating 
+ Container q03-probe-app-edge-1 Created 
+ Container q03-probe-local-postgres-1 Waiting 
+ Container q03-probe-local-postgres-1 Waiting 
+ Container q03-probe-local-broker-1 Waiting 
+ Container q03-probe-local-broker-1 Healthy 
+ Container q03-probe-local-postgres-1 Healthy 
+ Container q03-probe-app-tally-1 Starting 
+ Container q03-probe-local-postgres-1 Healthy 
+ Container q03-probe-cache-hot-1 Waiting 
+ Container q03-probe-identity-identity-1 Waiting 
+ Container q03-probe-local-broker-1 Waiting 
+ Container q03-probe-local-postgres-1 Waiting 
+ Container q03-probe-app-tally-1 Started 
+ Container q03-probe-cache-hot-1 Healthy 
+ Container q03-probe-local-broker-1 Healthy 
+ Container q03-probe-identity-identity-1 Healthy 
+ Container q03-probe-local-postgres-1 Healthy 
+ Container q03-probe-app-front-1 Starting 
+ Container q03-probe-app-front-1 Started 
+ Container q03-probe-app-front-1 Waiting 
+ Container q03-probe-app-front-1 Healthy 
+ Container q03-probe-app-edge-1 Starting 
+ Container q03-probe-app-edge-1 Started 
+ Container q03-probe-cache-hot-1 Waiting 
+ Container q03-probe-app-front-1 Waiting 
+ Container q03-probe-app-edge-1 Waiting 
+ Container q03-probe-local-postgres-1 Waiting 
+ Container q03-probe-identity-identity-1 Waiting 
+ Container q03-probe-local-broker-1 Waiting 
+ Container q03-probe-app-tally-1 Waiting 
+ Container q03-probe-app-tally-1 Healthy 
+ Container q03-probe-local-broker-1 Healthy 
+ Container q03-probe-cache-hot-1 Healthy 
+ Container q03-probe-identity-identity-1 Healthy 
+ Container q03-probe-app-front-1 Healthy 
+ Container q03-probe-local-postgres-1 Healthy 
+ Container q03-probe-app-edge-1 Healthy 
+Local providers initialized (Compose q03-probe); private credentials and volume identities retained. Application readiness remains in .jeeves/report.json.

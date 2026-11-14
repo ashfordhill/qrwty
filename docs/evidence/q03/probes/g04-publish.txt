@@ -1,0 +1,34 @@
+## before
+/q03-probe-app-front-1 id=ca3e0e9bb59f started=2026-11-14T08:13:04.526188917Z restarts=0 status=running
+/q03-probe-app-tally-1 id=fab43d0c4b80 started=2026-11-14T08:13:04.010838112Z restarts=0 status=running
+## normal publish (same ID twice)
+{"messageId":"p2-normal-1","ms":1} http=202 total=0.002462s
+{"messageId":"p2-normal-1","ms":1} http=202 total=0.001391s
+## broker paused (stalled), 2026-11-14T02:14:35-06:00
+{"error":"DEADLINE","message":"Request deadline exceeded; check status before retrying."} http=503 total=1.112460s
+immediately after the 503, a second request:
+{"error":"DEADLINE","message":"Request deadline exceeded; check status before retrying."} http=503 total=1.112812s
+unpaused 2026-11-14T02:14:43-06:00
+{"messageId":"p2-after-pause","ms":2} http=202 total=0.003143s
+## broker stopped, 2026-11-14T02:14:45-06:00
+{"error":"Error: Broker unavailable","ms":0} http=503 total=0.001690s
+{"error":"Error: Broker unavailable","ms":0} http=503 total=0.001242s
+broker started 2026-11-14T02:14:47-06:00
+first 202 after start at attempt 5 (2026-11-14T02:14:51-06:00)
+## after
+/q03-probe-app-front-1 id=ca3e0e9bb59f started=2026-11-14T08:13:04.526188917Z restarts=0 status=running
+/q03-probe-app-tally-1 id=fab43d0c4b80 started=2026-11-14T08:13:04.010838112Z restarts=0 status=running
+Timeout: 60.0 seconds ...
+Listing queues for vhost / ...
+name	messages	consumers
+events	0	1
+events.failed	0	0
+p-normal-1|1
+p-paused-1|1
+p-paused-2|1
+p-after-5|1
+p2-normal-1|1
+p2-paused-1|1
+p2-paused-2|1
+p2-after-pause|1
+p2-after-5|1

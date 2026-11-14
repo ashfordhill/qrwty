@@ -1,0 +1,37 @@
+{
+  "bindingLines": [
+    "issuer: process.env.OIDC_ISSUER ?? \"\",",
+    "audience: `${binding.identity}-web`,",
+    "jwksUrl: process.env.OIDC_JWKS_URL ?? \"\",",
+    "algorithms: [\"RS256\"],"
+  ],
+  "results": [
+    {
+      "case": "local issuer, aud identity-web (Keycloak shape)",
+      "result": "accepted",
+      "subject": "user-1"
+    },
+    {
+      "case": "local issuer, aud of a managed API (example-project)",
+      "result": "refused",
+      "error": "ERR_JWT_CLAIM_VALIDATION_FAILED: unexpected \"aud\" claim value"
+    },
+    {
+      "case": "managed issuer, managed aud",
+      "result": "refused",
+      "error": "ERR_JWT_CLAIM_VALIDATION_FAILED: unexpected \"iss\" claim value"
+    },
+    {
+      "case": "local issuer, aud array incl. identity-web",
+      "result": "accepted",
+      "subject": "user-1"
+    },
+    {
+      "case": "OIDC_ISSUER=managed, compiled aud identity-web, managed token",
+      "result": "refused",
+      "error": "ERR_JWT_CLAIM_VALIDATION_FAILED: unexpected \"aud\" claim value"
+    }
+  ],
+  "missingEnvironment": "TypeError: Invalid URL",
+  "plainHttpIssuer": "constructed (http JWKS accepted)"
+}

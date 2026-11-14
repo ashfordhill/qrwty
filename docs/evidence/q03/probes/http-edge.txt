@@ -1,0 +1,142 @@
+### curl -sS -i http://127.0.0.1:47921/api/front/modules/front-probe/redirect
+HTTP/1.1 302 Found
+Server: nginx/1.28.3
+Date: Sat, 14 Nov 2026 08:13:35 GMT
+Content-Length: 0
+Connection: keep-alive
+location: https://dest.example/a?b=1&c=%20d#frag
+cache-control: no-store
+qrwty-click-event: 00000000-0000-4000-8000-000000000001
+
+
+### curl -sS -I http://127.0.0.1:47921/api/front/modules/front-probe/redirect
+HTTP/1.1 302 Found
+Server: nginx/1.28.3
+Date: Sat, 14 Nov 2026 08:13:35 GMT
+Connection: keep-alive
+location: https://dest.example/a?b=1&c=%20d#frag
+cache-control: no-store
+qrwty-click-event: 00000000-0000-4000-8000-000000000001
+
+
+### curl -sS -i http://127.0.0.1:47921/api/front/modules/front-probe/method
+HTTP/1.1 405 Method Not Allowed
+Server: nginx/1.28.3
+Date: Sat, 14 Nov 2026 08:13:35 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 30
+Connection: keep-alive
+allow: GET, HEAD
+cache-control: no-store
+
+{"error":"method_not_allowed"}
+### curl -sS -i -X POST -H content-type: application/json; charset=utf-8 -H X-Forwarded-For: 203.0.113.9 -H Host: qrwty.example --data-binary @/tmp/claude-1000/-home-ash-github-jeeves/25a62ed6-cc60-4bd9-b2cf-35664f59d9c5/scratchpad/q03/fx/probes/raw-body.bin http://127.0.0.1:47921/api/front/modules/front-probe/raw
+HTTP/1.1 200 OK
+Server: nginx/1.28.3
+Date: Sat, 14 Nov 2026 08:13:35 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 335
+Connection: keep-alive
+cache-control: no-store
+
+{"method":"POST","requestKeys":["body","caller","headers","method","path","query"],"bodyType":"object","isBytes":false,"reserialized":"{\"id\":\"evt_1\",\"amount\":100,\"name\":\"café\",\"n\":1}","contentType":"application/json; charset=utf-8","contentLength":"57","host":"app-front:3000","xForwardedFor":"203.0.113.9","xRealIp":null}
+### curl -sS -i -X POST -H content-type: application/x-www-form-urlencoded --data-binary a=1&b=2 http://127.0.0.1:47921/api/front/modules/front-probe/raw
+HTTP/1.1 415 Unsupported Media Type
+Server: nginx/1.28.3
+Date: Sat, 14 Nov 2026 08:13:35 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 56
+Connection: keep-alive
+cache-control: no-store
+
+{"error":"INVALID_REQUEST","message":"Invalid request."}
+### curl -sS -i -X POST -H content-type: application/octet-stream --data-binary @/tmp/claude-1000/-home-ash-github-jeeves/25a62ed6-cc60-4bd9-b2cf-35664f59d9c5/scratchpad/q03/fx/probes/raw-body.bin http://127.0.0.1:47921/api/front/modules/front-probe/raw
+HTTP/1.1 415 Unsupported Media Type
+Server: nginx/1.28.3
+Date: Sat, 14 Nov 2026 08:13:35 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 56
+Connection: keep-alive
+cache-control: no-store
+
+{"error":"INVALID_REQUEST","message":"Invalid request."}
+### curl -sS -i -X POST -H content-type: application/json --data-binary @/tmp/claude-1000/-home-ash-github-jeeves/25a62ed6-cc60-4bd9-b2cf-35664f59d9c5/scratchpad/q03/fx/probes/big.json http://127.0.0.1:47921/api/front/modules/front-probe/raw
+HTTP/1.1 413 Payload Too Large
+Server: nginx/1.28.3
+Date: Sat, 14 Nov 2026 08:13:35 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 56
+Connection: keep-alive
+cache-control: no-store
+
+{"error":"INVALID_REQUEST","message":"Invalid request."}
+### curl -sS -i -X POST -H content-type: application/json --data-binary {"bad": http://127.0.0.1:47921/api/front/modules/front-probe/raw
+HTTP/1.1 400 Bad Request
+Server: nginx/1.28.3
+Date: Sat, 14 Nov 2026 08:13:35 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 56
+Connection: keep-alive
+cache-control: no-store
+
+{"error":"INVALID_REQUEST","message":"Invalid request."}
+### curl -sS -i http://127.0.0.1:47921/api/front/modules/front-internal-grant/entitlements
+HTTP/1.1 200 OK
+Server: nginx/1.28.3
+Date: Sat, 14 Nov 2026 08:13:35 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 64
+Connection: keep-alive
+cache-control: no-store
+
+{"internalOnlyRoute":true,"path":"/entitlements","caller":false}
+### curl -sS -i http://127.0.0.1:47921/api/front/modules/front-probe/env
+HTTP/1.1 200 OK
+Server: nginx/1.28.3
+Date: Sat, 14 Nov 2026 08:13:35 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 121
+Connection: keep-alive
+cache-control: no-store
+
+{"names":["NODE_VERSION","OIDC_ISSUER","OIDC_JWKS_URL","PROBE_OVERRIDE"],"probeOverride":"from-compose-override","uid":0}
+### curl -sS -i http://127.0.0.1:47921/api/front/modules/front-probe/caller
+HTTP/1.1 200 OK
+Server: nginx/1.28.3
+Date: Sat, 14 Nov 2026 08:13:35 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 18
+Connection: keep-alive
+cache-control: no-store
+
+{"signedIn":false}
+### curl -sS -i -H Authorization: Bearer not-a-token http://127.0.0.1:47921/api/front/modules/front-probe/caller
+HTTP/1.1 401 Unauthorized
+Server: nginx/1.28.3
+Date: Sat, 14 Nov 2026 08:13:35 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 61
+Connection: keep-alive
+cache-control: no-store
+
+{"error":"SIGN_IN_REQUIRED","message":"Sign in to continue."}
+### curl -sS -i http://127.0.0.1:47921/api/front/modules/front-probe/provider
+HTTP/1.1 501 Not Implemented
+Server: nginx/1.28.3
+Date: Sat, 14 Nov 2026 08:13:35 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 119
+Connection: keep-alive
+cache-control: no-store
+
+{"error":"NOT_IMPLEMENTED","message":"Not implemented: Provider for Probe (an External API isn't provisioned locally)"}
+### curl -sS -i http://127.0.0.1:47921/api/front/modules/front-probe/identity
+HTTP/1.1 501 Not Implemented
+Server: nginx/1.28.3
+Date: Sat, 14 Nov 2026 08:13:35 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 117
+Connection: keep-alive
+cache-control: no-store
+
+{"error":"NOT_IMPLEMENTED","message":"Not implemented: Identity for Probe (an Identity isn't provisioned for stubs)"}

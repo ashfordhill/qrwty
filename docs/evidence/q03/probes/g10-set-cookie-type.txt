@@ -1,0 +1,1 @@
+src/q03-type-probe.ts(3,56): error TS2322: Type 'string[]' is not assignable to type 'string'.

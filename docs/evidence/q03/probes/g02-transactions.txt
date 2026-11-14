@@ -1,0 +1,8 @@
+### POST /tx run 1
+{"steps":[{"step":"execute BEGIN"},{"step":"3 parallel queries after BEGIN","rows":[{"pid":178,"in_open_tx":true},{"pid":179,"in_open_tx":false},{"pid":180,"in_open_tx":false}]},{"step":"own sessions idle in transaction","rows":[{"pid":178,"state":"idle in transaction"}]},{"step":"after 10 parallel ROLLBACKs","rows":[{"n":0}]}]}
+### POST /tx run 2
+{"steps":[{"step":"execute BEGIN"},{"step":"3 parallel queries after BEGIN","rows":[{"pid":187,"in_open_tx":true},{"pid":186,"in_open_tx":false},{"pid":185,"in_open_tx":false}]},{"step":"own sessions idle in transaction","rows":[{"pid":187,"state":"idle in transaction"}]},{"step":"after 10 parallel ROLLBACKs","rows":[{"n":0}]}]}
+### POST /tx run 3
+{"steps":[{"step":"execute BEGIN"},{"step":"3 parallel queries after BEGIN","rows":[{"pid":180,"in_open_tx":true},{"pid":179,"in_open_tx":false},{"pid":178,"in_open_tx":false}]},{"step":"own sessions idle in transaction","rows":[{"pid":180,"state":"idle in transaction"}]},{"step":"after 10 parallel ROLLBACKs","rows":[{"n":0}]}]}
+### POST /fn
+{"failing":"error: probe failure after two inserts","afterFailing":{"n":0},"succeeding":1,"afterSucceeding":{"n":2}}

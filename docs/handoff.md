@@ -303,3 +303,60 @@ run ledger README, `AGENTS.md` and public documentation and registries.
   `subscriptionCheck`, `replayQuarantine` and `ordinaryBuildAndTest` are adapter commands the plan's
   list did not name. Any of these can change in a later pack version.
 - **Next**: each arm adopts v1.1 (copy, verify, record the hash) before reporting an A, F, R or U row.
+
+## 2026-11-14 (UTC) — Q03: audit generic gaps and commission exact fixes
+
+Arm A, attempt 1 (ledger `a-0278`), from QRWTY `e1474dc` and Jeeves `59bfbc6`. No Jeeves file or
+project changed.
+
+**Changed.** [Capability audit](evidence/q03/capabilities.md): G01–G13 each with the inspected
+code, the smallest reproduction, the existing seam, the remedy split into Jeeves / QRWTY /
+deployment, and a decision; F1–F15 plus new F16–F26 classified; a decision table and the
+dependency map. [jeeves-gaps.md](plans/production-build/jeeves-gaps.md): 16 ready-to-run Jeeves
+unit briefs QG01–QG16 (goal, files, invariants, emitted output, offline tests, regressions,
+regeneration proof, commit), in the store-outage plan's shape. Evidence (fixture design, its
+application-owned probe bodies, commands as run, probe outputs, logs) in `evidence/q03/`.
+
+**How.** A minimal probe design built in memory through the studio's command path, exported with
+`export:v2`, given stub bodies and product SQL only, built and run under its own Compose project;
+offline probes of the built runtime; `migrate.mjs` against two disposable PostgreSQL 17.11
+containers; the pinned Pub/Sub SDK 6.3.2 against the pinned emulator 591.0.0.
+
+**Key results.** Works already: 302/`Location`/custom headers, Optional sign-in, broker
+reconnect, confirmed publish with dedup by message ID, product SQL functions atomic in one
+`execute`. Gaps: no raw body (57 bytes in, 48 re-serialized); `BEGIN` through `execute` leaks an
+`idle in transaction` connection; compiled endpoints (env ignored, `ENOTFOUND local-broker`); the
+audience is compiled (`identity-web`); a non-superuser admin fails `must be able to SET ROLE`;
+concurrent first migrations race on `CREATE ROLE`; a stalled cache holds a stub call to the 1.1 s
+deadline and a drain to SIGKILL (exit 137); a dependency down at start fails startup for good;
+root container; no Pub/Sub (default SDK publish still pending after 20 s with the service down);
+External API/Identity `unavailable`; no way to add an npm package (Stripe SDK) without editing a
+generated file; `Set-Cookie` arrays untyped.
+
+**Decisions.** Local build needs QG01–QG10 (raw body and repeated headers; the Compose override as
+a documented seam; application-owned dependency manifests; bounded stub cache; non-root image;
+endpoints from the environment; Pub/Sub publisher, consumer and system tests; TLS and an
+insecure-endpoint refusal for R01). Cloud only: QG11 (audience), QG12 (migration admin). Deferred:
+QG13 transactions (product SQL functions suffice), QG14 scheduled trigger (authenticated scheduled
+owner calls), QG15 per-route exposure (internal tile plus QRWTY's edge), QG16 startup with a lost
+broker and a drain bound. Jeeves owner decisions needed first: QG03 (manifest ownership), QG06
+(production-foundations D1), and minor ones for QG04 and QG07.
+
+**Checks.** Every finding has a probe output or code reference; only `generated-extension` paths
+and an un-manifested override file were written, in a scratch copy; Docker images, volumes,
+networks and containers equal the before lists (the two probe PostgreSQL containers' anonymous
+volumes and the emulator image removed by exact name); Jeeves `git status` unchanged; no secret
+or credential-shaped string in the evidence; links resolve; `sha256sum -c SHA256SUMS` in
+`evidence/q03/` passes.
+
+**Notes.** The non-superuser migration probe imitates managed privileges; it is not Cloud SQL.
+Emulator behaviour is not managed Pub/Sub durability or IAM (Q12a). If the coordinator amends the
+billing contract to Stripe's documented `node:crypto` verifier and `fetch`, QG03 becomes
+deferred. The Q01 inventory's Billing API Entitlements should move to an internal tile when Q05
+resaves the diagram (G08). BuildKit cache layers from the probe image remain (no prune). Scratch
+directory deleted. Ledger `a-0278` started; usage, end time and `commits.after` are the
+coordinator's.
+
+**Next.** The coordinator obtains the Jeeves owner's decisions and assigns QG units in Jeeves
+(QG01–QG06 and QG12 are independent; QG06 → QG07 → QG08 → QG09 → QG10 is the critical path).
+Q04 waits for QG04–QG10; no QRWTY unit is eligible until then except independent neutral work.

@@ -1,0 +1,33 @@
+2026-11-14T02:21:12-06:00
+gcr.io/google.com/cloudsdktool/google-cloud-cli@sha256:112c21f8f6e04b03b393b3c34fb943a1f443e839f18c6492c364ac2e6c3ff935: Pulling from google.com/cloudsdktool/google-cloud-cli
+02d2a63682c6: Pulling fs layer
+62d9c8056b60: Pulling fs layer
+f2be67225471: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+eac4cdcdfc8e: Pulling fs layer
+551f4fe69015: Pulling fs layer
+ec5d0b98fda9: Pulling fs layer
+4f4fb700ef54: Already exists
+62d9c8056b60: Download complete
+44136fa355b3: Already exists
+eac4cdcdfc8e: Download complete
+ec5d0b98fda9: Download complete
+70702be0005d: Download complete
+f2be67225471: Download complete
+551f4fe69015: Download complete
+f2be67225471: Pull complete
+62d9c8056b60: Pull complete
+eac4cdcdfc8e: Pull complete
+551f4fe69015: Pull complete
+4f4fb700ef54: Pull complete
+ec5d0b98fda9: Pull complete
+02d2a63682c6: Download complete
+02d2a63682c6: Pull complete
+Digest: sha256:112c21f8f6e04b03b393b3c34fb943a1f443e839f18c6492c364ac2e6c3ff935
+Status: Downloaded newer image for gcr.io/google.com/cloudsdktool/google-cloud-cli@sha256:112c21f8f6e04b03b393b3c34fb943a1f443e839f18c6492c364ac2e6c3ff935
+gcr.io/google.com/cloudsdktool/google-cloud-cli:591.0.0-emulators@sha256:112c21f8f6e04b03b393b3c34fb943a1f443e839f18c6492c364ac2e6c3ff935
+
+real	0m19.306s
+user	0m0.030s
+sys	0m0.019s
+pull=0

@@ -1,0 +1,323 @@
+{
+  "log": [
+    {
+      "command": {
+        "type": "addAction",
+        "lane": "download",
+        "name": "Call",
+        "system": {
+          "name": "Q03 probe",
+          "description": "Disposable Q03 capability probe."
+        }
+      },
+      "revision": 1
+    },
+    {
+      "command": {
+        "type": "addTile",
+        "from": {
+          "lane": "download"
+        },
+        "side": "after",
+        "tile": {
+          "id": "front",
+          "name": "Front",
+          "kind": "service"
+        },
+        "linkId": "download-front"
+      },
+      "revision": 2
+    },
+    {
+      "command": {
+        "type": "addTile",
+        "from": {
+          "tile": "front"
+        },
+        "side": "after",
+        "tile": {
+          "id": "identity",
+          "name": "Identity",
+          "kind": "identity"
+        },
+        "linkId": "front-identity"
+      },
+      "revision": 3
+    },
+    {
+      "command": {
+        "type": "addTile",
+        "from": {
+          "tile": "front"
+        },
+        "side": "after",
+        "tile": {
+          "id": "store",
+          "name": "Store",
+          "kind": "database"
+        },
+        "linkId": "front-store"
+      },
+      "revision": 4
+    },
+    {
+      "command": {
+        "type": "addTile",
+        "from": {
+          "tile": "front"
+        },
+        "side": "after",
+        "tile": {
+          "id": "hot",
+          "name": "Hot",
+          "kind": "cache"
+        },
+        "linkId": "front-hot"
+      },
+      "revision": 5
+    },
+    {
+      "command": {
+        "type": "addTile",
+        "from": {
+          "tile": "front"
+        },
+        "side": "after",
+        "tile": {
+          "id": "events",
+          "name": "Events",
+          "kind": "queue"
+        },
+        "linkId": "front-events"
+      },
+      "revision": 6
+    },
+    {
+      "command": {
+        "type": "addTile",
+        "from": {
+          "tile": "front"
+        },
+        "side": "after",
+        "tile": {
+          "id": "provider",
+          "name": "Provider",
+          "kind": "external-api"
+        },
+        "linkId": "front-provider"
+      },
+      "revision": 7
+    },
+    {
+      "command": {
+        "type": "addTile",
+        "from": {
+          "tile": "events"
+        },
+        "side": "after",
+        "tile": {
+          "id": "tally",
+          "name": "Tally",
+          "kind": "worker"
+        },
+        "linkId": "events-tally"
+      },
+      "revision": 8
+    },
+    {
+      "command": {
+        "type": "addTile",
+        "from": {
+          "tile": "tally"
+        },
+        "side": "after",
+        "tile": {
+          "id": "tally-db",
+          "name": "Tally DB",
+          "kind": "database"
+        },
+        "linkId": "tally-tally-db"
+      },
+      "revision": 9
+    },
+    {
+      "command": {
+        "type": "addModule",
+        "host": "front",
+        "kind": "auth-guard",
+        "name": "Sign-in"
+      },
+      "revision": 10
+    },
+    {
+      "command": {
+        "type": "connectModule",
+        "module": "front-sign-in",
+        "slot": "identity",
+        "target": {
+          "tile": "identity"
+        }
+      },
+      "revision": 11
+    },
+    {
+      "command": {
+        "type": "addModule",
+        "host": "front",
+        "kind": "custom",
+        "name": "Probe"
+      },
+      "revision": 12
+    },
+    {
+      "command": {
+        "type": "connectModule",
+        "module": "front-probe",
+        "slot": "uses",
+        "target": {
+          "tile": "store"
+        }
+      },
+      "revision": 13
+    },
+    {
+      "command": {
+        "type": "connectModule",
+        "module": "front-probe",
+        "slot": "uses",
+        "target": {
+          "tile": "hot"
+        }
+      },
+      "revision": 14
+    },
+    {
+      "command": {
+        "type": "connectModule",
+        "module": "front-probe",
+        "slot": "uses",
+        "target": {
+          "tile": "events"
+        }
+      },
+      "revision": 15
+    },
+    {
+      "command": {
+        "type": "connectModule",
+        "module": "front-probe",
+        "slot": "uses",
+        "target": {
+          "tile": "provider"
+        }
+      },
+      "revision": 16
+    },
+    {
+      "command": {
+        "type": "connectModule",
+        "module": "front-probe",
+        "slot": "uses",
+        "target": {
+          "tile": "identity"
+        }
+      },
+      "revision": 17
+    },
+    {
+      "command": {
+        "type": "addModule",
+        "host": "front",
+        "kind": "custom",
+        "name": "Internal grant"
+      },
+      "revision": 18
+    },
+    {
+      "command": {
+        "type": "connectModule",
+        "module": "front-internal-grant",
+        "slot": "uses",
+        "target": {
+          "tile": "store"
+        }
+      },
+      "revision": 19
+    },
+    {
+      "command": {
+        "type": "addModule",
+        "host": "tally",
+        "kind": "custom",
+        "name": "Count"
+      },
+      "revision": 20
+    },
+    {
+      "command": {
+        "type": "connectModule",
+        "module": "tally-count",
+        "slot": "uses",
+        "target": {
+          "tile": "events"
+        }
+      },
+      "revision": 21
+    },
+    {
+      "command": {
+        "type": "connectModule",
+        "module": "tally-count",
+        "slot": "uses",
+        "target": {
+          "tile": "tally-db"
+        }
+      },
+      "revision": 22
+    },
+    {
+      "command": {
+        "type": "editComponent",
+        "component": "front-sign-in",
+        "settings": {
+          "kind": "auth-guard",
+          "credential": "jwt",
+          "signIn": "optional"
+        }
+      },
+      "revision": 23
+    },
+    {
+      "command": {
+        "type": "setRunnableProcesses",
+        "on": true
+      },
+      "revision": 24
+    },
+    {
+      "command": {
+        "type": "edit",
+        "element": "events",
+        "settings": {
+          "kind": "queue",
+          "mode": "work-queue",
+          "provider": "google-cloud"
+        }
+      },
+      "refused": "provider has no installed, useful editable consumer for this target/value. Existing intent is preserved; explicitly requested custom behavior must be recorded as a generation gap."
+    },
+    {
+      "command": {
+        "type": "edit",
+        "element": "events",
+        "settings": {
+          "kind": "queue",
+          "mode": "topic",
+          "provider": "unspecified"
+        }
+      },
+      "refused": "mode has no installed, useful editable consumer for this target/value. Existing intent is preserved; explicitly requested custom behavior must be recorded as a generation gap."
+    }
+  ],
+  "blockers": []
+}

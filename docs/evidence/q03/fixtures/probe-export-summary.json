@@ -1,0 +1,469 @@
+{
+  "jeevesCommit": "59bfbc6b4c9cc149cc7760555cf753c7485c59d7",
+  "command": "pnpm --filter @jeeves/generator export:v2 <scratch>/fx/design.json <scratch>/fx/export",
+  "manifestSha256": "e7f34505865edff51621597cc5c7ecd5a1a6a6c81e2c4289258a37350ea8ed6b",
+  "reportSha256": "01df6f691b6bca9663ed39b7ae2618b9e068ef5cd2b87443e162573b131c3046",
+  "generator": {
+    "id": "jeeves-v2",
+    "version": "0.1.0-experimental.1"
+  },
+  "registrySha256": "08e0c945be87ff3218680027056660890be4e6dcacce4c32144c65ea33ad322d",
+  "runtime": {
+    "id": "local-runtime",
+    "sha256": "71dcdadd55b30121d87b5fbf89c77494ac56146bd6333a22e473c3ff4555eaec",
+    "version": "0.1.0"
+  },
+  "input": {
+    "normalizedInputSha256": "22577b5091486b509313015bb346cfdec0c50fbf7b44b75b5334d68e70ede968",
+    "sourceCanonicalSha256": "a3b6204fc40765cee51835caddbee17a653c10d6b4f827783424f50c19430505",
+    "sourceSha256": "a3b6204fc40765cee51835caddbee17a653c10d6b4f827783424f50c19430505"
+  },
+  "files": [
+    {
+      "path": ".dockerignore",
+      "ownership": "generated-scaffold",
+      "sha256": "d66d87fcdbe354c63e4d4e6bd9c8c6809d00ad7828e998314dd29754d11d97d3"
+    },
+    {
+      "path": ".gitignore",
+      "ownership": "generated-scaffold",
+      "sha256": "4f97f2038e8c1b0e1e21fab5f17c40a8d70bd6ca9ce90ed75c8cf158671c0c3e"
+    },
+    {
+      "path": ".jeeves/inputs/design.json",
+      "ownership": "generator-metadata",
+      "sha256": "a3b6204fc40765cee51835caddbee17a653c10d6b4f827783424f50c19430505"
+    },
+    {
+      "path": ".jeeves/normalized.json",
+      "ownership": "generator-metadata",
+      "sha256": "bc344333ed84e014f7811d615dd6d46a7666fed5fbf557103fd2b921e0aea82a"
+    },
+    {
+      "path": ".jeeves/report.json",
+      "ownership": "generator-metadata",
+      "sha256": "01df6f691b6bca9663ed39b7ae2618b9e068ef5cd2b87443e162573b131c3046"
+    },
+    {
+      "path": "Dockerfile",
+      "ownership": "generated-scaffold",
+      "sha256": "9548875e996686fcb905cfefb2296877ca96a57e3b24c49042bca21250570954"
+    },
+    {
+      "path": "README.md",
+      "ownership": "generated-scaffold",
+      "sha256": "0700e744547be48ccd5a90bda9ee1d88585e6d095842ea8cf7ef3441ba642088"
+    },
+    {
+      "path": "compose.yaml",
+      "ownership": "generated-scaffold",
+      "sha256": "75ddb5e7b0719bd298af851e73ffab57371d160921f1fdc810dab05c2d9afef6"
+    },
+    {
+      "path": "diagnostics/generation.json",
+      "ownership": "generated-scaffold",
+      "sha256": "bc344333ed84e014f7811d615dd6d46a7666fed5fbf557103fd2b921e0aea82a"
+    },
+    {
+      "path": "ffmpeg-os.lock",
+      "ownership": "generated-scaffold",
+      "sha256": "8ec109b1f0d8354d937debaa4f62b387c78d178c6236adc639c8e6183476382d"
+    },
+    {
+      "path": "infra/edge/nginx.conf",
+      "ownership": "generated-scaffold",
+      "sha256": "388597a1afba89ad9fbd782ddd48ae553a85b132f2f41460957713e7f8ec96e8"
+    },
+    {
+      "path": "infra/local.json",
+      "ownership": "generated-scaffold",
+      "sha256": "20686de1e85bd6996a1e00030126ce09cc6722b2783dd750a277d5a6ed6a2f4c"
+    },
+    {
+      "path": "infra/postgres/identity/000-foundation.sql",
+      "ownership": "generated-scaffold",
+      "sha256": "aae1cbd63f25d27e2b36ab1c9c892cc4f922bd5a27bb609b4378095ccba8addc"
+    },
+    {
+      "path": "infra/postgres/store/000-foundation.sql",
+      "ownership": "generated-scaffold",
+      "sha256": "aae1cbd63f25d27e2b36ab1c9c892cc4f922bd5a27bb609b4378095ccba8addc"
+    },
+    {
+      "path": "infra/postgres/store/modules/front-internal-grant.sql",
+      "ownership": "generated-extension",
+      "sha256": "1cd7a98161c024dc5103cb0ae8cc28690c9e6eec848de792a7393839b76e1842"
+    },
+    {
+      "path": "infra/postgres/store/modules/front-probe.sql",
+      "ownership": "generated-extension",
+      "sha256": "66380fc9e2409fe719ba743f2ca57f9ab3510afbb0b3cd86db8de2142a6adfd2"
+    },
+    {
+      "path": "infra/postgres/tally-db/000-foundation.sql",
+      "ownership": "generated-scaffold",
+      "sha256": "aae1cbd63f25d27e2b36ab1c9c892cc4f922bd5a27bb609b4378095ccba8addc"
+    },
+    {
+      "path": "infra/postgres/tally-db/modules/tally-count.sql",
+      "ownership": "generated-extension",
+      "sha256": "ce4d52de1435617f741e8a7273fc6326e7ba302679e210b9250bc8a6219d484a"
+    },
+    {
+      "path": "package.json",
+      "ownership": "generated-scaffold",
+      "sha256": "e078d8eb8ddd74c4b3ff25c17a0d0a653b2ac3bc373e621c4bc26a77c4bddb04"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "ownership": "generated-scaffold",
+      "sha256": "c37b660e00f7575436c71834fc61e104681c8097bc326c7d11b89b35337138bf"
+    },
+    {
+      "path": "scripts/bootstrap.mjs",
+      "ownership": "generated-scaffold",
+      "sha256": "ef789a3d8b6a6a8c0b2af5204edb4cbfcdd4b7ce78b968939df6937bd7d1e85f"
+    },
+    {
+      "path": "scripts/broker-init.mjs",
+      "ownership": "generated-scaffold",
+      "sha256": "1020b0814dbfceecac52a5ca31779075038983ea3140dec5b88ee6352c2a38a1"
+    },
+    {
+      "path": "scripts/common.mjs",
+      "ownership": "generated-scaffold",
+      "sha256": "5f6d9e022b40f2ba03e82614fd0bae1ae466381d48da20e575908fa59e5a7da8"
+    },
+    {
+      "path": "scripts/local.mjs",
+      "ownership": "generated-scaffold",
+      "sha256": "9942d264b5821185c4a34d8a582abb6b8c771ffd7e96a711ed3155777fcf215b"
+    },
+    {
+      "path": "scripts/migrate.mjs",
+      "ownership": "generated-scaffold",
+      "sha256": "fd311cf3b4a76e4f7109d02a700d0ad56be182cda3b6e7f52355ff173361ba03"
+    },
+    {
+      "path": "scripts/products.mjs",
+      "ownership": "generated-scaffold",
+      "sha256": "5a17661ac10f6337fa75d60ff078786f52d5117feb0601e69776f64e28b5d24f"
+    },
+    {
+      "path": "scripts/setup.mjs",
+      "ownership": "generated-scaffold",
+      "sha256": "754347229f08302ee2e7e628dfc9b98c83495e9c332289422b5d5b8f7ef82894"
+    },
+    {
+      "path": "scripts/status.mjs",
+      "ownership": "generated-scaffold",
+      "sha256": "75cb3793c37a5f535b1fda7c459a50d1ab71e8bab32474b6ca8adf195f3ef988"
+    },
+    {
+      "path": "scripts/storage-config.mjs",
+      "ownership": "generated-scaffold",
+      "sha256": "8bfa5ef31e1ac6b639b1391541dbf9892b4da1589679e2fcac1c8947f0505801"
+    },
+    {
+      "path": "src/features/application-bindings.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "e9d686f1c6afb7a91deb0aeb0a781e9a260f4722d843516942627e5094beaaee"
+    },
+    {
+      "path": "src/features/local-bindings.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "aa4cf85bb49971955c380bb04092c62670b313b0ae3070aa56b399811bdfec93"
+    },
+    {
+      "path": "src/features/service-resources.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "b6acc356399e613e78052a29de55ca6cc0e90edd253d64100d8a2bc7888e1a31"
+    },
+    {
+      "path": "src/modules/dependencies.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "c9629db44ce56025ccf32192120e94f45a65955dc60725e020a2908f76a4eb2e"
+    },
+    {
+      "path": "src/modules/entry.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "1e9280c466583eea0107f03aa1700b96f5cee761ee4692eda62651c46096041d"
+    },
+    {
+      "path": "src/modules/front/front-internal-grant.slots.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "eda4b25e97bd5df98a2786c9f99356967c31f91544c1de24013008f7e099a07a"
+    },
+    {
+      "path": "src/modules/front/front-internal-grant.ts",
+      "ownership": "generated-extension",
+      "sha256": "534669492402dab14ef0226feaab572e4a27e372328dca91b11156b78aab24ed"
+    },
+    {
+      "path": "src/modules/front/front-probe.slots.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "7849c3b37947b1bd9ada0edbcde49bf403a688fbeaf5e0e4cda5614efa753029"
+    },
+    {
+      "path": "src/modules/front/front-probe.ts",
+      "ownership": "generated-extension",
+      "sha256": "855ac22e35aab72c95122efa087ea640cec660542d03fff65f61c8f593516c64"
+    },
+    {
+      "path": "src/modules/tally/tally-count.slots.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "c83094763fc4bcaaa4e009e9da24345bddf645767a5016d0a6cce57b63a6a749"
+    },
+    {
+      "path": "src/modules/tally/tally-count.ts",
+      "ownership": "generated-extension",
+      "sha256": "ee3310a252263558991d1fe70cc1a7811b9e55afcadc1562137b0fb1d268bddc"
+    },
+    {
+      "path": "src/processes/front.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "c9729f171de2c6e2f00dff2eb2b8b9c4ca2c5401aef30e5cb1354a2a2bd7e97e"
+    },
+    {
+      "path": "src/processes/tally.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "4acb22ba0823aa6eb2ab2b52c79829cb2d61128fc06492336e474855ca2cd2b5"
+    },
+    {
+      "path": "src/runtime/admission.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "17de7157d83777e7281d8fe9b3069fed58597e35df6d37eacf959cca641b9f06"
+    },
+    {
+      "path": "src/runtime/amqp.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "b0251aab519c9b1ac5bac5d6bd1f6d011b3498eae002644d99c6af362064d0b3"
+    },
+    {
+      "path": "src/runtime/delivery.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "5a021f18c5936fe45f5873e6343a1c004fb0fac6baee216326075389b7e846eb"
+    },
+    {
+      "path": "src/runtime/http.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "a3144f33ff3791c342c33caac1fb08bb9872fc322a4f86b13a0a7d977eaf290b"
+    },
+    {
+      "path": "src/runtime/identity.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "ce012fad6b404d7482048886c640f9b4c24e6b3b68e8bac96b869a44599a4db7"
+    },
+    {
+      "path": "src/runtime/local.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "53429e097013bbf7dad6e581bf523f3035ec358652b9738d62f0b5a6ac310165"
+    },
+    {
+      "path": "src/runtime/module-clients.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "dd4cc356aa0e865d7d006ffea2620d0ba86f02fa1da205eadebcb2acd1e77147"
+    },
+    {
+      "path": "src/runtime/postgres.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "8bbe9e0df36bafa1f73a1bb0abd36aa30fcfd93cde3d1815ae5234840faae7fc"
+    },
+    {
+      "path": "src/runtime/process.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "505827525af0ed1f57a3c85ab3b9d1a8e0fd56638116c23f2e0b0a30734ef54b"
+    },
+    {
+      "path": "src/runtime/tile-guard.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "e983a9b57dff0b898242770016009b54dad4c0af724e85f3393e29f0dc7e98c1"
+    },
+    {
+      "path": "src/runtime/tile-http.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "cc48b02a0544016f2698b8fedad4ed3886e3e4f7068d37412363ac34f0396d0b"
+    },
+    {
+      "path": "src/runtime/tile-loop.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "338ce2478f335d4d69d1f76fdb28423c7d0645f706bb7595921c49cd74af639b"
+    },
+    {
+      "path": "src/runtime/tile-process.ts",
+      "ownership": "generated-scaffold",
+      "sha256": "80a485b77c8c29fbb1568181163b4ffb57bc101989962371451c88b666d1cfd7"
+    },
+    {
+      "path": "tsconfig.json",
+      "ownership": "generated-scaffold",
+      "sha256": "cb75a166099ee7fd34729d9a132a1858486436054003bd5ac936fa5378d0268d"
+    }
+  ],
+  "report": {
+    "applicationComplete": false,
+    "findings": 0,
+    "gaps": [
+      {
+        "id": "module-front-internal-grant",
+        "required": true,
+        "kind": null
+      },
+      {
+        "id": "module-front-probe",
+        "required": true,
+        "kind": null
+      },
+      {
+        "id": "module-tally-count",
+        "required": true,
+        "kind": null
+      }
+    ],
+    "processes": {
+      "runnable": true,
+      "tiles": [
+        {
+          "tile": "front",
+          "service": "app-front",
+          "shape": "http",
+          "exposure": "public",
+          "edgePath": null,
+          "routes": [
+            {
+              "answers": "200 once ready, 503 before and while draining",
+              "method": "GET",
+              "path": "/healthz"
+            },
+            {
+              "answers": "200 {signedIn, subject, username} for a signed-in caller or {signedIn: false} without a token; 401 SIGN_IN_REQUIRED for an invalid token",
+              "method": "GET",
+              "path": "/modules/front-sign-in/me"
+            },
+            {
+              "answers": "501 \"Not implemented: Probe\" until it is written",
+              "method": "ANY",
+              "path": "/modules/front-probe"
+            },
+            {
+              "answers": "501 \"Not implemented: Probe\" until it is written",
+              "method": "ANY",
+              "path": "/modules/front-probe/*"
+            },
+            {
+              "answers": "501 \"Not implemented: Internal grant\" until it is written",
+              "method": "ANY",
+              "path": "/modules/front-internal-grant"
+            },
+            {
+              "answers": "501 \"Not implemented: Internal grant\" until it is written",
+              "method": "ANY",
+              "path": "/modules/front-internal-grant/*"
+            }
+          ],
+          "loops": [],
+          "stores": [
+            {
+              "access": "publish",
+              "kind": "queue",
+              "modules": [
+                "front-probe"
+              ],
+              "name": "Events",
+              "provisioned": "RabbitMQ work queue events and its .failed",
+              "store": "events"
+            },
+            {
+              "access": "read-write",
+              "kind": "cache",
+              "modules": [
+                "front-probe"
+              ],
+              "name": "Hot",
+              "provisioned": "Valkey cache-hot with its password",
+              "store": "hot"
+            },
+            {
+              "access": "read-write",
+              "kind": "database",
+              "modules": [
+                "front-probe",
+                "front-internal-grant"
+              ],
+              "name": "Store",
+              "provisioned": "PostgreSQL database d_store, login r_store__front (CONNECT, USAGE on public; SELECT on published; its own tables in m_front_internal_grant, m_front_probe)",
+              "store": "store"
+            }
+          ]
+        },
+        {
+          "tile": "tally",
+          "service": "app-tally",
+          "shape": "worker",
+          "exposure": null,
+          "edgePath": null,
+          "routes": [],
+          "loops": [
+            {
+              "answers": "\"Not implemented: Count\" sends the message to events.failed (NOT_IMPLEMENTED) until it is written; other errors retry 5 times",
+              "module": "tally-count",
+              "queue": "events"
+            }
+          ],
+          "stores": [
+            {
+              "access": "consume",
+              "kind": "queue",
+              "modules": [
+                "tally-count"
+              ],
+              "name": "Events",
+              "provisioned": "RabbitMQ work queue events and its .failed",
+              "store": "events"
+            },
+            {
+              "access": "read-write",
+              "kind": "database",
+              "modules": [
+                "tally-count"
+              ],
+              "name": "Tally DB",
+              "provisioned": "PostgreSQL database d_tally_db, login r_tally_db__tally (CONNECT, USAGE on public; SELECT on published; its own tables in m_tally_count)",
+              "store": "tally-db"
+            }
+          ]
+        }
+      ]
+    },
+    "modules": [
+      {
+        "module": "front-sign-in",
+        "host": "front",
+        "kind": "auth-guard",
+        "status": "template",
+        "reason": null
+      },
+      {
+        "module": "front-probe",
+        "host": "front",
+        "kind": "custom",
+        "status": "stub",
+        "reason": "Your own logic: you write it."
+      },
+      {
+        "module": "front-internal-grant",
+        "host": "front",
+        "kind": "custom",
+        "status": "stub",
+        "reason": "Your own logic: you write it."
+      },
+      {
+        "module": "tally-count",
+        "host": "tally",
+        "kind": "custom",
+        "status": "stub",
+        "reason": "Your own logic: you write it."
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{"error":"Error: Broker unavailable","ms":0} http=503 total=0.001649s
+broker started 2026-11-14T02:14:13-06:00
+first 202 after start at attempt 5 (2026-11-14T02:14:20-06:00)
+## after
+/q03-probe-app-front-1 id=ca3e0e9bb59f started=2026-11-14T08:13:04.526188917Z restarts=0 status=running
+/q03-probe-app-tally-1 id=fab43d0c4b80 started=2026-11-14T08:13:04.010838112Z restarts=0 status=running
+Timeout: 60.0 seconds ...
+Listing queues for vhost / ...
+name	messages	consumers
+events	0	1
+events.failed	0	0
+app-front-1  | {"level":"info","event":"broker","tile":"front","what":"broker publish events","state":"available"}
+app-front-1  | {"event":"probe","tile":"front","level":"info","client":"events","kind":"queue","check":"open the broker and a confirm channel","result":"ok"}
+app-front-1  | {"level":"warn","event":"not-implemented","tile":"front","module":"front-probe","what":"Provider for Probe (an External API isn't provisioned locally)","route":"GET /modules/front-probe/*","action":"answered 501"}
+app-front-1  | {"level":"warn","event":"not-implemented","tile":"front","module":"front-probe","what":"Identity for Probe (an Identity isn't provisioned for stubs)","route":"GET /modules/front-probe/*","action":"answered 501"}
+app-front-1  | {"level":"error","event":"failure","tile":"front","what":"request POST /modules/front-probe/*","error":"Error: Request deadline exceeded; check status before retrying."}
+app-front-1  | {"level":"error","event":"failure","tile":"front","what":"request POST /modules/front-probe/*","error":"Error: Request deadline exceeded; check status before retrying."}
+app-front-1  | {"level":"error","event":"failure","tile":"front","what":"broker publish events","error":"Error: AMQP publisher unavailable"}
+app-front-1  | {"level":"info","event":"broker","tile":"front","what":"broker publish events","state":"available"}
+app-tally-1  | {"level":"info","event":"broker","tile":"tally","what":"broker consume events","state":"available"}
+app-tally-1  | {"level":"error","event":"failure","tile":"tally","what":"broker consume events","error":"Error: AMQP consumer unavailable"}
+app-tally-1  | {"level":"info","event":"broker","tile":"tally","what":"broker consume events","state":"available"}

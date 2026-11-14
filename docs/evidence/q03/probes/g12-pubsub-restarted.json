@@ -1,0 +1,10 @@
+{
+  "sdk": "6.3.2",
+  "phase": "restarted",
+  "publishAfterEmulatorRestart": {
+    "settled": "rejected",
+    "error": "5 5 NOT_FOUND: Topic not found",
+    "ms": 129
+  },
+  "topicsAfterRestart": []
+}

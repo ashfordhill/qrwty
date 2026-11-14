@@ -1,0 +1,3 @@
+app-front environment: {'OIDC_ISSUER': 'http://127.0.0.1:47922/realms/identity', 'OIDC_JWKS_URL': 'http://identity-identity:8080/realms/identity/protocol/openid-connect/certs', 'PROBE_OVERRIDE': 'from-compose-override'}
+app-front user: None restart: None
+(no -f or COMPOSE_FILE in the generated scripts)

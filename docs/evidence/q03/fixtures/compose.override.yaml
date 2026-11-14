@@ -1,0 +1,5 @@
+# Q03 probe: an application-owned file, not in the manifest. Does Compose merge it?
+services:
+  app-front:
+    environment:
+      PROBE_OVERRIDE: "from-compose-override"

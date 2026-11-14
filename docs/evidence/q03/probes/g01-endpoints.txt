@@ -1,0 +1,17 @@
+== front
+{"event":"probe","tile":"front","level":"error","client":"events","kind":"queue","check":"open the broker and a confirm channel","result":"failed","error":"Error: getaddrinfo ENOTFOUND local-broker"}
+{"level":"error","event":"startup-failed","error":"Error: Startup probe failed: queue events"}
+Application startup failed
+exit=1
+== tally
+{"event":"probe","tile":"tally","level":"error","client":"tally-db","kind":"database","check":"SELECT 1","result":"failed","error":"Error: getaddrinfo ENOTFOUND local-postgres"}
+{"level":"error","event":"startup-failed","error":"Error: Startup probe failed: database tally-db"}
+Application startup failed
+exit=1
+52:        hostname: "local-postgres",
+53:        port: 5432,
+74:    hostname: "local-broker",
+75:    port: 5672,
+102:        password: readSecret(`cache-${binding.cache}`),
+105:            host: `cache-${binding.cache}`,
+106:            port: 6379,

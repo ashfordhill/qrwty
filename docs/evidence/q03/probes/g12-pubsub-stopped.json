@@ -1,0 +1,13 @@
+{
+  "sdk": "6.3.2",
+  "phase": "stopped",
+  "defaultPublishWhileStopped": {
+    "settled": "pending after 20000 ms",
+    "ms": 20002
+  },
+  "boundedPublishWhileStopped": {
+    "settled": "rejected",
+    "error": "4 Total timeout of API google.pubsub.v1.Publisher exceeded 1500 milliseconds retrying error Error: 14 UNAVAILABLE: No connection established. Last error: Error: connect ECONNREFUSED 127.0.0.1:47941. R",
+    "ms": 1940
+  }
+}

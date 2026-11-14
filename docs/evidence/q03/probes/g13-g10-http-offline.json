@@ -1,0 +1,24 @@
+{
+  "rawBody": {
+    "status": 200,
+    "requestKeys": [
+      "body",
+      "caller",
+      "headers",
+      "method",
+      "path",
+      "query"
+    ],
+    "rawBytes": 57,
+    "reserializedBytes": 48,
+    "sameBytes": false,
+    "signatureOverRawEqualsSignatureOverReserialized": false
+  },
+  "setCookieArray": {
+    "status": 200,
+    "setCookie": [
+      "session=a; HttpOnly; Secure; Path=/",
+      "csrf=b; Secure; Path=/"
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+app-front-1  | {"level":"info","event":"broker","tile":"front","what":"broker publish events","state":"available"}
+app-front-1     | {"event":"probe","tile":"front","level":"info","client":"events","kind":"queue","check":"open the broker and a confirm channel","result":"ok"}
+app-front-1     | {"event":"probe","tile":"front","level":"info","client":"hot","kind":"cache","check":"PING","result":"ok"}
+app-front-1     | {"event":"probe","tile":"front","level":"info","client":"store","kind":"database","check":"SELECT 1","result":"ok"}
+app-front-1     | {"level":"info","event":"started","tile":"front","module":"front-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+app-front-1     | Application ready
+app-front-1     | {"level":"warn","event":"not-implemented","tile":"front","module":"front-probe","what":"Provider for Probe (an External API isn't provisioned locally)","route":"GET /modules/front-probe/*","action":"answered 501"}
+app-front-1     | {"level":"warn","event":"not-implemented","tile":"front","module":"front-probe","what":"Identity for Probe (an Identity isn't provisioned for stubs)","route":"GET /modules/front-probe/*","action":"answered 501"}
+app-front-1     | {"level":"error","event":"failure","tile":"front","what":"request POST /modules/front-probe/*","error":"Error: Request deadline exceeded; check status before retrying."}
+app-front-1     | {"level":"error","event":"failure","tile":"front","what":"request POST /modules/front-probe/*","error":"Error: Request deadline exceeded; check status before retrying."}
+app-front-1     | {"level":"error","event":"failure","tile":"front","what":"broker publish events","error":"Error: AMQP publisher unavailable"}
+app-front-1     | {"level":"info","event":"broker","tile":"front","what":"broker publish events","state":"available"}
+app-front-1     | {"level":"error","event":"failure","tile":"front","what":"request POST /modules/front-probe/*","error":"Error: Request deadline exceeded; check status before retrying."}
+app-front-1     | {"level":"error","event":"failure","tile":"front","what":"request POST /modules/front-probe/*","error":"Error: Request deadline exceeded; check status before retrying."}
+app-front-1     | {"level":"error","event":"failure","tile":"front","what":"broker publish events","error":"Error: AMQP publisher unavailable"}
+app-front-1     | {"level":"info","event":"broker","tile":"front","what":"broker publish events","state":"available"}
+app-front-1     | {"level":"info","event":"broker","tile":"front","what":"broker publish events","state":"available"}
+app-front-1     | {"event":"probe","tile":"front","level":"info","client":"events","kind":"queue","check":"open the broker and a confirm channel","result":"ok"}
+app-front-1     | {"event":"probe","tile":"front","level":"error","client":"hot","kind":"cache","check":"PING","result":"failed","error":"Error: Probe deadline (5 s)"}
+app-front-1     | {"level":"error","event":"startup-failed","error":"Error: Startup probe failed: cache hot"}
+app-front-1     | Application startup failed
+app-front-1     | {"level":"info","event":"broker","tile":"front","what":"broker publish events","state":"available"}
+app-front-1     | {"event":"probe","tile":"front","level":"info","client":"events","kind":"queue","check":"open the broker and a confirm channel","result":"ok"}
+app-front-1     | {"event":"probe","tile":"front","level":"info","client":"hot","kind":"cache","check":"PING","result":"ok"}
+app-front-1     | {"event":"probe","tile":"front","level":"info","client":"store","kind":"database","check":"SELECT 1","result":"ok"}
+app-front-1     | {"level":"info","event":"started","tile":"front","module":"front-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+app-front-1     | Application ready
+app-front-1     | {"level":"error","event":"failure","tile":"front","what":"broker publish events","error":"Error: AMQP publisher unavailable"}
+app-front-1     | {"level":"info","event":"broker","tile":"front","what":"broker publish events","state":"available"}
+app-front-1     | {"level":"error","event":"failure","tile":"front","what":"request GET /modules/front-probe/*","error":"Error: Request deadline exceeded; check status before retrying."}
+app-front-1     | {"level":"error","event":"failure","tile":"front","what":"request GET /modules/front-probe/*","error":"Error: The client is offline","suppressed":1}
+app-front-1     | {"level":"error","event":"failure","tile":"front","what":"request GET /modules/front-probe/*","error":"Error: Request deadline exceeded; check status before retrying."}
+app-front-1     | {"level":"info","event":"broker","tile":"front","what":"broker publish events","state":"available"}
+app-front-1     | {"event":"probe","tile":"front","level":"info","client":"events","kind":"queue","check":"open the broker and a confirm channel","result":"ok"}
+app-front-1     | {"event":"probe","tile":"front","level":"info","client":"hot","kind":"cache","check":"PING","result":"ok"}
+app-front-1     | {"event":"probe","tile":"front","level":"info","client":"store","kind":"database","check":"SELECT 1","result":"ok"}
+app-front-1          | {"level":"info","event":"started","tile":"front","module":"front-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+app-tally-1          | {"event":"probe","tile":"tally","level":"info","client":"tally-db","kind":"database","check":"SELECT 1","result":"ok"}
+app-tally-1          | {"level":"info","event":"broker","tile":"tally","what":"broker consume events","state":"available"}
+app-tally-1          | Application ready
+app-tally-1          | {"level":"error","event":"failure","tile":"tally","what":"broker consume events","error":"Error: AMQP consumer unavailable"}
+app-tally-1          | {"level":"info","event":"broker","tile":"tally","what":"broker consume events","state":"available"}
+app-tally-1          | {"level":"error","event":"failure","tile":"tally","what":"broker consume events","error":"Error: AMQP consumer unavailable"}
+app-tally-1          | {"level":"info","event":"broker","tile":"tally","what":"broker consume events","state":"available"}
+app-tally-1          | {"level":"error","event":"failure","tile":"tally","what":"broker consume events","error":"Error: AMQP consumer unavailable"}
+app-tally-1          | {"event":"probe","tile":"tally","level":"info","client":"tally-db","kind":"database","check":"SELECT 1","result":"ok"}
+app-tally-1          | {"level":"error","event":"startup-failed","error":"Error: getaddrinfo ENOTFOUND local-broker"}
+app-front-1          | Application ready
+app-tally-1          | Application startup failed
+app-tally-1          | {"event":"probe","tile":"tally","level":"info","client":"tally-db","kind":"database","check":"SELECT 1","result":"ok"}
+app-tally-1          | {"level":"info","event":"broker","tile":"tally","what":"broker consume events","state":"available"}
+app-tally-1          | Application ready

@@ -1,0 +1,31 @@
+## cache (Hot) stopped, then Front restarted 2026-11-14T02:15:16-06:00
+running process, cache down: /redirect and /publish
+ http=302
+{"messageId":"s-cache-down-running","ms":1} http=202
+front status=exited exit=1 restarts=0 health=unhealthy
+{"event":"probe","tile":"front","level":"info","client":"events","kind":"queue","check":"open the broker and a confirm channel","result":"ok"}
+{"event":"probe","tile":"front","level":"error","client":"hot","kind":"cache","check":"PING","result":"failed","error":"Error: Probe deadline (5 s)"}
+{"level":"error","event":"startup-failed","error":"Error: Startup probe failed: cache hot"}
+Application startup failed
+edge while Front is down:
+{"error":"UNAVAILABLE","message":"Service unavailable."} http=503
+cache back; Front without a manual start:
+front status=exited
+ http=503
+after docker start:
+ http=302
+## broker stopped, then Tally restarted 2026-11-14T02:16:48-06:00
+tally status=exited exit=1
+{"event":"probe","tile":"tally","level":"info","client":"tally-db","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"error","event":"startup-failed","error":"Error: getaddrinfo ENOTFOUND local-broker"}
+Application startup failed
+tally after manual start=running
+## worker hosting: listening sockets inside Tally (from /proc/net/tcp, state 0A = LISTEN)
+0B00007F:9D0F
+(end of list)
+-rw-r--r-- 1 root root 6 Nov 14 08:17 /tmp/application-ready
+0
+tally healthcheck=["CMD","node","-e","process.exit(require('node:fs').existsSync('/tmp/application-ready')?0:1)"]
+## front listening sockets
+00000000:0BB8
+0B00007F:AF2B

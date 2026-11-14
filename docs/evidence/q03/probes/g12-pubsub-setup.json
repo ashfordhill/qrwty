@@ -1,0 +1,44 @@
+{
+  "sdk": "6.3.2",
+  "phase": "setup",
+  "deadLetterSubscription": "created",
+  "publish": {
+    "serverMessageId": "1",
+    "ms": 16
+  },
+  "samePayloadAgain": {
+    "serverMessageId": "2",
+    "distinctServerIds": true
+  },
+  "deliveries": [
+    {
+      "id": "1",
+      "eventId": "e-1",
+      "deliveryAttempt": 0
+    },
+    {
+      "id": "2",
+      "eventId": "e-1",
+      "deliveryAttempt": 0
+    },
+    {
+      "id": "1",
+      "eventId": "e-1",
+      "deliveryAttempt": 0
+    }
+  ],
+  "deadLetterDeliveryAttempts": [
+    1,
+    1,
+    2,
+    2
+  ],
+  "subscriptionDefaults": {
+    "ackDeadlineSeconds": 10,
+    "messageRetentionDuration": {
+      "seconds": "604800",
+      "nanos": 0
+    },
+    "expirationPolicy": null
+  }
+}

@@ -1,0 +1,11 @@
+{"ms":1} http=200 0.002870s
+{"value":"v1","ms":0} http=200 0.001131s
+## cache paused (stalled) 2026-11-14T02:17:35-06:00
+{"error":"DEADLINE","message":"Request deadline exceeded; check status before retrying."} http=503 1.114413s
+{"value":"timeout","ms":100} http=200 0.113071s
+unpaused
+{"value":"v1","ms":0} http=200 0.001576s
+## cache stopped
+{"error":"UNAVAILABLE","message":"Service unavailable."} http=503 0.001445s
+{"value":"error Error: The client is offline","ms":0} http=200 0.001019s
+after start attempt 2: {"value":"v1","ms":1}
