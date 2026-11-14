@@ -48,15 +48,17 @@ Plan-level limits (5-hour and 7-day percentages) come from the status line.
 
 | Q03b | 1 | `ccaca7d` | repair of the Q03 review's findings | passed; R1/R3/R8/R9 applied; QG17–QG20 appended; assignable now: QG01, QG02, QG05, QG11, QG12, QG17, QG19 |
 
+| B00 | 1 | baseline `34bcf82` | not a review point | passed; `qrwty-baseline` created (local, no remote), pack v1.1 verified (`5ffae9f2…`), toolchain pinned (Node 24.21.0); usage imported into B's ledger (`6fb78a4`). **Environmental exposure:** every subagent starts in the coordinator's working directory (`/home/ash/github/jeeves`), so its starting context includes Jeeves `AGENTS.md`, Jeeves git status/log subjects and the coordinator's memory index; no A source, tests, IaC, evidence or prompts. The Agent tool offers no working-directory option; disclosed in B's handoff and to be listed as a comparison limitation. |
+
 ## Active attempt
 
-B00 next.
+QG01 (Jeeves) next.
 
 ## Queue (next eligible first)
 
-1. B00 — create `qrwty-baseline` from pack v1.1 (B).
-2. Jeeves QG batch, no owner decision needed: QG01, QG02, QG05, QG11, QG12 (amended), QG17, QG19,
-   each a fresh agent in Jeeves, then a Fable review of the batch. Pending owner decisions: QG03 (app owns package.json /
+1. Jeeves QG batch, no owner decision needed: QG01, QG02, QG05, QG11, QG12 (amended), QG17, QG19,
+   each a fresh agent in Jeeves (plan `docs/plans/qrwty-gaps/units.md`, Jeeves `c2c8127`), then QGR1 (Fable review).
+2. B01 — independent architecture (B), interleaved after QG01. Pending owner decisions: QG03 (app owns package.json /
    lockfile, or amend billing to node:crypto + fetch), QG06 (endpoints from environment, D1),
    QG04 (stub cache down at startup no longer stops the process), QG07 (Pub/Sub pins; the review says precedent settles it), QG18 (`Query read timeout` as unreachable), QG20 (env-configured HTTP client for External API/Identity tiles).
 3. Each arm adopts pack v1.1 (copy, verify, record the hash) before reporting any A/F/R/U row.
