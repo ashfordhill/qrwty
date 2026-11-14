@@ -1,0 +1,27 @@
+{
+  "capturedAt": "2026-11-14T22:56:47Z",
+  "zone": "qrwty.io",
+  "plan": "Free Website",
+  "zoneStatus": "active",
+  "note": "Sanitized: name, type, proxied for every record; content and TTL only for A/AAAA/CNAME (ttl 1 = automatic). The zone held no MX, TXT or CAA records. managedBy marks a read-only record that Cloudflare manages for a Workers Custom Domain.",
+  "recordCount": 1,
+  "records": [
+    {
+      "name": "qrwty.io",
+      "type": "AAAA",
+      "proxied": true,
+      "content": "100::",
+      "ttl": 1,
+      "managedBy": "workers-custom-domain"
+    }
+  ],
+  "workersCustomDomains": [
+    {
+      "hostname": "qrwty.io",
+      "service": "qrwty-platform",
+      "environment": "production",
+      "zone_name": "qrwty.io"
+    }
+  ],
+  "workerRoutes": []
+}

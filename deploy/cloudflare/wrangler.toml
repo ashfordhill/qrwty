@@ -1,0 +1,15 @@
+# qrwty.io edge Worker (Cloudflare Free plan). Deploy with ./deploy.sh, not by hand:
+# it sets BUILD_COMMIT and BUILT_AT and checks /healthz afterwards.
+# The account comes from CLOUDFLARE_ACCOUNT_ID in the environment, never from this file.
+name = "qrwty-edge"
+main = "src/index.ts"
+compatibility_date = "2026-10-23"
+
+# Only the Custom Domains below serve this Worker: no workers.dev or preview URLs.
+workers_dev = false
+preview_urls = false
+
+routes = [
+  { pattern = "qrwty.io", custom_domain = true },
+  { pattern = "www.qrwty.io", custom_domain = true },
+]

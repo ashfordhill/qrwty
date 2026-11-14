@@ -1,0 +1,162 @@
+# S01 deploy output (deploy/cloudflare/deploy.sh, 2026-11-14 UTC)
+# Trailing spaces from wrangler's binding table were stripped (deploy.sh now does this itself).
+#
+# Wrangler's output passes through scripts/scrub.mjs inside deploy.sh; no line held the token or
+# account ID (checked by value, from the environment). All runs used --allow-dirty because the
+# unit's files were not committed yet, so the commit reads <HEAD>-dirty with HEAD = 0ace46d.
+# Run 1 moved qrwty.io from Worker qrwty-platform and added www.qrwty.io. Runs 2-3: same code
+# (redeploy check). Run 4: Cache-Control no-transform (stops Cloudflare's Web Analytics beacon
+# injection). Run 5: final code (h1 centring). Run 6: final code again, the no-op redeploy check
+# (DNS, Custom Domains, routes and zone settings compared before and after: unchanged).
+
+## Run 1 (exit 0)
+$ deploy/cloudflare/deploy.sh --allow-dirty
+deploy.sh: warning: deploying a dirty tree as 0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty
+build: {"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T22:56:54Z"}
+4.156.0
+
+ ⛅️ wrangler 4.156.0 (update available 4.162.0)
+───────────────────────────────────────────────
+Total Upload: 4.72 KiB / gzip: 2.09 KiB
+Worker Startup Time: 2 ms
+Your Worker has access to the following bindings:
+Binding                            Resource
+env.BUILD_COMMIT ("(hidden)")      Environment Variable
+env.BUILT_AT ("(hidden)")          Environment Variable
+
+Uploaded qrwty-edge (0.60 sec)
+Deployed qrwty-edge triggers (5.12 sec)
+  qrwty.io (custom domain)
+  www.qrwty.io (custom domain)
+Current Version ID: af6202fd-85a2-4ab0-8418-396637de95af
+healthz ok: https://qrwty.io/healthz -> {"ok":true,"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T22:56:54Z"}
+
+## Without --allow-dirty on the dirty tree (refused before any deploy; exit 1)
+$ deploy/cloudflare/deploy.sh
+deploy.sh: the working tree is dirty; commit first or pass --allow-dirty:
+ M docs/benchmarks/runs/qrwty-r1-20261114/shared/events.jsonl
+?? deploy/cloudflare/.gitignore
+?? deploy/cloudflare/biome.json
+?? deploy/cloudflare/check-live.sh
+?? deploy/cloudflare/deploy.sh
+?? deploy/cloudflare/package.json
+?? deploy/cloudflare/pnpm-lock.yaml
+?? deploy/cloudflare/pnpm-workspace.yaml
+?? deploy/cloudflare/scripts/check-health.mjs
+?? deploy/cloudflare/scripts/scrub.mjs
+?? deploy/cloudflare/src/index.ts
+?? deploy/cloudflare/src/router.ts
+?? deploy/cloudflare/test/router.test.ts
+?? deploy/cloudflare/tsconfig.json
+?? deploy/cloudflare/vitest.config.ts
+?? deploy/cloudflare/wrangler.toml
+
+## Run 2 (exit 0)
+$ deploy/cloudflare/deploy.sh --allow-dirty
+deploy.sh: warning: deploying a dirty tree as 0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty
+build: {"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T22:58:17Z"}
+4.156.0
+
+ ⛅️ wrangler 4.156.0 (update available 4.162.0)
+───────────────────────────────────────────────
+Total Upload: 4.72 KiB / gzip: 2.09 KiB
+Worker Startup Time: 1 ms
+Your Worker has access to the following bindings:
+Binding                            Resource
+env.BUILD_COMMIT ("(hidden)")      Environment Variable
+env.BUILT_AT ("(hidden)")          Environment Variable
+
+Uploaded qrwty-edge (1.16 sec)
+Deployed qrwty-edge triggers (1.03 sec)
+  qrwty.io (custom domain)
+  www.qrwty.io (custom domain)
+Current Version ID: 2f3e0259-88a5-4c84-8875-b6fb35325049
+healthz ok: https://qrwty.io/healthz -> {"ok":true,"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T22:58:17Z"}
+
+## Run 3 (exit 0)
+$ deploy/cloudflare/deploy.sh --allow-dirty
+deploy.sh: warning: deploying a dirty tree as 0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty
+build: {"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T22:59:36Z"}
+4.156.0
+
+ ⛅️ wrangler 4.156.0 (update available 4.162.0)
+───────────────────────────────────────────────
+Total Upload: 4.72 KiB / gzip: 2.09 KiB
+Worker Startup Time: 1 ms
+Your Worker has access to the following bindings:
+Binding                            Resource
+env.BUILD_COMMIT ("(hidden)")      Environment Variable
+env.BUILT_AT ("(hidden)")          Environment Variable
+
+Uploaded qrwty-edge (1.15 sec)
+Deployed qrwty-edge triggers (1.00 sec)
+  qrwty.io (custom domain)
+  www.qrwty.io (custom domain)
+Current Version ID: cb52733c-6bb3-41c5-8ee9-a7c6b0c08116
+healthz ok: https://qrwty.io/healthz -> {"ok":true,"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T22:59:36Z"}
+
+## Run 4 (exit 0)
+$ deploy/cloudflare/deploy.sh --allow-dirty
+deploy.sh: warning: deploying a dirty tree as 0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty
+build: {"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T23:01:55Z"}
+4.156.0
+
+ ⛅️ wrangler 4.156.0 (update available 4.162.0)
+───────────────────────────────────────────────
+Total Upload: 4.84 KiB / gzip: 2.14 KiB
+Worker Startup Time: 2 ms
+Your Worker has access to the following bindings:
+Binding                            Resource
+env.BUILD_COMMIT ("(hidden)")      Environment Variable
+env.BUILT_AT ("(hidden)")          Environment Variable
+
+Uploaded qrwty-edge (1.24 sec)
+Deployed qrwty-edge triggers (1.00 sec)
+  qrwty.io (custom domain)
+  www.qrwty.io (custom domain)
+Current Version ID: 9d9e607e-8360-4271-881e-15b1a0e53ba6
+healthz ok: https://qrwty.io/healthz -> {"ok":true,"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T23:01:55Z"}
+
+## Run 5 (exit 0)
+$ deploy/cloudflare/deploy.sh --allow-dirty
+deploy.sh: warning: deploying a dirty tree as 0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty
+build: {"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T23:02:34Z"}
+4.156.0
+
+ ⛅️ wrangler 4.156.0 (update available 4.162.0)
+───────────────────────────────────────────────
+Total Upload: 4.86 KiB / gzip: 2.15 KiB
+Worker Startup Time: 1 ms
+Your Worker has access to the following bindings:
+Binding                            Resource
+env.BUILD_COMMIT ("(hidden)")      Environment Variable
+env.BUILT_AT ("(hidden)")          Environment Variable
+
+Uploaded qrwty-edge (1.20 sec)
+Deployed qrwty-edge triggers (1.13 sec)
+  qrwty.io (custom domain)
+  www.qrwty.io (custom domain)
+Current Version ID: a85e5a86-920d-487a-8795-7af3d8154a40
+healthz ok: https://qrwty.io/healthz -> {"ok":true,"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T23:02:34Z"}
+
+## Run 6 (exit 0)
+$ deploy/cloudflare/deploy.sh --allow-dirty
+deploy.sh: warning: deploying a dirty tree as 0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty
+build: {"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T23:02:41Z"}
+4.156.0
+
+ ⛅️ wrangler 4.156.0 (update available 4.162.0)
+───────────────────────────────────────────────
+Total Upload: 4.86 KiB / gzip: 2.15 KiB
+Worker Startup Time: 1 ms
+Your Worker has access to the following bindings:
+Binding                            Resource
+env.BUILD_COMMIT ("(hidden)")      Environment Variable
+env.BUILT_AT ("(hidden)")          Environment Variable
+
+Uploaded qrwty-edge (1.17 sec)
+Deployed qrwty-edge triggers (1.04 sec)
+  qrwty.io (custom domain)
+  www.qrwty.io (custom domain)
+Current Version ID: ee585e97-5cdc-439e-9f49-468f54bc6e9f
+healthz ok: https://qrwty.io/healthz -> {"ok":true,"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T23:02:41Z"}

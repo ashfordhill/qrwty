@@ -1,0 +1,28 @@
+{
+  "light": {
+    "status": 200,
+    "style": {
+      "background": "rgb(246, 246, 243)",
+      "color": "rgb(22, 24, 29)",
+      "title": "QRWTY"
+    },
+    "text": "QRWTY\n\nShort links that never lose a click. In development.\n\nbuild 0ace46d-dirty · 2026-11-14 23:02:41 UTC",
+    "requests": [
+      "GET https://qrwty.io/"
+    ],
+    "consoleMessages": []
+  },
+  "dark": {
+    "status": 200,
+    "style": {
+      "background": "rgb(17, 19, 24)",
+      "color": "rgb(236, 238, 242)",
+      "title": "QRWTY"
+    },
+    "text": "QRWTY\n\nShort links that never lose a click. In development.\n\nbuild 0ace46d-dirty · 2026-11-14 23:02:41 UTC",
+    "requests": [
+      "GET https://qrwty.io/"
+    ],
+    "consoleMessages": []
+  }
+}

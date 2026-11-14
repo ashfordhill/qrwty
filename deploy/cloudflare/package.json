@@ -1,0 +1,25 @@
+{
+	"name": "qrwty-cloudflare-edge",
+	"version": "0.1.0",
+	"private": true,
+	"description": "The qrwty.io Cloudflare Worker (Free plan): placeholder page, build info, www redirect",
+	"type": "module",
+	"packageManager": "pnpm@12.16.1",
+	"engines": {
+		"node": "24.21.0"
+	},
+	"scripts": {
+		"lint": "biome check .",
+		"format": "biome format --write .",
+		"typecheck": "tsc --noEmit -p tsconfig.json",
+		"test": "vitest run",
+		"check": "biome check . && tsc --noEmit -p tsconfig.json && vitest run",
+		"deploy": "./deploy.sh"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.6.4",
+		"typescript": "7.0.2",
+		"vitest": "5.0.0",
+		"wrangler": "4.156.0"
+	}
+}

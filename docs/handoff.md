@@ -568,3 +568,76 @@ pre-rewrite history is kept locally at `refs/backup/pre-rewrite-20261114`.
   this unit: pack v1.3, the ledger README, the N04 packet and this file's N03 entry (for the
   format); no arm source, evidence, review or handoff and no Jeeves file. The session started with
   foreign Jeeves context (`AGENTS.md`, Git status, a memory index); it was ignored.
+
+## S01: qrwty.io placeholder on Cloudflare, 2026-11-14
+
+- **Changed.** New `deploy/cloudflare/`: Worker `qrwty-edge` in TypeScript (`src/router.ts`, a
+  pure router; `src/index.ts`, the entry), `wrangler.toml` (Custom Domains `qrwty.io` and
+  `www.qrwty.io`; workers.dev and preview URLs off), `package.json` with exact pins (`wrangler`
+  4.156.0, published 2026-10-29; Biome 2.6.4, TypeScript 7.0.2, vitest 5.0.0), its own
+  `pnpm-lock.yaml` and `pnpm-workspace.yaml` (14-day minimum release age), router unit tests,
+  `deploy.sh`, `check-live.sh`, `scripts/scrub.mjs`, `scripts/check-health.mjs` and `README.md`.
+  The page shows `QRWTY`, the packet's line and a build line (short commit, UTC time), with inline
+  CSS and light and dark themes. `/healthz` returns `{"ok":true,"commit","builtAt"}`; `/build.json`
+  returns the build object `{"commit","builtAt"}` (`/healthz` is that object plus `ok`). Other
+  paths get a small HTML 404, `HEAD` is answered like `GET`, and other methods get 405.
+  `www.qrwty.io` answers 301 to the apex with the same path and query. Every response carries the
+  packet's four headers, no HSTS, and `no-transform` in `Cache-Control` (see findings).
+  `deploy.sh` writes `.build/build.json` (gitignored). It refuses a dirty tree (tracked changes
+  anywhere, or untracked files under `deploy/cloudflare`) unless given `--allow-dirty`, which
+  deploys the commit as `<sha>-dirty`. It then installs from the lockfile, runs `wrangler deploy
+  --var BUILD_COMMIT:… --var BUILT_AT:…` and polls `/healthz` until both values match. The root
+  README gains one line. Evidence is in `docs/evidence/s01/`.
+- **Cloudflare state.** `qrwty.io` was already a Workers Custom Domain of Worker `qrwty-platform`,
+  an earlier landing page titled "Qrwty | Beautiful, Ownable QR Infrastructure". The zone held only
+  that domain's managed `AAAA 100::` record, with no MX, TXT or CAA records. The packet authorizes
+  replacing a blocking apex record, so the first deploy moved the hostname to `qrwty-edge`:
+  `wrangler deploy` overrides without asking when there is no TTY. It also added `www.qrwty.io`.
+  Cloudflare manages both `AAAA 100::` records and issued a certificate for both names. Neither the
+  `qrwty-platform` Worker nor any zone setting changed. `docs/evidence/s01/rollback.md` restores
+  the old state (not executed).
+- **Checked.** `pnpm check`: Biome, TypeScript and 14/14 vitest tests pass, also in a fresh copy
+  after `pnpm install --frozen-lockfile`. There were six deploys from the dirty tree; runs 2–3 and
+  6 redeployed unchanged code. Around run 6 the DNS records, Custom Domains, routes and zone
+  settings were identical before and after. A run without `--allow-dirty` refused before
+  deploying. `check-live.sh` passed every check against run 6:
+  - `/` returns 200 with the page and headers;
+  - `/healthz` and `/build.json` report `0ace46d…-dirty` with the run's build time;
+  - `/x` returns a 404;
+  - `www.qrwty.io/x` returns 301 to `https://qrwty.io/x`, and the query is kept;
+  - `openssl` verifies the certificate (Google Trust Services WE1) for both names.
+  In headless Chromium, the light and dark pages each make one request and log nothing to the
+  console. `git diff --check` is clean. A by-value secret scan and a credential-shape scan come up
+  clean.
+- **Findings.**
+  1. **Web Analytics beacon.** For browser-like requests, Cloudflare's automatic Web Analytics
+     injected a `static.cloudflareinsights.com` beacon `<script>` into the HTML. The CSP blocked
+     it, and plain curl missed it. `no-transform` on every response stops the injection without
+     any zone change, and `check-live.sh` now fetches HTML with browser headers.
+  2. **Edge headers.** Cloudflare adds `nel`/`report-to` itself.
+  3. **Plain HTTP.** `http://qrwty.io/` answers 200, because Always Use HTTPS is off; this
+     belongs to Q13.
+  4. **Local resolver.** This machine's WSL resolver cached `www`'s old NXDOMAIN, so
+     `check-live.sh` falls back to DNS-over-HTTPS with `--resolve`, and says so.
+  5. **Wrangler's debug log.** It wrote the account ID (in API URLs) to
+     `~/.config/.wrangler/logs/` during runs 1–2. Those two files were scrubbed in place, and
+     `deploy.sh` now keeps only a scrubbed log in `deploy/cloudflare/.wrangler/logs/`. The token
+     was never written anywhere.
+- **Differences from the packet.**
+  1. **Ledger phase.** The packet's phase `deployment` isn't in the schema's enum, so the attempt
+     (`shared-0538`) is recorded as `cloud`.
+  2. **Dirty deploys.** These report `<sha>-dirty` rather than a bare SHA.
+  3. **Additions.** `check-live.sh`, `HEAD`/405 handling and `no-transform` were added.
+- **Next.** After this commit the worker ran `deploy.sh` from the clean tree, so that `/healthz`
+  shows the S01 commit. That result is in the attempt's return and ledger update, because a
+  commit can't hold its own hash.
+  - **Later units:** commit, then run `deploy/cloudflare/deploy.sh`, then
+    `deploy/cloudflare/check-live.sh <sha>`. A's Q12a/Q13 extend `src/router.ts` and this Worker.
+    `deploy.sh` needs Node 22+ (it falls back to nvm's 24.21.0) and pnpm 12.16.1.
+  - **Owner choices:** keep or turn off the zone's Web Analytics site; Always Use HTTPS and HSTS
+    at Q13; keep or delete the now-unrouted `qrwty-platform` Worker.
+  - **Read for this unit:** the packet, `AGENTS.md`, owner decisions §1, §2 and §10, the ledger
+    README and this file's N04 entry. No arm source, nothing in qrwty-baseline and no Jeeves file
+    was read.
+  - **Foreign context:** the session started with foreign Jeeves context (`AGENTS.md`, Git
+    status, a memory index); it was ignored.

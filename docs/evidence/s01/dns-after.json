@@ -1,0 +1,52 @@
+{
+  "capturedAt": "2026-11-14T23:02:50Z",
+  "zone": "qrwty.io",
+  "plan": "Free Website",
+  "zoneStatus": "active",
+  "note": "Sanitized as dns-before.json. Both AAAA 100:: records are read-only records that Cloudflare manages for the Workers Custom Domains; they are created and removed with the Custom Domain, not edited directly. Identical before and after the sixth deploy.sh run (the no-op redeploy check).",
+  "recordCount": 2,
+  "records": [
+    {
+      "name": "qrwty.io",
+      "type": "AAAA",
+      "proxied": true,
+      "content": "100::",
+      "ttl": 1,
+      "managedBy": "workers-custom-domain"
+    },
+    {
+      "name": "www.qrwty.io",
+      "type": "AAAA",
+      "proxied": true,
+      "content": "100::",
+      "ttl": 1,
+      "managedBy": "workers-custom-domain"
+    }
+  ],
+  "workersCustomDomains": [
+    {
+      "hostname": "qrwty.io",
+      "service": "qrwty-edge",
+      "environment": "production",
+      "zone_name": "qrwty.io"
+    },
+    {
+      "hostname": "www.qrwty.io",
+      "service": "qrwty-edge",
+      "environment": "production",
+      "zone_name": "qrwty.io"
+    }
+  ],
+  "workerRoutes": [],
+  "changes": [
+    {
+      "hostname": "qrwty.io",
+      "change": "Workers Custom Domain moved from Worker qrwty-platform to Worker qrwty-edge (wrangler deploy, override_existing_origin). The managed AAAA 100:: proxied record stayed; the zone's DNS record list did not change for the apex."
+    },
+    {
+      "hostname": "www.qrwty.io",
+      "change": "New Workers Custom Domain on Worker qrwty-edge; Cloudflare created its managed AAAA 100:: proxied record. There was no www record before."
+    }
+  ],
+  "untouched": "No MX, TXT, CAA or other record existed or was changed. Zone settings (ssl full, always_use_https off, HSTS off, min TLS 1.0, automatic HTTPS rewrites on) were read before and after and are unchanged. The Worker qrwty-platform itself was not changed or deleted."
+}

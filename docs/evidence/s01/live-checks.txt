@@ -1,0 +1,60 @@
+# deploy/cloudflare/check-live.sh output, 2026-11-14 UTC
+# Trailing spaces at the end of the TLS lines were stripped (check-live.sh now does this itself).
+
+## After run 3, with check-live.sh fetching HTML like a browser (fails: Cloudflare injected its beacon script)
+note  www.qrwty.io: system resolver has no answer yet; using DoH address 172.67.214.172
+PASS  https://qrwty.io/ -> 200 text/html, QRWTY page with build line: 0ace46d-dirty · 2026-11-14 22:59:36 UTC
+PASS  https://qrwty.io/: security headers present, no HSTS
+FAIL  https://qrwty.io/: page references an external resource: <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce70182
+PASS  https://qrwty.io/healthz -> 200 {"ok":true,"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T22:59:36Z"}
+PASS  https://qrwty.io/build.json -> 200 {"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T22:59:36Z"}
+PASS  https://qrwty.io/healthz: security headers present, no HSTS
+PASS  https://qrwty.io/build.json: security headers present, no HSTS
+FAIL  https://qrwty.io/x -> 404 text/html; charset=utf-8
+PASS  https://qrwty.io/x: security headers present, no HSTS
+PASS  https://www.qrwty.io/x -> 301 Location: https://qrwty.io/x
+PASS  https://www.qrwty.io/x: security headers present, no HSTS
+PASS  https://www.qrwty.io/a/b?c=1 -> 301 Location: https://qrwty.io/a/b?c=1
+PASS  TLS qrwty.io: verified; subject=CN = qrwty.io issuer=C = US, O = Google Trust Services, CN = WE1 notBefore=Nov 14 21:59:24 2026 GMT notAfter=Feb 12 22:59:21 2027 GMT X509v3 Subject Alternative Name: DNS:qrwty.io, DNS:www.qrwty.io, DNS:*.www.qrwty.io
+PASS  TLS www.qrwty.io: verified; subject=CN = qrwty.io issuer=C = US, O = Google Trust Services, CN = WE1 notBefore=Nov 14 21:59:24 2026 GMT notAfter=Feb 12 22:59:21 2027 GMT X509v3 Subject Alternative Name: DNS:qrwty.io, DNS:www.qrwty.io, DNS:*.www.qrwty.io
+
+2 check(s) failed
+
+## After run 4 (Cache-Control no-transform)
+note  www.qrwty.io: system resolver has no answer yet; using DoH address 104.21.37.229
+PASS  https://qrwty.io/ -> 200 text/html, QRWTY page with build line: 0ace46d-dirty · 2026-11-14 23:01:55 UTC
+PASS  https://qrwty.io/: security headers present, no HSTS
+PASS  https://qrwty.io/ (browser request): no scripts, links, imports or absolute URLs in the page
+PASS  https://qrwty.io/healthz -> 200 {"ok":true,"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T23:01:55Z"}
+PASS  https://qrwty.io/build.json -> 200 {"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T23:01:55Z"}
+PASS  https://qrwty.io/healthz: security headers present, no HSTS
+PASS  https://qrwty.io/build.json: security headers present, no HSTS
+PASS  https://qrwty.io/x -> 404 text/html, no script (1146 bytes)
+PASS  https://qrwty.io/x: security headers present, no HSTS
+PASS  https://www.qrwty.io/x -> 301 Location: https://qrwty.io/x
+PASS  https://www.qrwty.io/x: security headers present, no HSTS
+PASS  https://www.qrwty.io/a/b?c=1 -> 301 Location: https://qrwty.io/a/b?c=1
+PASS  TLS qrwty.io: verified; subject=CN = qrwty.io issuer=C = US, O = Google Trust Services, CN = WE1 notBefore=Nov 14 21:59:24 2026 GMT notAfter=Feb 12 22:59:21 2027 GMT X509v3 Subject Alternative Name: DNS:qrwty.io, DNS:www.qrwty.io, DNS:*.www.qrwty.io
+PASS  TLS www.qrwty.io: verified; subject=CN = qrwty.io issuer=C = US, O = Google Trust Services, CN = WE1 notBefore=Nov 14 21:59:24 2026 GMT notAfter=Feb 12 22:59:21 2027 GMT X509v3 Subject Alternative Name: DNS:qrwty.io, DNS:www.qrwty.io, DNS:*.www.qrwty.io
+
+all checks passed
+
+## After run 6 (final code, no-op redeploy)
+$ deploy/cloudflare/check-live.sh 0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty
+note  www.qrwty.io: system resolver has no answer yet; using DoH address 172.67.214.172
+PASS  https://qrwty.io/ -> 200 text/html, QRWTY page with build line: 0ace46d-dirty · 2026-11-14 23:02:41 UTC
+PASS  https://qrwty.io/: security headers present, no HSTS
+PASS  https://qrwty.io/ (browser request): no scripts, links, imports or absolute URLs in the page
+PASS  https://qrwty.io/healthz -> 200 {"ok":true,"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T23:02:41Z"}
+PASS  https://qrwty.io/build.json -> 200 {"commit":"0ace46d94d8bc73fa93e59b8b3143f13f07a2a7d-dirty","builtAt":"2026-11-14T23:02:41Z"}
+PASS  https://qrwty.io/healthz: security headers present, no HSTS
+PASS  https://qrwty.io/build.json: security headers present, no HSTS
+PASS  https://qrwty.io/x -> 404 text/html, no script (1164 bytes)
+PASS  https://qrwty.io/x: security headers present, no HSTS
+PASS  https://www.qrwty.io/x -> 301 Location: https://qrwty.io/x
+PASS  https://www.qrwty.io/x: security headers present, no HSTS
+PASS  https://www.qrwty.io/a/b?c=1 -> 301 Location: https://qrwty.io/a/b?c=1
+PASS  TLS qrwty.io: verified; subject=CN = qrwty.io issuer=C = US, O = Google Trust Services, CN = WE1 notBefore=Nov 14 21:59:24 2026 GMT notAfter=Feb 12 22:59:21 2027 GMT X509v3 Subject Alternative Name: DNS:qrwty.io, DNS:www.qrwty.io, DNS:*.www.qrwty.io
+PASS  TLS www.qrwty.io: verified; subject=CN = qrwty.io issuer=C = US, O = Google Trust Services, CN = WE1 notBefore=Nov 14 21:59:24 2026 GMT notAfter=Feb 12 22:59:21 2027 GMT X509v3 Subject Alternative Name: DNS:qrwty.io, DNS:www.qrwty.io, DNS:*.www.qrwty.io
+
+all checks passed

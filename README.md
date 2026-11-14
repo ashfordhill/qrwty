@@ -56,6 +56,8 @@ application phase saves the architecture in Jeeves before generating into this r
 The saved Jeeves diagram and its as-found export are linked below. The Excalidraw drawing after
 them is a proposed explanation, not a saved Jeeves diagram or runtime verification.
 
+**Live site:** [qrwty.io](https://qrwty.io) serves a placeholder from a Cloudflare Worker (Free plan); redeploy with `deploy/cloudflare/deploy.sh` ([details](deploy/cloudflare/README.md)).
+
 The [local-to-cloud contract](docs/plans/production-build/local-to-cloud.md) requires production
 containers, real GCP adapters, migrations and infrastructure definitions during the local build.
 Later deployment should promote the same artifacts through configuration, secrets and provisioning.

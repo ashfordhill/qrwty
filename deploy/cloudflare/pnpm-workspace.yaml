@@ -1,0 +1,8 @@
+# deploy/cloudflare is its own workspace root, with its own lockfile.
+# Every resolved package, direct or transitive, must be at least 14 days old (20160 minutes).
+minimumReleaseAge: 20160
+# esbuild's and workerd's install scripts only check or relink their prebuilt binaries;
+# wrangler deploy bundles through esbuild's platform package without them.
+allowBuilds:
+  esbuild: false
+  workerd: false
