@@ -1,0 +1,75 @@
+# Packet template for Jeeves QG units (QRWTY arm A, template development)
+
+The coordinator fills `<QGnn>`, `<title>`, `<commit name>` and the HEADs, saves the result as
+`QGnn-a<n>.md` beside this file, and gives it to a fresh worker.
+
+---
+
+You are the agent for unit **<QGnn> — <title>** of the Jeeves plan `docs/plans/qrwty-gaps/units.md`
+(QRWTY-driven generator gaps). Work in `/home/ash/github/jeeves`, on `main`, in that primary checkout.
+Do only <QGnn>, commit it, and stop. This is QRWTY run `qrwty-r1-20261114`, arm A, template development;
+the coordinator records your usage.
+
+**Read first, in this order** (the plan's Rule 1):
+1. `AGENTS.md`. It names this plan as active.
+2. The last three entries of `docs/handoff.md`.
+3. `docs/plans/qrwty-gaps/units.md`: the batch-1 header, then Order and status, Why, Decisions,
+   Not in this plan, Rules for every unit and Regeneration proof.
+4. The production foundations plan's Rules for every unit 2–8
+   (`docs/plans/production-foundations/units.md`), with this plan's changes. Rule 7 covers pins.
+5. Your unit's section, **<QGnn>**. Do not read or start another QG unit.
+
+The regeneration fixtures are in `docs/plans/qrwty-gaps/fixtures/`:
+- `probe-design.json` (SHA-256 `a3b6204f…0505`);
+- `qrwty-r83.json`;
+- `app-code/`, the probe's stub bodies and product SQL.
+
+You may read the QRWTY evidence the brief cites (`/home/ash/github/qrwty/docs/evidence/q03/`,
+`/home/ash/github/qrwty/docs/evidence/q01/`). Write nothing in qrwty.
+
+**Follow the rules exactly.** In particular:
+- **Stop rather than invent.** If the code differs in a small way, follow the unit's Goal and
+  Invariants and record the difference. If a step can't be done, or the regeneration proof or pins
+  change any path outside the unit's Emitted output list (plus `.jeeves/manifest.json` and
+  `.jeeves/report.json`), stop as in Rule 2. Write a `<QGnn>: blocked` handoff entry, commit only
+  `docs/handoff.md`, and end.
+- **Generated files:** never hand-edit a generated file. You change templates, generator source,
+  tests, pins and docs.
+- **New tests:** say how many of your new tests fail on HEAD's templates. Use a scratch copy and
+  delete it afterwards.
+- **Checks:** run `pnpm check`, `pnpm test:e2e` and the web build, then the Docker suites your unit
+  names in their own phase, and the regeneration proof.
+- **Finish (Rule 9):** append a handoff entry titled `<QGnn>: <title>`. Its **Noticed** section says
+  the unit is QRWTY-driven (Q03). Make one local commit named `<commit name>`. No `HUMAN_FEEDBACK`
+  line. Don't push.
+
+**Other people's work.** These stay untouched and unstaged:
+- `.jeeves-feedback/`;
+- the `Zone.Identifier` files;
+- the mode changes on `jeeves/scripts/e2e-docker.sh` and
+  `docs/plans/production-foundations/evidence/pf13/f3-catch.sh`;
+- anything else the owner has modified.
+
+Stage by path only. Never run `git add -A`, `git add .`, `git stash`, `git clean` or
+`git reset --hard`. Don't rewrite or amend any commit but your own.
+
+**Environment.**
+- Run `export PATH=$HOME/.nvm/versions/node/v24.21.0/bin:$PATH`, and run `pnpm` from the root.
+- Never stop, restart or use the owner's dev servers (4300/4310) or the `jeeves` database. Never
+  touch the owner's QRWTY project.
+- **Docker:** create only resources scoped to your run, and remove them by exact name, image tags
+  included. Never prune. Never touch `jeeves-postgres-1` or other repositories' containers.
+  Compare the inventory before and after.
+- **Secrets:** never read `~/.jeeves/config.json`, `~/.codex`, `~/.config/qrwty/` or any secret.
+  Never write a credential-shaped string; build test values at runtime.
+- **Formatting and tests:** format only with `pnpm format`. Never weaken a test.
+- **The e2e database:** the `jeeves_e2e` database holds two older projects; leave them alone.
+- **Process:** don't spawn subagents, and leave no background processes, stacks or containers
+  running.
+
+**When you finish,** reply briefly with:
+- the commit hash and subject (or "blocked" and why);
+- each check and suite, with counts;
+- how many new tests fail on HEAD;
+- every changed pin and regeneration path;
+- anything the review or the owner must know.
