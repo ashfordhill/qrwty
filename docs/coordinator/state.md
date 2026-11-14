@@ -34,31 +34,20 @@ Plan-level limits (5-hour and 7-day percentages) come from the status line.
 | Unit | Attempt | Commit | Review | Notes |
 | --- | --- | --- | --- | --- |
 | (owner decisions) | — | `9c19c1e` | — | pushed |
-| Q00 | 1 | `37f9ff0` | not a review point | passed 11/11 checks; pack v1 `MANIFEST.json` sha256 `834ff752…5736`; usage imported (71 requests, `claude-opus-5-5`, coverage reported) |
 
 ## Active attempt
 
-None (Q00 accepted 2026-11-14 ~06:00Z).
+None yet.
 
 ## Queue (next eligible first)
 
-1. Q01 — build the backend diagram in Jeeves (A). The Jeeves checkout is free (no active plan).
-2. B00 — create `qrwty-baseline` from the frozen pack (B).
-3. N01 — shared neutral oracle tooling as pack v1.1 (proposed by Q00); before any acceptance row
-   is reported as passed and before either arm uses it.
-4. Then A: Q02 → Q03 (Fable review) → gap units → Q04 → Q05 (Fable review) …; B: B01 → … interleaved.
+1. Q00 — freeze the product and experiment (shared).
+2. Then, per the coordinator prompt's §5, with the owner decisions: A's Q01→Q02→Q03 (needs the
+   Jeeves checkout free) and B's B00→… interleaved, one worker at a time.
 
 ## Owner decisions and pending owner input
 
-- See `owner-decisions-2026-11-13.md`.
-- Q00's choices the owner may want to confirm (not blocking): Web Risk as reputation provider;
-  HTTP contract details; `QRWTY-Click-Event` header; quota numbers (free 5 links/7 days/1 export,
-  paid 50/90/20, guest 10/min); 7-day session with 24-hour idle; Q11 assets charged to shared.
-- Coordinator decisions (owner may override): B's staging host will be `b.qrwty.io` (A at the
-  apex), within the owner's qrwty.io DNS authorization; B's GCP resources are `qrwtyb-`-prefixed in
-  the same trial project unless the owner creates a second project. Decide finally at B08a.
-- Toolchain: Q00 pinned Node 24.22.2 (machine default is 18.19.1; Jeeves uses 24.21.0). Q01/Q02
-  record the generator's actual pins; if they differ, issue pack v1.1 before B02.
+- See `owner-decisions-2026-11-13.md`. Nothing pending from the owner at dispatch of Q00.
 
 ## Deferred / not run
 
