@@ -453,3 +453,13 @@ QG11, QG12, QG17 and QG19 can be assigned now.
   outside those four files). The adaptation is not part of the pack: `verify_pack.py` is the check.
   The ledger now needs the `git` CLI for R12's history check. `commits.after` of `shared-0248` is
   left to the coordinator.
+
+## 2026-11-14 — Coordinator: history rewrite to clear GitHub push protection
+
+The owner chose to rewrite the 31 unpushed commits. Five made-up Stripe-key-shaped test literals
+in four oracle files of packs v1.1 and v1.2 are now string concatenations (same runtime values).
+The old-to-new commit map, the reason and the consequences are in
+[docs/coordinator/history-rewrite-2026-11-14.md](coordinator/history-rewrite-2026-11-14.md). Those
+four files no longer match the v1.1/v1.2 manifests; pack v1.3 (N03) supersedes both. The
+pre-rewrite history is kept locally at `refs/backup/pre-rewrite-20261114`.
+**Checks.** A scan of every commit being pushed found no credential-shaped string; ledger validate OK.
