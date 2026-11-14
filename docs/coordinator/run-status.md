@@ -106,3 +106,4 @@ QG12 running; then QG11, QGR1, B04c, B04b, N03, batch 2 (QG03, QG04, QG06–QG10
 
 - History rewrite to clear push protection (done, `docs/coordinator/history-rewrite-2026-11-14.md`).
 - QG03, QG06, QG04, QG18, QG20: all yes (Jeeves plan batch 2, `3a0cee3`).
+- **Two lanes (owner, 2026-11-14 ~11:30 CST):** lane 1 = Jeeves QG units then A (qrwty); lane 2 = B (qrwty-baseline). One agent per repository at a time; N03 and Q11 slot into whichever lane is free. Overlapping work is recorded with wall time and agent time separately (comparison.md). This overrides the coordinator prompt's 'one child at a time'.
