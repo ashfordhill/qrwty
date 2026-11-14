@@ -1,5 +1,9 @@
 # Independent build without Jeeves
 
+> **Amended by the [owner decisions of 2026-11-13](owner-decisions-2026-11-13.md)** (cloud within the GCP
+> trial and Cloudflare free plan, Stripe test mode, both UI skins, Fable reviews, coordinator push).
+> Where they conflict with this file, the decisions win.
+
 This is the second execution plan, not an instruction to copy the assisted app. The owner assigns
 one B unit at a time in a fresh baseline context using the frozen neutral experiment pack. Follow
 comparison.md for isolation, equal model/tool budgets, all-attempt usage and evidence. No unit has

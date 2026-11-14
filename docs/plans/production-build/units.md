@@ -1,5 +1,9 @@
 # Sequential Jeeves-assisted execution units
 
+> **Amended by the [owner decisions of 2026-11-13](owner-decisions-2026-11-13.md)** (cloud within the GCP
+> trial and Cloudflare free plan, Stripe test mode, both UI skins, Fable reviews, coordinator push).
+> Where they conflict with this file, the decisions win.
+
 Status: proposed. Execute one assigned unit, commit it and stop. No application unit has run.
 The owner/coordinator selects the next eligible unit. Read QRWTY `AGENTS.md`, latest handoff,
 plan decisions, product/acceptance contracts and your unit. Recheck actual HEAD/status first.

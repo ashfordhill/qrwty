@@ -1,5 +1,9 @@
 # QRWTY sequential build coordinator prompt
 
+> **Amended by the [owner decisions of 2026-11-13](owner-decisions-2026-11-13.md)** (cloud within the GCP
+> trial and Cloudflare free plan, Stripe test mode, both UI skins, Fable reviews, coordinator push).
+> Where they conflict with this file, the decisions win.
+
 Give this document to the execution coordinator when starting the build. Preparing this prompt
 does not start the build. Read [readiness](readiness.md) for the inspected starting conditions;
 the coordinator must recheck them because other agents are working in Jeeves.

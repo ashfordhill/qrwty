@@ -143,3 +143,16 @@ was run for this documentation-only unit; no Jeeves source or diagram asset chan
 **Next.** Give the saved prompt to the execution coordinator. It starts Q00 and proceeds through
 eligible local work; it must not copy its whole A/Jeeves-aware context to baseline workers.
 No cloud spending, app creation or measurement result was implied by preparing this prompt.
+
+## 2026-11-13 — Coordinator: owner decisions before Q00
+
+**What changed.** Before the run began, the owner gave the coordinator decisions that amend the
+plan. They are recorded in [owner-decisions-2026-11-13.md](plans/production-build/owner-decisions-2026-11-13.md):
+cloud within the GCP free trial (project, billing and gcloud credentials checked), Cloudflare free
+plan on `qrwty.io` (token verified, zone active), Stripe test mode (`livemode=false` checked),
+secrets only in `~/.config/qrwty/`, both UI directions built as switchable skins with a labelled
+reviewer default, Fable xhigh reviews that may add units, and the coordinator pushing accepted
+units. `AGENTS.md`, `units.md`, `baseline-units.md` and `coordinator-prompt.md` point at the file;
+their earlier text is kept.
+**Checks.** None (docs only). No secret value was printed or written.
+**Next.** Q00 freezes the experiment, including this file in the neutral pack.

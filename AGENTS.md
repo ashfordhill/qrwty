@@ -21,7 +21,11 @@ merely because a plan names them.
 - Owner-confirmed scope: GCP preferred, indefinite guest links, every successful GET redirect
   durably recorded first, individual free/paid accounts, no teams/custom domains. Do not revive
   revision 1's lossy telemetry or deferred billing. Unconfirmed/unknown click ACK means 503.
-- Current additional cloud/service budget is $0. Follow `docs/plans/production-build/local-to-cloud.md`:
+- **Owner decisions of 2026-11-13 amend this file and the plan:** read
+  `docs/plans/production-build/owner-decisions-2026-11-13.md` first; where it conflicts with a
+  rule here, it wins (GCP trial credit and Cloudflare free plan activated, Stripe test mode,
+  both UI skins, coordinator pushes). The text below is the earlier rule.
+- Earlier rule: current additional cloud/service budget is $0. Follow `docs/plans/production-build/local-to-cloud.md`:
   build real adapters, production containers, migrations and IaC locally; no cloud provisioning,
   trials or paid requests. Later deployment should use the same artifacts with environment
   configuration/secrets. Live provider proof is deferred, not waived; it does not block local
@@ -36,7 +40,7 @@ merely because a plan names them.
   implementation when assigned the baseline experiment.
 - Finish with an append-only handoff: changes, exact checks/results, evidence, differences,
   unresolved issues and next eligible unit. Stage only your paths and make one local unit commit
-  after its gates pass. Do not push unless asked. Never use `git add .`, `git add -A`, hard reset
+  after its gates pass. Workers do not push; the coordinator pushes accepted units (owner, 2026-11-13). Never use `git add .`, `git add -A`, hard reset
   or cleanup commands that discard unrelated work.
 
 If source differs from a plan, inspect the relevant contract before acting. Adapt a harmless
