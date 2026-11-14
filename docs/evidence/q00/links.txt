@@ -1,0 +1,16 @@
+$ python3 docs/evidence/q00/check_links.py
+markdown files: 60; relative links checked: 750
+changed Markdown files checked here (the pack is checked by verify_pack.py): ['README.md', 'docs/benchmarks/runs/qrwty-r1-20261114/README.md', 'docs/evidence/q00/checks.md', 'docs/handoff.md', 'docs/plans/production-build/README.md']
+pre-existing (not this unit): business-analysis/ai-generated-reports-gpt-6/README.md:38: ../../jeeves/elements/qrwty.md (missing target)
+pre-existing (not this unit): business-analysis/ai-generated-reports-gpt-6/README.md:38: ../../jeeves/elements/qrwty-web.md (missing target)
+pre-existing (not this unit): business-analysis/ai-generated-reports-gpt-6/README.md:38: ../../services/qrwty/src/features/redirect/index.ts (missing target)
+pre-existing (not this unit): business-analysis/ai-generated-reports-gpt-6/README.md:219: ../../services/qrwty/src/features/redirect/index.ts (missing target)
+pre-existing (not this unit): business-analysis/ai-generated-reports-gpt-6/comparison.md:92: ../../jeeves/elements/qrwty.md (missing target)
+pre-existing (not this unit): business-analysis/ai-generated-reports-gpt-6/comparison.md:96: ../../jeeves/elements/qrwty-web.md (missing target)
+pre-existing (not this unit): business-analysis/ai-generated-reports-gpt-6/sources.md:9: ../README.md (missing target)
+pre-existing (not this unit): business-analysis/ai-generated-reports-gpt-6/sources.md:40: ../../jeeves/elements/qrwty.md (missing target)
+pre-existing (not this unit): business-analysis/ai-generated-reports-gpt-6/sources.md:41: ../../jeeves/elements/qrwty-web.md (missing target)
+pre-existing (not this unit): business-analysis/ai-generated-reports-gpt-6/sources.md:42: ../../contracts/qrwty.openapi.yaml (missing target)
+pre-existing (not this unit): business-analysis/ai-generated-reports-gpt-6/sources.md:43: ../../services/qrwty/src/features/redirect/index.ts (missing target)
+OK
+exit=0

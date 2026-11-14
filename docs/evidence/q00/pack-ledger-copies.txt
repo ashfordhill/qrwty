@@ -1,0 +1,5 @@
+$ bash -c for f in README.md events.schema.json ledger.py; do cmp docs/benchmarks/runs/qrwty-r1-20261114/$f docs/benchmarks/neutral-pack/v1/ledger/$f && echo "identical: $f"; done
+identical: README.md
+identical: events.schema.json
+identical: ledger.py
+exit=0

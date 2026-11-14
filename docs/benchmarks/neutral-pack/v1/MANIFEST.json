@@ -1,0 +1,431 @@
+{
+  "pack": "qrwty-neutral-pack",
+  "version": "v1",
+  "runId": "qrwty-r1-20261114",
+  "frozenBy": "Q00 attempt 1",
+  "frozenAt": "2026-11-14T05:53:49Z",
+  "sourceRepository": "qrwty",
+  "sourceCommit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b",
+  "hashAlgorithm": "sha256",
+  "identity": "SHA-256 of this MANIFEST.json file, recorded outside the pack",
+  "readAllowlist": [
+    "docs/benchmarks/neutral-pack/v1/"
+  ],
+  "precedence": [
+    "files/docs/plans/production-build/owner-decisions-2026-11-13.md",
+    "frozen/",
+    "files/ (read with frozen/decisions.md section 2)"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 4086,
+      "sha256": "f3c2f052945f68ff78c7454050c1d73c026b2f098dfc073810eac8764da60ee3",
+      "role": "pack readme",
+      "origin": "authored-q00"
+    },
+    {
+      "path": "b/execution-brief.md",
+      "bytes": 9263,
+      "sha256": "62a4b5ece97ed4a65fb629cdbc439d25ebf7c89d13ddda4c4b4e982b32988be9",
+      "role": "B execution brief",
+      "origin": "authored-q00"
+    },
+    {
+      "path": "files/docs/diagrams/README.md",
+      "bytes": 3539,
+      "sha256": "6d73e0ad4e78008b3123831e0f5c89b20be58b4e0ff25d07fae7f920ed86755b",
+      "role": "diagram conventions",
+      "origin": {
+        "copyOf": "docs/diagrams/README.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/billing-lifecycle.excalidraw",
+      "bytes": 35345,
+      "sha256": "e523682e35083a3661bd9c0e15cfee5c44821656da92be131415a95ac3f2b828",
+      "role": "shared explanatory diagram (excalidraw)",
+      "origin": {
+        "copyOf": "docs/diagrams/billing-lifecycle.excalidraw",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/billing-lifecycle.png",
+      "bytes": 346156,
+      "sha256": "e203a9499242b3e2408586e4be91d818e9e6bb5c0ae50f040992785349614d7e",
+      "role": "shared explanatory diagram (png)",
+      "origin": {
+        "copyOf": "docs/diagrams/billing-lifecycle.png",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/billing-lifecycle.svg",
+      "bytes": 41407,
+      "sha256": "af714351125557e75463deff3bbb9d4a87a684f3956aa9c84addb288fab4524f",
+      "role": "shared explanatory diagram (svg)",
+      "origin": {
+        "copyOf": "docs/diagrams/billing-lifecycle.svg",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/cloud-deployment.excalidraw",
+      "bytes": 45570,
+      "sha256": "b0935137446d1928b8c94c11e567851e24f201ed4cd1f666fd9b46f5632695f0",
+      "role": "high-level topology (excalidraw)",
+      "origin": {
+        "copyOf": "docs/diagrams/cloud-deployment.excalidraw",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/cloud-deployment.png",
+      "bytes": 370356,
+      "sha256": "3e7b1847e97e43a79222008d47e83f5277c1d26b1bca2731d2b2e93577591bfa",
+      "role": "high-level topology (png)",
+      "origin": {
+        "copyOf": "docs/diagrams/cloud-deployment.png",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/cloud-deployment.svg",
+      "bytes": 51180,
+      "sha256": "3e5453ac44a9cebd7af7fed4be46de2456d25a563b9b4ccdf4456786131beb50",
+      "role": "high-level topology (svg)",
+      "origin": {
+        "copyOf": "docs/diagrams/cloud-deployment.svg",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/guest-ownership.excalidraw",
+      "bytes": 33901,
+      "sha256": "fea5d3ced958ce1d948803eeac4fef5ae10f08aea8660c43d720e247b930cd31",
+      "role": "shared explanatory diagram (excalidraw)",
+      "origin": {
+        "copyOf": "docs/diagrams/guest-ownership.excalidraw",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/guest-ownership.png",
+      "bytes": 286521,
+      "sha256": "5aec82798fd466584fa00effbb615494b3938326b2fa0b09cacdf8dfbf3ab699",
+      "role": "shared explanatory diagram (png)",
+      "origin": {
+        "copyOf": "docs/diagrams/guest-ownership.png",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/guest-ownership.svg",
+      "bytes": 40445,
+      "sha256": "a7b75ffa8ac10b1a4b99d10739558666b5d9845220369cd66839bb7defcf6a44",
+      "role": "shared explanatory diagram (svg)",
+      "origin": {
+        "copyOf": "docs/diagrams/guest-ownership.svg",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/redirect-failure.excalidraw",
+      "bytes": 35404,
+      "sha256": "1a9e92a46ba2be6703dc01e3e3c9526137b4dcbc917a621cec86536d5921e128",
+      "role": "shared explanatory diagram (excalidraw)",
+      "origin": {
+        "copyOf": "docs/diagrams/redirect-failure.excalidraw",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/redirect-failure.png",
+      "bytes": 345739,
+      "sha256": "2a333a43f9a8c9b0f8312b92ce77b3e8ae86c9122f269eb483b43597052c710f",
+      "role": "shared explanatory diagram (png)",
+      "origin": {
+        "copyOf": "docs/diagrams/redirect-failure.png",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/redirect-failure.svg",
+      "bytes": 42390,
+      "sha256": "6f27968154bec0b069945edf63613640e6a68970c576d802ec570580afdc9e95",
+      "role": "shared explanatory diagram (svg)",
+      "origin": {
+        "copyOf": "docs/diagrams/redirect-failure.svg",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/system-overview.excalidraw",
+      "bytes": 58550,
+      "sha256": "a9a0a416757c2d4a0abb266e80817298cd654ba5d19d299c84215153f8f62c27",
+      "role": "high-level topology (excalidraw)",
+      "origin": {
+        "copyOf": "docs/diagrams/system-overview.excalidraw",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/system-overview.png",
+      "bytes": 400632,
+      "sha256": "a94adb6f1e2036291e8a36da075740102b9d6ea3ed06764515b8325fc64a38e1",
+      "role": "high-level topology (png)",
+      "origin": {
+        "copyOf": "docs/diagrams/system-overview.png",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/diagrams/system-overview.svg",
+      "bytes": 61912,
+      "sha256": "8845b37652407990db16fd6c5b5a5d6b567e409ff640bcc423619d191a1bcbe5",
+      "role": "high-level topology (svg)",
+      "origin": {
+        "copyOf": "docs/diagrams/system-overview.svg",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/plans/production-build/acceptance.md",
+      "bytes": 14806,
+      "sha256": "4e4e103d8c294b8c3939cc693e6d8d9ffa6a0ee867eb02c7f371c2f783e886ee",
+      "role": "acceptance contract",
+      "origin": {
+        "copyOf": "docs/plans/production-build/acceptance.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/plans/production-build/architecture.md",
+      "bytes": 15187,
+      "sha256": "b56149ed625381e97288699c71f1e5341451f614fddd46a368b5210acca2f812",
+      "role": "architecture contract",
+      "origin": {
+        "copyOf": "docs/plans/production-build/architecture.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/plans/production-build/baseline-units.md",
+      "bytes": 16386,
+      "sha256": "695c3b1e19cbbbed28bc2b94d02269987701d407182450425c1f3ff9ca8d86b1",
+      "role": "B unit plan",
+      "origin": {
+        "copyOf": "docs/plans/production-build/baseline-units.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/plans/production-build/billing-contract.md",
+      "bytes": 8337,
+      "sha256": "2634dcf3fa7e658114c6adc6c93d1d160155087b7b2b5a29bff693a01315a141",
+      "role": "billing contract",
+      "origin": {
+        "copyOf": "docs/plans/production-build/billing-contract.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/plans/production-build/cloud-strategy.md",
+      "bytes": 16715,
+      "sha256": "009cc0b2782edb4551b99a3b9d825269182a22714bc239c38c796ff51cf203c4",
+      "role": "cloud strategy",
+      "origin": {
+        "copyOf": "docs/plans/production-build/cloud-strategy.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/plans/production-build/design-brief.md",
+      "bytes": 7174,
+      "sha256": "c703e6b4ace5a2d57acf7eaef55c0e53c4a80dc73981ae79dda07b7f98f66c7b",
+      "role": "design brief",
+      "origin": {
+        "copyOf": "docs/plans/production-build/design-brief.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/plans/production-build/durable-clicks.md",
+      "bytes": 8322,
+      "sha256": "e65722eefe3396825fd5332baf6f489f17f18c6573e45b747eb103e9890695dd",
+      "role": "durable-click contract",
+      "origin": {
+        "copyOf": "docs/plans/production-build/durable-clicks.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/plans/production-build/local-to-cloud.md",
+      "bytes": 9046,
+      "sha256": "815db0d8d3175cfe89b4d73ccc362a05ed02356fc634c3b0ee28cd8d6cc4c52b",
+      "role": "local-to-cloud contract",
+      "origin": {
+        "copyOf": "docs/plans/production-build/local-to-cloud.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/plans/production-build/owner-decisions-2026-11-13.md",
+      "bytes": 4913,
+      "sha256": "be4b296d3154a3d940c9ff5a1d5aeb8d88916e40ae9a923032f6817a5815a194",
+      "role": "owner decisions",
+      "origin": {
+        "copyOf": "docs/plans/production-build/owner-decisions-2026-11-13.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "files/docs/plans/production-build/product-contract.md",
+      "bytes": 13003,
+      "sha256": "678b3ef35a6deb56ce1b7b7057f565e37df5c088200c6b31ea945ba2fabd1b1f",
+      "role": "product contract",
+      "origin": {
+        "copyOf": "docs/plans/production-build/product-contract.md",
+        "commit": "0e2e1f2717b8a823ff501dbec95aebc9dc675d4b"
+      }
+    },
+    {
+      "path": "frozen/acceptance-oracle.md",
+      "bytes": 19661,
+      "sha256": "6e91ce7cb8bb24e0f0535a57b179c0275653fb14c813b70334d03fd3bfd6d132",
+      "role": "black-box acceptance specification",
+      "origin": "authored-q00"
+    },
+    {
+      "path": "frozen/decisions.md",
+      "bytes": 20366,
+      "sha256": "30455ab63f8336c0354148265722ef86a985363c0a6c0dffe8ee97aeb21da311",
+      "role": "frozen decisions",
+      "origin": "authored-q00"
+    },
+    {
+      "path": "frozen/http-contract.md",
+      "bytes": 10877,
+      "sha256": "a6a0afb9475003adf00c6a4655f2c1b075f64452da2679f75ddac96ef0a04a60",
+      "role": "external HTTP and event contract",
+      "origin": "authored-q00"
+    },
+    {
+      "path": "frozen/loc-method.md",
+      "bytes": 4223,
+      "sha256": "cb253ef929b1f5ca22c5e0fde3202844ed9f86fae6827cff93d8045e9be12169",
+      "role": "source-count method",
+      "origin": "authored-q00"
+    },
+    {
+      "path": "frozen/oracle-tooling-plan.md",
+      "bytes": 5967,
+      "sha256": "9e39aa96bd923904a308dea2214040f447c9802efada1bba97eac51ff7b0358f",
+      "role": "neutral oracle tooling plan",
+      "origin": "authored-q00"
+    },
+    {
+      "path": "ledger/README.md",
+      "bytes": 9740,
+      "sha256": "a63c0d4bdde57f3a00b8908155934296b718b916ca52b860512881647ffa241c",
+      "role": "ledger documentation",
+      "origin": "authored-q00"
+    },
+    {
+      "path": "ledger/events.schema.json",
+      "bytes": 14487,
+      "sha256": "759c0ba3ecad694db2a4fb1013896bdab1caf2ad6e0b519e1e1d76c64450139b",
+      "role": "ledger schema",
+      "origin": "authored-q00"
+    },
+    {
+      "path": "ledger/ledger.py",
+      "bytes": 43917,
+      "sha256": "553290294ba6158ef4f41252df7bf78e5c8361574ef878dfbe3503f07e567286",
+      "role": "ledger validator and helpers",
+      "origin": "authored-q00"
+    },
+    {
+      "path": "verify_pack.py",
+      "bytes": 7611,
+      "sha256": "c80659e9fe1685b16d64397cdf83a2d1d3fafa04e627aca313653692d32cc390",
+      "role": "pack verifier",
+      "origin": "authored-q00"
+    }
+  ],
+  "excluded": [
+    {
+      "category": "A source (app/, web/, infra/)",
+      "present": false
+    },
+    {
+      "category": "Generated payloads, generated tests, generation reports, saved Jeeves designs",
+      "present": false
+    },
+    {
+      "category": "Jeeves generator internals: the Jeeves repository and docs/plans/production-build/snapshot-and-sources.md",
+      "present": true,
+      "reason": "snapshot-and-sources.md names generator files, stub interfaces and provider seams"
+    },
+    {
+      "category": "A handoffs and evidence: docs/handoff.md, docs/evidence/",
+      "present": true,
+      "reason": "A-side history; Q01+ handoffs do not exist yet"
+    },
+    {
+      "category": "A IaC",
+      "present": false
+    },
+    {
+      "category": "A repair or incident history",
+      "present": false
+    },
+    {
+      "category": "QRWTY Git history, including an earlier application removed in November 2026",
+      "present": true
+    },
+    {
+      "category": "Coordinator state, prompts and tools: docs/coordinator/",
+      "present": true
+    },
+    {
+      "category": "Orchestration: units.md, coordinator-prompt.md, readiness.md, the plan README.md",
+      "present": true,
+      "reason": "A's unit plan and coordinator instructions, not shared requirements"
+    },
+    {
+      "category": "comparison.md",
+      "present": true,
+      "reason": "B-relevant rules restated in frozen/; holds A-process detail and the withheld maintenance challenge"
+    },
+    {
+      "category": "budget-options.md and its rate worksheet",
+      "present": true,
+      "reason": "future cost options; mentions generator output"
+    },
+    {
+      "category": "business-analysis/, root README.md, owner .docs/",
+      "present": true,
+      "reason": "background research and owner material, not requirements; .docs/ is never read"
+    }
+  ],
+  "outsidePackReferences": [
+    {
+      "from": "files/docs/diagrams/README.md",
+      "target": "../evidence/plan-revision-2/checks.md",
+      "reason": "excluded planning evidence (diagram verification record of revision 2)"
+    },
+    {
+      "from": "files/docs/plans/production-build/cloud-strategy.md",
+      "target": "budget-options.md",
+      "reason": "excluded future cost reference; its fairness rule (separate per-arm environments) is in decisions §5"
+    },
+    {
+      "from": "files/docs/plans/production-build/cloud-strategy.md",
+      "target": "budget-options.md",
+      "reason": "excluded future cost reference; its fairness rule (separate per-arm environments) is in decisions §5"
+    }
+  ]
+}

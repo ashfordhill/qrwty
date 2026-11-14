@@ -48,7 +48,9 @@ with anonymous quick links, individual free/paid accounts, management and durabl
 a real cloud deployment and two comparable implementations: [with Jeeves](docs/plans/production-build/units.md) and
 [without Jeeves](docs/plans/production-build/baseline-units.md).
 
-**Status: planning only; local build first, $0 new cloud/service spending now.** The application
+**Status: experiment frozen (Q00, run `qrwty-r1-20261114`); local build first, then cloud work
+within the GCP free-trial credit only.** The [neutral pack](docs/benchmarks/neutral-pack/v1/README.md)
+holds the shared inputs both builds use. The application
 has not been generated, built or deployed. The first
 application phase saves the architecture in Jeeves before generating into this repository.
 The drawing below is a proposed Excalidraw explanation, not a saved Jeeves diagram or runtime
@@ -80,7 +82,8 @@ or uncertain acknowledgment produces a temporary error. Anonymous links have no 
 The [billing contract](docs/plans/production-build/billing-contract.md) covers subscriptions and
 server-enforced tiers; downgrades do not break existing published links. No custom domains or teams.
 The [UI brief](docs/plans/production-build/design-brief.md) calls for an original, restrained
-Liquid Glass interface, with owner review before full UI implementation.
+Liquid Glass interface; both reviewed directions are built as switchable skins, with a
+reviewer's default the owner may override.
 
 ### Source and effort measurement
 
@@ -102,15 +105,16 @@ the time saved. [Counting and comparison protocol](docs/plans/production-build/c
 
 | Effort and outcome | Jeeves-assisted QRWTY | Independent QRWTY |
 | --- | --- | --- |
-| Exact models and execution settings | To be pinned | Same controlled settings |
-| Model requests, prompts and tokens | Recording protocol defined; no build run | Recording protocol defined; no build run |
+| Exact models and execution settings | [Pinned](docs/benchmarks/neutral-pack/v1/frozen/decisions.md#7-execution-model-settings-and-review-policy) (Opus builders, Fable xhigh reviewers); actual IDs from transcripts | Same pinned settings |
+| Model requests, prompts and tokens | [Run ledger](docs/benchmarks/runs/qrwty-r1-20261114/README.md) started; no build run | Ledger created at B00; no build run |
 | Template development / application / UI effort | Separate totals pending | Independent effort pending |
 | Human review time and failed attempts | To be recorded | To be recorded |
 | Provider-reported / estimated model cost | Pending, distinguished | Pending, distinguished |
 | Proven traffic tier / cloud cost | Not deployed | Not deployed |
 | Recovery, security and maintenance-change results | Not run | Not run |
 
-Remaining [owner choices](docs/plans/production-build/README.md#owner-steering-questions) include
-exact execution settings; future spend caps, release/load proof and live prices wait for activation. GCP
+Remaining [owner choices](docs/plans/production-build/README.md#owner-steering-questions) are
+spend beyond the GCP trial credit, load/failover proof, live prices and a production release;
+execution settings and local fixtures are frozen in the neutral pack. GCP
 preference, guest permanence, durable capture, individual free/paid accounts and the controlled
 comparison are recorded. Existing research above remains background, not the release checklist.

@@ -1,0 +1,6 @@
+$ python3 docs/benchmarks/neutral-pack/v1/verify_pack.py --against-git .
+pack qrwty-neutral-pack v1: 37 files, 63 links checked
+copies compared with Git origin: 26
+manifest sha256 (pack identity): 834ff75206531b1742a0677f2b8aadfa7848a4aedada6c354bdbbe4e04765736
+OK
+exit=0

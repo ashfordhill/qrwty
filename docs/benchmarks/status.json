@@ -1,10 +1,22 @@
 {
   "schemaVersion": 1,
-  "asOf": "2026-11-13",
-  "status": "planning-only",
+  "asOf": "2026-11-14",
+  "status": "experiment-frozen",
+  "runId": "qrwty-r1-20261114",
   "applicationGenerated": false,
   "savedJeevesDiagram": false,
   "deployed": false,
+  "neutralPack": {
+    "version": "v1",
+    "path": "docs/benchmarks/neutral-pack/v1/",
+    "manifestSha256": "834ff75206531b1742a0677f2b8aadfa7848a4aedada6c354bdbbe4e04765736",
+    "frozenBy": "Q00"
+  },
+  "ledgers": {
+    "shared": "docs/benchmarks/runs/qrwty-r1-20261114/shared/events.jsonl",
+    "jeeves": "docs/benchmarks/runs/qrwty-r1-20261114/a/events.jsonl",
+    "baseline": "qrwty-baseline: docs/benchmarks/runs/qrwty-r1-20261114/b/events.jsonl (created by B00)"
+  },
   "arms": {
     "jeeves": {
       "generatedBaselineCommit": null,
@@ -34,6 +46,22 @@
     "reason": "Exact runtime model identity and provider usage counters were not exposed for these planning units. Null does not mean zero usage or a known model snapshot."
   },
   "planningRevision": 3,
-  "cloudActivation": "deferred-by-owner",
-  "additionalCloudServiceBudgetUsd": 0
+  "cloudActivation": "activated-within-gcp-trial",
+  "cloud": {
+    "provider": "gcp",
+    "region": "us-central1",
+    "spendSource": "gcp-free-trial-credit-only",
+    "trialCreditUsd": 300,
+    "trialUpgradeAllowed": false,
+    "budgetAlertsUsdPerMonth": [10, 25, 50],
+    "budgetCreated": false,
+    "resourcesProvisioned": false,
+    "eligibleCloudUnits": "A: Q04 probes, Q12a, Q13; B: B08a, B09 (each after its arm's local pack passes)",
+    "deferredCloudUnits": "Q14, Q15, B10, B11 (failover, load, regional tests need a spend decision)",
+    "edge": "cloudflare-free-plan",
+    "dnsChangesAuthorized": "qrwty.io, test-mode preview",
+    "payments": "stripe-test-mode"
+  },
+  "additionalCloudServiceBudgetUsd": 0,
+  "additionalCloudServiceBudgetNote": "No cash spend beyond the GCP free-trial credit and free Cloudflare plan."
 }

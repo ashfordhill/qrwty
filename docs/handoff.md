@@ -156,3 +156,38 @@ units. `AGENTS.md`, `units.md`, `baseline-units.md` and `coordinator-prompt.md` 
 their earlier text is kept.
 **Checks.** None (docs only). No secret value was printed or written.
 **Next.** Q00 freezes the experiment, including this file in the neutral pack.
+
+## 2026-11-14 (UTC) — Q00: freeze the QRWTY experiment contract
+
+**Changed.** [Neutral pack v1](benchmarks/neutral-pack/v1/README.md): 37 files, manifest SHA-256
+`834ff75206531b1742a0677f2b8aadfa7848a4aedada6c354bdbbe4e04765736`. It holds copies of the eight
+shared contracts, the owner decisions, B's unit plan and the five diagrams, byte-identical to
+`0e2e1f2`, plus new frozen documents: [decisions](benchmarks/neutral-pack/v1/frozen/decisions.md)
+(test assumptions, quota and price fixtures marked not approved pricing, us-central1 and
+providers, toolchain pins, model and review policy, sign-off points, release labels, and a
+register of sentences the owner decisions superseded), the external HTTP/event contract, a
+black-box acceptance specification per ID with the test control interface each arm provides,
+the oracle plan (proposed shared unit N01), the source-count method and the B execution brief.
+[Run ledger](benchmarks/runs/qrwty-r1-20261114/README.md): schema, `ledger.py` (validate,
+self-test, start-attempt, update, import-usage), a seeded shared ledger and an empty A ledger;
+B's ledger is created by B00 inside `qrwty-baseline`. Also updated: `status.json`, the root
+README status lines and five false sentences in the plan README (status line, cloud paragraph,
+D12, D13, steering).
+
+**Checks.** `bash docs/evidence/q00/run_checks.sh`: 11 of 11 pass (pack hashes and allowlist,
+26 copies equal to Git origin, `sha256sum -c`, tamper tests, ledger validation, 28 self-test
+rejections, end-to-end workflow through `transcript-usage.py`, JSON, links, whitespace, no runtime
+change). [Evidence](evidence/q00/checks.md).
+
+**Notes.** Toolchain compatibility with the current Jeeves generator is unverified (Q00 may read
+one Jeeves file): the pins match earlier generated QRWTY output, and Q01/Q02 must record the
+generator's emitted pins; if they differ, the coordinator issues pack v1.1 before B02. Q00 chose
+Web Risk for reputation, the API details (error codes, headers, routes such as `DELETE
+/api/v1/me` and operator routes, the `QRWTY-Click-Event` header), session lifetime, abuse and
+billing retention, `filter-v1`, and Q11 design assets as shared cost. Open before B08a: B's cloud
+project or prefix, and B's hostname under `qrwty.io`. Known asymmetry: `comparison.md`, which
+holds the withheld maintenance challenge, is readable in A's repository. Q00 usage is pending
+the coordinator's extraction (ledger `shared-0007`); `commits.after` is the coordinator's to fill.
+
+**Next.** Q01 when a safe Jeeves window exists, otherwise B00. Queue N01 (neutral oracle) before
+any acceptance row is reported passed.

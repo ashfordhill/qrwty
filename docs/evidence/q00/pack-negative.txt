@@ -1,0 +1,9 @@
+$ python3 docs/evidence/q00/pack_negative.py
+ok   untouched copy in another directory verifies: exit 0
+ok   one byte changed in a copied contract: exit 1, expected 'sha256 mismatch'
+ok   an A plan added to the pack: exit 1, expected 'unlisted file in pack'
+ok   a listed file removed: exit 1, expected 'missing listed file'
+ok   a broken link added: exit 1, expected 'link target outside or missing'
+ok   SHA256SUMS edited: exit 1, expected 'SHA256SUMS disagrees'
+NEGATIVE TESTS OK
+exit=0

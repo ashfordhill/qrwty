@@ -1,6 +1,7 @@
 # QRWTY: production build and Jeeves comparison
 
-Planning revision 3 · 2026-11-13 · **local build first; $0 new cloud/service spending now**.
+Planning revision 3 · 2026-11-13 · **local build first; then cloud work within the GCP free-trial
+credit only** ([owner decisions](owner-decisions-2026-11-13.md), which amend this plan).
 
 Execution entry: [detailed coordinator prompt](coordinator-prompt.md) for fresh sequential
 subagents, with [readiness findings](readiness.md). Q00/local preparation can start; a stable
@@ -19,7 +20,7 @@ for sequential execution. The first **application-building phase** is the saved 
 The diagrams supplied with this plan are editable Excalidraw explanations of the proposed design;
 they are explicitly **not** a saved Jeeves project or evidence that generation works.
 
-The owner wants cloud deployment prepared while spending nothing on hosting yet. Build real GCP
+The owner wants cloud deployment prepared, spending only the GCP free-trial credit. Build real GCP
 adapters, containers, migrations and infrastructure definitions alongside the local product.
 Later promotion should select configuration/secrets and provision resources, without a planned
 product rewrite. Real cloud compatibility, failover and capacity remain deferred verification;
@@ -82,8 +83,8 @@ decisions authorize planning; they do not claim a paid cloud apply or production
 | D09 | Every click durably recorded — confirmed | Eligible GET waits for durable acknowledgment before 302; failure/unknown ACK means 503. No lossy telemetry fallback |
 | D10 | No assertion of literal TinyURL traffic or cost | Use explicit synthetic capacity tiers, verify provider limits, and publish measured results |
 | D11 | Distinctive glass UI, designed around the link task | Glass is a surface treatment; clarity, speed and readable QR codes take precedence |
-| D12 | Freeze the same execution model/configuration for both arms — comparison accepted | Exact model/settings and spend cap still need selection; usage comes from tooling, never inferred from agent prose |
-| D13 | No new cloud or paid-service spending now — confirmed | Build locally and prepare same-artifact cloud deployment; defer managed probes/provisioning/load tests/live billing until later activation |
+| D12 | Freeze the same execution model/configuration for both arms — comparison accepted | Settings pinned by Q00 in the [neutral pack](../../benchmarks/neutral-pack/v1/frozen/decisions.md); usage comes from tooling, never inferred from agent prose |
+| D13 | No new cloud or paid-service spending now — confirmed; amended 2026-11-13 | Build locally and prepare same-artifact cloud deployment; then probes and staging within the GCP free-trial credit ([owner decisions](owner-decisions-2026-11-13.md)); load/failover tests and live billing stay deferred |
 
 The old business research proposes a much larger SaaS catalog. It is useful background, not an
 instruction to implement every proposal. Jeeves's “owner is the only user” rule describes the
@@ -92,13 +93,15 @@ adding multi-user features to Jeeves.
 
 ## Owner steering questions
 
-Current cloud/service spending is settled: **$0, local build first**. Do not ask for a hosting
-budget now or let its absence block the local build. [Budget options](budget-options.md) is a
+Cloud spending is settled by the [owner decisions](owner-decisions-2026-11-13.md): **local build
+first, then the GCP free-trial credit only**. Do not ask for a hosting budget now or let its
+absence block the local build. [Budget options](budget-options.md) is a
 future reference, not an active spend recommendation. The eventual probe/hosting/load caps and
 L0-versus-L1 release sequence are decisions for cloud activation.
 
-Q00 still pins exact execution model/settings, usage capture, local test-tier policy and proposed
-retention/deletion/grace rules. Paid price/currency/limits may remain explicit local fixtures until
+Q00 pinned the execution model/settings, usage capture, local test-tier policy and
+retention/deletion/grace rules in the [neutral pack](../../benchmarks/neutral-pack/v1/frozen/decisions.md).
+Paid price/currency/limits may remain explicit local fixtures until
 live activation; production must refuse missing required values. Detailed aesthetic review is
 Q11. Do not re-ask confirmed GCP preference, guest permanence, durable clicks, individual billing,
 excluded custom domains, controlled comparison or the current no-spend boundary.

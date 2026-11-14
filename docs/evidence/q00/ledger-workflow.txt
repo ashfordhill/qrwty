@@ -1,0 +1,46 @@
+$ python3 docs/evidence/q00/ledger_workflow.py
+$ git init -q .
+exit=0
+
+$ /usr/bin/python3 <sim>/docs/benchmarks/runs/qrwty-r1-20261114/ledger.py start-attempt --ledger b --unit B00 --attempt 1 --role implementer --phase shared-preparation --repository qrwty-baseline --recorded-by worker:B00-a1 --assignment <sim>/docs/prompts/B00-a1.md --commit-before 0000000 --requested-model inherited (Opus) --requested-effort inherited
+appended b-0001 (attempt) to <sim>/docs/benchmarks/runs/qrwty-r1-20261114/b/events.jsonl
+exit=0
+
+$ /usr/bin/python3 <qrwty>/docs/coordinator/tools/transcript-usage.py <tmp>/synthetic-transcript.jsonl --records
+{"requestId": "msg_syn_1", "timestamp": "2026-11-14T06:00:01.000Z", "model": "synthetic-model", "usage": {"input_tokens": 10, "cache_creation_input_tokens": 200, "cache_read_input_tokens": 0, "output_tokens": 30}}
+{"requestId": "msg_syn_2", "timestamp": "2026-11-14T06:00:09.500Z", "model": "synthetic-model", "usage": {"input_tokens": 4, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 200, "output_tokens": 50}}
+exit=0
+
+(records saved: 2 requests after dedup by message.id)
+
+$ /usr/bin/python3 <sim>/docs/benchmarks/runs/qrwty-r1-20261114/ledger.py import-usage --ledger b --attempt-event b-0001 --recorded-by coordinator --records <sim>/docs/benchmarks/runs/qrwty-r1-20261114/usage/b/B00-implementer-a1.records.jsonl --agent-total-tokens 494 --agent-tool-uses 7 --agent-duration-ms 8500 --status passed --commit-after 1111111 --ended-at 2026-11-14T06:00:10Z
+appended b-0002 (request) to <sim>/docs/benchmarks/runs/qrwty-r1-20261114/b/events.jsonl
+appended b-0003 (request) to <sim>/docs/benchmarks/runs/qrwty-r1-20261114/b/events.jsonl
+appended b-0004 (attempt-update) to <sim>/docs/benchmarks/runs/qrwty-r1-20261114/b/events.jsonl
+exit=0
+
+$ /usr/bin/python3 <sim>/docs/benchmarks/runs/qrwty-r1-20261114/ledger.py import-usage --ledger b --attempt-event b-0001 --recorded-by coordinator --records <sim>/docs/benchmarks/runs/qrwty-r1-20261114/usage/b/B00-implementer-a1.records.jsonl
+already imported: ['msg_syn_1', 'msg_syn_2'] ...; refusing to double count
+exit=1
+
+$ /usr/bin/python3 <sim>/docs/benchmarks/runs/qrwty-r1-20261114/ledger.py update --ledger b --attempt-event b-0001 --recorded-by coordinator --reason accepted by the coordinator --human-minutes 0
+appended b-0005 (attempt-update) to <sim>/docs/benchmarks/runs/qrwty-r1-20261114/b/events.jsonl
+exit=0
+
+$ /usr/bin/python3 <sim>/docs/benchmarks/runs/qrwty-r1-20261114/ledger.py validate
+ledger b: attempt=1, attempt-update=2, request=2
+OK
+exit=0
+
+import totals: {"input_tokens": 14, "cache_creation_input_tokens": 200, "cache_read_input_tokens": 200, "output_tokens": 80} requests: 2
+
+(appended a hand-edited update whose input_tokens no longer matches the requests)
+
+$ /usr/bin/python3 <sim>/docs/benchmarks/runs/qrwty-r1-20261114/ledger.py validate
+ledger b: attempt=1, attempt-update=3, request=2
+ERROR: docs/benchmarks/runs/qrwty-r1-20261114/b/events.jsonl:b-0001: [R14] input_tokens 15 != request sum 14
+FAILED: 1 error(s)
+exit=1
+
+WORKFLOW TEST OK
+exit=0

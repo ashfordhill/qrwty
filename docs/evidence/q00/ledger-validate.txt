@@ -1,0 +1,8 @@
+$ python3 docs/benchmarks/runs/qrwty-r1-20261114/ledger.py validate
+ledger a: empty
+ledger shared: attempt=6, attempt-update=1, human=1
+pending usage: shared:shared-0006 COORD
+pending usage: shared:shared-0007 Q00
+open attempt: shared:shared-0006 COORD
+OK
+exit=0
