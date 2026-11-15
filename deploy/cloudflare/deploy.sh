@@ -12,6 +12,11 @@
 # 3. Polls https://qrwty.io/build.json from this machine until it reports that build
 #    (/healthz is arm A's Session API since A2).
 #
+# Before step 2, the Worker secret CLIENT_ADDRESS_KEY (A6: it signs the visitor's address for
+# Session API's guest admission) is put from Secret Manager's qrwtya-client-address-key when the
+# Worker doesn't have it yet: piped from gcloud to wrangler, never printed or written. Rotate it
+# with QRWTY_PUT_CLIENT_KEY=1 after adding a new version (Session API reads its copy at start).
+#
 # Credentials: CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID from the environment, or else
 # from ~/.config/qrwty/cloudflare.env. They are never printed: wrangler's output and its
 # debug log are scrubbed.
@@ -79,6 +84,17 @@ echo "build: $(cat .build/build.json)"
 # 2. Deploy (dependencies first, from the lockfile; then the static assets: public/ and the app
 #    from web/, staged into .build/site and checked).
 pnpm install --frozen-lockfile --reporter=silent
+gcp_project=project-f46f6d6a-8e74-42a0-ab1
+client_secret=qrwtya-client-address-key
+if [ "${QRWTY_PUT_CLIENT_KEY:-}" = 1 ] || ! pnpm exec wrangler secret list 2>/dev/null | grep -q '"CLIENT_ADDRESS_KEY"'; then
+	state="$(gcloud secrets versions describe latest --secret="$client_secret" --project="$gcp_project" --format='value(state)' 2>/dev/null || true)"
+	if [ "$state" = ENABLED ]; then
+		gcloud secrets versions access latest --secret="$client_secret" --project="$gcp_project" |
+			pnpm exec wrangler secret put CLIENT_ADDRESS_KEY 2>&1 | node scripts/scrub.mjs
+	else
+		echo "deploy.sh: warning: $client_secret has no enabled version; the Worker signs no address" >&2
+	fi
+fi
 node scripts/stage-assets.mjs
 pnpm exec wrangler --version
 pnpm exec wrangler deploy --var "BUILD_COMMIT:$commit" --var "BUILT_AT:$built_at" 2>&1 |

@@ -5,6 +5,9 @@ import {
 	APP_PAGE,
 	type Assets,
 	type Build,
+	CLIENT_ADDRESS_HEADER,
+	CLIENT_SIGNATURE_HEADER,
+	clientSignature,
 	contentSecurityPolicy,
 	handle,
 	route,
@@ -303,6 +306,9 @@ describe("the app", () => {
 			"/app/",
 			"/app/links",
 			"/app/links/x/clicks",
+			"/billing",
+			"/billing?checkout=success",
+			"/billing?checkout=cancelled",
 		]) {
 			const assets = fakeAssets();
 			const response = await serve(`https://qrwty.io${path}`, {}, assets);
@@ -427,6 +433,72 @@ describe("session api proxy", () => {
 		);
 		await handle(new Request("https://qrwty.io/apix"), build, undefined, origin);
 		expect(origin.seen).toHaveLength(2);
+	});
+
+	it("signs the visitor's address with the client-address key and drops a browser's own", async () => {
+		const origin = {
+			...fakeOrigin(() => new Response("{}", { headers: { "content-type": "application/json" } })),
+			clientKey: "k".repeat(64),
+		};
+		const request = () =>
+			new Request("https://qrwty.io/api/v1/links", {
+				method: "POST",
+				body: "{}",
+				headers: {
+					"cf-connecting-ip": "2001:db8::1",
+					[CLIENT_ADDRESS_HEADER]: "198.51.100.7",
+					[CLIENT_SIGNATURE_HEADER]: "v1.1.forged",
+				},
+			});
+		const before = Math.floor(Date.now() / 1000);
+		await handle(request(), build, undefined, origin);
+		const sent = origin.seen[0] as Request;
+		expect(sent.headers.get(CLIENT_ADDRESS_HEADER)).toBe("2001:db8::1");
+		const signature = sent.headers.get(CLIENT_SIGNATURE_HEADER) ?? "";
+		const seconds = Number(signature.split(".")[1]);
+		expect(seconds).toBeGreaterThanOrEqual(before);
+		expect(signature).toBe(await clientSignature("k".repeat(64), seconds, "2001:db8::1"));
+		// The text Session API checks (app/src/modules/session-api/session/client-address.ts).
+		const hmac = await crypto.subtle.importKey(
+			"raw",
+			new TextEncoder().encode("k".repeat(64)),
+			{ name: "HMAC", hash: "SHA-256" },
+			false,
+			["sign"],
+		);
+		const mac = new Uint8Array(
+			await crypto.subtle.sign(
+				"HMAC",
+				hmac,
+				new TextEncoder().encode(`qrwty-client-v1\n${seconds}\n2001:db8::1`),
+			),
+		);
+		const expected = btoa(String.fromCharCode(...mac))
+			.replaceAll("+", "-")
+			.replaceAll("/", "_")
+			.replace(/=+$/, "");
+		expect(signature).toBe(`v1.${seconds}.${expected}`);
+		expect(signature).toMatch(/^v1\.[0-9]+\.[A-Za-z0-9_-]{43}$/);
+		// Without the key, a browser's headers still never reach Session API.
+		const bare = fakeOrigin(() => new Response("{}"));
+		await handle(request(), build, undefined, bare);
+		expect(bare.seen[0]?.headers.get(CLIENT_ADDRESS_HEADER)).toBeNull();
+		expect(bare.seen[0]?.headers.get(CLIENT_SIGNATURE_HEADER)).toBeNull();
+		// The Redirect service never gets the address.
+		const redirector = {
+			...fakeOrigin(() => new Response(null, { status: 404 })),
+			clientKey: "k".repeat(64),
+		};
+		await handle(
+			new Request("https://qrwty.io/Ab3dE5gH9k", {
+				headers: { "cf-connecting-ip": "203.0.113.9" },
+			}),
+			build,
+			undefined,
+			undefined,
+			redirector,
+		);
+		expect(redirector.seen[0]?.headers.get(CLIENT_ADDRESS_HEADER)).toBeNull();
 	});
 
 	it("passes redirects and every cookie back to the browser", async () => {

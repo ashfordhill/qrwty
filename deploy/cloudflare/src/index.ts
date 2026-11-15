@@ -2,7 +2,7 @@
 // wrangler.toml). deploy.sh sets BUILD_COMMIT and BUILT_AT with `wrangler deploy --var`;
 // ASSETS is the static-assets binding for public/ (the /versions/ pages); SESSION_API_ORIGIN
 // (wrangler.toml) is arm A's Session API on Cloud Run (A2), and REDIRECT_SERVICE_ORIGIN its
-// Redirect service (A4).
+// Redirect service (A4). CLIENT_ADDRESS_KEY, a Worker secret, signs the visitor's address (A6).
 
 import { type Assets, handle } from "./router.ts";
 
@@ -12,6 +12,8 @@ interface Env {
 	ASSETS?: Assets;
 	SESSION_API_ORIGIN?: string;
 	REDIRECT_SERVICE_ORIGIN?: string;
+	/** A Worker secret (deploy.sh puts it from Secret Manager): signs the visitor's address (A6). */
+	CLIENT_ADDRESS_KEY?: string;
 }
 
 export default {
@@ -21,7 +23,11 @@ export default {
 			{ commit: env.BUILD_COMMIT ?? "unknown", builtAt: env.BUILT_AT ?? "unknown" },
 			env.ASSETS,
 			env.SESSION_API_ORIGIN
-				? { url: env.SESSION_API_ORIGIN, fetch: (upstream) => fetch(upstream) }
+				? {
+						url: env.SESSION_API_ORIGIN,
+						fetch: (upstream) => fetch(upstream),
+						...(env.CLIENT_ADDRESS_KEY ? { clientKey: env.CLIENT_ADDRESS_KEY } : {}),
+					}
 				: undefined,
 			env.REDIRECT_SERVICE_ORIGIN
 				? { url: env.REDIRECT_SERVICE_ORIGIN, fetch: (upstream) => fetch(upstream) }

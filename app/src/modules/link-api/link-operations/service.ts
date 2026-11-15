@@ -10,12 +10,13 @@
 //   DELETE /links/:id            204, repeat-safe tombstone
 //   POST   /links/:id/claim      {claimToken}  Idempotency-Key; signed in only
 //   POST   /account/erase        the Links part of the caller's account deletion
-// Answers follow http-contract §4; another account's link is 404. Guest admission (Q09) and paid
-// entitlements (A7) are not here yet.
+// Answers follow http-contract §4; another account's link is 404. A guest create is admitted by
+// the guest admission (Q09: abuse-and-moderation/admission.ts) first; paid entitlements are A7's.
 
 import { createFailureLog } from "../../../runtime/tile-process.ts";
 import type { ModuleRequest, ModuleResponse } from "../../entry.ts";
 import { defineRoutes } from "../../entry.ts";
+import { sharedAdmission } from "../abuse-and-moderation/admission.ts";
 import type { Dependencies } from "../link-api-link-operations.slots.ts";
 import { notFound, problem } from "./contract.ts";
 import { type CreateContext, createLink } from "./create.ts";
@@ -84,5 +85,6 @@ function linkOperationsFromSettings(settings: Dependencies["settings"]): LinkOpe
 				token,
 			}),
 		onFailure: failure,
+		admission: sharedAdmission((error) => failure("admission cache", error)),
 	});
 }

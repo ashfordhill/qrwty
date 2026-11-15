@@ -3,8 +3,9 @@
 secrets, generated here and piped to gcloud, and set the Cloud SQL `postgres` admin's password to
 the qrwtya-postgres-admin value through the SQL Admin API (request body, over TLS). No value is
 printed, written to a file or passed as an argument. A secret that already has an enabled version
-is left as it is (no silent rotation), so a rerun changes nothing. Auth0's two secrets (A3) are
-left to infra/gcp/scripts/auth0.py.
+is left as it is (no silent rotation), so a rerun changes nothing. Auth0's three secrets (A3, A6)
+are left to infra/gcp/scripts/auth0.py. A6's client-address-key and operator-key are 32 random
+bytes in hex, like the export's own credentials.
 
   infra/gcp/scripts/bootstrap-secrets.py <project> <instance> <secret id> [<secret id> ...]
 
@@ -21,8 +22,8 @@ for sid in ids:
     if existing:
         out.append({"secret": sid, "added": False, "reason": "already has an enabled version"})
         continue
-    if sid in ("qrwtya-signin-client", "qrwtya-auth0-test-user"):
-        # A3: from Auth0 (infra/gcp/scripts/auth0.py), never generated here.
+    if sid in ("qrwtya-signin-client", "qrwtya-auth0-test-user", "qrwtya-account-erasure-client"):
+        # A3, A6: from Auth0 (infra/gcp/scripts/auth0.py), never generated here.
         out.append({"secret": sid, "added": False, "reason": "set by auth0.py"})
         continue
     if sid == "qrwtya-session-keys":

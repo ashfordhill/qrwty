@@ -1978,3 +1978,124 @@ Status: **done**; no A5b is needed (known limits below).
 - **Elapsed.** 20:34:23Z to about 21:12Z on the host clock (about 38 minutes).
 - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
   memory index); it was ignored.
+
+## A6: abuse controls on qrwty.io, 2026-11-15
+
+Arm A, A6 attempt 1 (role implementer), from QRWTY `a1071f0`. Q09 of `units.md`, and A3b, written in
+the application-owned stub bodies and product SQL of Link API and Session API, against pack v1.6's
+`decisions.md` (§3, §4), `http-contract.md` (§2, §4, §8) and `product-contract.md`. Light checks, as
+the owner decided: no oracle, no review, no records. Status: **done**; no A6b is needed (the optional
+local Compose profile was not attempted, below).
+
+- **Live smoke on `https://qrwty.io`** (`.scratch/A6/smoke.mjs`, 22/22):
+  1. **admission** (3/3): eleven quick guest creates from this machine's address: ten 201, the
+     eleventh 429 `rate_limited`, `Retry-After: 59`; then the app by mouse (same address) shows "Too
+     many new links … Try again in 58 seconds. Nothing was created." (screenshot
+     `.scratch/A6/rate-limited.png`);
+  2. **safety** (6/6): Web Risk's malware test page is 422 `reputation_rejected`; a report of a
+     fresh link is 202 `{received: true}`, of an unknown link 202; `GET /api/v1/operator/...` is 404
+     with a guest cookie and with none, a forged CLI signature 404; the reported link still 302s;
+  3. **block** (8/8): the CLI blocks a link Hot routes held: 200, version 2; `HEAD` answers **403
+     after 30 s** (deadline 60 s), the GET is the HTML safety page without `Location`; `show` lists
+     the action (`cli:<gcloud account>`, the reason, the time, active → blocked); the CLI unblocks:
+     200, active, version 3, and 302 again after 30 s;
+  4. **erasure** (5/5): a disposable `qrwtya-test-erase-…@qrwty.io` user (made through the
+     Management API, password in the smoke's memory only) signs in through Universal Login,
+     **Delete my account** (dialog) → "Your account was deleted"; the Auth0 user is then **404**
+     (`DELETE /api/v1/me` 202 in 477 ms, one attempt, the Management API token included).
+- **Client address (decided here).** The Worker sends Session API `QRWTY-Client-Address` (Cloudflare's
+  `CF-Connecting-IP`) and `QRWTY-Client-Signature: v1.<unix seconds>.<base64url HMAC-SHA-256(key,
+  "qrwty-client-v1\n" + seconds + "\n" + address)>`, and drops any `QRWTY-Client-*` header a browser
+  sent. The key is Secret Manager's `qrwtya-client-address-key`, also the Worker secret
+  `CLIENT_ADDRESS_KEY` (`deploy.sh` pipes it from gcloud to `wrangler secret put` when the Worker
+  lacks it). Session API (`session/client-address.ts`) accepts a signature within 60 s, reduces the
+  address to its network (IPv4 /32, IPv6 /64, IPv4-mapped as IPv4) and sends Link API only
+  `QRWTY-Admission-Key`, an HMAC of the network with a key derived from the same secret. No address
+  is stored or logged; anything unsigned (a direct `run.app` call, a spoofed `X-Forwarded-For`)
+  shares one key, `unverified`.
+- **Guest admission** (`link-api/abuse-and-moderation/admission.ts`, Valkey `qrwtya-admission-cache`):
+  `guest-admission-test-v1`, 10 guest creates per 60 s per admission key, checked after an
+  idempotent replay and before Web Risk and any write, so a refused create stores nothing; 429
+  `rate_limited` with `Retry-After` and a message that offers sign-in. Signed-in creates have the
+  exact monthly allowance instead (A3's `spend_owned_create`, transactional), so people behind one
+  shared address can sign in. The generated cache client has no atomic counter (AG-31): each copy
+  counts its own admissions exactly in memory and is the only writer of its count key; a request
+  writes its intent, then reads the other copies' counts through a per-key directory. Copies that
+  know each other hold the limit; the worst case (copies starting on a key at once, or the cache
+  away) is copies × limit (Link API's maximum is 3). Values expire with their window (≤ 62 s).
+- **Reports** (`POST /api/v1/abuse-reports`, session and CSRF like every mutation): `reason`
+  phishing, malware, spam or other, `details` ≤ 1,000 characters; 5 per 10 minutes per admission
+  key (`abuse-report-v1`), then 429; always 202, stored only for a live link's slug; one row per
+  link, reporter (SHA-256 of the admission key) and reason, at most 200 rows a link, plus a total.
+  A report never changes a link.
+- **Moderation** (Link API's `/operator/...`, forwarded from `/api/v1/operator/...`): `GET
+  links/by-slug/:slug` (the link, owned or not, report totals by reason, last 10 actions), `POST
+  links/:id/block` and `/unblock` `{reason}`. One SQL call each (`moderate_link`): state, version
+  and version row (actor `operator`) with the operator action (actor, reason, time, from and to
+  state, the CLI's nonce, unique). Unblock restores the state before the block (disabled if the
+  owner was erased meanwhile); a deleted link is 409 `link_deleted` (tombstones never change); a
+  replayed nonce 409 `replayed`. An operator is a verified account in `OPERATOR_SUBJECTS` (unset:
+  nobody) or the CLI's signed request (`operator.ts`); everyone else gets 404, from Session API or
+  Link API. Reports and actions: Link API's login only, kept 13 months, purged in bounded batches.
+  Propagation: the Redirect service's 30 s route entries (A4).
+- **Operator CLI** (`infra/gcp/scripts/operator.mjs`; [infra/README.md](../infra/README.md#abuse-controls-and-account-erasure-a6-once)):
+  `node infra/gcp/scripts/operator.mjs show|block|unblock <slug or short URL> [--reason "<why>"]
+  [--actor <name>] [--origin <url>]`. It reads `qrwtya-operator-key` with gcloud into memory and
+  signs method, path, time (120 s), a nonce, the actor (default the gcloud account) and the reason.
+- **Account deletion (A3b).** `DELETE /api/v1/me` now: Links erasure, then the Auth0 user (Management
+  API `DELETE /api/v2/users/{subject}` as `qrwtya-account-erasure`, a Machine to Machine application
+  with only `delete:users`; its token fetched while Link API erases and cached until a minute before
+  expiry; `{client_id, client_secret}` in `qrwtya-account-erasure-client`), then the sessions. If the
+  issuer fails, 503 and the session stays, so the browser's keyed retry finishes the job.
+- **Billing return.** The Worker serves the app at `/billing` (any query, so
+  `/billing?checkout=success|cancelled`); the app shows Plans and billing there. A7 reads `checkout`.
+- **Cloud and Auth0** (trial credit; no new billable resource beyond three secrets, about USD 0.006 a
+  day): secrets `qrwtya-client-address-key`, `qrwtya-operator-key` (32 random bytes in hex,
+  `bootstrap-secrets.py`) and `qrwtya-account-erasure-client` (`auth0.py erasure-client`) with their
+  three readers, applied with a targeted plan (6 added) before the redeploy; the Worker secret; the
+  production profile (overlay and `app/`) lists the new secrets. Web Risk: 13 lookups.
+- **Deploy.** `QRWTY_REDEPLOY_DIR=.scratch/A6/redeploy infra/gcp/scripts/redeploy.sh HEAD` at
+  `2606eed` (this unit's code, committed first because `redeploy.sh` builds a commit): image
+  `app-55d3fb99399a` (`sha256:148f8dad…6042d`), the migration job changed and executed (the abuse
+  module's step 1), 6 stack changes; the Worker step refused the tree (the README edit), so
+  `deploy.sh --allow-dirty` deployed it (`2606eed-dirty`) and put `CLIENT_ADDRESS_KEY`; the smokes
+  above ran on that. This commit (docs beyond `2606eed`) is redeployed last, so `/build.json` names it.
+- **Checks.**
+  - `app/`: build, `typecheck:test`, Biome; **178 unit tests** (18 new, `test/unit/abuse.test.ts`:
+    admission per window, across copies, in bursts, with the cache down, corrupt values; networks and
+    signatures; operators; reports and routes; a guest create's 429 before Web Risk with nothing
+    stored; the Auth0 deletion's order and its 503).
+  - **Integration on PostgreSQL 17.11** (`infra/local/test-postgres.sh`, removed afterwards): **34
+    passed**, 3 new in `test/integration/abuse.test.ts` (product SQL applied twice; reports counted
+    by link, reporter and reason with the link unchanged; block → `link_routes` blocked without a
+    destination, the version rows `block`/`unblock` by `operator`, the actions with both actors;
+    replayed nonce, non-operators, unknown ID, tombstone 409).
+  - `deploy/cloudflare`: `pnpm check` (Biome, tsc, vitest **38/38**, 1 new plus `/billing` paths).
+  - Root `pnpm check`: exit 0, 71 generated files unchanged. `infra/gcp/validate.sh` (pinned
+    OpenTofu and mirror): lint ok, fmt, init and validate 0.
+  - Secret scan of the staged diff: no `auth0.env` or `cloudflare.env` value, no credential shape;
+    `git diff --check` clean.
+- **Template gaps** ([details](evidence/a6/a-found-gaps.md)): AG-31 (medium) no atomic counter on
+  the cache client, so admission is approximate (worst case copies × limit); AG-32 (medium) a full
+  cache command queue (32) is treated as a lost connection, so a burst takes the cache away for 5 s.
+- **Known limits.**
+  - The app has no report form (none in Q11's design); reports are API-only for now.
+  - The CSV export allowance is still unmetered: Account API reads Links and Analytics only (A7).
+  - Not done (optional, A3b item 2): Session API's settings in the local Compose profile.
+  - Requests that bypass the Worker share the `unverified` admission key.
+- **Next: A7** (billing). Checkout returns to `/billing?checkout=…`, which now opens Plans and
+  billing.
+- **Read.** The packet, `AGENTS.md`, this file (A2–A5), `units.md` (Q09), pack v1.6's
+  `decisions.md`, `http-contract.md`, the acceptance rows A09, A16 and A17; `product-contract.md`;
+  Link API's and Session API's stubs and modules, the generated `dependencies.ts`, `valkey.ts`,
+  `module-clients.ts` (cache), `settings.ts`, `entry.ts`, `products.mjs`; the Worker, `deploy.sh`,
+  `redeploy.sh`, `tf.sh`, `auth0.py`, `bootstrap-secrets.py`, `locals.tf`, the production profile;
+  `web/assets/app.js` (routing, the create alerts). `~/.config/qrwty/`: `auth0.env` (for `tf.sh`,
+  `auth0.py` and the smoke's disposable user, loaded with `set -a`, never printed) and
+  `cloudflare.env` only through `deploy.sh`.
+- **Running.** Nothing locally: the test PostgreSQL was removed by name. Live: everything A5 left,
+  plus the three secrets, the Worker secret and `qrwtya-account-erasure`. The smoke's disposable
+  Auth0 user is deleted; its test links stay (guest links, as in earlier smokes).
+- **Elapsed.** 21:10:26Z to about 21:50Z on the host clock (about 40 minutes).
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
+  memory index); it was ignored.

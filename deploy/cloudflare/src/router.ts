@@ -29,6 +29,41 @@ export interface Assets {
 export interface Origin {
 	url: string;
 	fetch(request: Request): Promise<Response>;
+	/**
+	 * The client-address key (the Worker secret CLIENT_ADDRESS_KEY, from Secret Manager's
+	 * qrwtya-client-address-key): when set, Session API gets the visitor's address signed with it.
+	 */
+	clientKey?: string;
+}
+
+/** The headers that carry the visitor's address to Session API (A6, guest admission). */
+export const CLIENT_ADDRESS_HEADER = "qrwty-client-address";
+export const CLIENT_SIGNATURE_HEADER = "qrwty-client-signature";
+
+const base64url = (bytes: ArrayBuffer) =>
+	btoa(String.fromCharCode(...new Uint8Array(bytes)))
+		.replace(/\+/g, "-")
+		.replace(/\//g, "_")
+		.replace(/=+$/, "");
+
+/**
+ * `v1.<unix seconds>.<base64url HMAC-SHA-256(key, "qrwty-client-v1\n" + seconds + "\n" + address)>`,
+ * which Session API checks (app/src/modules/session-api/session/client-address.ts).
+ */
+export async function clientSignature(key: string, seconds: number, address: string) {
+	const hmac = await crypto.subtle.importKey(
+		"raw",
+		new TextEncoder().encode(key.trim()),
+		{ name: "HMAC", hash: "SHA-256" },
+		false,
+		["sign"],
+	);
+	const mac = await crypto.subtle.sign(
+		"HMAC",
+		hmac,
+		new TextEncoder().encode(`qrwty-client-v1\n${seconds}\n${address}`),
+	);
+	return `v1.${seconds}.${base64url(mac)}`;
 }
 
 /**
@@ -120,7 +155,7 @@ export async function readiness(request: Request, origin: Origin): Promise<Respo
 
 // Request headers the Worker sets itself or that only describe the hop to Cloudflare.
 const DROPPED_REQUEST =
-	/^(host|connection|keep-alive|te|trailer|transfer-encoding|upgrade|proxy-.*|cf-.*|cdn-loop|x-forwarded-.*|x-real-ip|forwarded)$/;
+	/^(host|connection|keep-alive|te|trailer|transfer-encoding|upgrade|proxy-.*|cf-.*|cdn-loop|x-forwarded-.*|x-real-ip|forwarded|qrwty-client-.*)$/;
 // A redirect needs no session or credential, and the Redirect service gets no client address.
 const DROPPED_FOR_REDIRECT = /^(cookie|authorization)$/;
 const DROPPED_RESPONSE =
@@ -128,9 +163,11 @@ const DROPPED_RESPONSE =
 
 /**
  * Forwards a request to Session API: any method, the body, cookies and the query, with the
- * browser's address in X-Forwarded-For and the public host in X-Forwarded-Host. Redirects come
- * back to the browser as they are. Every answer gets the security headers and no-transform.
- * For the Redirect service (`redirect`), cookies, Authorization and the address stay behind.
+ * browser's address in X-Forwarded-For and, with the client-address key, in QRWTY-Client-Address
+ * signed by QRWTY-Client-Signature (a browser's own QRWTY-Client-* headers are dropped), and the
+ * public host in X-Forwarded-Host. Redirects come back to the browser as they are. Every answer
+ * gets the security headers and no-transform. For the Redirect service (`redirect`), cookies,
+ * Authorization and the address stay behind.
  */
 export async function proxy(
 	request: Request,
@@ -146,7 +183,16 @@ export async function proxy(
 	headers.set("x-forwarded-host", APEX_HOST);
 	headers.set("x-forwarded-proto", "https");
 	const client = request.headers.get("cf-connecting-ip");
-	if (client && !redirect) headers.set("x-forwarded-for", client);
+	if (client && !redirect) {
+		headers.set("x-forwarded-for", client);
+		if (origin.clientKey) {
+			headers.set(CLIENT_ADDRESS_HEADER, client);
+			headers.set(
+				CLIENT_SIGNATURE_HEADER,
+				await clientSignature(origin.clientKey, Math.floor(Date.now() / 1000), client),
+			);
+		}
+	}
 	const bodyless = request.method === "GET" || request.method === "HEAD";
 	let upstream: Response;
 	try {
@@ -217,9 +263,17 @@ export const APP_CSP =
 /** The app's one page, `web/index.html`, as the assets hold it (deploy.sh stages web/ there). */
 export const APP_PAGE = "/app/";
 
-/** The app's page paths: `/` and every path below `/app`; the app routes them itself. */
+/**
+ * The app's page paths: `/`, every path below `/app`, and `/billing` (where Stripe Checkout
+ * returns, `/billing?checkout=success|cancelled`: A6 routes it, A7 reads it); the app routes them.
+ */
 export function isAppPage(pathname: string): boolean {
-	return pathname === "/" || pathname === "/app" || pathname.startsWith("/app/");
+	return (
+		pathname === "/" ||
+		pathname === "/app" ||
+		pathname.startsWith("/app/") ||
+		pathname === "/billing"
+	);
 }
 
 /** The Content-Security-Policy for a path: S01's everywhere but the app and the two copies above. */

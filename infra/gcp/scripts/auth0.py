@@ -14,12 +14,18 @@ label. Credentials go from here straight to Secret Manager (`gcloud ... --data-f
                          qrwtya-signin-client (Session API's SIGNIN_CLIENT)
   auth0.py test-user     one qrwtya-test-<hex>@qrwty.io user with a password generated here; the
                          {username, password} go only to qrwtya-auth0-test-user
-  auth0.py delete        the test users, the grant and qrwtya-web (qrwtya-api stays: A2's)
+  auth0.py erasure-client  (A6) qrwtya-account-erasure, a Machine to Machine application whose
+                         only grant is delete:users on the Management API, and its {client_id,
+                         client_secret} as a new version of qrwtya-account-erasure-client (Session
+                         API's ACCOUNT_ERASURE_CLIENT: account deletion deletes the Auth0 user)
+  auth0.py delete        the test users, the grants, qrwtya-web and qrwtya-account-erasure
+                         (qrwtya-api stays: A2's)
 """
 import json, os, secrets, string, subprocess, sys, urllib.error, urllib.parse, urllib.request
 
 PROJECT = "project-f46f6d6a-8e74-42a0-ab1"
 API_ID, WEB_NAME = "https://api.qrwtya.qrwty.io", "qrwtya-web"
+ERASURE_NAME = "qrwtya-account-erasure"
 ORIGIN = "https://qrwty.io"
 DATABASE, GOOGLE = "Username-Password-Authentication", "google-oauth2"
 domain = os.environ["AUTH0_DOMAIN"].strip().removeprefix("https://").rstrip("/")
@@ -207,6 +213,46 @@ elif cmd == "test-user":
     if s != 201:
         sys.exit(f"create test user: HTTP {s} {why(body)}")
     print(json.dumps({"testUser": "created", **put_secret("qrwtya-auth0-test-user", json.dumps({"username": username, "password": password}) + "\n")}))
+elif cmd == "erasure-client":
+    management = f"https://{domain}/api/v2/"
+    s, clients = call("GET", "/api/v2/clients?per_page=100&fields=client_id,name,app_type&include_fields=true", token=token)
+    assert s == 200, (s, why(clients))
+    app = next((c for c in clients if c.get("name") == ERASURE_NAME), None)
+    out = {}
+    if app and app.get("app_type") != "non_interactive":
+        sys.exit(f"{ERASURE_NAME} exists as {app.get('app_type')}; refusing to change its type")
+    if not app:
+        s, app = call("POST", "/api/v2/clients", {
+            "name": ERASURE_NAME, "app_type": "non_interactive", "is_first_party": True,
+            "description": "QRWTY arm A: Session API deletes a deleted account's Auth0 user (delete:users only).",
+            "grant_types": ["client_credentials"], "token_endpoint_auth_method": "client_secret_post",
+            "jwt_configuration": {"alg": "RS256", "lifetime_in_seconds": 3600}}, token)
+        if s != 201:
+            sys.exit(f"create {ERASURE_NAME}: HTTP {s} {why(app)}")
+        out["client"] = "created"
+    else:
+        out["client"] = "exists"
+    s, grants = call("GET", f"/api/v2/client-grants?client_id={app['client_id']}", token=token)
+    assert s == 200, (s, why(grants))
+    mine = [g for g in grants if g.get("audience") == management]
+    if mine:
+        s, body = call("PATCH", f"/api/v2/client-grants/{mine[0]['id']}", {"scope": ["delete:users"]}, token)
+        out["grant"] = "set to delete:users" if s == 200 else f"failed {s} {why(body)}"
+    else:
+        s, body = call("POST", "/api/v2/client-grants", {"client_id": app["client_id"], "audience": management,
+                                                         "scope": ["delete:users"]}, token)
+        out["grant"] = "created (delete:users)" if s == 201 else f"failed {s} {why(body)}"
+    # Any other grant (another audience) is removed: the application may only delete users.
+    out["otherGrants"] = [call("DELETE", f"/api/v2/client-grants/{g['id']}", token=token)[0]
+                          for g in grants if g.get("audience") != management]
+    s, grants = call("GET", f"/api/v2/client-grants?client_id={app['client_id']}", token=token)
+    out["grants"] = [{"audience": "management-api" if g.get("audience") == management else "other",
+                      "scope": g.get("scope")} for g in grants] if s == 200 else s
+    s, c = call("GET", f"/api/v2/clients/{app['client_id']}?fields=client_id,client_secret&include_fields=true", token=token)
+    assert s == 200, s
+    out["secret"] = put_secret("qrwtya-account-erasure-client",
+                               json.dumps({"client_id": c["client_id"], "client_secret": c["client_secret"]}) + "\n")
+    print(json.dumps(out, indent=1))
 elif cmd == "delete":
     out = {}
     s, users = call("GET", "/api/v2/users?q=" + urllib.parse.quote('email:qrwtya-test-*') + "&search_engine=v3&fields=user_id,email&include_fields=true", token=token)
@@ -216,6 +262,11 @@ elif cmd == "delete":
         s, grants = call("GET", f"/api/v2/client-grants?client_id={web['client_id']}", token=token)
         out["grants"] = [call("DELETE", f"/api/v2/client-grants/{g['id']}", token=token)[0] for g in (grants if s == 200 else [])]
         out["web"] = call("DELETE", f"/api/v2/clients/{web['client_id']}", token=token)[0]
+    s, clients = call("GET", "/api/v2/clients?per_page=100&fields=client_id,name&include_fields=true", token=token)
+    for app in (c for c in (clients if s == 200 else []) if c.get("name") == ERASURE_NAME):
+        s, grants = call("GET", f"/api/v2/client-grants?client_id={app['client_id']}", token=token)
+        out["erasureGrants"] = [call("DELETE", f"/api/v2/client-grants/{g['id']}", token=token)[0] for g in (grants if s == 200 else [])]
+        out["erasure"] = call("DELETE", f"/api/v2/clients/{app['client_id']}", token=token)[0]
     print(json.dumps(out))
 else:
     sys.exit(f"unknown command {cmd}")

@@ -76,8 +76,12 @@ locals {
         QRWTY_PUBLIC_ORIGIN_URL = var.public_origin
       })
       # signin-client: the qrwtya-web application's {client_id, client_secret} (A3's auth0.py puts
-      # it in Secret Manager); session-keys: the ring that seals tokens and signs cookies (A3).
-      secrets = ["sql-sessions--session-api", "signin-client", "session-keys"]
+      # it in Secret Manager); session-keys: the ring that seals tokens and signs cookies (A3);
+      # client-address-key: checks the Worker's signed visitor address (A6, guest admission; the
+      # Worker holds it as its secret CLIENT_ADDRESS_KEY); account-erasure-client: the
+      # qrwtya-account-erasure application (delete:users only) that deletes a deleted account's
+      # Auth0 user (A6, from auth0.py).
+      secrets = ["sql-sessions--session-api", "signin-client", "session-keys", "client-address-key", "account-erasure-client"]
       ca      = null
       ingress = "INGRESS_TRAFFIC_ALL"
       sa      = "session"
@@ -90,7 +94,9 @@ locals {
         QRWTY_CACHE_AUTH_DISABLED          = "true"
         QRWTY_PUBLIC_ORIGIN_URL            = var.public_origin # short URLs and loop rejection (Q06, AG-10)
       }, var.reputation_credentials == null ? {} : { QRWTY_REPUTATION_CREDENTIALS = var.reputation_credentials })
-      secrets = ["sql-links--link-api", "link-replay-keys"] # link-replay-keys: Q06's claim-proof seal ring
+      # link-replay-keys: Q06's claim-proof seal ring; operator-key: verifies the operator CLI's
+      # signed requests (A6; infra/gcp/scripts/operator.mjs reads it through gcloud).
+      secrets = ["sql-links--link-api", "link-replay-keys", "operator-key"]
       ca      = "admission-cache"
       ingress = "INGRESS_TRAFFIC_INTERNAL_ONLY"
       sa      = "link"
@@ -138,7 +144,8 @@ locals {
   # instance has its own managed CA, so each has its own public CA secret.
   # auth0-test-user: the A3 smoke's test user, {username, password}, mounted by no process.
   secrets = toset(concat(local.migrate_secrets, [for c in local.caches : "memorystore-ca-${c}"],
-  ["link-replay-keys", "signin-client", "session-keys", "auth0-test-user"]))
+    ["link-replay-keys", "signin-client", "session-keys", "auth0-test-user",
+  "client-address-key", "account-erasure-client", "operator-key"]))
 
   service_accounts = {
     redirect  = "Redirect service"

@@ -6,6 +6,7 @@
 // whatever did commit.
 import { randomBytes, randomUUID } from "node:crypto";
 import type { ModuleRequest, ModuleResponse } from "../../entry.ts";
+import { type Admission, admissionKey, GUEST_CREATE } from "../abuse-and-moderation/admission.ts";
 import type { Dependencies } from "../link-api-link-operations.slots.ts";
 import { problem, singleHeader, unavailable } from "./contract.ts";
 import { normalizeDestination } from "./destination.ts";
@@ -33,6 +34,8 @@ export type CreateContext = {
 	reputation: (dependencies: Dependencies) => ReputationCheck;
 	onFailure: (what: string, error: unknown) => void;
 	random?: (size: number) => Uint8Array;
+	/** Guest admission (Q09, abuse-and-moderation/admission.ts); tests may leave it out. */
+	admission?: Admission;
 };
 
 /** The guest scope header Session API sets on a guest's create (an opaque handle). */
@@ -201,7 +204,24 @@ export async function createLink(
 		);
 	}
 
-	// Guest admission (Q09) goes here, before the reputation call and any durable state.
+	// Guest admission (Q09): after a replay (which costs nothing) and before the reputation call
+	// and any durable state, so a refused create stores nothing. Signed-in creates have the exact
+	// monthly allowance instead (owned.ts), so people behind one shared address can sign in.
+	if (context.admission) {
+		const decision = await context.admission(
+			dependencies.admissionCache,
+			GUEST_CREATE,
+			admissionKey(request.headers),
+		);
+		if (!decision.admitted)
+			return problem(
+				429,
+				"rate_limited",
+				`Too many new links from this network; try again in ${decision.retryAfterSeconds} seconds, or sign in.`,
+				true,
+				{ retryAfterSeconds: decision.retryAfterSeconds, reason: GUEST_CREATE.name },
+			);
+	}
 	const verdict = await context.reputation(dependencies)(destination.destination);
 	if (verdict === "threat")
 		return problem(422, "reputation_rejected", "The destination is reported as unsafe.", false);

@@ -58,7 +58,7 @@ project's one budget (USD 50 a month, alerts at USD 10, 25 and 50) is reused.
 | Stores | Cloud SQL `qrwtya-pg` (PostgreSQL 17, db-f1-micro, 10 GiB, private address, no backups), Memorystore for Valkey `qrwtya-hot-routes` and `qrwtya-admission-cache` (shared-core-nano, TLS, `AUTH_DISABLED`; each process's `JEEVES_SECRET_CACHE_<ID>_FILE` is `/dev/null`, an empty credential, which works on Cloud Run: both caches answer PING over verify-full TLS at startup), Pub/Sub `click-events` with its subscription, dead letters and Avro archive in `gs://qrwtya-click-archive-<project>` |
 | Images | Artifact Registry `qrwtya-images/app`, tagged `app-<first 12 of app/'s git tree hash>`; every Cloud Run resource runs one digest |
 | State | `gs://qrwtya-tfstate-523800841789/infra/gcp` (versioned, created by hand in A2) |
-| Auth0 | API `qrwtya-api`, identifier `https://api.qrwtya.qrwty.io` (RS256, 300 s tokens, offline access allowed); A3's Regular Web Application `qrwtya-web` (code flow, callback `https://qrwty.io/auth/callback`, logout `https://qrwty.io/`, rotating refresh tokens, a user grant to `qrwtya-api`), with the tenant's `Username-Password-Authentication` (sign-ups allowed) and `google-oauth2` enabled for it, and one `qrwtya-test-…@qrwty.io` user |
+| Auth0 | API `qrwtya-api`, identifier `https://api.qrwtya.qrwty.io` (RS256, 300 s tokens, offline access allowed); A3's Regular Web Application `qrwtya-web` (code flow, callback `https://qrwty.io/auth/callback`, logout `https://qrwty.io/`, rotating refresh tokens, a user grant to `qrwtya-api`), with the tenant's `Username-Password-Authentication` (sign-ups allowed) and `google-oauth2` enabled for it, and one `qrwtya-test-…@qrwty.io` user; A6's Machine to Machine application `qrwtya-account-erasure` (only `delete:users` on the Management API) |
 
 ### Redeploy
 
@@ -110,6 +110,50 @@ read it, then `QRWTY_TF_WORK=<dir> infra/gcp/scripts/tf.sh apply x.tfplan`.
    generated there, kept only in `qrwtya-auth0-test-user`). `check` lists what exists.
 4. `redeploy.sh HEAD`.
 
+### Abuse controls and account erasure (A6, once)
+
+1. `tf.sh` plan and apply, targeted, of three secrets and their readers: `qrwtya-client-address-key`
+   and `qrwtya-account-erasure-client` (Session API), `qrwtya-operator-key` (Link API).
+2. `bootstrap-secrets.py <project> qrwtya-pg qrwtya-client-address-key qrwtya-operator-key`: 32
+   random bytes in hex each.
+3. With `auth0.env` loaded: `python3 -I infra/gcp/scripts/auth0.py erasure-client`: the Machine to
+   Machine application `qrwtya-account-erasure`, whose only grant is `delete:users` on the
+   Management API, and its `{client_id, client_secret}` straight into
+   `qrwtya-account-erasure-client`. Session API deletes a deleted account's Auth0 user with it.
+4. `redeploy.sh HEAD`. `deploy/cloudflare/deploy.sh` puts the Worker secret `CLIENT_ADDRESS_KEY`
+   from `qrwtya-client-address-key` (piped, never printed) when the Worker lacks it; after a new
+   version, `QRWTY_PUT_CLIENT_KEY=1 deploy.sh` puts it again and a Session API redeploy reads it.
+
+**The client address.** The Worker sends Session API `QRWTY-Client-Address` (Cloudflare's
+`CF-Connecting-IP`) and `QRWTY-Client-Signature: v1.<unix seconds>.<HMAC-SHA-256>` with that key,
+and drops any `QRWTY-Client-*` header a browser sent. Session API accepts it within 60 s, reduces it
+to its network (IPv4 /32, IPv6 /64), and sends Link API only `QRWTY-Admission-Key`, a keyed hash of
+the network. A request without a valid signature (one sent to the `run.app` URL directly) shares the
+single key `unverified`. Link API's guest admission allows 10 creates a minute per key (decisions
+§4), reports 5 per 10 minutes; nothing stores an address.
+
+**The operator CLI.** An operator is a verified account in Link API's `OPERATOR_SUBJECTS` (unset:
+nobody), or the CLI, which signs each request with `qrwtya-operator-key` (only the project's owners
+and Link API read it):
+
+```sh
+node infra/gcp/scripts/operator.mjs show    <slug or short URL>
+node infra/gcp/scripts/operator.mjs block   <slug or short URL> --reason "<why>"
+node infra/gcp/scripts/operator.mjs unblock <slug or short URL> --reason "<why>"
+# options: --actor <name> (default: the gcloud account), --origin <url> (default https://qrwty.io)
+```
+
+`show` prints the link (state, owned or not), its report totals by reason and its last 10 actions.
+A block answers 403 everywhere within 30 s (the Redirect service's route entries); an unblock
+returns the link to its state before the block (disabled if its owner was erased meanwhile). Each
+action records `cli:<actor>` or `account:<subject>`, the reason and the time, kept 13 months. The
+signature covers the method, path, time (120 s), a one-time nonce, the actor and the reason; anyone
+else gets 404 on `/api/v1/operator/*`. Reports and actions are readable only by Link API's login.
+
+**When abuse spikes.** `gcloud logging read` on `qrwtya-link-api` for `admission cache` failures
+(each copy then limits alone), 429s on `POST /api/v1/links` in Session API's request log, and `show`
+on a reported link; block with the CLI. A report never blocks anything by itself.
+
 ### Cost (trial credit, no charge)
 
 At the Q13 list prices ([cost-quote.json](../docs/evidence/q13/cost-quote.json)), idle, about
@@ -132,7 +176,7 @@ infra/gcp/scripts/tf.sh plan -var=deletion_protection=false -out=off.tfplan   # 
 infra/gcp/scripts/tf.sh apply off.tfplan
 QRWTY_TF_TEARDOWN=1 infra/gcp/scripts/tf.sh plan -destroy -var=deletion_protection=false -out=destroy.tfplan
 QRWTY_TF_TEARDOWN=1 infra/gcp/scripts/tf.sh apply destroy.tfplan
-(set -a; . ~/.config/qrwty/auth0.env; set +a; python3 -I infra/gcp/scripts/auth0.py delete)          # A3: users, grant, qrwtya-web
+(set -a; . ~/.config/qrwty/auth0.env; set +a; python3 -I infra/gcp/scripts/auth0.py delete)          # A3, A6: users, grants, qrwtya-web, qrwtya-account-erasure
 (set -a; . ~/.config/qrwty/auth0.env; set +a; python3 -I docs/evidence/q13/commands/auth0.py delete)  # qrwtya-api
 gcloud storage rm -r gs://qrwtya-tfstate-523800841789   # last: the state
 docs/evidence/q13/commands/inventory.sh                 # must list nothing

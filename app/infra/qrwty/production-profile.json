@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "about": "QRWTY arm A production profile (application-owned, not generated). scripts/qrwty-production-profile.mjs reads it before a generated process or the migration job starts and refuses any emulator, fake, insecure, development, test-only or missing setting with a named reason. Process lists follow the Jeeves 0aea8e7 export of revision 84 (.jeeves/report.json processes.tiles[].environment, each Compose secret, and Link operations' declared settings; A3 adds Session API's and My links' declared settings; A4 the Redirect service's).",
+  "about": "QRWTY arm A production profile (application-owned, not generated). scripts/qrwty-production-profile.mjs reads it before a generated process or the migration job starts and refuses any emulator, fake, insecure, development, test-only or missing setting with a named reason. Process lists follow the Jeeves 0aea8e7 export of revision 84 (.jeeves/report.json processes.tiles[].environment, each Compose secret, and Link operations' declared settings; A3 adds Session API's and My links' declared settings; A4 the Redirect service's; A6 Session API's client-address-key and account-erasure-client secrets and Link API's operator-key).",
   "secretMount": {
     "variable": "QRWTY_SECRET_MOUNT_DIR",
     "layout": "<QRWTY_SECRET_MOUNT_DIR>/<secret name>/value (one Cloud Run secret volume per secret), named to the process by JEEVES_SECRET_<NAME>_FILE (Jeeves QG34; <NAME> the secret's name upper-cased, - and . as _)"
@@ -141,7 +141,8 @@
       "secrets": [
         "sql-links--link-api",
         "cache-admission-cache",
-        "link-replay-keys"
+        "link-replay-keys",
+        "operator-key"
       ]
     },
     "session-api": {
@@ -160,7 +161,9 @@
       "secrets": [
         "sql-sessions--session-api",
         "signin-client",
-        "session-keys"
+        "session-keys",
+        "client-address-key",
+        "account-erasure-client"
       ]
     },
     "migrate": {

@@ -266,7 +266,8 @@
 	function parse(pathname) {
 		if (pathname === "/" || pathname === "/app" || pathname === "/app/") return { view: "create", id: null };
 		if (pathname === "/app/links") return { view: "links", id: null };
-		if (pathname === "/app/plans") return { view: "plans", id: null };
+		// Stripe Checkout returns to /billing?checkout=success|cancelled (http-contract §9); A7 reads it.
+		if (pathname === "/app/plans" || pathname === "/billing") return { view: "plans", id: null };
 		let m = /^\/app\/links\/([^/]+)$/.exec(pathname);
 		if (m) return { view: "link", id: decodeURIComponent(m[1]) };
 		m = /^\/app\/links\/([^/]+)\/clicks$/.exec(pathname);

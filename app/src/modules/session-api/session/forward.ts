@@ -15,12 +15,21 @@
 //   GET    /api/v1/links/:id/analytics.csv  the same as CSV            -> Account API (A4)
 //   GET    /api/v1/me                 {account, ownedLinks}            -> Account API GET /me
 //   DELETE /api/v1/me                 202 {deletionScheduled}          -> Link API  POST /account/erase,
-//                                     then every session of the account is revoked
+//                                     then the issuer's user is deleted (A3b), then every session of
+//                                     the account is revoked
+//   POST   /api/v1/abuse-reports      202 {received}; guest or account  -> Link API  POST /reports (Q09)
+//   GET    /api/v1/operator/links/by-slug/:slug, POST /api/v1/operator/links/:id/block|unblock
+//                                     operator only, else 404           -> Link API  /operator/... (Q09)
+// A guest create and a report carry QRWTY-Admission-Key, the keyed hash of the browser's network
+// from the Worker's signed address (client-address.ts), for Link API's guest admission.
 
 import { createFailureLog } from "../../../runtime/tile-process.ts";
 import type { HttpTarget } from "../../dependencies.ts";
 import { defineRoutes, type ModuleRequest, type ModuleResponse } from "../../entry.ts";
+import { ADMISSION_KEY_HEADER } from "../../link-api/abuse-and-moderation/admission.ts";
+import { OPERATOR_HEADERS } from "../../link-api/abuse-and-moderation/operator.ts";
 import { notFound, problem } from "../../link-api/link-operations/contract.ts";
+import { admissionKeyFor } from "./client-address.ts";
 import type { SessionContext } from "./context.ts";
 import {
 	clearCookie,
@@ -32,14 +41,23 @@ import {
 	SESSION_COOKIE,
 	setCookie,
 } from "./cookies.ts";
+import type { UserEraser } from "./erasure.ts";
 import { accessToken, type Browser, identify, openTokens } from "./sessions.ts";
 
 const LINKS = "/modules/link-api-link-operations";
 const ACCOUNT = "/modules/account-api-my-links";
 const ANALYTICS = "/modules/account-api-link-analytics";
+const ABUSE = "/modules/link-api-abuse-and-moderation";
 const failure = createFailureLog("session-api");
 
-export type ForwardContext = SessionContext & { linkApi: HttpTarget; accountApi: HttpTarget };
+export type ForwardContext = SessionContext & {
+	linkApi: HttpTarget;
+	accountApi: HttpTarget;
+	/** The Worker's client-address key (client-address.ts); absent: every guest is `unverified`. */
+	clientKey?: Uint8Array;
+	/** Deletes the account's user at the issuer (erasure.ts); absent: the user stays (local). */
+	eraseUser?: UserEraser;
+};
 type Routed = ModuleRequest & { params: Record<string, string> };
 type Known = Exclude<Browser, { kind: "refused" }>;
 type Account = Browser & { kind: "account" };
@@ -221,6 +239,33 @@ export function forwardRoutes() {
 		const text = query.toString();
 		return `${ANALYTICS}/links/${encodeURIComponent(request.params.id ?? "")}/${suffix}${text ? `?${text}` : ""}`;
 	};
+	/** An operator route (Q09): the operator CLI's signed request, passed on with its four headers
+	 * as they are; or an account session's bearer (with its CSRF token on a mutation). Link API
+	 * decides who is an operator and answers anyone else 404; so does this, for any other browser. */
+	const operatorRoute =
+		(path: (request: Routed) => string, mutation: boolean) =>
+		async (request: Routed, context: ForwardContext): Promise<ModuleResponse> => {
+			const target = `${ABUSE}/operator${path(request)}`;
+			if (one(request.headers[OPERATOR_HEADERS.signature]) !== undefined) {
+				const signed: Record<string, string> = {};
+				for (const name of Object.values(OPERATOR_HEADERS)) {
+					const value = one(request.headers[name]);
+					if (value !== undefined) signed[name] = value;
+				}
+				return call(context.linkApi, target, request, signed, mutation);
+			}
+			const browser = await who(request, context);
+			if (isAnswer(browser)) return (browser.status ?? 200) >= 500 ? browser : notFound();
+			if (browser.kind !== "account") return notFound();
+			if (
+				mutation &&
+				!csrfValid(context.ring, browser.cookie.value, one(request.headers["x-csrf-token"]))
+			)
+				return notFound();
+			const token = await bearer(browser, request, context);
+			if (typeof token !== "string") return token;
+			return call(context.linkApi, target, request, { authorization: `Bearer ${token}` }, mutation);
+		};
 	const linkApi = (context: ForwardContext) => context.linkApi;
 	const accountApi = (context: ForwardContext) => context.accountApi;
 
@@ -260,7 +305,10 @@ export function forwardRoutes() {
 					context.linkApi,
 					`${LINKS}/links`,
 					request,
-					{ "qrwty-guest-scope": guestScope(context.ring, browser.cookie.id) },
+					{
+						"qrwty-guest-scope": guestScope(context.ring, browser.cookie.id),
+						[ADMISSION_KEY_HEADER]: admissionKeyFor(request.headers, context.clientKey),
+					},
 					true,
 				);
 			const token = await bearer(browser, request, context);
@@ -273,6 +321,29 @@ export function forwardRoutes() {
 				true,
 			);
 		},
+		"POST /api/v1/abuse-reports": async (request, context) => {
+			const browser = await mutating(request, context);
+			if (isAnswer(browser)) return browser;
+			return call(
+				context.linkApi,
+				`${ABUSE}/reports`,
+				request,
+				{ [ADMISSION_KEY_HEADER]: admissionKeyFor(request.headers, context.clientKey) },
+				true,
+			);
+		},
+		"GET /api/v1/operator/links/by-slug/:slug": operatorRoute(
+			(request) => `/links/by-slug/${encodeURIComponent(request.params.slug ?? "")}`,
+			false,
+		),
+		"POST /api/v1/operator/links/:id/block": operatorRoute(
+			(request) => `/links/${encodeURIComponent(request.params.id ?? "")}/block`,
+			true,
+		),
+		"POST /api/v1/operator/links/:id/unblock": operatorRoute(
+			(request) => `/links/${encodeURIComponent(request.params.id ?? "")}/unblock`,
+			true,
+		),
 		"GET /api/v1/links/:id": owner(linkApi, link, false),
 		"PATCH /api/v1/links/:id": owner(linkApi, link, true),
 		"DELETE /api/v1/links/:id": owner(linkApi, link, true),
@@ -329,6 +400,8 @@ export function forwardRoutes() {
 				);
 			const token = await bearer(browser, request, context);
 			if (typeof token !== "string") return token;
+			// The Management API token is fetched while Link API erases (one round trip saved).
+			const warming = context.eraseUser?.warm(request.signal);
 			const erased = await call(
 				context.linkApi,
 				`${LINKS}/account/erase`,
@@ -336,10 +409,23 @@ export function forwardRoutes() {
 				{ authorization: `Bearer ${token}` },
 				false,
 			);
+			await warming;
 			if (erased.status !== 200) return erased;
+			// The issuer's user goes before the sessions: if this fails, the browser's session still
+			// works, and its retry (the same Idempotency-Key) erases again, which changes nothing more.
+			if (context.eraseUser)
+				try {
+					await context.eraseUser.erase(
+						browser.tokens.subject,
+						AbortSignal.any([request.signal, AbortSignal.timeout(450)]),
+					);
+				} catch (error) {
+					failure("account deletion issuer user", error);
+					return unavailable("identity_unavailable", "Sign-in is unavailable; try again shortly.");
+				}
 			try {
 				const ended = await context.store.revokeAccount(browser.subjectKey);
-				const signal = AbortSignal.any([request.signal, AbortSignal.timeout(400)]);
+				const signal = AbortSignal.any([request.signal, AbortSignal.timeout(250)]);
 				await Promise.all(
 					ended.map(async (row) => {
 						const refresh = openTokens(context.ring, row.id_sha256, row.tokens_sealed)?.refresh;
