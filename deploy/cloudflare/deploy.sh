@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Deploy the qrwty.io edge Worker and confirm the live build. Safe to rerun: every run
-# uploads the current source, keeps the same Custom Domains and checks /healthz.
+# uploads the current source, keeps the same Custom Domains and checks /build.json.
 #
 #   deploy/cloudflare/deploy.sh [--allow-dirty]
 #
@@ -8,7 +8,8 @@
 #    tree (tracked changes anywhere, or untracked files under deploy/cloudflare) is refused
 #    unless --allow-dirty is passed; the commit is then recorded as "<sha>-dirty".
 # 2. Runs `wrangler deploy` with the build as plain-text variables.
-# 3. Polls https://qrwty.io/healthz from this machine until it reports that build.
+# 3. Polls https://qrwty.io/build.json from this machine until it reports that build
+#    (/healthz is arm A's Session API since A2).
 #
 # Credentials: CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID from the environment, or else
 # from ~/.config/qrwty/cloudflare.env. They are never printed: wrangler's output and its
@@ -29,7 +30,7 @@ done
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$here"
-health_url="https://qrwty.io/healthz"
+build_url="https://qrwty.io/build.json"
 
 # Node.js: wrangler needs 22 or newer; package.json pins 24.21.0. Fall back to nvm's copy.
 node_major() { node -p 'process.versions.node.split(".")[0]' 2>/dev/null || echo 0; }
@@ -81,4 +82,4 @@ pnpm exec wrangler deploy --var "BUILD_COMMIT:$commit" --var "BUILT_AT:$built_at
 	node scripts/scrub.mjs
 
 # 3. Confirm the live build from this machine.
-node scripts/check-health.mjs .build/build.json "$health_url" 120
+node scripts/check-health.mjs .build/build.json "$build_url" 120

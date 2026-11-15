@@ -57,7 +57,7 @@ locals {
       ca      = "hot-routes"          # Memorystore's CA is per instance (GOOGLE_MANAGED_PER_INSTANCE_CA, Q13)
       ingress = "INGRESS_TRAFFIC_ALL" # the qrwty.io Worker is the trusted edge (Q13 restricts the origin)
       sa      = "redirect"
-      min     = 1
+      min     = 0 # trial credit: no idle copy (A2)
     }
     "session-api" = {
       env = merge(local.db.sessions, {
@@ -106,6 +106,11 @@ locals {
       min     = 0
     }
   }
+  # Public origins that allow unauthenticated invocation (no Cloud Run IAM). The qrwty.io Worker
+  # proxies the browser's /api/*, /auth/* and /healthz to Session API (A2) and can't send a Google
+  # ID token (AG-14). The Redirect service stays IAM-protected until A4 routes short links to it.
+  open = toset(["session-api"])
+
   worker = {
     env     = merge(local.db.analytics, { JEEVES_PUBSUB_PROJECT = var.project_id })
     secrets = ["sql-analytics--analytics-worker"]

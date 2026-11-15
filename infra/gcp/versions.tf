@@ -1,5 +1,5 @@
-# QRWTY arm A: GCP staging draft (Q04). Prepared, statically checked, never applied in Q04.
-# Q12a/Q13 apply it inside the owner's trial-credit project. See README.md.
+# QRWTY arm A on GCP (Q04's draft; Q13 applied it once; live since A2 on the trial credit).
+# Apply it only through scripts/tf.sh or scripts/redeploy.sh. See infra/README.md.
 terraform {
   required_version = "= 1.13.2"
 
@@ -10,7 +10,9 @@ terraform {
     }
   }
 
-  # State stays local until Q13 chooses a backend (a bucket created by hand, never here).
+  # State: gs://qrwtya-tfstate-<project number>/infra/gcp, a versioned bucket created by hand
+  # (A2), never here. scripts/tf.sh passes the bucket and prefix to `tofu init`.
+  backend "gcs" {}
 }
 
 provider "google" {

@@ -90,24 +90,25 @@ else
 	pass "https://$apex/ (browser request): no scripts, links, imports or absolute URLs in the page"
 fi
 
-# 2. /healthz and /build.json.
+# 2. /build.json (the Worker's build) and /healthz (arm A's Session API, since A2).
 fetch healthz "https://$apex/healthz"
 fetch build "https://$apex/build.json"
 health_json="$(cat "$work/healthz.body")"
 build_json="$(cat "$work/build.body")"
 verdict="$(HEALTH="$health_json" BUILD="$build_json" EXPECT="$expected_commit" node -e '
-	const h = JSON.parse(process.env.HEALTH), b = JSON.parse(process.env.BUILD), e = process.env.EXPECT;
 	const problems = [];
-	if (h.ok !== true) problems.push("healthz ok is not true");
-	if (Object.keys(h).join() !== "ok,commit,builtAt") problems.push("healthz keys " + Object.keys(h));
-	if (b.commit !== h.commit || b.builtAt !== h.builtAt || Object.keys(b).join() !== "commit,builtAt")
-		problems.push("build.json differs from healthz");
-	if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(h.builtAt)) problems.push("builtAt is not UTC ISO");
-	if (e && h.commit !== e) problems.push("commit " + h.commit + " is not the expected " + e);
+	let h = {}, b = {};
+	try { h = JSON.parse(process.env.HEALTH); } catch { problems.push("healthz is not JSON"); }
+	try { b = JSON.parse(process.env.BUILD); } catch { problems.push("build.json is not JSON"); }
+	const e = process.env.EXPECT;
+	if (h.service !== "session-api" || h.application !== "ready") problems.push("healthz is not a ready Session API");
+	if (Object.keys(b).join() !== "commit,builtAt") problems.push("build.json keys " + Object.keys(b));
+	if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(b.builtAt)) problems.push("builtAt is not UTC ISO");
+	if (e && b.commit !== e) problems.push("commit " + b.commit + " is not the expected " + e);
 	console.log(problems.join("; "));
 ' 2>&1)"
 if [ "$(status healthz)" = 200 ] && [ "$(status build)" = 200 ] &&
-	[ "$(header healthz content-type)" = "application/json; charset=utf-8" ] && [ -z "$verdict" ]; then
+	[ "$(header build content-type)" = "application/json; charset=utf-8" ] && [ -z "$verdict" ]; then
 	pass "https://$apex/healthz -> 200 $health_json"
 	pass "https://$apex/build.json -> 200 $build_json"
 else

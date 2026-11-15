@@ -1,6 +1,8 @@
-// The qrwty.io edge router: a placeholder page, build info, the www and b redirects, and the
-// static /versions/ pages (Workers static assets, fetched through the ASSETS binding).
-// `route` is pure (Request in, Response out); `handle` adds the assets, which tests replace.
+// The qrwty.io edge router: a placeholder page, build info, the www and b redirects, the static
+// /versions/ pages (Workers static assets, fetched through the ASSETS binding) and, since A2, arm
+// A's Session API behind /api/*, /auth/* and /healthz.
+// `route` is pure (Request in, Response out); `handle` adds the assets and the Session API origin,
+// which tests replace.
 
 export interface Build {
 	commit: string;
@@ -16,6 +18,136 @@ export const B_RECORD_URL = `https://${APEX_HOST}/versions/b/`;
 /** The static-assets binding (`env.ASSETS`), or a test double. */
 export interface Assets {
 	fetch(request: Request): Promise<Response>;
+}
+
+/**
+ * Arm A's Session API (A2): its run.app origin (`SESSION_API_ORIGIN` in wrangler.toml) and the
+ * fetch that reaches it (the global `fetch`, or a test double).
+ */
+export interface Origin {
+	url: string;
+	fetch(request: Request): Promise<Response>;
+}
+
+/**
+ * Where each proxied path goes on Session API. Its stubs answer every path below
+ * `/modules/<module>`, and each sees the public path unchanged (`/api/v1/links`, `/auth/login`).
+ */
+export const SESSION_ROUTES: ReadonlyArray<{ prefix: string; module: string }> = [
+	{ prefix: "/api", module: "session-api-api-forwarding" },
+	{ prefix: "/auth", module: "session-api-sign-in-flow" },
+];
+
+/**
+ * What the Worker asks to learn whether Session API is ready. Its own `/healthz` can't be reached
+ * through run.app: Cloud Run's front end keeps that path, and every other spelling tried (`%7A`,
+ * a query, a trailing slash, `//`) is either kept too or doesn't match the route (A-found gap
+ * AG-15, A2). A stub route is admitted only once the process is ready (else `503 UNAVAILABLE`), so
+ * any answer below 500, or a stub's 501, means ready.
+ */
+export const SESSION_READY_PROBE = "/modules/session-api-sign-in-flow";
+
+/** The upstream URL for a proxied request, or null when the path isn't Session API's. */
+export function sessionTarget(url: URL, origin: string): string | null {
+	const base = origin.replace(/\/+$/, "");
+	for (const { prefix, module } of SESSION_ROUTES) {
+		if (url.pathname === prefix || url.pathname.startsWith(`${prefix}/`)) {
+			return `${base}/modules/${module}${url.pathname}${url.search}`;
+		}
+	}
+	return null;
+}
+
+/**
+ * `/healthz`: Session API's readiness, from one GET of SESSION_READY_PROBE. `200` with
+ * `application: "ready"`, else `503` (`unavailable` when the process answered 5xx, `unreachable`
+ * when nothing did), with what the probe got.
+ */
+export async function readiness(request: Request, origin: Origin): Promise<Response> {
+	let status = 0;
+	try {
+		const answer = await origin.fetch(
+			new Request(`${origin.url.replace(/\/+$/, "")}${SESSION_READY_PROBE}`, {
+				headers: { accept: "application/json" },
+				redirect: "manual",
+			}),
+		);
+		status = answer.status;
+		await answer.body?.cancel();
+	} catch {
+		status = 0;
+	}
+	const ready = status > 0 && (status < 500 || status === 501);
+	const response = respond(
+		json({
+			service: "session-api",
+			application: ready ? "ready" : status ? "unavailable" : "unreachable",
+			probe: `GET ${SESSION_READY_PROBE}`,
+			probeStatus: status || null,
+		}),
+		ready ? 200 : 503,
+		{
+			"content-type": JSON_TYPE,
+			"cache-control": NO_STORE,
+			...(ready ? {} : { "retry-after": "1" }),
+		},
+	);
+	return request.method === "HEAD"
+		? new Response(null, { status: response.status, headers: response.headers })
+		: response;
+}
+
+// Request headers the Worker sets itself or that only describe the hop to Cloudflare.
+const DROPPED_REQUEST =
+	/^(host|connection|keep-alive|te|trailer|transfer-encoding|upgrade|proxy-.*|cf-.*|cdn-loop|x-forwarded-.*|x-real-ip|forwarded)$/;
+const DROPPED_RESPONSE =
+	/^(connection|keep-alive|transfer-encoding|upgrade|alt-svc|server|via|x-cloud-trace-context)$/;
+
+/**
+ * Forwards a request to Session API: any method, the body, cookies and the query, with the
+ * browser's address in X-Forwarded-For and the public host in X-Forwarded-Host. Redirects come
+ * back to the browser as they are. Every answer gets the security headers and no-transform.
+ */
+export async function proxy(request: Request, target: string, origin: Origin): Promise<Response> {
+	const headers = new Headers();
+	request.headers.forEach((value, name) => {
+		if (!DROPPED_REQUEST.test(name)) headers.set(name, value);
+	});
+	headers.set("x-forwarded-host", APEX_HOST);
+	headers.set("x-forwarded-proto", "https");
+	const client = request.headers.get("cf-connecting-ip");
+	if (client) headers.set("x-forwarded-for", client);
+	const bodyless = request.method === "GET" || request.method === "HEAD";
+	let upstream: Response;
+	try {
+		upstream = await origin.fetch(
+			new Request(target, {
+				method: request.method,
+				headers,
+				body: bodyless ? null : await request.arrayBuffer(),
+				redirect: "manual",
+			}),
+		);
+	} catch {
+		return respond(json({ error: "UNAVAILABLE", message: "Service unavailable." }), 503, {
+			"content-type": JSON_TYPE,
+			"cache-control": NO_STORE,
+			"retry-after": "1",
+		});
+	}
+	const out = new Headers();
+	upstream.headers.forEach((value, name) => {
+		if (!DROPPED_RESPONSE.test(name) && name !== "set-cookie") out.set(name, value);
+	});
+	for (const cookie of upstream.headers.getSetCookie()) out.append("set-cookie", cookie);
+	for (const [name, value] of Object.entries(SECURITY_HEADERS)) out.set(name, value);
+	const cache = out.get("cache-control");
+	out.set(
+		"cache-control",
+		!cache ? NO_STORE : /no-transform/.test(cache) ? cache : `${cache}, no-transform`,
+	);
+	const empty = request.method === "HEAD" || [101, 204, 205, 304].includes(upstream.status);
+	return new Response(empty ? null : upstream.body, { status: upstream.status, headers: out });
 }
 
 /** Sent on every response. No HSTS yet: Q13 decides it, because preload is hard to undo. */
@@ -53,15 +185,28 @@ export function contentSecurityPolicy(pathname: string): string {
 }
 
 /**
- * The Worker's answer: b.qrwty.io goes to B's record, /versions/ is served from the static
- * assets with the security headers added, and everything else is `route`.
+ * The Worker's answer: b.qrwty.io goes to B's record; with an origin, /api/*, /auth/* (any
+ * method) and /healthz go to Session API; /versions/ is served from the static assets with the
+ * security headers added; and everything else is `route`.
  */
-export async function handle(request: Request, build: Build, assets?: Assets): Promise<Response> {
+export async function handle(
+	request: Request,
+	build: Build,
+	assets?: Assets,
+	origin?: Origin,
+): Promise<Response> {
 	const url = new URL(request.url);
 	if (url.hostname === B_HOST) {
 		return respond(null, 301, { location: B_RECORD_URL, "cache-control": REDIRECT_CACHE });
 	}
 	const head = request.method === "HEAD";
+	if (url.hostname === APEX_HOST && origin) {
+		if (url.pathname === "/healthz" && (request.method === "GET" || head)) {
+			return readiness(request, origin);
+		}
+		const target = sessionTarget(url, origin.url);
+		if (target) return proxy(request, target, origin);
+	}
 	if (url.hostname === WWW_HOST || (request.method !== "GET" && !head) || !assets) {
 		return route(request, build);
 	}

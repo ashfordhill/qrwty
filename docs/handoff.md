@@ -1399,3 +1399,147 @@ decided: no oracle, no review, no cloud. Full record: [A1 checks](evidence/a1/ch
   found to jump.
 - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
   memory index); it was ignored.
+
+## A2: arm A's stack live behind qrwty.io, 2026-11-15
+
+Arm A, A2 attempt 1 (role implementer, phase cloud), from QRWTY `a0ddd52`. During the unit the
+coordinator committed `834a6bf` (queue A8). That commit also took this unit's staged rename
+`infra/gcp/terraform.tfvars.example` → `qrwtya.tfvars`, without its content; this commit carries
+the content. OpenTofu 1.13.2 and the google 8.8.1 mirror from `.scratch/tools/`. Light checks, as
+the owner decided. Status: **done. Everything below keeps running on the trial credit.**
+
+- **Live.**
+  - `https://qrwty.io/healthz` →
+    `200 {"service":"session-api","application":"ready","probe":"GET /modules/session-api-sign-in-flow","probeStatus":501}`.
+  - `https://qrwty.io/api/*` and `/auth/*`, any method → Session API's API forwarding and sign-in
+    stubs. Both still answer `501 NOT_IMPLEMENTED`: `POST /api/v1/links` and `GET /auth/login`.
+  - `/`, `/build.json`, `/versions/`, `www` and `b.qrwty.io` are unchanged.
+  - Session API's origin is `https://qrwtya-session-api-523800841789.us-central1.run.app`.
+- **Deployed** (`us-central1`).
+  - **Cloud Run services:** five, minimum 0 and maximum 3 instances.
+    - `qrwtya-session-api` is public and open: unauthenticated invocation, because the Worker
+      can't send an ID token (AG-14).
+    - `qrwtya-redirect-service` has public ingress but is IAM-protected (403) until A4. Its minimum
+      went from 1 to 0.
+    - Link, Account and Billing API are internal; the Internet gets Google's 404.
+  - **Worker pool:** `qrwtya-analytics-worker` at **0** instances.
+  - **Migration job:** `qrwtya-migrate`. Three executions, all exit 0.
+  - **Stores and messaging:** Cloud SQL `qrwtya-pg` (db-f1-micro), two Valkey shared-core-nano
+    instances, Pub/Sub `click-events` (3 subscriptions, 2 topics) and the archive bucket.
+  - **Credentials and identity:** 17 secrets and 7 service accounts.
+  - **Network:** VPC, Cloud NAT, PSA, and the PSC policy with 4 endpoints.
+  - **Image:** in Artifact Registry `qrwtya-images` (the packet's "`qrwtya`"),
+    `app@sha256:e3d066ce…00a8`, tagged `app-6320d63342a1` and `834a6bff22d2`. It is `app/` as A1
+    left it.
+  - **State:** `gs://qrwtya-tfstate-523800841789/infra/gcp`, a new versioned bucket created by
+    hand (`versions.tf` now has `backend "gcs" {}`).
+  - **Auth0:** API `qrwtya-api` (`https://api.qrwtya.qrwty.io`, RS256, 300 s tokens, offline
+    access allowed), created because none existed. Nothing else was created; A3 adds the web
+    application and users.
+- **How it was applied.**
+  1. Saved plan 01 (95 resources): `-exclude` left out the three Cloud Run resources, so a
+     digest-shaped placeholder image was enough. Applied in about 13 minutes.
+  2. `bootstrap-secrets.py`: 15 versions piped to Secret Manager, and the `postgres` password set
+     through the SQL Admin API.
+  3. `redeploy.sh` run 1: job plan (1 add) and an execution, then the stack plan (6 add). The
+     smoke failed on `/healthz` (below).
+  4. Run 2: a rebuilt digest, 1 + 6 changes. Smoke 4/4.
+  5. Run 3: image reused, both plans "No changes". Smoke 4/4.
+
+  Q13's I-1 to I-10 fixes were already in the IaC, and nothing broke this time.
+- **IaC** (application-owned):
+  - `locals.tf`: `open = ["session-api"]`, and the Redirect service at minimum 0.
+  - `run.tf`: `invoker_iam_disabled` also for `local.open`.
+  - `versions.tf`: the GCS backend.
+  - `qrwtya.tfvars` (committed; no credential): `reputation_credentials = "metadata"` (the
+    profile requires it) and `analytics_workers = 0`.
+  - New `infra/gcp/scripts/`: `tf.sh`, `bootstrap-secrets.py` and `redeploy.sh`.
+    - `tf.sh` copies the `.tf` files into a working directory and reads only `AUTH0_DOMAIN`
+      from `auth0.env`, in a subshell. `TF_VAR_image` defaults to the job's image.
+      `QRWTY_TF_TEARDOWN=1` drops the `prevent_destroy` guards in the working copy.
+    - `bootstrap-secrets.py` is Q13's, adapted.
+- **Worker** (`deploy/cloudflare/`, the `qrwty-edge` code and vars only; no DNS, zone or route
+  change).
+  - `SESSION_API_ORIGIN` is in `wrangler.toml` `[vars]`, and `deploy.sh`'s `--var` values merge
+    with it.
+  - `/api*` and `/auth*` go to `/modules/session-api-api-forwarding<path>` and
+    `/modules/session-api-sign-in-flow<path>`, so **each stub sees the public path**
+    (`/api/v1/links`, `/auth/login`).
+  - The method, body, cookies and every `Set-Cookie` pass through, with `redirect: manual`.
+    `X-Forwarded-For` is `CF-Connecting-IP`; `X-Forwarded-Host` and `-Proto` are set; `cf-*` and
+    hop-by-hop headers are dropped. The answer gets the security headers and `no-transform`.
+    Unreachable gives 503 JSON.
+  - `deploy.sh` and `check-health.mjs` now poll `/build.json`, since `/healthz` is A's. `check-live.sh`
+    expects A's `/healthz`.
+  - **Edge header: none.** A's code checks none, so Session API's run.app URL is reachable from
+    the Internet without Cloudflare. A3 can add a shared-secret header check in its stub if
+    wanted.
+- **`/healthz` and AG-15** (more evidence, not a new gap).
+  - `run.app` answered Google's HTML 404 to `/healthz`, `/health%7A`, `/health%7a`,
+    `/healthz?x=1`, `//healthz` and `/healthz;`. The front end decodes and keeps them.
+  - `/healthz/` and `/HEALTHZ` reach the process but miss the route (Fastify 404).
+  - So the Worker asks `GET /modules/session-api-sign-in-flow`. The generated admission admits a
+    stub request only once the process is ready (otherwise `503 UNAVAILABLE`), so any answer
+    below 500, or 501, counts as ready. The answer names the probe and its status.
+- **`/dev/null` works** as the empty cache credential on Cloud Run.
+  - Link API's `JEEVES_SECRET_CACHE_ADMISSION_CACHE_FILE` and the Redirect service's
+    `…HOT_ROUTES_FILE` are `/dev/null`.
+  - At startup both logged cache `PING ok` over verify-full TLS, alongside `profile-ok`, the
+    `SELECT 1` probes, the topic probe and `Application ready` in every service.
+- **Redeploy:** `infra/gcp/scripts/redeploy.sh <release> [--allow-dirty]`, for example `HEAD`.
+  Documented in [infra/README.md](../infra/README.md#redeploy).
+  1. The image, tagged `app-<12 of app/'s git tree hash>`. An existing tag is reused, because a
+     rebuild of the same files got a new digest (`1b328df…` vs `e3d066ce…`, from the build-time
+     attestation). The unused digest was deleted.
+  2. The job plan, applied, then the job executed with `--wait`.
+  3. The stack plan, refused if it would delete or replace anything, then applied.
+  4. `deploy.sh` for the Worker.
+  5. The smoke: `/healthz` ready, `/versions/` 200, and JSON from Session API on `/api` and
+     `/auth`.
+
+  About 3 minutes; the migration job takes 2.5 of them. Set `QRWTY_REDEPLOY_DIR` to the unit's
+  scratch.
+- **Credit (trial credit, no charge).** Idle, at Q13's list prices: about **USD 0.124 an hour, USD
+  3.0 a day** (about USD 90 for 30 days).
+
+  | Item | USD a day |
+  | --- | --- |
+  | Valkey, 2 nodes | 1.53 |
+  | 4 PSC endpoints | 0.96 |
+  | Cloud SQL and disk | 0.31 |
+  | Cloud NAT and IP | 0.15 |
+  | Secrets | 0.03 |
+
+  Cloud Run, the worker pool, the images and the state bucket come to about 0 while idle; requests
+  add request-based CPU. The budget's USD 10, 25 and 50 alerts come after about 3, 8 and 17 days.
+- **Checks.**
+  - `infra/gcp/validate.sh` ok (lint 0 errors; fmt, init and validate 0), and the lint self-test
+    8/8.
+  - `deploy/cloudflare`: `pnpm check` passes (Biome, tsc, vitest **30/30**, 4 of them new).
+  - Root `pnpm check` exit 0, with 71 generated files unchanged.
+  - Redeploy smoke 4/4 on runs 2 and 3, and `check-live.sh` all passed.
+  - Ingress as above.
+  - A read-only `plan -destroy` with the teardown switch gives 102 to destroy (not saved). A plain
+    plan gives "No changes".
+  - The secret scan (shapes, plus the Auth0 and Cloudflare values matched without printing) is
+    clean, and `git diff --check` is clean.
+- **Running; teardown.** Everything above. Exact commands are in
+  [infra/README.md](../infra/README.md#teardown):
+  1. Set protection off with a saved plan (`-var=deletion_protection=false`).
+  2. Run `QRWTY_TF_TEARDOWN=1 tf.sh plan -destroy … -out` and apply it.
+  3. Run Q13's `auth0.py delete`.
+  4. `gcloud storage rm -r gs://qrwtya-tfstate-523800841789`.
+  5. Run `inventory.sh`.
+- **Template gaps:** none new. AG-15 has the evidence above, and AG-14 is why Session API is open.
+- **Next: A3** (sessions). Session API's stubs receive `/api/…` and `/auth/…` as their `path`.
+  The Auth0 callback would be `https://qrwty.io/auth/…`.
+- **Read.**
+  - The packet, `AGENTS.md`, this file (Q13, S02, A1), and the owner decisions of 2026-11-15.
+  - Q13's checks, gaps and commands, `infra/` and `deploy/cloudflare/`.
+  - The app's `http.ts`, `tile-http.ts`, `admission.ts`, Session API's process and stubs, and the
+    production profile.
+  - `~/.config/qrwty/`: `auth0.env` and `cloudflare.env` only, loaded with `set -a` and never
+    printed.
+- **Elapsed.** 18:30:33Z to about 19:15Z on the host clock (about 45 minutes).
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
+  memory index); it was ignored.

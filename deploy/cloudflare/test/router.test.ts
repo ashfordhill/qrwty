@@ -287,6 +287,168 @@ describe("handle", () => {
 	});
 });
 
+/** A stand-in for Session API: records each request and answers what `answer` returns. */
+function fakeOrigin(
+	answer: (request: Request) => Response | Promise<Response> = () => new Response("{}"),
+) {
+	const seen: Request[] = [];
+	return {
+		seen,
+		url: "https://qrwtya-session-api-1.us-central1.run.app",
+		async fetch(request: Request): Promise<Response> {
+			seen.push(request);
+			return answer(request);
+		},
+	};
+}
+
+describe("session api proxy", () => {
+	it("sends /api/* and /auth/* to their modules with the public path, any method", async () => {
+		const origin = fakeOrigin(
+			() =>
+				new Response('{"error":"NOT_IMPLEMENTED"}', {
+					status: 501,
+					headers: { "content-type": "application/json", "cache-control": "no-store" },
+				}),
+		);
+		const post = await handle(
+			new Request("https://qrwty.io/api/v1/links?x=1", {
+				method: "POST",
+				body: '{"destination":"https://example.com/"}',
+				headers: {
+					"content-type": "application/json",
+					cookie: "s=1",
+					"cf-connecting-ip": "203.0.113.9",
+					host: "qrwty.io",
+				},
+			}),
+			build,
+			fakeAssets(),
+			origin,
+		);
+		expect(post.status).toBe(501);
+		expect(post.headers.get("cache-control")).toBe("no-store, no-transform");
+		expectSecurityHeaders(post);
+		const sent = origin.seen[0] as Request;
+		expect(sent.url).toBe(
+			"https://qrwtya-session-api-1.us-central1.run.app/modules/session-api-api-forwarding/api/v1/links?x=1",
+		);
+		expect(sent.method).toBe("POST");
+		expect(await sent.text()).toBe('{"destination":"https://example.com/"}');
+		expect(sent.headers.get("cookie")).toBe("s=1");
+		expect(sent.headers.get("x-forwarded-for")).toBe("203.0.113.9");
+		expect(sent.headers.get("x-forwarded-host")).toBe("qrwty.io");
+		expect(sent.headers.get("cf-connecting-ip")).toBeNull();
+		await handle(new Request("https://qrwty.io/auth/login"), build, undefined, origin);
+		expect(origin.seen[1]?.url).toBe(
+			"https://qrwtya-session-api-1.us-central1.run.app/modules/session-api-sign-in-flow/auth/login",
+		);
+		await handle(new Request("https://qrwty.io/apix"), build, undefined, origin);
+		expect(origin.seen).toHaveLength(2);
+	});
+
+	it("passes redirects and every cookie back to the browser", async () => {
+		const origin = fakeOrigin(() => {
+			const headers = new Headers({ location: "https://tenant.example/authorize" });
+			headers.append("set-cookie", "a=1; Secure; HttpOnly");
+			headers.append("set-cookie", "b=2; Secure; HttpOnly");
+			return new Response(null, { status: 302, headers });
+		});
+		const response = await handle(
+			new Request("https://qrwty.io/auth/login"),
+			build,
+			undefined,
+			origin,
+		);
+		expect(response.status).toBe(302);
+		expect(response.headers.get("location")).toBe("https://tenant.example/authorize");
+		expect(response.headers.getSetCookie()).toEqual([
+			"a=1; Secure; HttpOnly",
+			"b=2; Secure; HttpOnly",
+		]);
+		expect(origin.seen[0]?.redirect).toBe("manual");
+	});
+
+	it("answers /healthz from a stub route Session API admits only when ready", async () => {
+		const stub = fakeOrigin(
+			() =>
+				new Response('{"error":"NOT_IMPLEMENTED"}', {
+					status: 501,
+					headers: { "content-type": "application/json" },
+				}),
+		);
+		const ready = await handle(new Request("https://qrwty.io/healthz"), build, fakeAssets(), stub);
+		expect(ready.status).toBe(200);
+		expect(await ready.json()).toEqual({
+			service: "session-api",
+			application: "ready",
+			probe: "GET /modules/session-api-sign-in-flow",
+			probeStatus: 501,
+		});
+		expectSecurityHeaders(ready);
+		expect(stub.seen[0]?.url).toBe(
+			"https://qrwtya-session-api-1.us-central1.run.app/modules/session-api-sign-in-flow",
+		);
+		const head = await handle(
+			new Request("https://qrwty.io/healthz", { method: "HEAD" }),
+			build,
+			undefined,
+			stub,
+		);
+		expect(head.status).toBe(200);
+		expect(await head.text()).toBe("");
+		expect(
+			(
+				await handle(
+					new Request("https://qrwty.io/healthz", { method: "POST" }),
+					build,
+					undefined,
+					stub,
+				)
+			).status,
+		).toBe(405);
+		expect(stub.seen).toHaveLength(2);
+		const draining = fakeOrigin(() => new Response('{"error":"UNAVAILABLE"}', { status: 503 }));
+		const busy = await handle(new Request("https://qrwty.io/healthz"), build, undefined, draining);
+		expect(busy.status).toBe(503);
+		expect((await busy.json()).application).toBe("unavailable");
+		expect(busy.headers.get("retry-after")).toBe("1");
+		const gone = fakeOrigin(() => {
+			throw new TypeError("network");
+		});
+		const lost = await handle(new Request("https://qrwty.io/healthz"), build, undefined, gone);
+		expect(await lost.json()).toMatchObject({ application: "unreachable", probeStatus: null });
+	});
+
+	it("answers 503 when Session API can't be reached, and leaves the rest alone", async () => {
+		const origin = fakeOrigin(() => {
+			throw new TypeError("network");
+		});
+		const down = await handle(
+			new Request("https://qrwty.io/api/v1/me/links"),
+			build,
+			undefined,
+			origin,
+		);
+		expect(down.status).toBe(503);
+		expect(down.headers.get("retry-after")).toBe("1");
+		expectSecurityHeaders(down);
+		expect(
+			(await handle(new Request("https://qrwty.io/"), build, fakeAssets(), origin)).status,
+		).toBe(200);
+		expect(
+			(await handle(new Request("https://qrwty.io/build.json"), build, undefined, origin)).status,
+		).toBe(200);
+		expect(
+			(await handle(new Request("https://qrwty.io/versions/"), build, fakeAssets(), origin)).status,
+		).toBe(200);
+		expect(
+			(await handle(new Request("https://www.qrwty.io/api/x"), build, undefined, origin)).status,
+		).toBe(301);
+		expect(origin.seen).toHaveLength(1);
+	});
+});
+
 describe("worker entry", () => {
 	it("reads the build from the environment", async () => {
 		const response = await worker.fetch(new Request("https://qrwty.io/build.json"), {

@@ -2,16 +2,19 @@
 
 A Cloudflare Worker named `qrwty-edge` serves `https://qrwty.io/` on the **Free plan**. It serves
 a placeholder and, since S02, the static `/versions/` pages: what happened in run
-`qrwty-r1-20261114`, with both arms' records. Neither arm's application ever ran behind it.
+`qrwty-r1-20261114`, with both arms' records. Since A2 it is also the edge of arm A's live stack:
+`/api/*`, `/auth/*` and `/healthz` go to A's Session API on Cloud Run (`SESSION_API_ORIGIN` in
+`wrangler.toml`; [infra/README.md](../../infra/README.md#live-stack-a2)).
 
 | Request | Answer |
 | --- | --- |
 | `GET /` | `200`, the `QRWTY` placeholder page with a link to `/versions/`, the deployed short commit and UTC build time. Inline CSS only, light and dark from `prefers-color-scheme`, no external requests |
-| `GET /healthz` | `200` `{"ok":true,"commit":"<sha>","builtAt":"<iso>"}` |
-| `GET /build.json` | `200` `{"commit":"<sha>","builtAt":"<iso>"}`, the build object `deploy.sh` wrote |
+| `GET /healthz` | Arm A's Session API's readiness: `200` `{"service":"session-api","application":"ready","probe":"GET /modules/session-api-sign-in-flow","probeStatus":501}`, else `503` (`unavailable` for a 5xx, `unreachable` when nothing answered) with `Retry-After: 1`. Session API's own `/healthz` can't be read through `run.app`: Cloud Run's front end keeps the path, and `/health%7A`, a query, `/healthz/` and `//healthz` are kept too or miss the route (AG-15, A2). The process admits a stub request only once it is ready, so the Worker asks the sign-in stub's mount and counts any answer below 500, or 501, as ready. Without `SESSION_API_ORIGIN` (the unit tests) the Worker answers itself: `200` `{"ok":true,"commit":"<sha>","builtAt":"<iso>"}` |
+| Any method on `/api`, `/api/…`, `/auth`, `/auth/…` | Proxied to Session API, to `/modules/session-api-api-forwarding<path>` and `/modules/session-api-sign-in-flow<path>`, so each stub sees the public path (`/api/v1/links`, `/auth/login`) with the query. Method, body and cookies pass through; `X-Forwarded-For` is the browser's address (`CF-Connecting-IP`), `X-Forwarded-Host` `qrwty.io`, `X-Forwarded-Proto` `https`; `cf-*` and hop-by-hop headers are dropped. Redirects and every `Set-Cookie` come back as they are. The answer gets the security headers below and `no-transform`. Unreachable: `503` JSON with `Retry-After: 1`. Until A3 the stubs answer `501` `NOT_IMPLEMENTED` |
+| `GET /build.json` | `200` `{"commit":"<sha>","builtAt":"<iso>"}`, the build object `deploy.sh` wrote (and polls) |
 | `GET /versions/…` | A file from `public/versions/` (Workers static assets, through the `ASSETS` binding): the timeline (`/versions/`), the design prototype (`design/`), arm A's page and deploy record (`a/`, `a/deploy/`), arm B's record (`b/`) and a static copy of the earlier landing page (`original/`). HTML `no-cache`, other files cached for an hour. `/versions` and a folder without its trailing slash answer `301` to the slash; a missing file gets the HTML 404 |
 | Any other path | `404`, a small HTML page |
-| `HEAD` | Same as `GET`, without a body. Other methods get `405` |
+| `HEAD` | Same as `GET`, without a body. Other methods get `405`, except on the proxied paths |
 | `www.qrwty.io/<path>` | `301` to `https://qrwty.io/<path>` (query kept) |
 | `b.qrwty.io/<anything>` | `301` to `https://qrwty.io/versions/b/` (arm B's old staging host), any method |
 
@@ -51,7 +54,7 @@ deploy/cloudflare/check-live.sh <sha>       # optional: page, headers, www, TLS
 
 `deploy.sh` writes `.build/build.json` from `git rev-parse HEAD` and the UTC time, installs from
 the lockfile, runs `wrangler deploy` with the build as plain-text variables (`BUILD_COMMIT`,
-`BUILT_AT`) and polls `https://qrwty.io/healthz` until it reports that build. Rerunning it is
+`BUILT_AT`) and polls `https://qrwty.io/build.json` until it reports that build. Rerunning it is
 safe: each run uploads a new Worker version and keeps the same Custom Domains and DNS. A dirty
 tree means tracked changes anywhere in the repository or untracked files under this folder.
 

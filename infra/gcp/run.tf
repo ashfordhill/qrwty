@@ -7,9 +7,10 @@ resource "google_cloud_run_v2_service" "http" {
   location = var.region
   ingress  = each.value.ingress
   # An origin the Internet can reach requires Cloud Run IAM, so its run.app URL refuses anyone
-  # without roles/run.invoker (no allUsers binding). Internal-only services keep IAM off: the
-  # generated tile clients send no ID token, and internal ingress is their restriction.
-  invoker_iam_disabled = each.value.ingress != "INGRESS_TRAFFIC_ALL"
+  # without roles/run.invoker (no allUsers binding), unless it is in local.open (Session API, the
+  # qrwty.io Worker's origin). Internal-only services keep IAM off: the generated tile clients send
+  # no ID token, and internal ingress is their restriction.
+  invoker_iam_disabled = each.value.ingress != "INGRESS_TRAFFIC_ALL" || contains(local.open, each.key)
   deletion_protection  = var.deletion_protection
   labels = {
     arm = "a"
