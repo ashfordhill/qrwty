@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import worker from "../src/index.ts";
 import {
+	APP_CSP,
+	APP_PAGE,
 	type Assets,
 	type Build,
 	contentSecurityPolicy,
@@ -141,6 +143,9 @@ function fakeAssets(): Assets & { seen: Request[] } {
 		"/versions/original/": ["text/html; charset=utf-8", "<h1>original</h1>"],
 		"/versions/b/diagrams/x.png": ["image/png", "png"],
 		"/versions/b/inventory.jsonl": ["", "{}"],
+		"/app/": ["text/html; charset=utf-8", "<h1>app</h1>"],
+		"/assets/app.js": ["text/javascript", "boot()"],
+		"/assets/fonts/n.woff2": ["font/woff2", "woff2"],
 	};
 	const seen: Request[] = [];
 	return {
@@ -278,12 +283,89 @@ describe("handle", () => {
 		const www = await serve("https://www.qrwty.io/versions/b/");
 		expect(www.status).toBe(301);
 		expect(www.headers.get("location")).toBe("https://qrwty.io/versions/b/");
+		expect(await (await handle(new Request("https://qrwty.io/"), build)).text()).toContain(
+			"In development.",
+		);
 		const assets = fakeAssets();
-		expect((await serve("https://qrwty.io/", {}, assets)).status).toBe(200);
 		expect((await serve("https://qrwty.io/healthz", {}, assets)).status).toBe(200);
 		expect((await serve("https://qrwty.io/versionsx", {}, assets)).status).toBe(404);
 		expect(assets.seen).toHaveLength(0);
 		expect((await handle(new Request("https://qrwty.io/versions/"), build)).status).toBe(404);
+	});
+});
+
+describe("the app", () => {
+	it("serves its one page at / and every /app path, with the app's CSP", async () => {
+		for (const path of [
+			"/",
+			"/?signin=failed",
+			"/app",
+			"/app/",
+			"/app/links",
+			"/app/links/x/clicks",
+		]) {
+			const assets = fakeAssets();
+			const response = await serve(`https://qrwty.io${path}`, {}, assets);
+			expect(response.status, path).toBe(200);
+			expect(await response.text()).toBe("<h1>app</h1>");
+			expect(new URL(assets.seen[0]?.url ?? "").pathname).toBe(APP_PAGE);
+			expect(response.headers.get("content-type")).toBe("text/html; charset=utf-8");
+			expect(response.headers.get("cache-control")).toBe("no-cache, no-transform");
+			expect(response.headers.get("content-security-policy")).toBe(APP_CSP);
+			for (const name of ["x-content-type-options", "referrer-policy", "x-robots-tag"])
+				expect(response.headers.get(name)).toBe(SECURITY_HEADERS[name]);
+			expect(response.headers.get("strict-transport-security")).toBeNull();
+		}
+		const same = await serve("https://qrwty.io/", { headers: { "if-none-match": '"e1"' } });
+		expect(same.status).toBe(304);
+	});
+
+	it("allows only its own origin: scripts, styles, fonts and API calls, no inline script", () => {
+		const csp = contentSecurityPolicy("/app/links");
+		expect(csp).toBe(APP_CSP);
+		expect(contentSecurityPolicy("/")).toBe(APP_CSP);
+		expect(csp).toContain("default-src 'none'");
+		expect(csp).toContain("script-src 'self';");
+		expect(csp).toContain("connect-src 'self'");
+		expect(csp).toContain("font-src 'self'");
+		expect(csp).toContain("frame-ancestors 'none'");
+		expect(csp).not.toMatch(/https?:|\*|data:|blob:|unsafe-eval|script-src[^;]*unsafe-inline/);
+		expect(contentSecurityPolicy("/apps")).toBe(SECURITY_HEADERS["content-security-policy"]);
+		expect(contentSecurityPolicy("/assets/app.js")).toBe(
+			SECURITY_HEADERS["content-security-policy"],
+		);
+	});
+
+	it("serves /assets/ files: scripts revalidated, fonts cached, a missing file 404", async () => {
+		const script = await serve("https://qrwty.io/assets/app.js");
+		expect(script.status).toBe(200);
+		expect(script.headers.get("content-type")).toBe("text/javascript");
+		expect(script.headers.get("cache-control")).toBe("no-cache, no-transform");
+		expectSecurityHeaders(script);
+		const font = await serve("https://qrwty.io/assets/fonts/n.woff2");
+		expect(font.headers.get("cache-control")).toBe("public, max-age=3600, no-transform");
+		const missing = await serve("https://qrwty.io/assets/nope.js");
+		expect(missing.status).toBe(404);
+		expectSecurityHeaders(missing);
+		const head = await serve("https://qrwty.io/", { method: "HEAD" });
+		expect(head.status).toBe(200);
+		expect(await head.text()).toBe("");
+		const post = await serve("https://qrwty.io/", { method: "POST" });
+		expect(post.status).toBe(405);
+	});
+
+	it("leaves /api, /auth and short links to their services", async () => {
+		const session = fakeOrigin();
+		const assets = fakeAssets();
+		await handle(new Request("https://qrwty.io/api/v1/session"), build, assets, session);
+		await handle(
+			new Request("https://qrwty.io/auth/login?returnTo=%2Fapp%2Flinks"),
+			build,
+			assets,
+			session,
+		);
+		expect(session.seen).toHaveLength(2);
+		expect(assets.seen).toHaveLength(0);
 	});
 });
 

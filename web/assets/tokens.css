@@ -1,0 +1,260 @@
+/*
+ * QRWTY token sheet (Q11). One direction, "Steel and Ice": the owner's automation-pitch and
+ * Jeeves-refresh language applied to links and QR codes.
+ * Layout concept: a steel top bar, an icy page, one ink-outlined create dock that the result tray
+ * grows out of, and a white QR sticker that never changes with the theme.
+ * Every colour is solid. There is no glass: no backdrop blur and no translucent surface behind
+ * text, so reduced transparency needs no separate fallback.
+ * Theme pattern: light on bare :root; dark under prefers-color-scheme (unless data-theme="light")
+ * and again under data-theme="dark", so an explicit choice wins both ways.
+ */
+:root {
+	/* Surfaces */
+	--paper: #e8f4fa; /* page ground (ice) */
+	--paper-deep: #dcecf4; /* wells, insets, skeletons, table heads */
+	--card: #f7fcfe; /* cards, dock, tray */
+	--card-edge: #c3d9e4; /* decorative card frame (not a control boundary) */
+	--field-bg: #ffffff;
+	--field-edge: #5a7d8f; /* input and toggle boundary, >= 3:1 on card and paper */
+
+	/* Text and lines */
+	--ink: #071c28;
+	--ink-soft: #123a50;
+	--ink-muted: #3d5b6b;
+	--line: #123a50; /* control outlines (2.5px), owner's dark ink outline */
+	--link: #0b5f94;
+
+	/* Chrome (top bar, mobile tab bar) */
+	--chrome: #0c3349;
+	--chrome-well: #07202d;
+	--chrome-ink: #f3fbfe;
+	--chrome-ink-soft: #b9dbe8;
+	--chrome-line: #5ec8e8;
+	--chrome-on: #d4f0f8; /* selected nav item */
+	--chrome-on-ink: #071c28;
+
+	/* The one action accent */
+	--accent: #e8c14a;
+	--accent-press: #d6ab2f;
+	--on-accent: #071c28;
+
+	/* Focus */
+	--focus: #0b5f94;
+	--chrome-focus: #e8c14a;
+
+	/* Status families: soft ground, ink and a marker colour */
+	--ok-bg: #d3f2e4;
+	--ok-ink: #135a3d;
+	--ok-dot: #1e8a62;
+	--bad-bg: #f9dcd7;
+	--bad-ink: #8f281e;
+	--bad-dot: #c4453a;
+	--warn-bg: #faefc6;
+	--warn-ink: #634800;
+	--warn-dot: #9a7a12;
+	--info-bg: #d6edf8;
+	--info-ink: #0b4a72;
+	--info-dot: #1679b8;
+	--acct-bg: #e8e0fb;
+	--acct-ink: #4a2e8c;
+	--acct-dot: #8a6ad8;
+	--off-bg: #dde8ee;
+	--off-ink: #304d5b;
+	--off-dot: #5a7d8f;
+	--danger: #b3261e;
+
+	/* Icon fills: one ink outline, one accent fill, one light fill; same in both themes */
+	--icon-ink: #071c28;
+	--icon-light: #f7fcfe;
+	--sky: #5cb8e6;
+	--mint: #4fd1b0;
+	--lilac: #a58ae6;
+	--lilac-hover: #bba6ef;
+	--butter: #f2c64a;
+	--rose: #f07aa0;
+
+	/* QR: opaque, never themed */
+	--qr-ink: #071c28;
+	--qr-paper: #ffffff;
+
+	/* Charts */
+	--bar: #1a8fd4;
+	--bar-bots: #cfe0ea;
+	--grid: #d3e3eb;
+
+	/* Elevation: hard offset shadows explain layering; no blur */
+	--lift: 0 5px 0 rgb(7 28 40 / 0.1), 0 1px 0 rgb(7 28 40 / 0.14);
+	--lift-sm: 0 3px 0 rgb(7 28 40 / 0.16);
+	--scrim: rgb(4 18 26 / 0.62);
+	--placeholder: #d3e5ee;
+
+	/* Type */
+	--font-ui: "Nunito Variable", "Nunito", "Ubuntu Sans", "Segoe UI Variable Text", "Segoe UI",
+		system-ui, sans-serif;
+	--font-url: ui-monospace, "Cascadia Mono", "JetBrains Mono", "SF Mono", Menlo, Consolas,
+		"Ubuntu Mono", "DejaVu Sans Mono", monospace;
+	--fs-meta: 0.8125rem; /* 13 */
+	--fs-body: 0.9375rem; /* 15 */
+	--fs-lead: 1.0625rem; /* 17 */
+	--fs-h3: 1.25rem; /* 20 */
+	--fs-h2: 1.5rem; /* 24 */
+	--fs-h1: clamp(1.625rem, 1.25rem + 1.4vw, 2.25rem); /* 26-36 */
+	--fs-figure: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+	--fs-url: clamp(1.0625rem, 0.85rem + 1.1vw, 1.625rem); /* 17-26 */
+	--fw-body: 600;
+	--fw-strong: 700;
+	--fw-heavy: 800;
+	--fw-mark: 900;
+	--lh-body: 1.5;
+	--lh-tight: 1.15;
+
+	/* Shape */
+	--r-control: 10px;
+	--r-card: 16px;
+	--r-sticker: 14px;
+	--r-dialog: 18px;
+	--r-chip: 999px;
+	--bw-control: 2.5px;
+	--bw-card: 2px;
+	--bw-chrome: 3px;
+
+	/* Space */
+	--s-1: 4px;
+	--s-2: 8px;
+	--s-3: 12px;
+	--s-4: 16px;
+	--s-5: 24px;
+	--s-6: 32px;
+	--s-7: 48px;
+	--container: 1200px;
+	--target: 44px;
+
+	/* Motion */
+	--dur-1: 120ms;
+	--dur-2: 200ms;
+	--dur-3: 280ms;
+	--ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+	--reveal-y: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--paper: #0f1d26;
+		--paper-deep: #0b161d;
+		--card: #172a35;
+		--card-edge: #2f4b5a;
+		--field-bg: #0f1d26;
+		--field-edge: #6d93a6;
+		--ink: #e8f4fa;
+		--ink-soft: #b7d4e0;
+		--ink-muted: #9dbccb;
+		--line: #9cc3d4;
+		--link: #8fcbf0;
+		--chrome: #071219;
+		--chrome-well: #040c11;
+		--chrome-ink: #f3fbfe;
+		--chrome-ink-soft: #a9cbd9;
+		--chrome-line: #3db8d9;
+		--chrome-on: #213a48;
+		--chrome-on-ink: #f3fbfe;
+		--accent: #e2b84a;
+		--accent-press: #cfa338;
+		--on-accent: #071c28;
+		--focus: #f0c75a;
+		--chrome-focus: #f0c75a;
+		--ok-bg: #1b4636;
+		--ok-ink: #a9ecc9;
+		--ok-dot: #3ea66a;
+		--bad-bg: #552420;
+		--bad-ink: #ffc4bc;
+		--bad-dot: #e06a5e;
+		--warn-bg: #4a3a0c;
+		--warn-ink: #f7de8f;
+		--warn-dot: #e2b84a;
+		--info-bg: #153d55;
+		--info-ink: #bfe2fa;
+		--info-dot: #62b6e6;
+		--acct-bg: #382c5e;
+		--acct-ink: #ddd1ff;
+		--acct-dot: #a58ae6;
+		--off-bg: #28404e;
+		--off-ink: #c6d9e2;
+		--off-dot: #8fb0bf;
+		--danger: #ff9d92;
+		--bar: #62b6e6;
+		--bar-bots: #2c4655;
+		--grid: #23394a;
+		--lift: 0 5px 0 rgb(0 0 0 / 0.35);
+		--lift-sm: 0 3px 0 rgb(0 0 0 / 0.45);
+		--scrim: rgb(2 8 12 / 0.72);
+		--placeholder: #22394a;
+		color-scheme: dark;
+	}
+}
+
+:root[data-theme="dark"] {
+	--paper: #0f1d26;
+	--paper-deep: #0b161d;
+	--card: #172a35;
+	--card-edge: #2f4b5a;
+	--field-bg: #0f1d26;
+	--field-edge: #6d93a6;
+	--ink: #e8f4fa;
+	--ink-soft: #b7d4e0;
+	--ink-muted: #9dbccb;
+	--line: #9cc3d4;
+	--link: #8fcbf0;
+	--chrome: #071219;
+	--chrome-well: #040c11;
+	--chrome-ink: #f3fbfe;
+	--chrome-ink-soft: #a9cbd9;
+	--chrome-line: #3db8d9;
+	--chrome-on: #213a48;
+	--chrome-on-ink: #f3fbfe;
+	--accent: #e2b84a;
+	--accent-press: #cfa338;
+	--on-accent: #071c28;
+	--focus: #f0c75a;
+	--chrome-focus: #f0c75a;
+	--ok-bg: #1b4636;
+	--ok-ink: #a9ecc9;
+	--ok-dot: #3ea66a;
+	--bad-bg: #552420;
+	--bad-ink: #ffc4bc;
+	--bad-dot: #e06a5e;
+	--warn-bg: #4a3a0c;
+	--warn-ink: #f7de8f;
+	--warn-dot: #e2b84a;
+	--info-bg: #153d55;
+	--info-ink: #bfe2fa;
+	--info-dot: #62b6e6;
+	--acct-bg: #382c5e;
+	--acct-ink: #ddd1ff;
+	--acct-dot: #a58ae6;
+	--off-bg: #28404e;
+	--off-ink: #c6d9e2;
+	--off-dot: #8fb0bf;
+	--danger: #ff9d92;
+	--bar: #62b6e6;
+	--bar-bots: #2c4655;
+	--grid: #23394a;
+	--lift: 0 5px 0 rgb(0 0 0 / 0.35);
+	--lift-sm: 0 3px 0 rgb(0 0 0 / 0.45);
+	--scrim: rgb(2 8 12 / 0.72);
+	--placeholder: #22394a;
+	color-scheme: dark;
+}
+
+/* Reduced motion: every transition and reveal collapses to an instant change. */
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--dur-1: 0ms;
+		--dur-2: 0ms;
+		--dur-3: 0ms;
+		--reveal-y: 0px;
+	}
+}
+
+/* Reduced transparency: the dialog scrim is the only translucent layer. app.css replaces it with
+   the solid --paper-deep under prefers-reduced-transparency (a token override on :root would lose
+   to the dark blocks' higher specificity). */

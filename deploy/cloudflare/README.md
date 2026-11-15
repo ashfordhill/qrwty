@@ -1,15 +1,17 @@
 # qrwty.io edge Worker (Cloudflare)
 
-A Cloudflare Worker named `qrwty-edge` serves `https://qrwty.io/` on the **Free plan**. It serves
-a placeholder and, since S02, the static `/versions/` pages: what happened in run
-`qrwty-r1-20261114`, with both arms' records. Since A2 it is also the edge of arm A's live stack:
-`/api/*`, `/auth/*` and `/healthz` go to A's Session API on Cloud Run (`SESSION_API_ORIGIN` in
-`wrangler.toml`; [infra/README.md](../../infra/README.md#live-stack-a2)), and since A4 GET and HEAD
-of each short link `/<slug>` go to A's Redirect service (`REDIRECT_SERVICE_ORIGIN`).
+A Cloudflare Worker named `qrwty-edge` serves `https://qrwty.io/` on the **Free plan**. Since A5,
+`/` is the QRWTY app ([web/](../../web/README.md)), served as static assets. Since S02 it also
+serves the static `/versions/` pages: what happened in run `qrwty-r1-20261114`, with both arms'
+records. Since A2 it is the edge of arm A's live stack: `/api/*`, `/auth/*` and `/healthz` go to
+A's Session API on Cloud Run (`SESSION_API_ORIGIN` in `wrangler.toml`;
+[infra/README.md](../../infra/README.md#live-stack-a2)), and since A4 GET and HEAD of each short
+link `/<slug>` go to A's Redirect service (`REDIRECT_SERVICE_ORIGIN`).
 
 | Request | Answer |
 | --- | --- |
-| `GET /` | `200`, the `QRWTY` placeholder page with a link to `/versions/`, the deployed short commit and UTC build time. Inline CSS only, light and dark from `prefers-color-scheme`, no external requests |
+| `GET /`, `/app`, `/app/…` | `200`, the app's one page (`web/index.html`, staged as `/app/index.html`); the app routes these paths in the browser (`/app/links`, `/app/links/<id>`, `/app/links/<id>/clicks`, `/app/plans`). `no-cache`, and the app's CSP below. Without the assets binding (unit tests, a bare `wrangler dev`), `/` is the old placeholder page |
+| `GET /assets/…` | The app's files from `web/assets/`: scripts and stylesheets `no-cache` (revalidated by ETag, since their names don't change), fonts and the icon cached for an hour. A missing file gets the HTML 404 |
 | `GET /healthz` | Arm A's Session API's readiness: `200` `{"service":"session-api","application":"ready","probe":"GET /modules/session-api-sign-in-flow","probeStatus":501}`, else `503` (`unavailable` for a 5xx, `unreachable` when nothing answered) with `Retry-After: 1`. Session API's own `/healthz` can't be read through `run.app`: Cloud Run's front end keeps the path, and `/health%7A`, a query, `/healthz/` and `//healthz` are kept too or miss the route (AG-15, A2). The process admits a stub request only once it is ready, so the Worker asks the sign-in stub's mount and counts any answer below 500, or 501, as ready. Without `SESSION_API_ORIGIN` (the unit tests) the Worker answers itself: `200` `{"ok":true,"commit":"<sha>","builtAt":"<iso>"}` |
 | Any method on `/api`, `/api/…`, `/auth`, `/auth/…` | Proxied to Session API, to `/modules/session-api-api-forwarding<path>` and `/modules/session-api-sign-in-flow<path>`, so each stub sees the public path (`/api/v1/links`, `/auth/login`) with the query. Method, body and cookies pass through; `X-Forwarded-For` is the browser's address (`CF-Connecting-IP`), `X-Forwarded-Host` `qrwty.io`, `X-Forwarded-Proto` `https`; `cf-*` and hop-by-hop headers are dropped. Redirects and every `Set-Cookie` come back as they are. The answer gets the security headers below and `no-transform`. Unreachable: `503` JSON with `Retry-After: 1`. Until A3 the stubs answer `501` `NOT_IMPLEMENTED` |
 | `GET` or `HEAD /<slug>` (exactly 10 base62 characters, one segment) | Proxied to the Redirect service's `/modules/redirect-service-resolve-and-redirect/<slug>`, without the query, cookies, `Authorization` or the browser's address (`User-Agent` and `Referer` pass; the service keeps only a device class and the referrer's host). `X-Forwarded-Host` is `qrwty.io`. Its `302` (after the click's ACK, with `QRWTY-Click-Event`) and its `404`, `410`, `403` and `503` pages come back with the security headers and `no-transform`. Another method gets the Worker's `405`. No reserved path (`/`, `/versions/`, `/api/`, `/auth/`, `/healthz`, `/build.json`, `/app/`, `/assets/`) has that shape. Unreachable: `503` with `Retry-After: 1` and no `Location` |
@@ -22,8 +24,10 @@ of each short link `/<slug>` go to A's Redirect service (`REDIRECT_SERVICE_ORIGI
 
 Every response carries `Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline';
 img-src 'self'; base-uri 'none'; frame-ancestors 'none'`, `X-Content-Type-Options: nosniff`,
-`Referrer-Policy: no-referrer` and `X-Robots-Tag: noindex`. Two copies under `/versions/` need
-more from their own origin, and nothing from any other: `/versions/design/` adds `script-src 'self'`,
+`Referrer-Policy: no-referrer` and `X-Robots-Tag: noindex`. The app's pages (`/`, `/app/…`) add
+`script-src 'self'`, `style-src 'self'`, `font-src 'self'` and `connect-src 'self'`: their own
+scripts, stylesheets, the self-hosted Nunito and the API calls, no inline script and no other
+origin. Two copies under `/versions/` need more from their own origin, and nothing from any other: `/versions/design/` adds `script-src 'self'`,
 `style-src 'self'` and `data:`/`blob:` images (the prototype's scripts, stylesheets and QR export),
 and `/versions/original/` adds `style-src 'self'` and `form-action 'none'` (its stylesheet; its
 forms stay inert). There is **no HSTS** yet: Q13
@@ -35,6 +39,12 @@ browsers receive.
 Cloudflare manages their DNS records (read-only proxied `AAAA 100::`) and certificates. `workers.dev`
 and preview URLs are off. Static assets run behind the Worker (`run_worker_first = true`), so the
 redirects, the method check and the headers apply to them too.
+
+The static assets are staged into `.build/site` (gitignored) by `scripts/stage-assets.mjs`, which
+`deploy.sh` and `pnpm check` run: `public/` as it is, `web/index.html` as `/app/index.html` and
+`web/assets/` as `/assets/`. It refuses an inline script or event handler, an external reference,
+an `@import` or `url()` outside `/assets/`, a missing `/assets/` file and a script that doesn't
+parse.
 
 `public/` holds byte copies, listed with their sources and hashes in
 [S02's published files](../../docs/evidence/s02/published-files.json): `versions/design/` from
@@ -55,10 +65,11 @@ deploy/cloudflare/check-live.sh <sha>       # optional: page, headers, www, TLS
 ```
 
 `deploy.sh` writes `.build/build.json` from `git rev-parse HEAD` and the UTC time, installs from
-the lockfile, runs `wrangler deploy` with the build as plain-text variables (`BUILD_COMMIT`,
+the lockfile, stages the assets, runs `wrangler deploy` with the build as plain-text variables (`BUILD_COMMIT`,
 `BUILT_AT`) and polls `https://qrwty.io/build.json` until it reports that build. Rerunning it is
 safe: each run uploads a new Worker version and keeps the same Custom Domains and DNS. A dirty
-tree means tracked changes anywhere in the repository or untracked files under this folder.
+tree means tracked changes anywhere in the repository or untracked files under this folder or
+`web/`.
 
 Credentials come from `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in the environment, or
 else from `~/.config/qrwty/cloudflare.env`. They never go on a command line: wrangler reads them
@@ -76,8 +87,8 @@ DNS record without asking. Only the three hostnames in `wrangler.toml` are affec
 ```sh
 cd deploy/cloudflare
 pnpm install --frozen-lockfile
-pnpm check        # Biome, TypeScript, vitest (the router's unit tests)
-pnpm exec wrangler dev   # local preview; build values read "unknown"
+pnpm check        # Biome, TypeScript, vitest (the router's unit tests), then the asset staging
+pnpm exec wrangler dev   # local preview (after pnpm build); build values read "unknown"
 ```
 
 `src/router.ts` is pure (Request in, Response out); `src/index.ts` is the Worker entry. Pins are

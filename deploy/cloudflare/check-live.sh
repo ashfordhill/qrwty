@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Check the live qrwty.io edge from this machine: page, endpoints, headers, www redirect, TLS.
+# Check the live qrwty.io edge from this machine: the app, endpoints, headers, www redirect, TLS.
 #
 #   deploy/cloudflare/check-live.sh [expected-commit]
 #
@@ -52,10 +52,14 @@ fetch() {
 status() { cat "$work/$1.status"; }
 header() { grep -i "^$2:" "$work/$1.headers" | head -1 | sed -E 's/^[^:]+:[[:space:]]*//; s/\r$//'; }
 
+S01_CSP="default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-uri 'none'; frame-ancestors 'none'"
+APP_CSP="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'"
+
+# expect_security_headers <name> <label> [csp]: S01's headers (the app's pages carry APP_CSP).
 expect_security_headers() {
 	local name="$1" label="$2" ok=1
 	local -A want=(
-		[content-security-policy]="default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-uri 'none'; frame-ancestors 'none'"
+		[content-security-policy]="${3:-$S01_CSP}"
 		[x-content-type-options]="nosniff"
 		[referrer-policy]="no-referrer"
 		[x-robots-tag]="noindex"
@@ -73,21 +77,29 @@ expect_security_headers() {
 	[ "$ok" -eq 1 ] && pass "$label: security headers present, no HSTS"
 }
 
-# 1. The page.
+# 1. The app (A5): one page at / and /app/*, its own files at /assets/, nothing from elsewhere.
 fetch home "https://$apex/" "${browser[@]}"
-if [ "$(status home)" = 200 ] && [ "$(header home content-type)" = "text/html; charset=utf-8" ] &&
+if [ "$(status home)" = 200 ] && [[ "$(header home content-type)" == text/html* ]] &&
 	grep -q '<title>QRWTY</title>' "$work/home.body" &&
-	grep -q 'Short links that never lose a click. In development.' "$work/home.body" &&
-	grep -q 'class="build">build <code>' "$work/home.body"; then
-	pass "https://$apex/ -> 200 text/html, QRWTY page with build line: $(grep -o '<code>[^<]*</code> · <time[^>]*>[^<]*' "$work/home.body" | sed -E 's/<[^>]+>//g')"
+	grep -q 'src="/assets/app.js"' "$work/home.body" &&
+	grep -q 'href="/versions/">Versions: what happened' "$work/home.body"; then
+	pass "https://$apex/ -> 200 $(header home content-type), the app page"
 else
 	fail "https://$apex/ -> $(status home) $(header home content-type)"
 fi
-expect_security_headers home "https://$apex/"
-if grep -Eiq '<script|<link|@import|url\(|https?://' "$work/home.body"; then
-	fail "https://$apex/: page references an external resource: $(grep -Eio '<script[^ >]*[^>]{0,80}' "$work/home.body" | head -1)"
+expect_security_headers home "https://$apex/" "$APP_CSP"
+if grep -Eiq '<script>|<script [^>]*>[^<]|[ "]on[a-z]+=|@import|(src|href)="(https?:)?//' "$work/home.body"; then
+	fail "https://$apex/: inline script or an external reference: $(grep -Eio '(src|href)="(https?:)?//[^"]*' "$work/home.body" | head -1)"
 else
-	pass "https://$apex/ (browser request): no scripts, links, imports or absolute URLs in the page"
+	pass "https://$apex/ (browser request): no inline script, every script and stylesheet from /assets/"
+fi
+fetch links "https://$apex/app/links" "${browser[@]}"
+fetch appjs "https://$apex/assets/app.js"
+if [ "$(status links)" = 200 ] && cmp -s "$work/home.body" "$work/links.body" &&
+	[ "$(status appjs)" = 200 ] && [[ "$(header appjs content-type)" == *javascript* ]]; then
+	pass "https://$apex/app/links -> the same page; /assets/app.js -> 200 $(header appjs content-type)"
+else
+	fail "https://$apex/app/links -> $(status links); /assets/app.js -> $(status appjs) $(header appjs content-type)"
 fi
 
 # 2. /build.json (the Worker's build) and /healthz (arm A's Session API, since A2).

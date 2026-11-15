@@ -1,7 +1,8 @@
-// The qrwty.io edge router: a placeholder page, build info, the www and b redirects, the static
-// /versions/ pages (Workers static assets, fetched through the ASSETS binding), since A2 arm A's
-// Session API behind /api/*, /auth/* and /healthz, and since A4 its Redirect service behind each
-// short link, GET or HEAD /<slug>.
+// The qrwty.io edge router: build info, the www and b redirects, the static /versions/ pages
+// (Workers static assets, fetched through the ASSETS binding), since A2 arm A's Session API behind
+// /api/*, /auth/* and /healthz, since A4 its Redirect service behind each short link, GET or HEAD
+// /<slug>, and since A5 the app (web/) at / and /app/*, with its files at /assets/*. Without the
+// assets (unit tests, a bare `wrangler dev`), `/` is the old placeholder page.
 // `route` is pure (Request in, Response out); `handle` adds the assets and the two origins, which
 // tests replace.
 
@@ -51,7 +52,7 @@ export const SESSION_READY_PROBE = "/modules/session-api-sign-in-flow";
 /**
  * A short link's path: one segment of exactly 10 base62 characters (http-contract §1). Every path
  * the Worker or Session API already answers fails it, so none needs its own exception: `/`,
- * `/versions/`, `/api/`, `/auth/`, `/healthz`, `/build.json`, and the UI's future `/app/` and
+ * `/versions/`, `/api/`, `/auth/`, `/healthz`, `/build.json`, and the app's `/app/` and
  * `/assets/` (a slash, or a dot, or another length). The SQL refuses a reserved word as a slug.
  */
 export const SHORT_LINK_PATH = /^\/[0-9A-Za-z]{10}$/;
@@ -206,8 +207,24 @@ const PROTOTYPE_CSP =
 const SNAPSHOT_CSP =
 	"default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'";
 
-/** The Content-Security-Policy for a path: S01's everywhere but the two copies above. */
+/**
+ * The app's pages (A5): S01's policy plus the app's own scripts, stylesheets and fonts, and its API
+ * calls to its own origin. No inline script and no other origin.
+ */
+export const APP_CSP =
+	"default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'";
+
+/** The app's one page, `web/index.html`, as the assets hold it (deploy.sh stages web/ there). */
+export const APP_PAGE = "/app/";
+
+/** The app's page paths: `/` and every path below `/app`; the app routes them itself. */
+export function isAppPage(pathname: string): boolean {
+	return pathname === "/" || pathname === "/app" || pathname.startsWith("/app/");
+}
+
+/** The Content-Security-Policy for a path: S01's everywhere but the app and the two copies above. */
 export function contentSecurityPolicy(pathname: string): string {
+	if (isAppPage(pathname)) return APP_CSP;
 	if (pathname.startsWith("/versions/design/")) return PROTOTYPE_CSP;
 	if (pathname.startsWith("/versions/original/")) return SNAPSHOT_CSP;
 	return SECURITY_HEADERS["content-security-policy"] as string;
@@ -216,9 +233,9 @@ export function contentSecurityPolicy(pathname: string): string {
 /**
  * The Worker's answer: b.qrwty.io goes to B's record; with an origin, /api/*, /auth/* (any
  * method) and /healthz go to Session API; with `redirector`, GET and HEAD of a short link go
- * to the Redirect service (another method gets the Worker's 405, `Allow: GET, HEAD`); /versions/
- * is served from the static assets with the security headers added; and everything else is
- * `route`.
+ * to the Redirect service (another method gets the Worker's 405, `Allow: GET, HEAD`); with the
+ * static assets, `/` and `/app/*` are the app's page (A5), and `/assets/*` (the app's files) and
+ * /versions/ are files, each with the security headers added; everything else is `route`.
  */
 export async function handle(
 	request: Request,
@@ -252,6 +269,13 @@ export async function handle(
 			"cache-control": REDIRECT_CACHE,
 		});
 	}
+	// The app: one page for every app path (it routes them in the browser), and its files.
+	if (isAppPage(url.pathname)) {
+		return fromAssets(request, assets, APP_PAGE, APP_CSP);
+	}
+	if (url.pathname.startsWith("/assets/")) {
+		return fromAssets(request, assets, url.pathname, contentSecurityPolicy(url.pathname));
+	}
 	if (!url.pathname.startsWith("/versions/")) return route(request, build);
 	// A folder's page must end in "/", or its relative links resolve one level up.
 	if (!url.pathname.endsWith("/") && !(url.pathname.split("/").at(-1) ?? "").includes(".")) {
@@ -260,13 +284,29 @@ export async function handle(
 			"cache-control": REDIRECT_CACHE,
 		});
 	}
+	return fromAssets(request, assets, url.pathname, contentSecurityPolicy(url.pathname));
+}
 
+/**
+ * A static file (`path` in the assets), with the security headers and `csp`. Pages, scripts and
+ * stylesheets are revalidated on every load (the app's files keep their names across deploys);
+ * other files are cached for an hour.
+ */
+async function fromAssets(
+	request: Request,
+	assets: Assets,
+	path: string,
+	csp: string,
+): Promise<Response> {
+	const head = request.method === "HEAD";
 	const conditional = new Headers();
 	for (const name of ["if-none-match", "if-modified-since"]) {
 		const value = request.headers.get(name);
 		if (value) conditional.set(name, value);
 	}
-	const upstream = await assets.fetch(new Request(url.toString(), { headers: conditional }));
+	const upstream = await assets.fetch(
+		new Request(`https://${APEX_HOST}${path}`, { headers: conditional }),
+	);
 	if (upstream.status === 404) {
 		const missing = respond(notFoundPage(), 404, {
 			"content-type": HTML,
@@ -276,20 +316,21 @@ export async function handle(
 	}
 	const headers: Record<string, string> = {
 		...SECURITY_HEADERS,
-		"content-security-policy": contentSecurityPolicy(url.pathname),
+		"content-security-policy": csp,
 	};
 	for (const name of ["content-type", "etag", "last-modified", "location"]) {
 		const value = upstream.headers.get(name);
 		if (value) headers[name] = value;
 	}
 	// The assets give JSON Lines no type; with nosniff a browser would then only download it.
-	if (!headers["content-type"] && url.pathname.endsWith(".jsonl")) {
+	if (!headers["content-type"] && path.endsWith(".jsonl")) {
 		headers["content-type"] = "text/plain; charset=utf-8";
 	}
 	const redirect = upstream.status >= 300 && upstream.status < 400 && upstream.status !== 304;
 	headers["cache-control"] = redirect
 		? NO_STORE
-		: (headers["content-type"] ?? "").startsWith("text/html")
+		: /^text\/(html|css|javascript)/.test(headers["content-type"] ?? "") ||
+				/\.(css|js|mjs)$/.test(path)
 			? PAGE_CACHE
 			: ASSET_CACHE;
 	const bodyless = head || redirect || upstream.status === 304;

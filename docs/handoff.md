@@ -1848,3 +1848,133 @@ review, no records. Status: **done**; no A4b is needed (known limits below).
   found to jump.
 - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
   memory index); it was ignored.
+
+## A5: the QRWTY app on qrwty.io, 2026-11-15
+
+Arm A, A5 attempt 1 (role implementer), from QRWTY `ac18bbf`. Q12 of `units.md` in one skin, Q11's
+"Steel and Ice" (`docs/design/`), wired to A3's and A4's live API. Light checks, as the owner
+decided: the build, the Worker's unit tests and the live smoke; no oracle, review or records.
+Status: **done**; no A5b is needed (known limits below).
+
+- **What the owner can do at `https://qrwty.io`:**
+  1. paste a long link and press **Shorten** (no account needed);
+  2. on the result: **Copy short link**, **Open short link**, the QR code with **Download PNG**
+     (1184 px) and **Download SVG**;
+  3. **Save to my links**: straight to Auth0's sign-in page (sign up with an email and password,
+     or "Continue with Google"); back on `/`, the link is claimed and shows "Saved to My links";
+  4. **My links** (newest first, 20 at a time, "Show more links"): **Copy link**, **Manage**;
+  5. on a link: **Change destination** (a stale edit says "This link changed somewhere else" and
+     offers to save again), **Disable link** and **Turn link back on**, **Delete link**, its QR
+     code, the last 7 days' clicks, **Open short link**;
+  6. **Click analytics**: filtered clicks, recorded visits and the difference, each defined, the
+     daily chart and its table, **Refresh counts**, **Export CSV**;
+  7. **Plans and billing**: Free is the current plan (Paid is shown, not offered, until A7), the
+     account's email and link count, and **Delete my account**;
+  8. **Sign in** and **Sign out** in the top bar (a bottom tab bar below 720 px); sign-out also
+     ends the Auth0 session. The footer links **Versions: what happened** (`/versions/`) and names
+     the build.
+- **Live smoke** (`.scratch/A5/smoke.mjs`, headless Chromium, by mouse, A3's test user through
+  Auth0 Universal Login; **24/24** on `cd21ce4`, and 24/24 on `91f6429` before it), at 1440×900
+  in light and 360×800 in dark, each:
+  1. create: a `https://qrwty.io/<10 base62>` short link; Nunito loaded (self-hosted);
+  2. copy: the clipboard holds exactly the short link;
+  3. download: the PNG (1184×1184) and the SVG (rendered) both decode with jsQR to the short link;
+  4. sign in from **Save to my links** through Auth0, back on `/`;
+  5. "Saved to My links" (the claim), and the link is the newest row of My links;
+  6. edit the destination; at 1440 also the stale edit: a second tab saves first, this tab's
+     `If-Match` is refused (412), the alert shows the newer destination, "Save my destination
+     again" saves;
+  7. **Open short link** lands on the new destination; **Click analytics** shows 1 filtered and 1
+     recorded on the first read; **Export CSV**: the header and 7 days, the last `…,1,1`;
+  8. sign out: back on `/` as a guest with "Signed out".
+
+  Both themes screenshotted at both sizes (the page ground is `#e8f4fa` light, `#0f1d26` dark);
+  **0 px** horizontal overflow on every screen at both sizes; **0 console errors** on qrwty.io
+  pages (the stale edit's intended 412 is the one network error, logged apart). The 360 run then
+  signs in from the top bar and deletes the test account from Plans and billing (202, signed out,
+  "Your account was deleted"), which also resets its monthly allowance for the next run.
+  `.scratch/A5/manage.mjs` (7/7 on `cd21ce4`): sign-in returns to the page it left; a signed-in
+  create is saved at once; **Disable link** (dialog) makes the short link 410; **Turn link back
+  on** makes it 302 again after 33 s; **Delete link** (dialog) returns to My links and the link is
+  410 after 33 s; **Delete my account**. `.scratch/A5/errors.mjs`: a `.local` destination shows the
+  server's reason under the field (400 `invalid_destination`), Web Risk's malware test page shows
+  "This destination was refused" (422). Too many new links (429), the monthly limit (403) and the
+  safety check unavailable (503) were checked against mocked answers only: no rate limiter exists
+  yet.
+- **Where the UI lives: `web/`** ([README](../web/README.md)): `index.html` and `assets/`:
+  - `tokens.css`, `app.css` and `qr.js` are Q11's prototype files, copied unchanged;
+  - `app.js` is the app, from the prototype's markup, icons and copy; the control names are the
+    frozen ones (`accessible-names.json`);
+  - `site.css` holds a few additions; `fonts.css` and `fonts/` are Nunito, self-hosted
+    (`@fontsource-variable/nunito` 5.3.0's latin and latin-ext files, unchanged, with `OFL.txt`);
+  - no framework, no build step, no dependency and no request to another origin. About 1,370
+    lines of script and 60 of new CSS (outside the backend LOC scope, which is `app/` only).
+
+  Paths: `/` (create and result), `/app/links`, `/app/links/<id>`, `/app/links/<id>/clicks`,
+  `/app/plans`. The guest's result and claim proof stay in `sessionStorage`, so **Save to my
+  links** survives the trip to Auth0 (`/auth/login?returnTo=/`) and works from that tab for 24
+  hours. Create and claim send an `Idempotency-Key`; mutations send the session's CSRF token (a
+  refused token is fetched again once); reads and keyed writes are retried on 503.
+- **Serving** (`deploy/cloudflare/`, the `qrwty-edge` Worker):
+  - `/`, `/app` and `/app/…` answer the app's page (staged as `/app/index.html`), `/assets/…` its
+    files (scripts and stylesheets `no-cache`, fonts an hour); `/versions/`, `/api`, `/auth`, short
+    links, `www` and `b` are unchanged. Without the assets binding, `/` is still the placeholder
+    (unit tests).
+  - The app's CSP adds `script-src 'self'`, `style-src 'self'`, `font-src 'self'` and
+    `connect-src 'self'` to S01's (`default-src 'none'`, `img-src 'self'`, `base-uri 'none'`,
+    `frame-ancestors 'none'`, inline style kept); S01's other headers unchanged, no HSTS.
+  - `scripts/stage-assets.mjs` (run by `deploy.sh` and `pnpm check`) stages `public/` and `web/`
+    into `.build/site`, `wrangler.toml`'s assets directory, and refuses an inline script or
+    handler, an external reference, a missing asset or a script that doesn't parse.
+  - `check-live.sh` checks the app instead of the placeholder; `redeploy.sh`'s smoke adds
+    `GET /` is the app (6 checks).
+- **Deploy.** `QRWTY_REDEPLOY_DIR=.scratch/A5/redeploy infra/gcp/scripts/redeploy.sh HEAD` at
+  `91f6429` (this unit's code, committed first because `redeploy.sh` builds a commit): image
+  `app-466d66adef65` reused (no `app/` change), both plans "No changes", the migration job found
+  nothing, the Worker deployed, the smoke **6/6**. Again (`redeploy2`) at `cd21ce4` (the 30-second
+  wording below), 6/6, and the smokes above ran on it. This commit (docs only beyond `cd21ce4`) is
+  redeployed last, so `/build.json` names it. During development the Worker alone was deployed
+  dirty three times (`deploy.sh --allow-dirty`).
+- **Checks.**
+  - `deploy/cloudflare`: `pnpm check` passes (Biome, tsc, vitest **37/37**, 4 new: the app's page
+    on every app path, its CSP, `/assets/` caching and 404, the API paths left alone), then the
+    asset staging (37 files).
+  - `web/assets/app.js`: Biome lint with no error (one style warning, `"use strict"`).
+  - A local render check against mocked answers (`.scratch/A5/local.mjs`), both sizes, 0 errors.
+  - `check-live.sh`: all passed. Secret scan of the staged diff: no Cloudflare value, no
+    credential shape. `git diff --check` clean. `app/` unchanged, so the root `pnpm check` was not
+    rerun.
+- **Template gaps:** none; AG-31 is unused. The UI isn't a Jeeves gap.
+- **Known limits** (none blocks playing with it):
+  - **Cold starts.** Twice on the first runs, Session API answered 503 after its 1,000 ms
+    (`POST /api/v1/links` at 20:51:31Z, `GET /api/v1/me/links` at 20:53:14Z) while Link API or
+    Account API started from 0 instances: A3's known limit. The app now retries reads and keyed
+    writes up to 4 times, so the owner sees a delay, not an error. An unkeyed edit (`PATCH`,
+    `DELETE`) isn't retried; it shows "Change not saved" with nothing changed.
+  - **30 seconds.** A new destination, a disable or a delete reaches the short link within 30 s:
+    the Redirect service keeps each route it read for 30 s (A4). The messages say so.
+  - Paid, upgrade, the usage meter and analytics breakdowns wait for A7's billing and entitlements;
+    the CSV export allowance isn't metered (A4).
+  - My links shows when each link was made, not its clicks (no list-level counts in the API), and
+    has no search or filter. "Show more links" follows `nextCursor` but wasn't driven live: the
+    test account never held more than 2 links (5 a month).
+  - The short links' error pages (404, 410, 403, 503) are still the Redirect service's own HTML,
+    not Q11's public error page.
+  - No theme switch: the app follows the system's light or dark setting.
+  - The test account was deleted at the end of each smoke; its Auth0 user remains (A3b), and
+    signing in again starts an empty account.
+- **Next: A6** (abuse), then A7 (billing); A7's checkout returns to `/billing?checkout=…`, which
+  the Worker doesn't route to the app yet.
+- **Read.** The packet, `AGENTS.md`, this file (A2, A3, A4), the owner decisions of 2026-11-15,
+  `units.md` (Q11, Q12), `docs/design/README.md`, `accessible-names.md`, the prototype
+  (`index.html`, `app.js`, `qr.js`, `tokens.css`, parts of `app.css`), pack v1.6's
+  `http-contract.md`; Session API's `forward.ts` and `signin.ts`, Link API's `create.ts`,
+  `owned.ts`, `view.ts` and `destination.ts`, Account API's `my-links` and `link-analytics`
+  routes; the Worker, `redeploy.sh`, A4's smoke. `~/.config/qrwty/cloudflare.env` only through
+  `deploy.sh` and to match the staged diff (never printed); the test user's credentials from
+  Secret Manager into the smokes' memory only.
+- **Running.** Nothing locally. Live: everything A4 left, unchanged; the Worker now serves the
+  app. No new cloud resource or cost (the Worker's static assets are free).
+- **Elapsed.** 20:34:23Z to about 21:12Z on the host clock (about 38 minutes).
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
+  memory index); it was ignored.

@@ -1,0 +1,59 @@
+/*
+ * The app's additions to the prototype's sheets (tokens.css and app.css are Q11's, unchanged):
+ * the footer, the boot and no-script lines, and a few layout helpers that replace the
+ * prototype's inline styles. Every value comes from tokens.css.
+ */
+.site-foot {
+	margin-top: var(--s-7);
+	padding-top: var(--s-4);
+	border-top: var(--bw-card) solid var(--card-edge);
+	font-size: var(--fs-meta);
+	color: var(--ink-muted);
+}
+.site-foot .wrap {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--s-2) var(--s-4);
+}
+.site-foot .build {
+	font-family: var(--font-url);
+}
+.noscript {
+	padding: var(--s-4);
+	text-align: center;
+	font-weight: var(--fw-heavy);
+}
+.gap-1 {
+	gap: var(--s-1);
+}
+.gap-2 {
+	gap: var(--s-2);
+}
+.between {
+	justify-content: space-between;
+}
+.mono {
+	font-family: var(--font-url);
+	overflow-wrap: anywhere;
+}
+.wrap-any {
+	overflow-wrap: anywhere;
+}
+.totals.two {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.center {
+	justify-content: center;
+}
+.dz-title {
+	font-size: var(--fs-lead);
+}
+.start {
+	justify-items: start;
+}
+.inline-spin {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s-2);
+}

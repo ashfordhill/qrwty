@@ -17,10 +17,10 @@
 #    replace anything, then applied. Cloud Run moves traffic to each new revision once its startup
 #    probe passes.
 # 4. Worker: deploy/cloudflare/deploy.sh (the qrwty-edge Worker; it checks /build.json).
-# 5. Smoke: https://qrwty.io/healthz is a ready Session API, /versions/ answers 200, and /api/* and
-#    /auth/* are answered by Session API (since A3: 401 for a cookieless create, 302 to the issuer
-#    for /auth/login), not by the Worker, and (since A4) an unknown short link is the Redirect
-#    service's 404 page.
+# 5. Smoke: https://qrwty.io/healthz is a ready Session API, / is the app (since A5), /versions/
+#    answers 200, and /api/* and /auth/* are answered by Session API (since A3: 401 for a
+#    cookieless create, 302 to the issuer for /auth/login), not by the Worker, and (since A4) an
+#    unknown short link is the Redirect service's 404 page.
 #
 # Idempotent: the same release reuses its image, both plans then have no changes, the
 # migrations find nothing to do and the Worker uploads the same code.
@@ -152,6 +152,11 @@ if (!ready) problems.push("healthz");
 const versions = await get("/versions/");
 console.log(`${versions.status === 200 ? "PASS" : "FAIL"}  GET /versions/ -> ${versions.status} ${versions.type}`);
 if (versions.status !== 200) problems.push("versions");
+// A5: / is the app (web/), its script from /assets/.
+const app = await get("/");
+const isApp = app.status === 200 && app.text.includes('src="/assets/app.js"');
+console.log(`${isApp ? "PASS" : "FAIL"}  GET / -> ${app.status} ${app.type}${isApp ? ", the app" : ""}`);
+if (!isApp) problems.push("/");
 // Session API answers JSON; the Worker's own 404 is HTML, and 502-504 mean it wasn't reached.
 for (const [method, path] of [["POST", "/api/v1/links"], ["GET", "/auth/login"]]) {
 	const init = method === "POST" ? { method, headers: { "content-type": "application/json" }, body: "{}" } : { method };

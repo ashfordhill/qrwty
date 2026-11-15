@@ -5,9 +5,10 @@
 #   deploy/cloudflare/deploy.sh [--allow-dirty]
 #
 # 1. Writes .build/build.json from `git rev-parse HEAD` and the current UTC time. A dirty
-#    tree (tracked changes anywhere, or untracked files under deploy/cloudflare) is refused
-#    unless --allow-dirty is passed; the commit is then recorded as "<sha>-dirty".
-# 2. Runs `wrangler deploy` with the build as plain-text variables.
+#    tree (tracked changes anywhere, or untracked files under deploy/cloudflare or web) is
+#    refused unless --allow-dirty is passed; the commit is then recorded as "<sha>-dirty".
+# 2. Stages the static assets (public/ and the app from ../../web) into .build/site, then runs
+#    `wrangler deploy` with the build as plain-text variables.
 # 3. Polls https://qrwty.io/build.json from this machine until it reports that build
 #    (/healthz is arm A's Session API since A2).
 #
@@ -63,7 +64,7 @@ trap 'node scripts/scrub.mjs <"$raw_log" >.wrangler/logs/last-deploy.log 2>/dev/
 
 # 1. The build object.
 commit="$(git rev-parse HEAD)"
-dirty="$(git status --porcelain --untracked-files=no; git status --porcelain --untracked-files=all -- . | grep '^??' || true)"
+dirty="$(git status --porcelain --untracked-files=no; git status --porcelain --untracked-files=all -- . ../../web | grep '^??' || true)"
 if [ -n "$dirty" ]; then
 	[ "$allow_dirty" -eq 1 ] || die "the working tree is dirty; commit first or pass --allow-dirty:
 $dirty"
@@ -75,8 +76,10 @@ mkdir -p .build
 printf '{"commit":"%s","builtAt":"%s"}\n' "$commit" "$built_at" >.build/build.json
 echo "build: $(cat .build/build.json)"
 
-# 2. Deploy (dependencies first, from the lockfile).
+# 2. Deploy (dependencies first, from the lockfile; then the static assets: public/ and the app
+#    from web/, staged into .build/site and checked).
 pnpm install --frozen-lockfile --reporter=silent
+node scripts/stage-assets.mjs
 pnpm exec wrangler --version
 pnpm exec wrangler deploy --var "BUILD_COMMIT:$commit" --var "BUILT_AT:$built_at" 2>&1 |
 	node scripts/scrub.mjs

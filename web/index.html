@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<meta name="color-scheme" content="light dark" />
+		<meta name="robots" content="noindex" />
+		<title>QRWTY</title>
+		<link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+		<link rel="stylesheet" href="/assets/fonts.css" />
+		<link rel="stylesheet" href="/assets/tokens.css" />
+		<link rel="stylesheet" href="/assets/app.css" />
+		<link rel="stylesheet" href="/assets/site.css" />
+		<script src="/assets/qr.js" defer></script>
+		<script src="/assets/app.js" defer></script>
+	</head>
+	<body>
+		<header class="topbar">
+			<div class="wrap">
+				<a class="brand" href="/" data-nav="/" aria-label="QRWTY home">
+					<svg class="ic" viewBox="0 0 32 32" aria-hidden="true">
+						<rect class="o l" x="3" y="3" width="26" height="26" rx="7" />
+						<rect class="o a t-butter" x="8" y="8" width="9" height="9" rx="2" />
+						<rect class="k" x="20" y="9" width="4" height="4" rx="1" />
+						<rect class="k" x="9" y="20" width="4" height="4" rx="1" />
+						<rect class="k" x="19" y="19" width="5" height="5" rx="1.2" />
+					</svg>
+					<span>QRWTY</span>
+				</a>
+				<nav aria-label="Main">
+					<ul class="nav" id="nav"></ul>
+				</nav>
+				<span class="spacer"></span>
+				<div class="account" id="account"></div>
+			</div>
+		</header>
+		<main id="main" tabindex="-1">
+			<div class="wrap" id="view">
+				<div class="page">
+					<p class="meta" id="boot">Loading QRWTY…</p>
+				</div>
+			</div>
+			<footer class="site-foot">
+				<div class="wrap">
+					<span>QRWTY: short links and QR codes.</span>
+					<a href="/versions/">Versions: what happened</a>
+					<span class="build" id="build"></span>
+				</div>
+			</footer>
+		</main>
+		<div class="toast-region" id="toasts" role="status" aria-live="polite"></div>
+		<div class="sr-only" id="announce" aria-live="polite"></div>
+		<dialog id="dialog"></dialog>
+		<noscript><p class="noscript">QRWTY needs JavaScript to make links.</p></noscript>
+	</body>
+</html>
