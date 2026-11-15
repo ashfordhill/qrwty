@@ -1,0 +1,19 @@
+Q11 design files copied into pack v1.5 (2026-11-15T01:48:04Z). Source: QRWTY commit d67f5fe52fddaf7fca5cf086556b888556502886
+(Q11), unchanged at the build commit 1144ac0 (git log -- docs/design shows only d67f5fe).
+
+| Pack path | Bytes | SHA-256 | Same as git show d67f5fe:<source> |
+| --- | ---: | --- | --- |
+| files/docs/design/README.md | 9900 | 5b55457667dc56b2a0ca84aea2abcb35d62e40010161f0f0b36ca86152e0c2eb | yes |
+| files/docs/design/accessible-names.json | 4897 | e88d47dc4f502037f9e05906e8c8a4a3f7b57aab579db049c6ffb90b4ba1be07 | yes |
+| files/docs/design/accessible-names.md | 7650 | 8afa10dc426533fc25ddaee364b8dbdcf4fbbbe631c26c81ec88ea5e9c92116c | yes |
+| files/docs/design/prototype/app.css | 29723 | 0615bb5c39404fd132b46ed2ff51982ff23edf24611507420d8c6909b73ccf38 | yes |
+| files/docs/design/prototype/app.js | 77309 | 80d9cbf02e3780b427213b6a51a96410aea467f9a79f3b8ab544adbba95994d3 | yes |
+| files/docs/design/prototype/index.html | 2106 | 8c83ea94a9ffb5961828cb138a24595428a9df0fcd0362234f115eef5914be23 | yes |
+| files/docs/design/prototype/qr.js | 10177 | a788457fa203faf369ae537335884f929e8fb6ea48ea3bc1693a87879ce77bca | yes |
+| files/docs/design/prototype/tokens.css | 6697 | dd8c5e563455f3a2fa2dd77768c078df3b03857300292e4be5d331b4cd20b9da | yes |
+| files/docs/design/qr-export/qrwty-7Hq2xP9kLm.png | 33728 | 37dd6d6db7c7ff7a9e6be2baa71ddb447d7c584856431fd7bc26c073df1834ec | yes |
+| files/docs/design/qr-export/qrwty-7Hq2xP9kLm.svg | 3168 | 460d42be353e463865d12b38ab2fc72a2458908a09b9230e80d78096613f9b27 | yes |
+
+Files Q11 tracks under docs/design/: 10; copied: 10.
+Q11 files left out (docs/evidence/q11/): 81, of which screenshots (.png): 67.
+Pack files under any evidence/q11 path: 0.

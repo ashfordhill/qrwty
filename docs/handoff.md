@@ -714,3 +714,68 @@ pre-rewrite history is kept locally at `refs/backup/pre-rewrite-20261114`.
   README and this file's S01 entry. I read nothing in qrwty-baseline and no arm source.
 - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status,
   a memory index). I ignored it, apart from the two style sources the coordinator allowed.
+
+## N05: pack v1.5 (frozen UI names and design assets, one skin), 2026-11-15
+
+- **Changed.** Pack **v1.5** (`docs/benchmarks/neutral-pack/v1.5/`, manifest SHA-256
+  `b76a0dd51923888fa9e203f0b7948a68807fe427dd39f02f6e9910b0ab3ac800`, 201 files) is a
+  self-contained copy of v1.4. It is recorded in `frozen/decisions.md` §11 (the v1.5 row and its
+  note) and in the pack README's "Changes from v1.4".
+  - **(a) Frozen name list.** Q11's `docs/design/accessible-names.json` (`q11-2026-11-14.1`) is
+    copied byte for byte to `files/docs/design/accessible-names.json`, the only copy in the pack.
+    - `oracle/src/runner.ts` loads it from that fixed path (`FROZEN_UI_NAMES_PATH`, resolved from
+      the oracle's own folder), validates it against `ui-names.schema.json`, and passes it to every
+      browser row (A01, A04's browser step, U02–U08) as `ctx.uiNames`.
+    - Each result records `environment.uiNames` (version, SHA-256).
+    - `oracle/src/cli.ts` refuses `--ui-names` (exit 2), so no arm supplies its own list. Only the
+      self-test keeps its double-only list (`uiNamesPath`).
+    - New unit test `oracle/test/ui-names.test.ts` (5 tests).
+  - **(b) Design assets.** Q11's design README, `accessible-names.md`, `prototype/` (with
+    `tokens.css`) and `qr-export/` are byte copies under `files/docs/design/`, with origin
+    `d67f5fe`. Q11's 81 evidence files (67 screenshots) are excluded, and the README's two links
+    to them are declared outside the pack.
+  - **(c) One skin.** Decisions §2 quotes owner decisions §11, which replaces §5 of the pack's
+    copy (that copy still holds §§1–8, origin `0e2e1f2`). Every place below now says one skin ×
+    light/dark × desktop/mobile:
+    - acceptance-oracle §6;
+    - decisions §1, §2 (rows for U01, design brief, architecture flow sheet, B08) and §7–§10;
+    - the B brief (§1, B08);
+    - the U rows' scope labels;
+    - the schema description and the oracle README.
+  - **Unchanged checks.** No row's checks changed: the U rows still run each skin the adapter
+    lists in `ui.skins`, and the adapter lists one. `selectSkin` is still required by the schema.
+  - **Records.** Oracle build `1.5.0`; results report pack `v1.5`. `status.json` points at v1.5.
+- **Checked.**
+  - **Name list.** It validates against the schema with the oracle's own validator and with an
+    independent stdlib check: 0 errors, 65 names, all 29 logical keys.
+  - **Self-test.** The full self-test (`n05-selftest-pubsub` and `n05-selftest-toxiproxy`, then
+    Chromium) matched 51/51 cases and detected 34/34 faults. Every case's expected and observed
+    status equals v1.4's run.
+  - **Oracle tests.** `pnpm check` (Biome, TypeScript, 48 unit tests) passes in place and in a
+    fresh copy after `pnpm install --frozen-lockfile`; `pnpm test:integration` passes 3/3.
+  - **Pack.** `verify_pack.py` for v1.5 passes in place, with `--against-git .` (36 copies: v1.4's
+    26 plus Q11's 10) and in a fresh copy. `verify_pack.py` is byte-identical to v1.4's.
+  - **Old packs.** v1 to v1.4 are unchanged against `HEAD`; v1, v1.3 and v1.4 still verify.
+  - **Hygiene.** A credential-shape scan of the finished v1.5 (203 files, R15 plus five patterns)
+    finds nothing. `git diff --check` is clean. Both containers were removed by name.
+  - **Records.** The evidence is in `evidence/n05/`, with Node 24.21.0 and pnpm 12.16.1.
+- **Next.**
+  - **Coordinator: install.** Install v1.5 in qrwty-baseline, record each arm's adoption, and
+    fill `commits.after` of `shared-0745`.
+  - **Each arm.** List the one skin in the adapter's `ui.skins`, build the UI from
+    `files/docs/design/` with exactly those roles and names, and run the browser rows from its
+    v1.5 copy without `--ui-names`.
+  - **For the coordinator to decide:**
+    - Decisions §9 used to say "Prototype or UI source is never shared". v1.5 ships Q11's
+      prototype as requested and now says it is Q11's shared design deliverable, not either arm's
+      UI source, with B08's source rules unchanged. Whether an arm may copy prototype code
+      verbatim is not settled here.
+    - The pack's owner-decisions copy is still the v1 copy; refreshing it would also bring in
+      sections 9 and 10.
+    - The adapter schema still allows several skins and still requires `selectSkin`.
+  - **What was read.** Pack v1.4, the ledger README, `docs/design/`, owner decisions §11, the N05
+    packet and this file's N04 entry (for the format). A `diff` of the owner decisions against the
+    pack's copy also showed §9 and §10; only §11 was used. No arm source, evidence, review or
+    handoff, and no Jeeves file, was read.
+  - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, a memory
+    index, Git status); it was ignored.

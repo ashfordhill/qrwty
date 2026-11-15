@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>QRWTY Prototype</title>
+		<meta name="claude:viewport-fit-sides" content="cover" />
+		<link rel="stylesheet" href="tokens.css" />
+		<link rel="stylesheet" href="app.css" />
+	</head>
+	<body>
+		<div class="review" id="review" aria-label="Prototype controls" role="region">
+			<div class="wrap">
+				<span class="review-tag">Prototype</span>
+				<label for="pick-screen">Screen
+					<select id="pick-screen"></select>
+				</label>
+				<label for="pick-state">State
+					<select id="pick-state"></select>
+				</label>
+				<label for="pick-theme">Theme
+					<select id="pick-theme">
+						<option value="system">System</option>
+						<option value="light">Light</option>
+						<option value="dark">Dark</option>
+					</select>
+				</label>
+				<button type="button" class="btn btn-sm" data-act="reset">Reset prototype</button>
+			</div>
+		</div>
+		<header class="topbar">
+			<div class="wrap">
+				<a class="brand" href="#create" data-act="go" data-view="create" aria-label="QRWTY home">
+					<svg class="ic" viewBox="0 0 32 32" aria-hidden="true">
+						<rect class="o l" x="3" y="3" width="26" height="26" rx="7" />
+						<rect class="o a t-butter" x="8" y="8" width="9" height="9" rx="2" style="--ica: var(--butter)" />
+						<rect class="k" x="20" y="9" width="4" height="4" rx="1" />
+						<rect class="k" x="9" y="20" width="4" height="4" rx="1" />
+						<rect class="k" x="19" y="19" width="5" height="5" rx="1.2" />
+					</svg>
+					<span>QRWTY</span>
+				</a>
+				<nav aria-label="Main">
+					<ul class="nav" id="nav"></ul>
+				</nav>
+				<span class="spacer"></span>
+				<div class="account" id="account"></div>
+			</div>
+		</header>
+		<main id="main" tabindex="-1"></main>
+		<div class="toast-region" id="toasts" role="status" aria-live="polite"></div>
+		<div class="sr-only" id="announce" aria-live="polite"></div>
+		<dialog id="dialog"></dialog>
+		<script src="qr.js"></script>
+		<script src="app.js"></script>
+	</body>
+</html>

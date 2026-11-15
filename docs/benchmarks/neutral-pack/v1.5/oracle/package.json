@@ -1,0 +1,37 @@
+{
+	"name": "qrwty-neutral-oracle",
+	"version": "1.5.0",
+	"private": true,
+	"description": "Neutral black-box acceptance oracle for run qrwty-r1-20261114 (pack v1.1)",
+	"type": "module",
+	"packageManager": "pnpm@12.16.1",
+	"engines": {
+		"node": "24.21.0"
+	},
+	"scripts": {
+		"oracle": "node src/cli.ts",
+		"lint": "biome check .",
+		"format": "biome format --write .",
+		"typecheck": "tsc --noEmit -p tsconfig.json",
+		"test": "vitest run --project unit",
+		"test:integration": "vitest run --project integration",
+		"selftest": "node selftest/run.ts",
+		"check": "biome check . && tsc --noEmit -p tsconfig.json && vitest run --project unit"
+	},
+	"dependencies": {
+		"@google-cloud/pubsub": "6.3.2",
+		"@playwright/test": "1.63.0",
+		"jsqr": "1.4.0",
+		"pngjs": "7.0.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.6.4",
+		"@types/node": "24.19.2",
+		"@types/pngjs": "6.0.5",
+		"@types/qrcode": "1.5.6",
+		"qrcode": "1.5.4",
+		"stripe": "23.1.0",
+		"typescript": "7.0.2",
+		"vitest": "5.0.0"
+	}
+}

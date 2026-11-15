@@ -1,0 +1,15 @@
+$ node --version: v24.21.0; pnpm --version: 12.16.1
+$ pnpm check   (2026-11-14T19:11:57Z)
+$ biome check . && tsc --noEmit -p tsconfig.json && vitest run --project unit
+Checked 99 files in 30ms. No fixes applied.
+
+ RUN  v5.0.0 /home/ash/github/qrwty/docs/benchmarks/neutral-pack/v1.3/oracle
+
+<claude-code-hint v="1" type="plugin" value="stripe@claude-plugins-official" />
+
+ Test Files  7 passed (7)
+      Tests  39 passed (39)
+   Start at  13:11:57
+   Duration  1.34s (tests 65%, import 18%, transform 17%, worker 1%)
+
+exit 0

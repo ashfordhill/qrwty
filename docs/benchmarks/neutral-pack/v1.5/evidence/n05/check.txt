@@ -1,0 +1,36 @@
+$ node --version: v24.21.0; pnpm --version: 12.16.1
+$ pnpm check   (2026-11-15T01:53:05Z, docs/benchmarks/neutral-pack/v1.5/oracle)
+$ biome check . && tsc --noEmit -p tsconfig.json && vitest run --project unit
+Checked 101 files in 36ms. No fixes applied.
+
+ RUN  v5.0.0 /home/ash/github/qrwty/docs/benchmarks/neutral-pack/v1.5/oracle
+
+<claude-code-hint v="1" type="plugin" value="stripe@claude-plugins-official" />
+
+ Test Files  9 passed (9)
+      Tests  48 passed (48)
+   Start at  19:53:06
+   Duration  1.48s (tests 63%, import 20%, transform 17%, worker 1%)
+
+exit 0
+
+Fresh copy of the pack without node_modules (<scratch>/fresh/v1.5):
+$ pnpm install --frozen-lockfile
++ vitest 5.0.0
+
+Done in 191ms using pnpm v12.16.1
+exit 0
+$ pnpm check
+$ biome check . && tsc --noEmit -p tsconfig.json && vitest run --project unit
+Checked 101 files in 35ms. No fixes applied.
+
+ RUN  v5.0.0 <scratch>/fresh/v1.5/oracle
+
+<claude-code-hint v="1" type="plugin" value="stripe@claude-plugins-official" />
+
+ Test Files  9 passed (9)
+      Tests  48 passed (48)
+   Start at  19:53:08
+   Duration  1.48s (tests 64%, import 19%, transform 16%, worker 1%)
+
+exit 0

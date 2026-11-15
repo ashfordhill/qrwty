@@ -1,0 +1,30 @@
+Name-list validation for pack v1.5 (2026-11-15T01:47:52Z), Node v24.21.0, run in <pack>/oracle.
+
+1. The oracle's own loader and validator (src/runner.ts loadUiNames with no argument, src/schema.ts):
+$ node --input-type=module -e "<load the default list, validate, compare with UI_KEYS>"
+{
+ "path": "<pack>/files/docs/design/accessible-names.json",
+ "version": "q11-2026-11-14.1",
+ "sha256": "e88d47dc4f502037f9e05906e8c8a4a3f7b57aab579db049c6ffb90b4ba1be07",
+ "schemaErrors": [],
+ "names": 65,
+ "oracleKeys": 29,
+ "oracleKeysMissing": [],
+ "furtherStates": 36,
+ "roles": {
+  "textbox": 3,
+  "button": 17,
+  "link": 5,
+  "img": 1,
+  "status": 16,
+  "alert": 16,
+  "dialog": 2,
+  "heading": 5
+ }
+}
+exit 0
+
+2. Independent check in Python (stdlib) of the same file against ui-names.schema.json's rules:
+$ python3 -I <check> files/docs/design/accessible-names.json oracle/ui-names.schema.json
+{"names": 65, "errors": []}
+exit 0

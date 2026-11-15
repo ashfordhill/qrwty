@@ -1,0 +1,26 @@
+Fresh copy of the pack (no node_modules) at <scratch>/packcopy/v1.1, 2026-11-14T07:52:36Z
+$ pnpm install --frozen-lockfile
++ qrcode 1.5.4
++ stripe 23.1.0
++ typescript 7.0.2
++ vitest 5.0.0
+
+Done in 281ms using pnpm v12.16.1
+exit 0
+$ pnpm check
+ Test Files  7 passed (7)
+      Tests  39 passed (39)
+   Start at  01:52:36
+   Duration  1.34s (tests 65%, import 18%, transform 17%, worker 1%)
+
+exit 0
+$ node src/cli.ts list | wc -l
+47
+$ node selftest/run.ts --out <scratch> --pubsub-emulator 127.0.0.1:47285 --toxiproxy http://127.0.0.1:47274 --cases A09-good,A20-bad-signature,A24-early-302
+<claude-code-hint v="1" type="plugin" value="stripe@claude-plugins-official" />
+A09-good (A09, good) ... passed (expected passed) OK
+A20-bad-signature (A20, a20-accepts-bad-signature) ... failed (expected failed) OK
+A24-early-302 (A24, a24-302-before-event) ... failed (expected failed) OK
+Self-test PASSED: 3/3 cases matched; deliberate faults detected 2/2.
+
+exit 0
