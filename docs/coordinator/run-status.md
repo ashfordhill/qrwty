@@ -121,3 +121,9 @@ QG12 running; then QG11, QGR1, B04c, B04b, N03, batch 2 (QG03, QG04, QG06–QG10
   - **A (qrwty):** S01 qrwty.io placeholder (shared) → Q11 (both design directions) → after QGR2: Q04 → Q05 (+ review) → Q12a → Q13 (walking skeleton on qrwty.io) → Q06 → Q07 (+ review) → Q08 (+ review) → Q09 → Q10 (+ review) → Q10a (+ review) → Q10b (+ review) → Q12 (+ review) → final review. Every unit after Q13 redeploys and smoke-tests.
   - **B (qrwty-baseline):** B06 (adopts pack v1.4 first) → B08a → B09 (b.qrwty.io) → B07 (+ review) → B07a (+ review) → B07b (+ review) → B08 (+ review, after Q11) → final review. Every unit after B09 redeploys.
 - **Pack v1.4 (N04, d24fc37; B install 82dd32e):** manifest `bdcb503c…1495`. Each arm adds the `clear-route-caches` fault point and `admissionBound`, then reruns F01/F06; earlier F01/F06 results are superseded. N04 also tightened F01's stampede bound (accepted).
+- **Owner decisions, 2026-11-14 ~23:40Z:**
+  - **QL plan decisions D1–D6: yes.**
+  - **Clarification 7: yes.** QL01 is folded in before A's freeze. QG08 had already started, so the reconnect backoff options go into QG09. **Disclosure:** that backoff setting was found by arm B's B05 review, so A's frozen baseline contains one B-derived setting. The final report must say so.
+  - **QG16 (clarification 8):** the owner delegated it to the planner (Fable); its answer is the decision.
+  - **qrwty.io:** keep the new placeholder. The old `qrwty-platform` Worker stays in place, unrouted.
+  - **QG07 follow-ups: yes.** In QG09: a generated `pnpm-workspace.yaml` with `allowBuilds: { protobufjs: false }`, and `METADATA_SERVER_DETECTION=none` in the local environment of every process using Pub/Sub. QG07 found the metadata lookup independently.
