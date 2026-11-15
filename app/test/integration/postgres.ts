@@ -135,6 +135,10 @@ export async function createTestDatabase(): Promise<TestDatabase> {
 					async execute(sql: string, values?: readonly unknown[]) {
 						return { rowCount: (await run(sql, values)).rowCount ?? 0 };
 					},
+					// Link operations keeps its own idempotency and transactions in SQL (Q06): it
+					// calls neither of the generated client's helpers (QL03, QL04).
+					transaction: () => Promise.reject(new Error("not used by Link operations")),
+					idempotent: () => Promise.reject(new Error("not used by Link operations")),
 				},
 				end: () => pool.end(),
 			};

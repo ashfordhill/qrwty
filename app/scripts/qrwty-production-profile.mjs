@@ -3,15 +3,15 @@
 //   node scripts/qrwty-production-profile.mjs <process>
 //
 // Runs before a generated process or the migration job in production (Cloud Run's command:
-// `node scripts/qrwty-production-profile.mjs <p> && SECRET_DIR=/tmp/qrwty-secrets exec node …`).
-// It checks the whole environment against infra/qrwty/production-profile.json before any network
-// call, refuses every emulator, fake, insecure, development, test-only or missing setting with a
-// named reason (one JSON line on stderr, exit 1; never a value), and on success links each
-// credential the process reads from its own Cloud Run secret volume
-// (<QRWTY_SECRET_MOUNT_DIR>/<name>/value) into one directory, because the generated runtime reads
-// every credential from SECRET_DIR/<name> and Cloud Run mounts each secret at its own path.
-// The generated runtime's own checks (JEEVES_REQUIRE_TLS, Invalid endpoint) still apply after it.
-import { existsSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+// `node scripts/qrwty-production-profile.mjs <p> && exec node …`). It checks the whole
+// environment against infra/qrwty/production-profile.json before any network call and refuses
+// every emulator, fake, insecure, development, test-only or missing setting with a named reason
+// (one JSON line on stderr, exit 1; never a value). Each credential the process reads is the file
+// its JEEVES_SECRET_<NAME>_FILE names (Jeeves QG34), which must be its own Cloud Run secret volume,
+// <QRWTY_SECRET_MOUNT_DIR>/<name>/value; it writes nothing.
+// The generated runtime's own checks (JEEVES_REQUIRE_TLS, Invalid endpoint, Invalid setting) still
+// apply after it.
+import { readFileSync } from "node:fs";
 import { isAbsolute, join } from "node:path";
 
 const profilePath = process.env.QRWTY_PROFILE_FILE ?? "infra/qrwty/production-profile.json";
@@ -64,8 +64,13 @@ const checkUrl = (variable, value) => {
 };
 // Every endpoint variable present is checked, read by this process or not, so a development value
 // can't sit unnoticed in a shared environment; only the process's own list must be present.
+// A credential's file variable is checked with the credentials (4).
 const present = Object.keys(env).filter(
-  (k) => /^(JEEVES_|OIDC_)/.test(k) && !/_(CA_FILE|TLS_SERVERNAME|PORT)$/.test(k) && !(k in profile.required),
+  (k) =>
+    /^(JEEVES_|OIDC_)/.test(k) &&
+    !/_(CA_FILE|TLS_SERVERNAME|PORT)$/.test(k) &&
+    !/^JEEVES_SECRET_.+_FILE$/.test(k) &&
+    !(k in profile.required),
 );
 for (const variable of [...new Set([...spec.env, ...present])].sort()) {
   const value = env[variable];
@@ -75,6 +80,13 @@ for (const variable of [...new Set([...spec.env, ...present])].sort()) {
   }
   if (/_PORT$/.test(variable)) {
     if (!/^[1-9][0-9]{0,4}$/.test(value)) refuse("missing-required-value", variable, `${variable} is not a port`);
+    continue;
+  }
+  // The migration job's own TLS (Jeeves QG29): over TCP it must verify; over Cloud SQL's socket
+  // the connector encrypts.
+  if (variable === "JEEVES_MIGRATE_TLS") {
+    if (value !== "verify-full" && !(value === "disable" && (env.PGHOST ?? "").startsWith("/")))
+      refuse("tls-verification-disabled", variable, `${variable} is not verify-full for a TCP database`);
     continue;
   }
   const tls = /^JEEVES_(DATABASE|CACHE)_(.+)_TLS$/.exec(variable);
@@ -130,53 +142,62 @@ for (const variable of [...new Set([...spec.env, ...present])].sort()) {
   }
 }
 
-// The migration job's own client follows PGSSLMODE (Jeeves QGR2 finding 11): over TCP it must
-// verify; over Cloud SQL's socket the connector encrypts.
-if (env.PGHOST && !env.PGHOST.startsWith("/") && env.PGSSLMODE !== "verify-full")
-  refuse("tls-verification-disabled", "PGSSLMODE", "PGSSLMODE is not verify-full for a TCP database");
-
-// 4. Credentials: one Cloud Run secret volume per credential.
+// 4. Credentials: one Cloud Run secret volume per credential, named by its file variable (QG34).
+const fileVariable = (secret) => `JEEVES_SECRET_${secret.toUpperCase().replace(/[-.]/g, "_")}_FILE`;
 const mount = env[profile.secretMount.variable];
 const empty = new Set(profile.emptySecretAllowed?.secrets ?? []);
 const placeholder =
   /^(changeme|change-me|placeholder|password|secret|example|todo|none|null|x+|<[^>]*>|\$\{[^}]*\})$/i;
 const development = /^(dev|local|test|fixture|oracle)[-_]/i;
-const links = [];
+let checked = 0;
 if (!mount) refuse("missing-required-value", profile.secretMount.variable, "credential mount directory is not set");
 else if (!isAbsolute(mount)) refuse("missing-required-value", profile.secretMount.variable, "not an absolute path");
 else if (/(^|\/)\.runtime(\/|$)/.test(mount) || mount === "/run/secrets")
   refuse("development-secret", profile.secretMount.variable, "the local Compose credential directory");
-else
+else {
+  // A file variable for a credential this process doesn't read can't stand in for a checked one.
+  const own = new Set(spec.secrets.map(fileVariable));
+  for (const variable of Object.keys(env).filter((k) => /^JEEVES_SECRET_.+_FILE$/.test(k)).sort())
+    if (!own.has(variable))
+      refuse("development-secret", variable, `${variable} names a credential this process does not read`);
   for (const secret of spec.secrets) {
-    const file = join(mount, secret, "value");
+    const variable = fileVariable(secret);
+    const file = env[variable];
+    // A cache whose Memorystore instance runs AUTH_DISABLED has no secret to mount: its variable
+    // names /dev/null, an empty credential, and the generated client sends no AUTH.
+    const mayBeEmpty = empty.has(secret) && env.QRWTY_CACHE_AUTH_DISABLED === "true";
+    if (file === undefined || file === "") {
+      refuse("missing-required-value", variable, `${variable} is not set`);
+      continue;
+    }
+    if (file === "/dev/null") {
+      if (!mayBeEmpty) refuse("placeholder-credential", `secret:${secret}`, `credential ${secret} is empty`);
+      checked++;
+      continue;
+    }
+    if (file !== join(mount, secret, "value")) {
+      refuse("development-secret", variable, `${variable} is not the credential's own secret volume`);
+      continue;
+    }
     let value;
     try {
       value = readFileSync(file, "utf8").trim();
     } catch {
-      // A cache whose Memorystore instance runs AUTH_DISABLED has no secret to mount: the link
-      // directory then holds an empty file, and the generated client sends no AUTH.
-      if (empty.has(secret) && env[`QRWTY_CACHE_AUTH_DISABLED`] === "true") links.push([secret, null]);
-      else refuse("missing-required-value", `secret:${secret}`, `credential ${secret} is not mounted`);
+      refuse("missing-required-value", `secret:${secret}`, `credential ${secret} is not mounted`);
       continue;
     }
     if (value === "") {
-      if (!empty.has(secret) || env.QRWTY_CACHE_AUTH_DISABLED !== "true")
-        refuse("placeholder-credential", `secret:${secret}`, `credential ${secret} is empty`);
+      if (!mayBeEmpty) refuse("placeholder-credential", `secret:${secret}`, `credential ${secret} is empty`);
     } else if (placeholder.test(value) || value.length < 16)
       refuse("placeholder-credential", `secret:${secret}`, `credential ${secret} is a placeholder`);
     else if (development.test(value))
       refuse("development-secret", `secret:${secret}`, `credential ${secret} is a development value`);
-    links.push([secret, file]);
+    checked++;
   }
+}
 
 if (problems.length) {
   console.error(JSON.stringify({ level: "error", event: "profile-refused", process: name, reasons: problems }));
   process.exit(1);
 }
-const linkDir = profile.secretMount.linkDir;
-if (existsSync(linkDir)) rmSync(linkDir, { recursive: true });
-mkdirSync(linkDir, { recursive: true, mode: 0o700 });
-for (const [secret, file] of links)
-  if (file === null) writeFileSync(join(linkDir, secret), "", { mode: 0o600 });
-  else symlinkSync(file, join(linkDir, secret));
-console.log(JSON.stringify({ level: "info", event: "profile-ok", process: name, secrets: links.length }));
+console.log(JSON.stringify({ level: "info", event: "profile-ok", process: name, secrets: checked }));

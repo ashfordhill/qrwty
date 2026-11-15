@@ -135,10 +135,10 @@ services:
       labels: *arm
     volumes: [*ca]
     environment:
-      # migrate.mjs follows PGSSLMODE and reads no CA file (Jeeves QGR2 finding 11); Node's extra CA
-      # file makes verify-full check the local CA's chain and the host name.
-      PGSSLMODE: verify-full
-      NODE_EXTRA_CA_CERTS: /qrwty-tls/ca.crt
+      # migrate.mjs's own TLS (Jeeves QG29): verify the local CA's chain and the host name
+      # (local-postgres). PGSSLMODE no longer changes it.
+      JEEVES_MIGRATE_TLS: verify-full
+      JEEVES_MIGRATE_CA_FILE: /qrwty-tls/ca.crt
   setup-pubsub:
     labels: *arm
     build:

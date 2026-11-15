@@ -1,0 +1,9 @@
+{"event":"probe","tile":"analytics-worker","level":"info","client":"analytics","kind":"database","check":"SELECT 1","result":"ok"}
+{"event":"probe","tile":"analytics-worker","level":"info","client":"click-events--analytics-worker--analytics-worker-click-aggregator","kind":"queue","check":"the Pub/Sub subscription exists","result":"ok"}
+{"level":"info","event":"broker","tile":"analytics-worker","what":"broker consume click-events--analytics-worker--analytics-worker-click-aggregator","state":"available"}
+Application ready
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+Application ready

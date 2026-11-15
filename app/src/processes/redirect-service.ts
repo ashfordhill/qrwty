@@ -1,10 +1,13 @@
 // Generated scaffold: Redirect service (Microservice) runs as app-redirect-service, an HTTP process.
 // Export rewrites this file. Write modules in src/modules/; .jeeves/report.json lists what runs.
 import type { Dependencies as RedirectServiceResolveAndRedirectDependencies } from "../modules/redirect-service/redirect-service-resolve-and-redirect.slots.ts";
+import * as RedirectServiceResolveAndRedirectModule from "../modules/redirect-service/redirect-service-resolve-and-redirect.ts";
 import { redirectServiceResolveAndRedirect } from "../modules/redirect-service/redirect-service-resolve-and-redirect.ts";
 import { createHttpService } from "../runtime/http.ts";
-import { cacheClient, createProbeLog, databaseClient, pubsubPublisher } from "../runtime/module-clients.ts";
+import { readSecret } from "../runtime/local.ts";
+import { cacheClient, cacheClientEndpoint, checkConfiguration, createProbeLog, databaseClient, databaseEndpoint, pubsubProjectId, pubsubPublisher } from "../runtime/module-clients.ts";
 import { runProcess } from "../runtime/process.ts";
+import { type SettingsDeclaration, declareSettings, readSettings } from "../runtime/settings.ts";
 import { stubRoutes } from "../runtime/tile-http.ts";
 import { createFailureLog, createNotImplementedLog } from "../runtime/tile-process.ts";
 
@@ -35,8 +38,24 @@ await runProcess(async (scope) => {
   const failure = createFailureLog(config.tile);
   // "Not implemented" answers 501 with one log line per module and hook a second.
   const log = createNotImplementedLog(config.tile);
+  // Each stub's own settings: what its file's `settings` export declares (none without one).
+  const declared = {
+    "redirect-service-resolve-and-redirect": (RedirectServiceResolveAndRedirectModule as { settings?: SettingsDeclaration }).settings ?? declareSettings({}),
+  };
+  // Configuration: every variable these clients, the tile's sign-in and its stubs' settings read,
+  // checked before any client is built or probed; one wrong setting fails startup naming it,
+  // several are named together (a stub's first).
+  checkConfiguration([
+    () => pubsubProjectId(),
+    () => cacheClientEndpoint("hot-routes"),
+    () => databaseEndpoint("links"),
+    () => readSecret("cache-hot-routes"),
+    () => readSecret("sql-links--redirect-service"),
+    () => readSettings("redirect-service-resolve-and-redirect", declared["redirect-service-resolve-and-redirect"]),
+  ]);
   // Module clients (src/runtime/module-clients.ts): one per store or channel this tile's stubs
-  // use, each probed once before the process is ready; a failed probe fails startup.
+  // use, each probed once before the process is ready; a failed probe fails startup, except
+  // a cache's, which is logged.
   const probe = createProbeLog(config.tile);
   const clients = {
     "click-events": await pubsubPublisher(scope, probe, { topic: "click-events" }),
@@ -51,14 +70,19 @@ await runProcess(async (scope) => {
     links: clients["links"],
     hotRoutes: clients["hot-routes"],
     clickEvents: clients["click-events"],
+    settings: readSettings("redirect-service-resolve-and-redirect", declared["redirect-service-resolve-and-redirect"]) as RedirectServiceResolveAndRedirectDependencies["settings"],
   };
   const service = await createHttpService({
     id: config.tile,
     settings: config.settings,
     onFailure: failure,
     configure: (routes) => {
-      stubRoutes(routes, log, "redirect-service-resolve-and-redirect", (request) =>
-        redirectServiceResolveAndRedirect(dependencies["redirect-service-resolve-and-redirect"], request),
+      stubRoutes(
+        routes,
+        log,
+        "redirect-service-resolve-and-redirect",
+        (request) => redirectServiceResolveAndRedirect(dependencies["redirect-service-resolve-and-redirect"], request),
+        { deadlineMs: config.settings.requestTimeoutMs },
       );
     },
     initialize: async () => {},

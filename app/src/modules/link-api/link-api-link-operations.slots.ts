@@ -1,8 +1,9 @@
 // Generated scaffold: Link operations, a Custom in Link API.
 // Export rewrites this file; write the module in link-api-link-operations.ts.
+import type { SettingsOf } from "../../runtime/settings.ts";
 import type { CacheClient, DatabaseReadWriter, HttpTarget } from "../dependencies.ts";
 
-/** What the module uses: one property per connected slot. */
+/** What the module uses: one property per connected slot, and its own settings. */
 export type Dependencies = {
   // uses: Links (Database) through link-api-links, read & write
   links: DatabaseReadWriter;
@@ -12,6 +13,8 @@ export type Dependencies = {
   reputationApi: HttpTarget;
   // uses: Billing API (Microservice) through link-api-billing-api, request
   billingApi: HttpTarget;
+  // settings: the values link-api-link-operations.ts's `settings` export declares.
+  settings: SettingsOf<typeof import("./link-api-link-operations.ts")>;
 };
 
 /** Each connected slot: the tile or module it uses, through which link, and how. */

@@ -1,0 +1,27 @@
+{
+  "directory": "/home/ash/github/qrwty/app",
+  "check": true,
+  "refused": [],
+  "counts": {
+    "create": 7,
+    "replace": 37,
+    "unchanged": 35,
+    "keep": 3
+  },
+  "keepChanged": [
+    "src/modules/account-api/account-api-link-analytics.ts",
+    "src/modules/account-api/account-api-my-links.ts",
+    "src/modules/analytics-worker/analytics-worker-click-aggregator.ts",
+    "src/modules/billing-api/billing-api-customer-billing.ts",
+    "src/modules/billing-api/billing-api-entitlements.ts",
+    "src/modules/billing-api/billing-api-payment-events.ts",
+    "src/modules/link-api/link-api-abuse-and-moderation.ts",
+    "src/modules/link-api/link-api-link-operations.ts",
+    "src/modules/redirect-service/redirect-service-resolve-and-redirect.ts",
+    "src/modules/session-api/session-api-api-forwarding.ts",
+    "src/modules/session-api/session-api-sign-in-flow.ts"
+  ],
+  "override": [],
+  "remove": [],
+  "orphan": []
+}

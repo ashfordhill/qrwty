@@ -1,0 +1,12 @@
+{"process":"link-api","case":"production","expected":"ok","got":"ok","pass":true,"secrets":3}
+{"process":"link-api","case":"cache AUTH_DISABLED, /dev/null","expected":"ok","got":"ok","pass":true,"secrets":3}
+{"process":"link-api","case":"/dev/null for a database login","expected":"refused","got":"refused","pass":true,"reasons":["placeholder-credential: secret:sql-links--link-api"]}
+{"process":"link-api","case":"missing file variable","expected":"refused","got":"refused","pass":true,"reasons":["missing-required-value: JEEVES_SECRET_LINK_REPLAY_KEYS_FILE"]}
+{"process":"link-api","case":"file outside its own volume","expected":"refused","got":"refused","pass":true,"reasons":["development-secret: JEEVES_SECRET_LINK_REPLAY_KEYS_FILE"]}
+{"process":"link-api","case":"file variable for another process's credential","expected":"refused","got":"refused","pass":true,"reasons":["development-secret: JEEVES_SECRET_OWNER_LINKS_FILE"]}
+{"process":"link-api","case":"SECRET_DIR set","expected":"refused","got":"refused","pass":true,"reasons":["development-secret: SECRET_DIR"]}
+{"process":"migrate","case":"production (socket, disable)","expected":"ok","got":"ok","pass":true,"secrets":14}
+{"process":"migrate","case":"TCP host, verify-full","expected":"ok","got":"ok","pass":true,"secrets":14}
+{"process":"migrate","case":"TCP host, disable","expected":"refused","got":"refused","pass":true,"reasons":["tls-verification-disabled: JEEVES_MIGRATE_TLS"]}
+{"process":"migrate","case":"JEEVES_MIGRATE_TLS missing","expected":"refused","got":"refused","pass":true,"reasons":["missing-required-value: JEEVES_MIGRATE_TLS"]}
+{"process":"redirect-service","case":"production","expected":"ok","got":"ok","pass":true,"secrets":2}

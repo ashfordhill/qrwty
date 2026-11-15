@@ -1,13 +1,16 @@
 // Generated scaffold: Payment events, a Custom in Billing API.
 // Export rewrites this file; write the module in billing-api-payment-events.ts.
+import type { SettingsOf } from "../../runtime/settings.ts";
 import type { DatabaseReadWriter, HttpTarget } from "../dependencies.ts";
 
-/** What the module uses: one property per connected slot. */
+/** What the module uses: one property per connected slot, and its own settings. */
 export type Dependencies = {
   // uses: Billing (Database) through billing-api-billing, read & write
   billing: DatabaseReadWriter;
   // uses: Stripe API (External API) through billing-api-stripe-api, request
   stripeApi: HttpTarget;
+  // settings: the values billing-api-payment-events.ts's `settings` export declares.
+  settings: SettingsOf<typeof import("./billing-api-payment-events.ts")>;
 };
 
 /** Each connected slot: the tile or module it uses, through which link, and how. */

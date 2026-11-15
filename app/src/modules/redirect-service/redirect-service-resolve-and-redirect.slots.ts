@@ -1,8 +1,9 @@
 // Generated scaffold: Resolve and redirect, a Custom in Redirect service.
 // Export rewrites this file; write the module in redirect-service-resolve-and-redirect.ts.
+import type { SettingsOf } from "../../runtime/settings.ts";
 import type { CacheClient, DatabaseReader, QueuePublisher } from "../dependencies.ts";
 
-/** What the module uses: one property per connected slot. */
+/** What the module uses: one property per connected slot, and its own settings. */
 export type Dependencies = {
   // uses: Links (Database) through redirect-service-links, read
   links: DatabaseReader;
@@ -10,6 +11,8 @@ export type Dependencies = {
   hotRoutes: CacheClient;
   // uses: Click events (Message channel) through redirect-service-click-events, publish
   clickEvents: QueuePublisher;
+  // settings: the values redirect-service-resolve-and-redirect.ts's `settings` export declares.
+  settings: SettingsOf<typeof import("./redirect-service-resolve-and-redirect.ts")>;
 };
 
 /** Each connected slot: the tile or module it uses, through which link, and how. */

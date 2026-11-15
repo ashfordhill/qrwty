@@ -1,12 +1,13 @@
 locals {
   p = "qrwtya-" # every resource name starts with this, except the three Pub/Sub names below (AG-05)
 
-  # The generated export compiles its Pub/Sub names from the Click events tile's ID
-  # (src/processes/*.ts, infra/local.json); there is no environment binding, so they cannot carry
+  # The generated export compiles its Pub/Sub names from the Click events tile's ID, and each loop
+  # stub's subscription from its tile and module, `<topic>--<tile>--<module>` (Jeeves QG28;
+  # src/processes/*.ts, infra/local.json); there is no environment binding, so they cannot carry
   # the qrwtya- prefix. Recorded as A-found gap AG-05.
   topic             = "click-events"
-  subscription      = "click-events--analytics-worker"
-  dead_letter_topic = "click-events--analytics-worker.failed"
+  subscription      = "click-events--analytics-worker--analytics-worker-click-aggregator"
+  dead_letter_topic = "click-events--analytics-worker--analytics-worker-click-aggregator.failed"
 
   secret_mount = "/var/run/qrwty-secrets"            # QRWTY_SECRET_MOUNT_DIR: one volume per secret, file "value"
   ca_mount     = "/var/run/qrwty-tls/memorystore-ca" # the CA of the one cache a process uses
@@ -116,7 +117,7 @@ locals {
     "sql-billing--billing-api", "sql-links--link-api", "sql-links--redirect-service", "sql-sessions--session-api",
   ]
   # Every credential: a Secret Manager secret per generated name. The caches have none: Memorystore
-  # runs AUTH_DISABLED (AG-04), and the preflight gives the client an empty credential. Each
+  # runs AUTH_DISABLED (AG-04), and their file variables name /dev/null (secret_files). Each
   # instance has its own managed CA, so each has its own public CA secret.
   secrets = toset(concat(local.migrate_secrets, [for c in local.caches : "memorystore-ca-${c}"], ["link-replay-keys"]))
 
@@ -130,10 +131,23 @@ locals {
     migrate   = "Migration job"
   }
 
+  # Each credential a process reads is the file its JEEVES_SECRET_<NAME>_FILE names (Jeeves QG34;
+  # <NAME> the secret's name upper-cased, - and . as _): its own secret volume. A cache's names
+  # /dev/null, an empty credential, since Memorystore runs AUTH_DISABLED (AG-04).
+  credential_sets = merge(
+    { for name, h in local.http : name => { secrets = h.secrets, cache = h.ca } },
+    { "analytics-worker" = { secrets = local.worker.secrets, cache = null } },
+    { migrate = { secrets = local.migrate_secrets, cache = null } },
+  )
+  secret_files = { for name, c in local.credential_sets : name => merge(
+    { for s in c.secrets : "JEEVES_SECRET_${upper(replace(s, "/[-.]/", "_"))}_FILE" => "${local.secret_mount}/${s}/value" },
+    { for cache in compact([c.cache]) : "JEEVES_SECRET_CACHE_${upper(replace(cache, "/[-.]/", "_"))}_FILE" => "/dev/null" },
+  ) }
+
   # The container command: the application's preflight, then the generated process (exec, so it
   # receives SIGTERM directly). See infra/app-overlay/scripts/qrwty-production-profile.mjs.
   command = { for name in concat(keys(local.http), ["analytics-worker"]) : name =>
-    "node scripts/qrwty-production-profile.mjs ${name} && SECRET_DIR=/tmp/qrwty-secrets exec node dist/processes/${name}.js"
+    "node scripts/qrwty-production-profile.mjs ${name} && exec node dist/processes/${name}.js"
   }
 }
 

@@ -42,10 +42,12 @@ function startReplica(options: { random?: (n: number) => Uint8Array } = {}): Rep
 			handle(dependencies, {
 				method: "POST",
 				path: "/links",
+				rawPath: request.path ?? "/links",
 				query: {},
 				headers: {},
 				body: undefined,
 				caller: { signedIn: false },
+				signal: new AbortController().signal,
 				...request,
 			}),
 		end: () => pool.end(),
@@ -169,10 +171,12 @@ describe("slug collisions", () => {
 			r.hooks.handle({
 				method: "POST",
 				path: "/__test/fault-points",
+				rawPath: "/__test/fault-points",
 				query: {},
 				headers: {},
 				body: { name: "force-slug-collision", state: "on", arg: taken },
 				caller: { signedIn: false },
+				signal: new AbortController().signal,
 			});
 		const collide = await create(b, guest(), "collide", "https://example.com/oracle/a03/collision");
 		expect(collide.status).toBe(201);
@@ -227,10 +231,12 @@ describe("storage failure", () => {
 		const r = await handle({ links: down } as unknown as Dependencies, {
 			method: "POST",
 			path: "/links",
+			rawPath: "/links",
 			query: {},
 			headers: { "idempotency-key": "k", [GUEST_SCOPE_HEADER]: guest() },
 			body: { destination: "https://example.com/x" },
 			caller: { signedIn: false },
+			signal: new AbortController().signal,
 		});
 		expect(r.status).toBe(503);
 		expect((r.body as { error: { code: string; retryable: boolean } }).error).toMatchObject({

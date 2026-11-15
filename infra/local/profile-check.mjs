@@ -109,6 +109,11 @@ const secretFile = (s) =>
     ? join(exportDir, ".runtime/secrets", s)
     : join(appSecretDir, s);
 const secrets = Object.fromEntries(spec.secrets.map((s) => [s, readFileSync(secretFile(s), "utf8")]));
+// Production names each credential's own secret volume by its file variable (Jeeves QG34); the
+// generated process alone (`generated`) reads them from SECRET_DIR, below.
+if (mode !== "generated")
+  for (const s of spec.secrets)
+    env[`JEEVES_SECRET_${s.toUpperCase().replace(/[-.]/g, "_")}_FILE`] = `/var/run/qrwty-secrets/${s}/value`;
 
 // The forbidden settings: each names its variable, so the reason can be compared with it.
 const token = () => randomBytes(16).toString("hex");
@@ -151,7 +156,7 @@ cpSync(join(tlsDir, "ca.crt"), join(dir, "ca.crt"));
 const script =
   mode === "generated"
     ? `exec node dist/processes/${proc}.js`
-    : `node scripts/qrwty-production-profile.mjs ${proc} && SECRET_DIR=${profile.secretMount.linkDir} exec node dist/processes/${proc}.js`;
+    : `node scripts/qrwty-production-profile.mjs ${proc} && exec node dist/processes/${proc}.js`;
 if (mode === "generated" && !("SECRET_DIR" in env))
   env.SECRET_DIR = setting === "missing-secret-mount" ? "/nonexistent" : "/run/secrets";
 const name = `${project}-${run}`;

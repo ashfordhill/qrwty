@@ -100,10 +100,12 @@ function setup(options: { verdict?: Verdict; hooks?: string } = {}) {
 		handle(dependencies, {
 			method: "POST",
 			path: "/links",
+			rawPath: overrides.path ?? "/links",
 			query: {},
 			headers: { "idempotency-key": "key-1", [GUEST_SCOPE_HEADER]: "G".repeat(43) },
 			body: { destination: "https://example.com/a" },
 			caller: { signedIn: false },
+			signal: new AbortController().signal,
 			...overrides,
 		});
 	return { db, call, reputationCalls, failures, hooks, handle, dependencies };
@@ -257,10 +259,12 @@ describe("reputation, storage and allocation failures", () => {
 		hooks.handle({
 			method: "POST",
 			path: "/__test/fault-points",
+			rawPath: "/__test/fault-points",
 			query: {},
 			headers: {},
 			body: { name: "force-slug-collision", state: "on", arg: taken },
 			caller: { signedIn: false },
+			signal: new AbortController().signal,
 		});
 		const r = await call({
 			headers: { "idempotency-key": "key-2", [GUEST_SCOPE_HEADER]: "G".repeat(43) },

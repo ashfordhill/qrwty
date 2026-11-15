@@ -1,8 +1,9 @@
 // Generated scaffold: API forwarding, a Custom in Session API.
 // Export rewrites this file; write the module in session-api-api-forwarding.ts.
+import type { SettingsOf } from "../../runtime/settings.ts";
 import type { DatabaseReadWriter, HttpTarget } from "../dependencies.ts";
 
-/** What the module uses: one property per connected slot. */
+/** What the module uses: one property per connected slot, and its own settings. */
 export type Dependencies = {
   // uses: Sessions (Database) through session-api-sessions, read & write
   sessions: DatabaseReadWriter;
@@ -14,6 +15,8 @@ export type Dependencies = {
   accountApi: HttpTarget;
   // uses: Billing API (Microservice) through session-api-billing-api, request
   billingApi: HttpTarget;
+  // settings: the values session-api-api-forwarding.ts's `settings` export declares.
+  settings: SettingsOf<typeof import("./session-api-api-forwarding.ts")>;
 };
 
 /** Each connected slot: the tile or module it uses, through which link, and how. */

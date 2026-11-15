@@ -1312,3 +1312,90 @@ and `364f283` (cloud leftovers removed). Arm B was read at `f2fb3ce` and never w
 - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
   memory index); it was ignored. One `git log` and `ls` were run, read-only, in the Jeeves checkout
   at the start (see the checks, §6).
+
+## A1: arm A regenerated from Jeeves 0aea8e7, 2026-11-15
+
+Arm A, A1 attempt 1 (role implementer), from QRWTY `2956716`. Generator: Jeeves **`0aea8e7`**,
+from `git archive` (without `docs/`) into `.scratch/A1/jeeves` with its own offline install. In the
+Jeeves checkout only read-only Git ran (`rev-parse`, `show`, `archive`). Light checks, as the owner
+decided: no oracle, no review, no cloud. Full record: [A1 checks](evidence/a1/checks.md).
+
+- **Update.** `update:v2` from revision 84's canonical bytes (`4fbcd311…024d`) into `app/`.
+  - The plan: **create 7, replace 37, unchanged 35, keep 3, keep-changed 11 (shadows), override,
+    remove and orphan 0, refused 0**.
+  - Manifest: 93 files (86 before), `f0eb002f…e024`.
+  - Created: four `050-jeeves-idempotency.sql` files, and `runtime/{idempotency,settings,transaction}.ts`.
+  - `package.json`, `pnpm-lock.yaml` and Link operations' SQL were `keep`: the new export's bytes
+    equal the old export's. So **no package shadow arose**, and nothing in them needed merging.
+  - A fresh export of the same input matches the updated `app/`, except the four application files.
+- **Shadows merged** (all 11 stubs gain `export const settings = declareSettings({})`).
+  - The 10 untouched stubs took the new text byte for byte.
+  - Link operations was merged by hand (`records/link-operations-merge.diff`).
+  - Then `.jeeves/generated/` was deleted (copy in `.scratch/A1/shadows/`).
+- **Stub changes.** Link API's settings moved into `declareSettings` (QL05):
+  - `QRWTY_PUBLIC_ORIGIN_URL`, `LINK_REPLAY_KEYS` (the file `link-replay-keys`, Q06's line format),
+    `QRWTY_REPUTATION_CREDENTIALS` and `QRWTY_TEST_HOOKS`;
+  - each kind carries Q06's own check (new `link-operations/settings.ts`);
+  - `service.ts` builds the operations from `dependencies.settings` once per process
+    (`linkOperationsFor`).
+
+  A bad value now fails startup as `Invalid setting <NAME>`. Tests: the configuration tests use
+  `readSettings`, the request literals gain QL02's `rawPath`/`signal`, and the integration harness's
+  database gains rejecting `transaction`/`idempotent`. `transaction`, `idempotent` and
+  `defineRoutes` were not adopted, since none would remove code (AG-18).
+- **Contracts followed.**
+  - **QG29:**
+    - the overlay's setup-migrate uses `JEEVES_MIGRATE_TLS=verify-full` with
+      `JEEVES_MIGRATE_CA_FILE`, in place of `PGSSLMODE`/`NODE_EXTRA_CA_CERTS`;
+    - the preflight requires `JEEVES_MIGRATE_TLS` (`disable` only on a socket), in place of the
+      `PGSSLMODE` rule;
+    - the GCP migration job sets `disable` (socket).
+  - **QG34:**
+    - the preflight no longer links secret volumes. Each credential's `JEEVES_SECRET_<NAME>_FILE`
+      must name its own volume (`/dev/null` for an `AUTH_DISABLED` cache), and a stray file
+      variable is refused;
+    - the commands drop `SECRET_DIR=/tmp/qrwty-secrets`;
+    - `infra/gcp/locals.tf` (`secret_files`) and `profile-check.mjs` set the variables.
+  - **QG28:** `infra/gcp/locals.tf` names the subscription
+    `click-events--analytics-worker--analytics-worker-click-aggregator` (and `.failed`).
+
+  The overlay was installed into `app/`, and `infra/README.md` updated.
+- **Checks.**
+  - `app/`: build, `typecheck:test`, Biome and **129 unit tests** pass.
+  - Root: `build`, `typecheck` and `check` pass; `verify-generated`: **71 generated files
+    unchanged**.
+  - `infra/gcp/validate.sh` ok (`tofu console` confirmed the variable names).
+  - Preflight, offline: 12/12 cases.
+  - **`first-run`** (`qrwtya-a1`, two copies, verify-full TLS) exit 0 in 117 s, 18 containers
+    healthy.
+  - **Smoke 6/6.** Guest create **201** on copy 1, replayed on copy 2, 409 for another body, 422 for
+    a Web Risk threat, 400 without a key; the link is in PostgreSQL.
+  - An invalid `QRWTY_PUBLIC_ORIGIN_URL` fails Link API's startup, naming it.
+  - The production profile with per-secret files starts Link API ready.
+  - Secret scan: no credential.
+- **New gaps** ([details](evidence/a1/a-found-gaps.md)):
+  - AG-18 (medium): `idempotent()` stores the answer in plaintext, so it can't replay a one-time
+    claim proof;
+  - AG-19 (low): setting kinds have no enumeration or custom check;
+  - AG-20 (low, tooling): `update:v2` lists no create/replace paths;
+  - AG-21 (low, docs): the stub's settings comment omits `JEEVES_SECRET_<NAME>_FILE`.
+
+  QG34 closed AG-03, AG-09 is gone, and QL05 closed AG-10. AG-04 and AG-05 still hold. The README
+  shows no fix for AG-13–AG-16.
+- **Docker.** `qrwtya-a1` (stack, volumes, network), `qrwtya-a1-rehearsal` and the image
+  `qrwtya-a1-app` were removed by exact name, with no prune. The Web Risk fixture was stopped, and
+  nothing is left running.
+- **Not done here.**
+  - LOC: `tools/loc/pins.json` stays on `4e87f97` for the recorded A/B numbers.
+  - No ledger record, which the packet didn't ask for.
+  - `infra/q12a/probe-manifest.json` keeps Q13's old names, as a record.
+- **Next: A2** (deploy skeleton on qrwty.io). The IaC already follows QG28/QG29/QG34; its first
+  apply will show whether `/dev/null` works as the empty cache credential on Cloud Run. Session API
+  still has no `/api/v1/links` facade (Q07's work).
+- **Read.** The packet, `AGENTS.md`, this file (Q05, Q05 review, Q06, Q13, S02), owner decisions
+  2026-11-15, the generated README and runtime, `update.ts`/`update-cli.ts` at `0aea8e7`, the
+  overlay, `infra/gcp`, `infra/local`, the pack's Web Risk fixture. `~/.config/qrwty/` was not read.
+- **Elapsed.** 18:05:51Z to about 18:30Z on the host clock (about 25 minutes), a clock earlier units
+  found to jump.
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
+  memory index); it was ignored.

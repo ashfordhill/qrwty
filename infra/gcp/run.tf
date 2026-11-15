@@ -57,7 +57,7 @@ resource "google_cloud_run_v2_service" "http" {
       }
 
       dynamic "env" {
-        for_each = merge(local.profile, each.value.env)
+        for_each = merge(local.profile, each.value.env, local.secret_files[each.key])
         content {
           name  = env.key
           value = env.value
@@ -150,7 +150,7 @@ resource "google_cloud_run_v2_worker_pool" "analytics" {
       command = ["/bin/sh", "-c", local.command["analytics-worker"]]
 
       dynamic "env" {
-        for_each = merge(local.profile, local.worker.env)
+        for_each = merge(local.profile, local.worker.env, local.secret_files["analytics-worker"])
         content {
           name  = env.key
           value = env.value
@@ -218,12 +218,15 @@ resource "google_cloud_run_v2_job" "migrate" {
 
       containers {
         image   = var.image
-        command = ["/bin/sh", "-c", "node scripts/qrwty-production-profile.mjs migrate && SECRET_DIR=/tmp/qrwty-secrets exec node scripts/migrate.mjs"]
+        command = ["/bin/sh", "-c", "node scripts/qrwty-production-profile.mjs migrate && exec node scripts/migrate.mjs"]
 
         dynamic "env" {
-          for_each = merge(local.profile, {
+          for_each = merge(local.profile, local.secret_files.migrate, {
             PGHOST = "/cloudsql/${google_sql_database_instance.pg.connection_name}"
             PGPORT = "5432"
+            # migrate.mjs's own TLS (Jeeves QG29): a Unix socket, which the Cloud SQL connector
+            # encrypts; JEEVES_REQUIRE_TLS allows disable only for a socket directory.
+            JEEVES_MIGRATE_TLS = "disable"
           })
           content {
             name  = env.key

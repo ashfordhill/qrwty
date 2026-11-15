@@ -1,10 +1,9 @@
 {
   "version": 1,
-  "about": "QRWTY arm A production profile (application-owned, not generated). scripts/qrwty-production-profile.mjs reads it before a generated process or the migration job starts and refuses any emulator, fake, insecure, development, test-only or missing setting with a named reason. Process lists follow the Jeeves 4e87f97 export of revision 83 with Click events on Google Cloud (.jeeves/report.json processes.tiles[].environment, plus each External API's JEEVES_EXTERNAL_<ID>_URL and each Compose secret).",
+  "about": "QRWTY arm A production profile (application-owned, not generated). scripts/qrwty-production-profile.mjs reads it before a generated process or the migration job starts and refuses any emulator, fake, insecure, development, test-only or missing setting with a named reason. Process lists follow the Jeeves 0aea8e7 export of revision 84 (.jeeves/report.json processes.tiles[].environment, each Compose secret, and Link operations' declared settings).",
   "secretMount": {
     "variable": "QRWTY_SECRET_MOUNT_DIR",
-    "layout": "<QRWTY_SECRET_MOUNT_DIR>/<secret name>/value (one Cloud Run secret volume per secret)",
-    "linkDir": "/tmp/qrwty-secrets"
+    "layout": "<QRWTY_SECRET_MOUNT_DIR>/<secret name>/value (one Cloud Run secret volume per secret), named to the process by JEEVES_SECRET_<NAME>_FILE (Jeeves QG34; <NAME> the secret's name upper-cased, - and . as _)"
   },
   "required": {
     "QRWTY_PROFILE": "production",
@@ -160,7 +159,8 @@
     "migrate": {
       "env": [
         "PGHOST",
-        "PGPORT"
+        "PGPORT",
+        "JEEVES_MIGRATE_TLS"
       ],
       "secrets": [
         "postgres-admin",
@@ -181,7 +181,7 @@
     }
   },
   "emptySecretAllowed": {
-    "about": "Memorystore for Valkey runs with authorization AUTH_DISABLED (IAM_AUTH needs an access token refreshed hourly, which the generated cache client, reading its credential once, cannot send; TOKEN_AUTH is unverified, Q12a): with QRWTY_CACHE_AUTH_DISABLED=true these caches' secrets may be absent or empty, the preflight then gives the process an empty credential file, and the generated client sends no AUTH. Recorded as A-found gap AG-04.",
+    "about": "Memorystore for Valkey runs with authorization AUTH_DISABLED (IAM_AUTH needs an access token refreshed hourly, which the generated cache client, reading its credential once, cannot send; TOKEN_AUTH is unverified, Q12a): with QRWTY_CACHE_AUTH_DISABLED=true these caches' file variables may name /dev/null (or an empty secret), and the generated client sends no AUTH. Recorded as A-found gap AG-04.",
     "secrets": [
       "cache-hot-routes",
       "cache-admission-cache"

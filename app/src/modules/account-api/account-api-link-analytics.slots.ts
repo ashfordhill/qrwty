@@ -1,8 +1,9 @@
 // Generated scaffold: Link analytics, a Custom in Account API.
 // Export rewrites this file; write the module in account-api-link-analytics.ts.
+import type { SettingsOf } from "../../runtime/settings.ts";
 import type { DatabaseReader, HttpTarget } from "../dependencies.ts";
 
-/** What the module uses: one property per connected slot. */
+/** What the module uses: one property per connected slot, and its own settings. */
 export type Dependencies = {
   // uses: Links (Database) through account-api-links, read
   links: DatabaseReader;
@@ -10,6 +11,8 @@ export type Dependencies = {
   analytics: DatabaseReader;
   // uses: Billing API (Microservice) through account-api-billing-api, request
   billingApi: HttpTarget;
+  // settings: the values account-api-link-analytics.ts's `settings` export declares.
+  settings: SettingsOf<typeof import("./account-api-link-analytics.ts")>;
 };
 
 /** Each connected slot: the tile or module it uses, through which link, and how. */

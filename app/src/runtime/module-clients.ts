@@ -1,15 +1,29 @@
 // Generated scaffold: real clients behind the module stubs' interfaces (src/modules/dependencies.ts),
-// one per store or channel a tile's stubs use. Export rewrites this file. Each client reads its
-// endpoint from the environment (`JEEVES_*`; compose.yaml sets the local ones), then runs one
-// bounded startup probe that its access allows; a failed probe fails the process's startup, but
-// a cache that is down is logged and the process starts without it. With JEEVES_REQUIRE_TLS=true,
-// a plain-text or emulator endpoint fails startup (`Insecure endpoint <variable>`).
+// one per store or channel a tile's stubs use. Export rewrites this file. First the process file's
+// configuration pass (`checkConfiguration`) runs each client's endpoint reader and the sign-in's
+// check, so a wrong setting fails startup before any client is built or probed (QG31). Then each
+// client reads its endpoint from the environment again (`JEEVES_*`; compose.yaml sets the local
+// ones) and runs one bounded startup probe that its access allows; a failed probe fails the
+// process's startup, but a cache that is down is logged and the process starts without it. With
+// JEEVES_REQUIRE_TLS=true, a plain-text or emulator endpoint fails startup (`Insecure endpoint
+// <variable>`).
 import { readFileSync } from "node:fs";
 import { localLogins } from "../features/local-bindings.ts";
 import { createPostgres } from "./postgres.ts";
+import { assertTransaction, transaction, type TransactionPool } from "./transaction.ts";
+import {
+  checkIdempotencyKey,
+  idempotencyPolicy,
+  storedStatus,
+  storeResult,
+  sweepExpired,
+  takeKey,
+  type IdempotencyRecord,
+} from "./idempotency.ts";
+import { periodic } from "./process.ts";
 import { randomUUID as pubsubMessageId } from "node:crypto";
 import { PubSub } from "@google-cloud/pubsub";
-import type { Message, Subscription } from "@google-cloud/pubsub";
+import { Duration, type Message, type Subscription } from "@google-cloud/pubsub";
 import { UNREACHABLE_WAIT_MS, validateDeliveryBinding, type Delivery } from "./delivery.ts";
 import {
   failureStep,
@@ -17,18 +31,19 @@ import {
   type LoopConsumerOptions,
   type LoopTransport,
 } from "./tile-loop.ts";
-import { createFailureLog } from "./tile-process.ts";
 import { createValkeyCache } from "./valkey.ts";
 import type {
   CacheClient,
   DatabaseReadWriter,
   HttpTarget,
+  IdempotentResult,
   ObjectStore,
   QueuePublisher,
   SearchIndex,
+  Tx,
 } from "../modules/dependencies.ts";
 import type { ProcessScope } from "./process.ts";
-import { NotImplemented } from "./tile-process.ts";
+import { createFailureLog, NotImplemented } from "./tile-process.ts";
 
 /** A dependency that isn't provisioned locally (another provider, an Identity no sign-in binds, a
  * stub's token check, a CDN, a tile that runs no process): calling it, or any of its members,
@@ -65,8 +80,10 @@ const host =
 /** A port: an integer 1–65535. */
 const port = (value: string) =>
   /^[1-9][0-9]{0,4}$/.test(value) && Number(value) <= 65535 ? Number(value) : undefined;
-/** A URL: absolute `http:` or `https:`, with no credentials, query or fragment. */
+/** A URL: absolute `http:` or `https:`, with no credentials, query, fragment or whitespace (which
+ * `new URL` trims, drops or encodes, so the value checked would not be the one set). */
 const url = (value: string) => {
+  if (/\s/.test(value)) return undefined;
   let parsed: URL;
   try {
     parsed = new URL(value);
@@ -87,8 +104,13 @@ const url = (value: string) => {
 function requireTls(): boolean {
   const value = process.env.JEEVES_REQUIRE_TLS;
   if (value === undefined) return false;
-  if (value === "true") return true;
-  throw new Error("Invalid endpoint JEEVES_REQUIRE_TLS");
+  if (value !== "true") throw new Error("Invalid endpoint JEEVES_REQUIRE_TLS");
+  // `0` turns off certificate checks for every client that leaves them to Node (`fetch`, the
+  // sign-in's key set), so under the switch only unset or `1` passes (QG30).
+  const verify = process.env.NODE_TLS_REJECT_UNAUTHORIZED;
+  if (verify !== undefined && verify !== "1")
+    throw new Error("Insecure endpoint NODE_TLS_REJECT_UNAUTHORIZED");
+  return true;
 }
 /** How a client reaches a database or cache (QG10). `disable`: plain text (for a database also a
  * Unix socket). `verify-full`: TLS that checks the certificate chain against `ca` (PEM; else
@@ -134,6 +156,26 @@ function transport(kind: "DATABASE" | "CACHE", id: string, hostname: string): Tr
     ...(certified !== undefined && { servername: certified }),
   };
 }
+/** Runs every check before any client is built or probed (QG31): each reads and checks its
+ * variables as its client will. One failing check fails startup with its own error; several with
+ * `Invalid configuration: <message>; <message>`, in the order given, each message once. A message
+ * names a variable, never its value. */
+export function checkConfiguration(checks: readonly (() => unknown)[]): void {
+  const failures: unknown[] = [];
+  const messages: string[] = [];
+  for (const check of checks)
+    try {
+      check();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (!messages.includes(message)) {
+        messages.push(message);
+        failures.push(error);
+      }
+    }
+  if (failures.length === 1) throw failures[0];
+  if (failures.length) throw new Error(`Invalid configuration: ${messages.join("; ")}`);
+}
 
 /** The probe log; it names its tile, for a client's own lines after startup. */
 export type ProbeLog = ((entry: Record<string, unknown>) => void) & { readonly tile: string };
@@ -171,11 +213,131 @@ async function probed(
   log({ level: "info", ...client, result: "ok" });
 }
 
+/** A database's endpoint, `JEEVES_DATABASE_<ID>_HOST` (a host or a Unix socket directory) and
+ * `_PORT`, and its transport `_TLS` (`transport`), read in that order: the configuration pass
+ * checks it, and `databaseClient` reads it again as it builds its pool. */
+export function databaseEndpoint(resource: string) {
+  const hostname = endpoint(variable("DATABASE", resource, "HOST"), host(true));
+  return {
+    hostname,
+    port: endpoint(variable("DATABASE", resource, "PORT"), port),
+    tls: transport("DATABASE", resource, hostname),
+  };
+}
+/** SQL a stub may not send in a transaction: `transaction` sends BEGIN, COMMIT and ROLLBACK. */
+const transactionControl =
+  /^\s*(?:begin|start\s+transaction|commit|end|rollback|abort|savepoint|release|prepare\s+transaction)\b/i;
+/** An error's SQLSTATE: five digits or capital letters, never a Node error code such as `EPIPE`. */
+function sqlState(error: unknown): string | undefined {
+  const code = (error as { code?: unknown } | null)?.code;
+  return typeof code === "string" && /^[0-9A-Z]{5}$/.test(code) && !/^E[A-Z]+$/.test(code)
+    ? code
+    : undefined;
+}
+/**
+ * A stub's transaction (QL03): `fn` on one connection reserved from the pool, between BEGIN and
+ * COMMIT (`transaction.ts`, which rolls back when `fn` throws or a statement fails). Its `Tx`
+ * refuses SQL that starts with transaction control, before sending it; a `Tx` used after its
+ * transaction ended rejects. A statement `fn` didn't await settles before COMMIT. A serialization
+ * failure or deadlock (40001, 40P01) reruns `fn` on a new transaction 20 ms later, then 40 ms; the
+ * third is rethrown. When `fn` resolved and the COMMIT then failed on the connection (SQLSTATE
+ * class 08, 57P01, 57P02 or none), whether it committed is unknown: it rejects
+ * `TransactionOutcomeUnknown` (`Transaction outcome unknown`, with the COMMIT's error as its
+ * `cause`), never the result.
+ */
+async function scopedTransaction<T>(pool: TransactionPool, fn: (tx: Tx) => Promise<T>): Promise<T> {
+  for (let attempt = 1; ; attempt += 1) {
+    let committing = false;
+    try {
+      return await transaction(pool, async (scope) => {
+        const sent = new Set<Promise<unknown>>();
+        const send = <R>(
+          sql: string,
+          values: readonly unknown[] | undefined,
+          answer: (result: { rows: unknown[]; rowCount: number | null }) => R,
+        ): Promise<R> => {
+          if (transactionControl.test(sql))
+            return Promise.reject(new Error("Transaction control is owned by transaction()"));
+          const result = (async () =>
+            answer(await scope.query(sql, values ? [...values] : undefined)))();
+          sent.add(result);
+          // Its failure fails the transaction (`transaction.ts`), whether or not `fn` awaits it.
+          result.catch(() => {});
+          return result;
+        };
+        const value = await fn({
+          query: <Row = Record<string, unknown>>(sql: string, values?: readonly unknown[]) =>
+            send(sql, values, (result) => result.rows as Row[]),
+          execute: (sql, values) =>
+            send(sql, values, (result) => ({ rowCount: result.rowCount ?? 0 })),
+        });
+        await Promise.allSettled(sent);
+        assertTransaction(scope);
+        committing = true;
+        return value;
+      });
+    } catch (error) {
+      const state = sqlState(error);
+      if (
+        committing &&
+        (state === undefined || state.startsWith("08") || state === "57P01" || state === "57P02")
+      ) {
+        const unknown = new Error("Transaction outcome unknown", { cause: error });
+        unknown.name = "TransactionOutcomeUnknown";
+        throw unknown;
+      }
+      if ((state === "40001" || state === "40P01") && attempt < 3) {
+        await new Promise((resolve) => setTimeout(resolve, 20 * attempt));
+        continue;
+      }
+      throw error;
+    }
+  }
+}
+/**
+ * A stub's idempotent call (QL04), in one `scopedTransaction`: the key is checked before BEGIN
+ * (`checkIdempotencyKey`), then `takeKey` takes it or finds its record. A stored answer is
+ * returned `replayed` without running `fn`; a different hash rejects `IdempotencyConflict` after
+ * ROLLBACK. `fn`'s 200–299 answer is stored (`storeResult`) and committed with its writes; any
+ * other status rolls the transaction back and is returned, not stored.
+ */
+async function idempotentCall<Body>(
+  pool: TransactionPool,
+  record: IdempotencyRecord,
+  fn: (tx: Tx) => Promise<{ status: number; body: Body }>,
+): Promise<IdempotentResult<Body>> {
+  // An answer that isn't stored leaves the transaction by this error, so it rolls back.
+  const unstored = new Error("Idempotent answer not stored");
+  const held: { answer?: { status: number; body: Body } } = {};
+  try {
+    return await scopedTransaction(pool, async (tx) => {
+      held.answer = undefined;
+      const taken = await takeKey(tx, record);
+      if (!taken.taken) return { status: taken.status, body: taken.body as Body, replayed: true };
+      const result = await fn(tx);
+      if (!storedStatus(result.status)) {
+        held.answer = result;
+        throw unstored;
+      }
+      await storeResult(tx, record, result);
+      return { status: result.status, body: result.body, replayed: false };
+    });
+  } catch (error) {
+    const answer = held.answer;
+    if (error === unstored && answer)
+      return { status: answer.status, body: answer.body, replayed: false };
+    throw error;
+  }
+}
 /** A database through the tile's own runtime login: CONNECT and USAGE on public, and SELECT on
- * what another owner publishes when the tile may only read it. Stubs own no tables: a module's
- * own tables need a migration and grants of their own. Its endpoint is
- * `JEEVES_DATABASE_<ID>_HOST` (a host or a Unix socket directory) and `_PORT`, and its transport
- * `_TLS` (`transport`). Probe: SELECT 1. */
+ * what another owner publishes when the tile may only read it. A stub's own tables need its
+ * product SQL; on a database a stub writes, its login also uses the Jeeves-owned
+ * `jeeves.idempotency_records` (QL04). Its endpoint and transport come from `databaseEndpoint`.
+ * `query` and `execute` each take a connection from the pool; `transaction`
+ * (`scopedTransaction`) and `idempotent` (`idempotentCall`) reserve one for their statements. The
+ * first `idempotent` call starts the sweep of expired records (`sweepExpired`): then and every
+ * 60 s, owned by `scope`, so it stops at drain; a failed sweep logs an `idempotency sweep <tile>`
+ * failure line. Probe: SELECT 1. */
 export async function databaseClient(
   scope: ProcessScope,
   log: ProbeLog,
@@ -185,11 +347,8 @@ export async function databaseClient(
     (item) => item.resource === binding.resource && item.host === binding.tile,
   );
   if (!login) throw new Error(`No runtime login for ${binding.resource}`);
-  const hostname = endpoint(variable("DATABASE", binding.resource, "HOST"), host(true));
   const pool = createPostgres({
-    hostname,
-    port: endpoint(variable("DATABASE", binding.resource, "PORT"), port),
-    tls: transport("DATABASE", binding.resource, hostname),
+    ...databaseEndpoint(binding.resource),
     login,
     poolSize: 10,
     statementTimeoutMs: 2000,
@@ -197,18 +356,44 @@ export async function databaseClient(
   });
   // An idle connection's error is not fatal: the next query reconnects.
   pool.on("error", () => {});
-  scope.own(() => pool.end());
+  let ended = false;
+  scope.own(() => {
+    ended = true;
+    return pool.end();
+  });
   await probed(log, { client: binding.resource, kind: "database", check: "SELECT 1" }, () =>
     pool.query("SELECT 1"),
   );
   const run = (sql: string, values?: readonly unknown[]) =>
     pool.query(sql, values ? [...values] : undefined);
+  const failure = createFailureLog(binding.tile);
+  let sweeping = false;
+  const sweep = () => {
+    if (sweeping || ended) return;
+    sweeping = true;
+    periodic(
+      scope,
+      () => (ended ? Promise.resolve() : sweepExpired(pool)),
+      idempotencyPolicy.sweepSeconds * 1000,
+      (error) => failure(`idempotency sweep ${binding.tile}`, error),
+    );
+  };
   return {
     async query<Row = Record<string, unknown>>(sql: string, values?: readonly unknown[]) {
       return (await run(sql, values)).rows as Row[];
     },
     async execute(sql, values) {
       return { rowCount: (await run(sql, values)).rowCount ?? 0 };
+    },
+    transaction: (fn) => scopedTransaction(pool, fn),
+    async idempotent(request, fn) {
+      checkIdempotencyKey(request);
+      sweep();
+      return idempotentCall(
+        pool,
+        { tile: binding.tile, scope: request.scope, key: request.key, hash: request.hash },
+        fn,
+      );
     },
   };
 }
@@ -232,6 +417,13 @@ function refuseEmulator() {
   if (requireTls() && process.env.PUBSUB_EMULATOR_HOST !== undefined)
     throw new Error("Insecure endpoint PUBSUB_EMULATOR_HOST");
 }
+/** The Pub/Sub project every Pub/Sub client is built in, `JEEVES_PUBSUB_PROJECT`, after the
+ * emulator refusal: the configuration pass checks it, and each client reads it again as it is
+ * built. */
+export function pubsubProjectId(): string {
+  refuseEmulator();
+  return endpoint("JEEVES_PUBSUB_PROJECT", pubsubProject);
+}
 /** A Google Cloud Pub/Sub topic a module publishes to, through the official client, in the project
  * `JEEVES_PUBSUB_PROJECT` with Application Default Credentials; locally `PUBSUB_EMULATOR_HOST`
  * points the client at the emulator. `publish` resolves only once Pub/Sub has acknowledged the
@@ -246,9 +438,8 @@ export async function pubsubPublisher(
   log: ProbeLog,
   binding: { topic: string },
 ): Promise<QueuePublisher> {
-  refuseEmulator();
   const client = new PubSub({
-    projectId: endpoint("JEEVES_PUBSUB_PROJECT", pubsubProject),
+    projectId: pubsubProjectId(),
     ...pubsubChannel,
   });
   const topic = client.topic(binding.topic, { gaxOpts: { timeout: pubsubDeadlineMs } });
@@ -319,15 +510,18 @@ function pause(ms: number, signal: AbortSignal): Promise<void> {
   });
 }
 /**
- * A loop's transport on its tile's Pub/Sub subscription `<topic>--<tile>` (QG08), through the
- * official client in `JEEVES_PUBSUB_PROJECT` with Application Default Credentials (locally
+ * A loop's transport on its own Pub/Sub subscription `<topic>--<tile>--<module>` (QG08), through
+ * the official client in `JEEVES_PUBSUB_PROJECT` with Application Default Credentials (locally
  * `PUBSUB_EMULATOR_HOST`), with the contract a RabbitMQ loop has:
  * - one streaming-pull subscriber per loop, handing over at most the loop's Concurrency messages
- *   at a time (`maxMessages`, no excess); the client extends each one's lease while it is in hand;
+ *   at a time (`maxMessages`, no excess); the client extends each one's lease while it is in hand,
+ *   for at least the subscription's 60 s ack deadline (`minAckDeadline`), renewing it at most about
+ *   54 s apart, so a 5 s store wait has a wide margin; a consumer that crashes holding a message
+ *   gives it back only when that lease ends, up to 60 s later;
  * - a message is acknowledged only after its handler resolves;
  * - a retryable failure is nacked, and the subscription's retry policy spaces its redelivery;
  * - a terminal one (a `NonRetryable`, or a failure on delivery attempt retry limit + 1) is
- *   published to `<topic>--<tile>.failed` with its attributes and `x-terminal-code`, then
+ *   published to `<subscription>.failed` with its attributes and `x-terminal-code`, then
  *   acknowledged once Pub/Sub has that copy (within 2000 ms); if it hasn't, the message is nacked;
  * - an unreachable store keeps the message: 5 s later the handler runs again with the same message
  *   and attempt;
@@ -352,14 +546,15 @@ async function pubsubConsumer(log: ProbeLog, options: LoopConsumerOptions): Prom
     options.concurrency > 100000
   )
     throw new Error("Invalid consumer concurrency");
-  refuseEmulator();
   const client = new PubSub({
-    projectId: endpoint("JEEVES_PUBSUB_PROJECT", pubsubProject),
+    projectId: pubsubProjectId(),
     ...pubsubChannel,
   });
+  // The client's own lease starts at 10 s, which would shorten the subscription's 60 s deadline.
   const subscribe = () =>
     client.subscription(options.queue, {
       flowControl: { maxMessages: options.concurrency, allowExcessMessages: false },
+      minAckDeadline: Duration.from({ seconds: 60 }),
     });
   const failedTopic = client.topic(options.failedQueue, { gaxOpts: { timeout: pubsubDeadlineMs } });
   const answers = async (subscription: Subscription) => {
@@ -523,26 +718,31 @@ async function pubsubConsumer(log: ProbeLog, options: LoopConsumerOptions): Prom
   report("available");
   return { close, closed };
 }
+/** A stub cache's endpoint, `JEEVES_CACHE_<ID>_HOST` (a host, never a path) and `_PORT`, and its
+ * transport `_TLS` (`transport`), read in that order: the configuration pass checks it, and
+ * `cacheClient` reads it again as it builds its client. */
+export function cacheClientEndpoint(cache: string) {
+  const hostname = endpoint(variable("CACHE", cache, "HOST"), host());
+  return {
+    hostname,
+    port: endpoint(variable("CACHE", cache, "PORT"), port),
+    tls: transport("CACHE", cache, hostname),
+  };
+}
 /** A cache (Valkey) with its password, through the cache read's bounded client
  * (`createValkeyCache`): a command settles within 150 ms and at most 32 wait; while no client is
  * connected a command fails at once (`Cache unavailable`). A lost or stalled client is destroyed
  * and a new one tried every 5 s; each change is logged, a `cache <cache>` failure line when it
  * is lost and an info line when it is available. Closing destroys the client, so a drain never
- * waits on the cache. Its endpoint is `JEEVES_CACHE_<ID>_HOST` and `_PORT`, and its transport
- * `_TLS` (`transport`). Probe: PING; a cache that is down at startup logs `unavailable` and the
- * process starts without it. */
+ * waits on the cache. Its endpoint and transport come from `cacheClientEndpoint`. Probe: PING; a
+ * cache that is down at startup logs `unavailable` and the process starts without it. */
 export async function cacheClient(
   scope: ProcessScope,
   log: ProbeLog,
   binding: { cache: string },
 ): Promise<CacheClient> {
   const failure = createFailureLog(log.tile);
-  const hostname = endpoint(variable("CACHE", binding.cache, "HOST"), host());
-  const endpoints = {
-    hostname,
-    port: endpoint(variable("CACHE", binding.cache, "PORT"), port),
-    tls: transport("CACHE", binding.cache, hostname),
-  };
+  const endpoints = cacheClientEndpoint(binding.cache);
   const cache = await createValkeyCache({
     binding: { ...endpoints, secret: `cache-${binding.cache}` },
     onState: (state, error) =>

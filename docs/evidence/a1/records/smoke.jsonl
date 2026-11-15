@@ -1,0 +1,6 @@
+{"check":"guest create on copy 1 answers 201","pass":true,"status":201,"shortUrl":"http://127.0.0.1:47201/HGAwZl2shz","destination":"https://example.com/a1/smoke","etag":"\"1\"","claimPresent":true,"claimExpiresAt":"2026-11-16T18:21:51.516Z"}
+{"check":"same key on copy 2 replays the same link and claim","pass":true,"status":201,"sameBody":true}
+{"check":"same key, other body answers 409","pass":true,"status":409,"code":"idempotency_conflict"}
+{"check":"a Web Risk threat answers 422","pass":true,"status":422,"code":"reputation_rejected"}
+{"check":"no Idempotency-Key answers 400","pass":true,"status":400}
+{"check":"Web Risk saw the two checked destinations","pass":true,"calls":[{"uri":"https://example.com/a1/smoke","verdict":"clean"},{"uri":"https://example.com/oracle/unsafe/a1","verdict":"threat"}]}

@@ -1,14 +1,18 @@
 // Generated scaffold: Account API (Microservice) runs as app-account-api, an HTTP process.
 // Export rewrites this file. Write modules in src/modules/; .jeeves/report.json lists what runs.
 import type { Dependencies as AccountApiLinkAnalyticsDependencies } from "../modules/account-api/account-api-link-analytics.slots.ts";
+import * as AccountApiLinkAnalyticsModule from "../modules/account-api/account-api-link-analytics.ts";
 import { accountApiLinkAnalytics } from "../modules/account-api/account-api-link-analytics.ts";
 import type { Dependencies as AccountApiMyLinksDependencies } from "../modules/account-api/account-api-my-links.slots.ts";
+import * as AccountApiMyLinksModule from "../modules/account-api/account-api-my-links.ts";
 import { accountApiMyLinks } from "../modules/account-api/account-api-my-links.ts";
 import { createHttpService } from "../runtime/http.ts";
 import { createPrincipalVerifier } from "../runtime/identity.ts";
-import { createProbeLog, databaseClient, httpTarget } from "../runtime/module-clients.ts";
+import { readSecret } from "../runtime/local.ts";
+import { checkConfiguration, createProbeLog, databaseClient, databaseEndpoint, httpTarget } from "../runtime/module-clients.ts";
 import { runProcess } from "../runtime/process.ts";
-import { createTileGuard } from "../runtime/tile-guard.ts";
+import { type SettingsDeclaration, declareSettings, readSettings } from "../runtime/settings.ts";
+import { createTileGuard, signInSettings } from "../runtime/tile-guard.ts";
 import { stubRoutes } from "../runtime/tile-http.ts";
 import { createFailureLog, createNotImplementedLog, logStarted } from "../runtime/tile-process.ts";
 
@@ -52,8 +56,27 @@ await runProcess(async (scope) => {
   const failure = createFailureLog(config.tile);
   // "Not implemented" answers 501 with one log line per module and hook a second.
   const log = createNotImplementedLog(config.tile);
+  // Each stub's own settings: what its file's `settings` export declares (none without one).
+  const declared = {
+    "account-api-my-links": (AccountApiMyLinksModule as { settings?: SettingsDeclaration }).settings ?? declareSettings({}),
+    "account-api-link-analytics": (AccountApiLinkAnalyticsModule as { settings?: SettingsDeclaration }).settings ?? declareSettings({}),
+  };
+  // Configuration: every variable these clients, the tile's sign-in and its stubs' settings read,
+  // checked before any client is built or probed; one wrong setting fails startup naming it,
+  // several are named together (a stub's first).
+  checkConfiguration([
+    () => databaseEndpoint("analytics"),
+    () => httpTarget({ tile: "billing-api" }),
+    () => databaseEndpoint("links"),
+    () => readSecret("sql-analytics--account-api"),
+    () => readSecret("sql-links--account-api"),
+    () => signInSettings(),
+    () => readSettings("account-api-my-links", declared["account-api-my-links"]),
+    () => readSettings("account-api-link-analytics", declared["account-api-link-analytics"]),
+  ]);
   // Module clients (src/runtime/module-clients.ts): one per store or channel this tile's stubs
-  // use, each probed once before the process is ready; a failed probe fails startup.
+  // use, each probed once before the process is ready; a failed probe fails startup, except
+  // a cache's, which is logged.
   const probe = createProbeLog(config.tile);
   const clients = {
     "analytics": await databaseClient(scope, probe, { tile: config.tile, resource: "analytics" }),
@@ -67,35 +90,25 @@ await runProcess(async (scope) => {
   };
   dependencies["account-api-my-links"] = {
     links: clients["links"],
+    settings: readSettings("account-api-my-links", declared["account-api-my-links"]) as AccountApiMyLinksDependencies["settings"],
   };
   dependencies["account-api-link-analytics"] = {
     links: clients["links"],
     analytics: clients["analytics"],
     billingApi: clients["billing-api"],
+    settings: readSettings("account-api-link-analytics", declared["account-api-link-analytics"]) as AccountApiLinkAnalyticsDependencies["settings"],
   };
   // Sign-in: the tile's sign-in, Required: every module route needs a valid token.
   const accountApiSignIn = (() => {
     const binding = config.templates["account-api-sign-in"];
-    // The audience its tokens carry is the deployment's; Compose sets the local client's.
-    if (!process.env.OIDC_AUDIENCE) throw new Error("OIDC_AUDIENCE must name the audience of the sign-in tokens.");
-    // So are its issuer and key set (Compose sets the local ones): each an absolute http: or
-    // https: URL, or startup fails naming the variable, never its value. With JEEVES_REQUIRE_TLS
-    // set to true (else absent), each must be https: (`Insecure endpoint <variable>`).
-    const requireTls = process.env.JEEVES_REQUIRE_TLS;
-    if (requireTls !== undefined && requireTls !== "true") throw new Error("Invalid endpoint JEEVES_REQUIRE_TLS");
-    const signInUrl = (name: "OIDC_ISSUER" | "OIDC_JWKS_URL") => {
-      const value = process.env[name] ?? "";
-      const protocol = URL.parse(value)?.protocol;
-      if (protocol !== "http:" && protocol !== "https:") throw new Error(`Invalid endpoint ${name}`);
-      if (requireTls && protocol !== "https:") throw new Error(`Insecure endpoint ${name}`);
-      return value;
-    };
+    // Its audience, issuer and key set are the deployment's, checked by signInSettings (tile-guard.ts).
+    const settings = signInSettings();
     return createTileGuard({
       signIn: binding.signIn,
       verify: createPrincipalVerifier({
-        issuer: signInUrl("OIDC_ISSUER"),
-        audience: process.env.OIDC_AUDIENCE,
-        jwksUrl: signInUrl("OIDC_JWKS_URL"),
+        issuer: settings.issuer,
+        audience: settings.audience,
+        jwksUrl: settings.jwksUrl,
         algorithms: ["RS256"],
         jwksTimeoutMs: 3000,
       }),
@@ -114,6 +127,7 @@ await runProcess(async (scope) => {
         log,
         "account-api-my-links",
         (request) => accountApiMyLinks(dependencies["account-api-my-links"], request),
+        { deadlineMs: config.settings.requestTimeoutMs },
         accountApiSignIn.caller,
       );
       stubRoutes(
@@ -121,6 +135,7 @@ await runProcess(async (scope) => {
         log,
         "account-api-link-analytics",
         (request) => accountApiLinkAnalytics(dependencies["account-api-link-analytics"], request),
+        { deadlineMs: config.settings.requestTimeoutMs },
         accountApiSignIn.caller,
       );
     },

@@ -30,12 +30,14 @@ both caches are reached with `verify-full` TLS, as in production.
 
 ## Production profile
 
-Each Cloud Run container runs `node scripts/qrwty-production-profile.mjs <process> &&
-SECRET_DIR=/tmp/qrwty-secrets exec node dist/processes/<process>.js`. The preflight refuses any
-emulator, fake provider, development secret, disabled TLS verification, missing value or test hook
-with a named reason before any network call, and links each Cloud Run secret volume
-(`/var/run/qrwty-secrets/<name>/value`) into the one directory the generated runtime reads
-(A-found gap AG-03). The generated runtime's own checks (`JEEVES_REQUIRE_TLS=true`) run after it.
+Each Cloud Run container runs `node scripts/qrwty-production-profile.mjs <process> && exec node
+dist/processes/<process>.js`. The preflight refuses any emulator, fake provider, development
+secret, disabled TLS verification, missing value or test hook with a named reason before any network
+call. Each credential is its own Cloud Run secret volume (`/var/run/qrwty-secrets/<name>/value`),
+which the process reads through `JEEVES_SECRET_<NAME>_FILE` (Jeeves QG34, which closed A-found gap
+AG-03); the preflight checks that each variable names that volume. The migration job sets
+`JEEVES_MIGRATE_TLS` (QG29). The generated runtime's own checks (`JEEVES_REQUIRE_TLS=true`, `Invalid
+setting`) run after it.
 
 ## Not here
 

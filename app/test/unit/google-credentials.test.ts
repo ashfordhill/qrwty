@@ -5,13 +5,14 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import type { HttpTarget } from "../../src/modules/dependencies.ts";
+import { settings } from "../../src/modules/link-api/link-api-link-operations.ts";
 import {
 	METADATA_TOKEN_URL,
 	metadataTokenSource,
 	reputationCredentials,
 } from "../../src/modules/link-api/link-operations/google-credentials.ts";
 import { webRiskReputation } from "../../src/modules/link-api/link-operations/reputation.ts";
-import { linkOperationsFromEnvironment } from "../../src/modules/link-api/link-operations/service.ts";
+import { readSettings } from "../../src/runtime/settings.ts";
 
 const json = (status: number, body: unknown) =>
 	new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
@@ -38,26 +39,27 @@ describe("QRWTY_REPUTATION_CREDENTIALS", () => {
 	});
 	it("fails Link API's startup naming the variable", () => {
 		const dir = mkdtempSync(join(tmpdir(), "qrwty-q13-config-"));
-		const previous = process.env.SECRET_DIR;
+		const names = ["SECRET_DIR", "QRWTY_PUBLIC_ORIGIN_URL", "QRWTY_REPUTATION_CREDENTIALS"];
+		const previous = names.map((name) => process.env[name]);
 		try {
 			writeFileSync(
 				join(dir, "link-replay-keys"),
 				`k1 ${Buffer.alloc(32, 3).toString("base64url")}\n`,
 			);
-			process.env.SECRET_DIR = dir;
-			const origin = { QRWTY_PUBLIC_ORIGIN_URL: "https://qrwty.io" };
-			expect(() =>
-				linkOperationsFromEnvironment({ ...origin, QRWTY_REPUTATION_CREDENTIALS: "key" }),
-			).toThrow(/QRWTY_REPUTATION_CREDENTIALS/);
-			expect(
-				typeof linkOperationsFromEnvironment({
-					...origin,
-					QRWTY_REPUTATION_CREDENTIALS: "metadata",
-				}),
-			).toBe("function");
+			Object.assign(process.env, { SECRET_DIR: dir, QRWTY_PUBLIC_ORIGIN_URL: "https://qrwty.io" });
+			process.env.QRWTY_REPUTATION_CREDENTIALS = "key";
+			expect(() => readSettings("link-api-link-operations", settings)).toThrow(
+				/^Invalid setting QRWTY_REPUTATION_CREDENTIALS$/,
+			);
+			process.env.QRWTY_REPUTATION_CREDENTIALS = "metadata";
+			expect(readSettings("link-api-link-operations", settings).QRWTY_REPUTATION_CREDENTIALS).toBe(
+				"metadata",
+			);
 		} finally {
-			if (previous === undefined) delete process.env.SECRET_DIR;
-			else process.env.SECRET_DIR = previous;
+			names.forEach((name, i) => {
+				if (previous[i] === undefined) delete process.env[name];
+				else process.env[name] = previous[i];
+			});
 			rmSync(dir, { recursive: true, force: true });
 		}
 	});
