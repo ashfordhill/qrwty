@@ -5,6 +5,7 @@
 // A database error is never a success: it answers 503, and a retry with the same key replays
 // whatever did commit.
 import { randomBytes, randomUUID } from "node:crypto";
+import type { Grant } from "../../billing-api/billing/policy.ts";
 import type { ModuleRequest, ModuleResponse } from "../../entry.ts";
 import { type Admission, admissionKey, GUEST_CREATE } from "../abuse-and-moderation/admission.ts";
 import type { Dependencies } from "../link-api-link-operations.slots.ts";
@@ -19,7 +20,7 @@ import {
 	validGuestHandle,
 	validKey,
 } from "./idempotency.ts";
-import { createOwnedLink } from "./owned.ts";
+import { allowanceFor, createOwnedLink } from "./owned.ts";
 import { type KeyRing, seal, unseal } from "./replay-seal.ts";
 import type { ReputationCheck } from "./reputation.ts";
 import { slugCandidates } from "./slug.ts";
@@ -36,6 +37,9 @@ export type CreateContext = {
 	random?: (size: number) => Uint8Array;
 	/** Guest admission (Q09, abuse-and-moderation/admission.ts); tests may leave it out. */
 	admission?: Admission;
+	/** The caller's entitlement grant from Billing API (A7), or undefined when it gave none; tests
+	 * may leave it out (every account is then on Free). */
+	entitlement?: (dependencies: Dependencies, request: ModuleRequest) => Promise<Grant | undefined>;
 };
 
 /** The guest scope header Session API sets on a guest's create (an opaque handle). */
@@ -153,7 +157,11 @@ export async function createLink(
 	// Owned creation (A3) spends one of the account's creations under the test policy
 	// (owned.ts); its replay is the generated client's `idempotent`, inside createOwnedLink.
 	if (scope.kind === "account") {
-		const verdict = await context.reputation(dependencies)(destination.destination);
+		// The safety check and the grant (A7) in parallel; neither writes anything.
+		const [verdict, allowance] = await Promise.all([
+			context.reputation(dependencies)(destination.destination),
+			allowanceFor(context, dependencies, request),
+		]);
 		if (verdict === "threat")
 			return problem(422, "reputation_rejected", "The destination is reported as unsafe.", false);
 		if (verdict === "unavailable")
@@ -169,6 +177,7 @@ export async function createLink(
 			key,
 			{ destination: destination.destination, expiresAt },
 			context.random ?? randomBytes,
+			allowance,
 		);
 	}
 

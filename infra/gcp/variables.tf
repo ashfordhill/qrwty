@@ -96,3 +96,21 @@ variable "deletion_protection" {
   type        = bool
   default     = true
 }
+
+variable "stripe_price_paid_monthly" {
+  description = "Arm A's test-mode Stripe price for paid-monthly (lookup key qrwty-a-test-paid-monthly, USD 5.00 a month, a test fixture: decisions §4), from infra/gcp/scripts/stripe-test.py. Configuration, not a credential."
+  type        = string
+  validation {
+    condition     = can(regex("^price_[A-Za-z0-9]+$", var.stripe_price_paid_monthly)) && var.stripe_price_paid_monthly != "price_TEST_qrwty_paid_monthly_v1"
+    error_message = "A Stripe price ID, not the offline fixture."
+  }
+}
+
+variable "stripe_portal_configuration" {
+  description = "Arm A's test-mode customer-portal configuration (cancel at period end, card update, invoices), from infra/gcp/scripts/stripe-test.py."
+  type        = string
+  validation {
+    condition     = can(regex("^bpc_[A-Za-z0-9]+$", var.stripe_portal_configuration))
+    error_message = "A Stripe portal configuration ID."
+  }
+}

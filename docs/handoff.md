@@ -2099,3 +2099,140 @@ local Compose profile was not attempted, below).
 - **Elapsed.** 21:10:26Z to about 21:50Z on the host clock (about 40 minutes).
 - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
   memory index); it was ignored.
+
+## A7: upgrade to Paid with Stripe test mode on qrwty.io, 2026-11-15
+
+Arm A, A7 attempt 1 (role implementer), from QRWTY `bc4cdf6`. Q10a and Q10b of `units.md`, in the
+application-owned stub bodies and product SQL of Billing API, Link API, Account API, Session API and
+the Click aggregator, plus the UI in `web/`, against `billing-contract.md` and pack v1.6's
+`decisions.md` (§3, §4), `http-contract.md` (§7, §9) and `product-contract.md`. **Stripe test mode
+only**: no real card, no real charge. Light checks, as the owner decided: no oracle, review or
+records. Status: **done**; A7b (below) names three follow-ups.
+
+- **Live smoke on `https://qrwty.io`** (`.scratch/A7/smoke.mjs`, headless Chromium at 1440×900, by
+  mouse, A3's test user through Auth0 Universal Login; **14/15**, the one miss explained in 3):
+  1. **Free**: Plans and billing shows Upgrade to Paid and the meters "of 5" and "of 1"; a 30-day
+     analytics range is 403 `tier_restricted`;
+  2. **Upgrade to Paid** opens Stripe Checkout (`checkout.stripe.com`, "Sandbox"); email, Card,
+     `4242 4242 4242 4242`, 12/34, CVC 123, ZIP 10001, **Subscribe**;
+  3. back on `/billing?checkout=success` 9 s after paying: **Paid is on** ("Renews on 15 Dec 2026 for
+     USD 5.00 (test price)"), `confirmedBy: "webhook"`, `paid-test-v1`, meters "1 of 50" and "0 of
+     20"; the 30-day range is 200 with `maxDays` 90 and breakdowns; Click analytics shows 90 days and
+     the three breakdown tables by mouse. **Confirming your subscription was not seen live**: Stripe
+     delivered the webhooks (three, all 200 in ≤ 0.32 s, 22:28:21–22Z) while its success page was
+     still showing, so the first status read after the return was already Paid. The state is shown
+     by the local render check below (a delayed confirmation, then Paid is on);
+  4. **Manage payment** opens Stripe's customer portal (`billing.stripe.com`); **Cancel
+     subscription**, confirm, back to `/billing?portal=returned`;
+  5. **Cancellation scheduled** ("Paid ends on 15 Dec 2026. After that you're on Free…") 5 s after
+     cancelling: `tier: paid`, `status: active`, `cancelAtPeriodEnd: true`, `paidThrough`
+     2026-12-15T22:28:18Z, as the contract says (Paid to the period end, then Free).
+
+  0 px horizontal overflow, **0 console errors** on qrwty.io pages (the deliberate 403 kept apart).
+  Request logs: the very first checkout (a new Stripe customer, then the session, at 22:24:10Z)
+  passed Session API's 1,000 ms deadline once (503); the app's keyed retry 2 s later got the same
+  session (200, 0.04 s). Two earlier runs stopped at my own Checkout selectors (the form is Stripe's
+  Payment Element in a frame); their open session was reused, so the account paid once.
+- **The webhook route (decided here):** `https://qrwty.io/api/v1/billing/webhook`, the contract's
+  path. The Worker already sends `/api/*` to Session API with the body as bytes; Session API's new
+  route takes no session and no CSRF and passes only the unchanged bytes and `Stripe-Signature` to
+  Billing API `POST /modules/billing-api-payment-events/webhook`. Billing API stays internal (AG-14):
+  the simplest route A's ingress allows. Unsigned, stale and wrong signatures are 400 live.
+- **Stripe test objects** (`infra/gcp/scripts/stripe-test.py setup`, idempotent: a second run
+  changed nothing; refuses any key that isn't `sk_test_`): product `qrwtya_paid_monthly` "QRWTY Paid
+  (test, not approved pricing)"; price `price_1UcBddBCgK4pyiZ2kwUtHsWD` (lookup key
+  `qrwty-a-test-paid-monthly`, USD 5.00 a month); webhook endpoint `we_1UcBdeBCgK4pyiZ2wRGo23AW`
+  (7 events, API version `2025-09-30.clover`, metadata `qrwtya`); portal configuration
+  `bpc_1UcBdfBCgK4pyiZ2Q5yV7mpo` (card update, invoices, cancel at period end). The signing secret
+  and the key went straight into Secret Manager's `qrwtya-stripe-webhook-secret` and
+  `qrwtya-stripe-secret-key` (piped, never printed); the price and portal IDs are in `qrwtya.tfvars`.
+- **Billing API** (`app/src/modules/billing-api/billing/`, schema `m_billing_api_customer_billing`):
+  - **Checkout**: an Idempotency-Key and `{plan: "paid-monthly"}` only (no browser price); the
+    customer is created once per account (Stripe idempotency key `qrwtya-customer-<account>`) and
+    mapped server-side; under the account's row lock an open session is reused, else one is created
+    (key `qrwtya-checkout-<account>-<attempt>`), returning to `/billing?checkout=success|cancelled`;
+    an active or past-due account is 409 `already_subscribed`.
+  - **Webhook**: HMAC-SHA-256 over the exact bytes, 300 s tolerance, constant-time, before parsing;
+    the event is inserted (unique by ID) before the 200; a duplicate is 200 with no effect; an
+    insert failure is 503. Then this customer's due items are processed for up to 0.5 s; the rest
+    stay leased.
+  - **Reconciliation**: an event only names the account. Under the account's lease (15 s, a fence
+    that rises with each lease) Billing API reads the canonical subscriptions from Stripe, outside
+    any transaction, and `apply_subscription` applies them only for the current fence before the
+    lease ends, so late or expired workers and out-of-order events can't regress state. Inbox items
+    retry after 2, 4, … 256 s and stay `failed` after 8 attempts. A stuck checkout is reconciled 8 s
+    after the browser returns; the return URL never grants anything.
+  - **Transitions** (`policy.ts`): Paid only from the allowlisted price; active to `paidThrough` (a
+    cancel at period end stops there; otherwise 2 days' renewal slack); past due for 7 days from the
+    first failure, which duplicates never move; incomplete, canceled and expired are Free.
+  - **Grants** (`GET /modules/billing-api-entitlements/grant`, 60 s, versioned by `revision`) and
+    **exports** (`POST …/exports`, spent atomically per UTC month), both for the forwarded bearer's
+    own account; **portal** sessions for Manage payment; **account deletion** now cancels the
+    subscriptions and forgets the customer first (Session API calls it before Links' erasure).
+- **Link API** spends owned creates and claims in the Links transaction with the grant's limit (5 or
+  50); without a grant it uses Free's and answers 503 `billing_unavailable` rather than a wrong 403.
+  **Account API**: lookback 7 or 90 days and breakdowns from the grant; each CSV export spends one
+  with Billing API first (403 `quota_exceeded`, 503 when unknown); `GET /me` adds the month's
+  creations from Links' new `published.account_usage`. **Click aggregator**: `record_click_v2`
+  counts device class, country and referrer host per day in the same transaction (Analytics step 2,
+  `click_breakdowns`, kept 13 months); breakdowns count clicks since this deploy.
+  **Session API**: `GET /api/v1/me/billing` (Billing API's status plus Account API's usage),
+  `POST /api/v1/billing/checkout`, `/portal` and `/webhook`.
+- **UI** (`web/assets/app.js`): Plans and billing reads `GET /api/v1/me/billing`: Upgrade to Paid →
+  Checkout; Confirming your subscription while polling after `?checkout=success` (1 s rising to 5 s,
+  2 minutes, then "Check again"); Paid is on; This month's meters; Manage payment → portal;
+  Payment failed (Update card); Cancellation scheduled; You are on Free again; Checkout cancelled;
+  Payment portal unavailable; the top bar says Paid plan. Click analytics shows 90 days and the
+  breakdown tables on Paid. Frozen accessible names kept.
+- **Deploy.** `QRWTY_REDEPLOY_DIR=.scratch/A7/redeploy infra/gcp/scripts/redeploy.sh HEAD` at
+  `fe4205d` (the unit's code; image `app-9efb55122d77`, `sha256:229221f7…68eec`): the migration job
+  changed and ran (Billing step 1, Analytics step 2, the new views), 6 stack changes (the new image,
+  and Billing API's settings and two secrets), the Worker, smoke 6/6. Before it: a targeted plan of the two secrets and
+  their readers (4 added). This commit (docs only beyond `fe4205d`) is redeployed last, so
+  `/build.json` names it.
+- **Checks.**
+  - `app/`: build, `typecheck:test`, Biome; **196 unit tests** (18 new, `test/unit/billing.test.ts`:
+    every tier transition, the signature over changed bytes, wrong secret and stale times, the inbox
+    before the 2xx and 503 on its failure, checkout's key, plan, reuse and 409, grants and exports,
+    Link API's 503 fallback; existing unit and integration tests updated for the new fields and order).
+  - **Integration on PostgreSQL 17.11** (`infra/local/test-postgres.sh`, removed afterwards): **39
+    passed**, 5 new in `test/integration/billing.test.ts` (Billing SQL applied twice; two concurrent
+    checkouts make one session; a signed event stored once and reconciled to Paid, then canceled; a
+    late worker's fence refused; 8 failing attempts end `failed`; six racing exports spend one).
+  - Local render check (`.scratch/A7/local.mjs`, mocked API): **26/26** at 1440 light and 360 dark,
+    every billing state, Confirming then Paid is on, 0 console errors.
+  - `deploy/cloudflare` `pnpm check` (38/38, staging 37 files); root `pnpm check`: exit 0, 71
+    generated files unchanged; `infra/gcp/validate.sh` (pinned OpenTofu and mirror): lint, fmt, init
+    and validate 0. Staged diff: no Stripe, Cloudflare or Auth0 value, no credential shape;
+    `git diff --check` clean.
+- **Template gaps** ([details](evidence/a7/a-found-gaps.md)): AG-33 (medium) no scheduled job, so
+  nightly reconciliation has no caller; AG-34 (low) the raw body is capped at 64 KiB, below the
+  contract's 256 KiB; AG-35 (low) a tile's modules can't declare shared tables. AG-14 applies to
+  Entitlements (grants are keyed to the forwarded bearer's own subject).
+- **A7b** (not done here):
+  1. a schedule for `POST /modules/billing-api-payment-events/jobs/reconcile` (Cloud Scheduler with
+     an ID token to the internal Billing API, or another caller inside the VPC), AG-33;
+  2. live proof of a payment failure and its grace (a test clock, or the card `4000 0000 0000 0341`),
+     and of "Confirming your subscription" with a late webhook; both are unit- and render-tested only;
+  3. Billing API's settings and secrets in the local Compose override, and the billing-lifecycle
+     drawing updated from this behavior.
+- **Known limits.** The first checkout of an account makes two Stripe calls in Billing API and can
+  pass the 1,000 ms request deadline (the tile's Request timeout, a diagram setting): 503, then the
+  app's keyed retry gets the same session. Breakdowns count clicks from this deploy on. A3's test
+  user is now Paid with a cancellation scheduled for 15 Dec 2026 (test mode); deleting the account
+  would cancel at once. Requests that bypass the Worker can't reach Billing API (internal).
+- **Read.** The packet, `AGENTS.md`, this file (A5, A6), `units.md` (Q10a, Q10b),
+  `billing-contract.md`, pack v1.6's `decisions.md` §3–§4 and `http-contract.md`; the generated
+  Billing API process, slots, `entry.ts`, `http.ts`, `tile-http.ts`, `module-clients.ts`
+  (`externalTarget`); Link API's `create.ts`, `owned.ts`, `service.ts`; Account API's routes; the
+  aggregator; Session API's `forward.ts`; the Worker; `redeploy.sh`, `tf.sh`, `locals.tf`,
+  `secrets.tf`, the production profile and preflight; `web/assets/app.js` and the Q11 prototype's
+  billing states; `accessible-names.json`. `~/.config/qrwty/stripe.env` loaded with `set -a` for
+  `stripe-test.py` only (never printed); `auth0.env` and `cloudflare.env` only through `tf.sh` and
+  `deploy.sh`; the test user's credentials from Secret Manager into the smoke's memory only.
+- **Running.** Nothing locally: the test PostgreSQL was removed by name. Live: everything A6 left,
+  Billing API now configured, two new secrets (about USD 0.004 a day). In Stripe test mode: the four
+  objects above, one test customer and its subscription (canceling 15 Dec 2026). No real charge.
+- **Elapsed.** 21:49:53Z to about 22:40Z on the host clock (about 50 minutes).
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
+  memory index); it was ignored.

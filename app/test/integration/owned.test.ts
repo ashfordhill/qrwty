@@ -208,7 +208,14 @@ describe("owned links", () => {
 		expect((await linkApi(request("DELETE", `/links/${id}`, { subject }))).status).toBe(204);
 		expect((await linkApi(request("GET", `/links/${id}`, { subject }))).status).toBe(404);
 		const me = await accountApi(request("GET", "/me", { subject }));
-		expect(me.body).toEqual({ ownedLinks: 2 });
+		// A7: the month's creations through Links' published usage view: the deleted link's stays spent.
+		expect(me.body).toEqual({
+			ownedLinks: 2,
+			ownedLinkCreates: {
+				used: 3,
+				periodStart: `${new Date().toISOString().slice(0, 7)}-01`,
+			},
+		});
 	});
 	it("creates owned links within the month's test allowance, then 403", async () => {
 		const subject = "auth0|erin";

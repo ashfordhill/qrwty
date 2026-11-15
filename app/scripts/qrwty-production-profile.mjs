@@ -78,6 +78,14 @@ for (const variable of [...new Set([...spec.env, ...present])].sort()) {
     refuse("missing-required-value", variable, `${variable} is not set`);
     continue;
   }
+  // Values a variable may never take in production (A7: the offline fixture price, a malformed ID).
+  const bad = (profile.refusedValues ?? []).find(
+    (rule) => rule.variable === variable && new RegExp(rule.pattern).test(value),
+  );
+  if (bad) {
+    refuse(bad.category, variable, bad.reason);
+    continue;
+  }
   if (/_PORT$/.test(variable)) {
     if (!/^[1-9][0-9]{0,4}$/.test(value)) refuse("missing-required-value", variable, `${variable} is not a port`);
     continue;

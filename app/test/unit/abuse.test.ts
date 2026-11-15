@@ -530,6 +530,16 @@ describe("account deletion", () => {
 			oidc: {} as SessionContext["oidc"],
 			linkApi,
 			accountApi: linkApi,
+			// A7: the subscription is canceled first.
+			billingApi: {
+				request: async (path: string) => {
+					order.push(`billing-api ${path}`);
+					return new Response(JSON.stringify({ subscriptionsCanceled: 0 }), {
+						status: 200,
+						headers: { "content-type": "application/json" },
+					});
+				},
+			},
 			eraseUser: {
 				warm: async (signal: AbortSignal) => eraseUser.warm(signal),
 				erase: async (subject: string, signal: AbortSignal) => {
@@ -580,6 +590,7 @@ describe("account deletion", () => {
 		const r = await call();
 		expect(r.status).toBe(202);
 		expect(order).toEqual([
+			"billing-api /modules/billing-api-customer-billing/account/erase",
 			"link-api /modules/link-api-link-operations/account/erase",
 			"erase auth0|alice",
 			"revoke sessions",

@@ -135,6 +135,7 @@ function forwarding() {
 		oidc: {} as SessionContext["oidc"],
 		linkApi: target("link-api"),
 		accountApi: target("account-api"),
+		billingApi: target("billing-api"),
 	};
 	const routes = forwardRoutes();
 	const call = (overrides: Partial<ModuleRequest>): Promise<ModuleResponse> =>

@@ -4,7 +4,8 @@
 //   GET /links?cursor&limit   {items, nextCursor}: newest first by (createdAt, id); limit 1-50,
 //                             default 20; a malformed cursor or another account's is 400
 //                             invalid_cursor (http-contract §4)
-//   GET /me                   {ownedLinks}: how many links the account owns
+//   GET /me                   {ownedLinks, ownedLinkCreates}: how many links the account owns, and
+//                             (A7) its owned-link creations this UTC month (Link API's count)
 
 import { createFailureLog } from "../../../runtime/tile-process.ts";
 import { defineRoutes, type ModuleRequest, type ModuleResponse } from "../../entry.ts";
@@ -101,11 +102,23 @@ const routes = defineRoutes<Dependencies>({
 		const owner = signedIn(request);
 		if (!owner) return unauthenticated();
 		try {
-			const [row] = await dependencies.links.query<{ owned: string }>(
-				"SELECT count(*)::text AS owned FROM published.owned_links WHERE owner_key = $1",
+			const [row] = await dependencies.links.query<{
+				owned: string;
+				used: number | null;
+				start: string;
+			}>(
+				`SELECT (SELECT count(*) FROM published.owned_links WHERE owner_key = $1)::text AS owned,
+				        (SELECT owned_link_creates FROM published.account_usage
+				         WHERE owner_key = $1 AND period_start = date_trunc('month', now() AT TIME ZONE 'UTC')::date) AS used,
+				        to_char(date_trunc('month', now() AT TIME ZONE 'UTC'), 'YYYY-MM-DD') AS start`,
 				[owner],
 			);
-			return { body: { ownedLinks: Number(row?.owned ?? 0) } };
+			return {
+				body: {
+					ownedLinks: Number(row?.owned ?? 0),
+					ownedLinkCreates: { used: row?.used ?? 0, periodStart: row?.start ?? null },
+				},
+			};
 		} catch (error) {
 			failure("my-links me", error);
 			return unavailable("storage_unavailable", "Your account is unavailable; try again shortly.");

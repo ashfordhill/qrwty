@@ -36,6 +36,7 @@ export async function sessionApiApiForwarding(dependencies: Dependencies, reques
     ...sessionContext(dependencies),
     linkApi: dependencies.linkApi,
     accountApi: dependencies.accountApi,
+    billingApi: dependencies.billingApi,
     clientKey: values.CLIENT_ADDRESS_KEY,
     eraseUser,
   };

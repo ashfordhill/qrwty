@@ -497,3 +497,8 @@ SELECT l.owner_key, l.id, l.slug, l.destination, l.version, l.state, l.created_a
        l.expires_at
 FROM links l
 WHERE l.owner_key IS NOT NULL AND l.state <> 'deleted';
+
+-- A7: what Account API reads for Plans and billing: each account's owned-link creations per UTC
+-- month (Link API stays the only writer and the authority for the count).
+CREATE OR REPLACE VIEW published.account_usage AS
+SELECT owner_key, period_start, owned_link_creates FROM account_usage;

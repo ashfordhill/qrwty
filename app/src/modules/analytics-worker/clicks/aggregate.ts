@@ -1,7 +1,8 @@
 // The Click aggregator (Q10, A4) on its own subscription,
 // click-events--analytics-worker--analytics-worker-click-aggregator. Each message:
 //   - a valid v1 event within the replay horizon (31 days back, 5 minutes ahead) is recorded by
-//     record_click: the receipt and the daily aggregate in one transaction, so a redelivered or
+//     record_click_v2: the receipt, the daily aggregate and (A7) its breakdowns in one transaction,
+//     so a redelivered or
 //     replayed event ID counts once; the message is acknowledged only after that commit (the
 //     generated loop acks once this resolves);
 //   - anything else is quarantined (click_quarantine, with its bytes and the reason) and then
@@ -77,9 +78,19 @@ export function clickAggregator(options: {
 			return quarantine(message, messageId, event.linkId, "beyond_replay_horizon");
 		if (time > at + FUTURE_SKEW_MS)
 			return quarantine(message, messageId, event.linkId, "future_event_time");
+		// A7: with its breakdowns (device class, country, referrer host) for the paid tier.
 		const [row] = await options.db.query<{ first: boolean }>(
-			`SELECT ${SCHEMA}.record_click($1::uuid, $2::uuid, $3::timestamptz, $4, $5) AS first`,
-			[event.eventId, event.linkId, event.eventTime, event.synthetic, event.deviceClass === "bot"],
+			`SELECT ${SCHEMA}.record_click_v2($1::uuid, $2::uuid, $3::timestamptz, $4, $5, $6, $7, $8) AS first`,
+			[
+				event.eventId,
+				event.linkId,
+				event.eventTime,
+				event.synthetic,
+				event.deviceClass === "bot",
+				event.deviceClass,
+				event.country,
+				event.referrerHost,
+			],
 		);
 		await purge(at);
 		return row?.first ? "recorded" : "duplicate";

@@ -21,7 +21,7 @@ no framework, no build step and no request to another origin.
 | `/app/links` | My links, newest first, 20 at a time ("Show more links" follows the cursor) |
 | `/app/links/<id>` | Link details: change the destination (`If-Match`; a stale edit says "This link changed somewhere else"), disable and turn back on, delete, the QR code, the last 7 days' clicks |
 | `/app/links/<id>/clicks` | Click analytics: totals with their definitions, the daily chart and table, the CSV export |
-| `/app/plans` | Plans and billing (Free is every account's plan until A7) and Delete my account |
+| `/app/plans`, `/billing` | Plans and billing (A7): Upgrade to Paid (Stripe Checkout, test mode), Confirming your subscription while `GET /api/v1/me/billing` polls after `?checkout=success`, Paid is on with the month's usage meters, Manage payment (Stripe's portal), Payment failed, Cancellation scheduled, You are on Free again; Delete my account |
 
 ## How it talks to the API
 

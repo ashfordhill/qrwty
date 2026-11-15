@@ -111,7 +111,17 @@ describe("click aggregator", () => {
 		expect(await aggregate(message(bytes(event()), id))).toBe("recorded");
 		expect(await aggregate(message(bytes(event()), id))).toBe("duplicate");
 		const recorded = t.calls.filter((call) => call.sql.includes("record_click"));
-		expect(recorded[0]?.values).toEqual([id, event().linkId, event().eventTime, false, false]);
+		// A7: with the breakdown dimensions (record_click_v2).
+		expect(recorded[0]?.values).toEqual([
+			id,
+			event().linkId,
+			event().eventTime,
+			false,
+			false,
+			event().deviceClass,
+			event().country,
+			event().referrerHost,
+		]);
 		expect(t.calls.filter((call) => call.sql.includes("purge_expired"))).toHaveLength(1);
 	});
 
@@ -119,7 +129,7 @@ describe("click aggregator", () => {
 		const t = fake();
 		const aggregate = clickAggregator({ db: t.db, now: () => NOW });
 		await aggregate(message(bytes(event({ deviceClass: "bot" })), id));
-		expect(t.calls[0]?.values.slice(3)).toEqual([false, true]);
+		expect(t.calls[0]?.values.slice(3, 6)).toEqual([false, true, "bot"]);
 	});
 
 	it("quarantines poison, mismatched and out-of-horizon events instead of counting them", async () => {

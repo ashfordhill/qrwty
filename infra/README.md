@@ -58,6 +58,7 @@ project's one budget (USD 50 a month, alerts at USD 10, 25 and 50) is reused.
 | Stores | Cloud SQL `qrwtya-pg` (PostgreSQL 17, db-f1-micro, 10 GiB, private address, no backups), Memorystore for Valkey `qrwtya-hot-routes` and `qrwtya-admission-cache` (shared-core-nano, TLS, `AUTH_DISABLED`; each process's `JEEVES_SECRET_CACHE_<ID>_FILE` is `/dev/null`, an empty credential, which works on Cloud Run: both caches answer PING over verify-full TLS at startup), Pub/Sub `click-events` with its subscription, dead letters and Avro archive in `gs://qrwtya-click-archive-<project>` |
 | Images | Artifact Registry `qrwtya-images/app`, tagged `app-<first 12 of app/'s git tree hash>`; every Cloud Run resource runs one digest |
 | State | `gs://qrwtya-tfstate-523800841789/infra/gcp` (versioned, created by hand in A2) |
+| Stripe (TEST MODE, A7) | Product `qrwtya_paid_monthly` "QRWTY Paid (test, not approved pricing)"; price `price_1UcBddBCgK4pyiZ2kwUtHsWD` (lookup key `qrwty-a-test-paid-monthly`, USD 5.00 a month, a test fixture); webhook endpoint `we_1UcBdeBCgK4pyiZ2wRGo23AW` at `https://qrwty.io/api/v1/billing/webhook` (7 events, API version `2025-09-30.clover`); portal configuration `bpc_1UcBdfBCgK4pyiZ2Q5yV7mpo` (card update, invoices, cancel at period end); secrets `qrwtya-stripe-secret-key` and `qrwtya-stripe-webhook-secret`, read by Billing API only |
 | Auth0 | API `qrwtya-api`, identifier `https://api.qrwtya.qrwty.io` (RS256, 300 s tokens, offline access allowed); A3's Regular Web Application `qrwtya-web` (code flow, callback `https://qrwty.io/auth/callback`, logout `https://qrwty.io/`, rotating refresh tokens, a user grant to `qrwtya-api`), with the tenant's `Username-Password-Authentication` (sign-ups allowed) and `google-oauth2` enabled for it, and one `qrwtya-test-…@qrwty.io` user; A6's Machine to Machine application `qrwtya-account-erasure` (only `delete:users` on the Management API) |
 
 ### Redeploy
@@ -153,6 +154,46 @@ else gets 404 on `/api/v1/operator/*`. Reports and actions are readable only by 
 **When abuse spikes.** `gcloud logging read` on `qrwtya-link-api` for `admission cache` failures
 (each copy then limits alone), 429s on `POST /api/v1/links` in Session API's request log, and `show`
 on a reported link; block with the CLI. A report never blocks anything by itself.
+
+### Billing in Stripe test mode (A7, once)
+
+1. `tf.sh` plan and apply, targeted, of two secrets and Billing API's readers:
+   `qrwtya-stripe-secret-key` and `qrwtya-stripe-webhook-secret` (with `TF_VAR_stripe_price_paid_monthly=price_pending`
+   and `TF_VAR_stripe_portal_configuration=bpc_pending`, which only satisfy validation).
+2. With `stripe.env` loaded: `python3 -I infra/gcp/scripts/stripe-test.py setup`. It refuses a key that
+   isn't `sk_test_`, creates or updates the objects in the table above (idempotent: a second run
+   changes nothing), pipes the endpoint's signing secret and the key into the two secrets, and prints
+   the object IDs; the price and portal IDs go in `qrwtya.tfvars`.
+3. `redeploy.sh HEAD`.
+
+**The webhook's route.** Stripe → `https://qrwty.io/api/v1/billing/webhook` → the Worker (`/api/*`, the
+body as bytes) → Session API (no session, no CSRF: the bytes and `Stripe-Signature` only) → Billing
+API `POST /modules/billing-api-payment-events/webhook`, which checks the signature over the unchanged
+bytes (300 s tolerance), stores the event in its inbox and answers 200. Billing API stays internal.
+
+**Entitlement matrix** (decisions §4, TEST FIXTURES, not approved pricing):
+
+| Policy | New owned links a UTC month | Analytics lookback | Breakdowns | CSV exports a month |
+| --- | ---: | ---: | --- | ---: |
+| `free-test-v1` | 5 | 7 days | No | 1 |
+| `paid-test-v1` | 50 | 90 days | Device, country, referrer host | 20 |
+
+Paid only from the allowlisted price, while the subscription is active (to its period end, plus 2
+days for a renewal to reconcile; a cancel at period end stops exactly there) or past due within 7
+days of the first failure. Link API spends creations and claims in the Links transaction with the
+grant's limit; Billing API spends exports. Without a valid grant (Billing API down) callers use
+Free's limits, and an operation only Paid allows answers 503 `billing_unavailable`, never 403.
+
+**Runbook.**
+- *Paid didn't turn on.* The inbox keeps every verified event; `GET /api/v1/me/billing?checkout=success`
+  reconciles a stuck checkout from Stripe 8 s after the browser returns. Stripe's dashboard lists the
+  endpoint's deliveries; Billing API logs `billing-api` failures (`inbox …`, `stuck checkout reconcile`).
+- *An event failed 8 times.* It stays `failed` in `m_billing_api_customer_billing.webhook_inbox` with
+  its last error; after the fix, set it back to `pending` with `next_attempt_at = now()`.
+- *Reconcile everything.* `POST /modules/billing-api-payment-events/jobs/reconcile` on Billing API
+  (internal; nothing schedules it yet, A7b): due inbox items, then accounts not synced for 20 hours.
+- *Account deletion* cancels the account's subscriptions at once and forgets the customer mapping;
+  Stripe keeps its own records.
 
 ### Cost (trial credit, no charge)
 

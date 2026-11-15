@@ -258,7 +258,8 @@
 		links: { state: "idle", items: [], next: null, more: false, error: null },
 		link: { state: "idle", data: null, editing: false, draft: "", fieldError: null, notice: null, busy: false, totals: null, newer: null },
 		clicks: { state: "idle", data: null, days: 7, notice: null, exporting: false },
-		plans: { state: "idle", me: null, busy: false, error: null },
+		plans: { state: "idle", me: null, billing: null, busy: false, error: null },
+		tier: null, // "free" | "paid", from GET /api/v1/me/billing
 	};
 	const keepResult = () => tab.set("qrwty-result", S.result);
 
@@ -266,7 +267,8 @@
 	function parse(pathname) {
 		if (pathname === "/" || pathname === "/app" || pathname === "/app/") return { view: "create", id: null };
 		if (pathname === "/app/links") return { view: "links", id: null };
-		// Stripe Checkout returns to /billing?checkout=success|cancelled (http-contract §9); A7 reads it.
+		// Stripe Checkout returns to /billing?checkout=success|cancelled, the portal to
+		// /billing?portal=returned (http-contract §9); loadPlans reads them.
 		if (pathname === "/app/plans" || pathname === "/billing") return { view: "plans", id: null };
 		let m = /^\/app\/links\/([^/]+)$/.exec(pathname);
 		if (m) return { view: "link", id: decodeURIComponent(m[1]) };
@@ -349,7 +351,7 @@
 		if (acct) {
 			const label = acct.name || acct.email || "Your account";
 			const initials = (label.replace(/@.*/, "").match(/[A-Za-z0-9]+/g) ?? ["Q"]).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
-			$("#account").innerHTML = `<span class="who"><span class="avatar" aria-hidden="true">${esc(initials)}</span><span class="name">${esc(truncMid(label, 28))}</span><span class="plan">Free plan</span></span><button type="button" class="btn btn-sm btn-chrome" data-act="signout">Sign out</button>`;
+			$("#account").innerHTML = `<span class="who"><span class="avatar" aria-hidden="true">${esc(initials)}</span><span class="name">${esc(truncMid(label, 28))}</span><span class="plan">${S.tier === "paid" ? "Paid plan" : "Free plan"}</span></span><button type="button" class="btn btn-sm btn-chrome" data-act="signout">Sign out</button>`;
 		} else if (session) {
 			$("#account").innerHTML = `<button type="button" class="btn btn-sm btn-chrome" data-act="signin">${ic("person", "lilac")}Sign in</button>`;
 		} else $("#account").innerHTML = "";
@@ -762,6 +764,21 @@
 		return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Filtered clicks per day, ${fmtDay(data[0].date)} to ${fmtDay(last.date)}. Table below.">${g}</svg>`;
 	}
 
+	const DEVICES = { desktop: "Desktop", mobile: "Mobile", tablet: "Tablet", bot: "Bots and previews", unknown: "Unknown" };
+	/** Paid's breakdowns (A7): top referring sites, devices and countries for the range. */
+	function breakdownHtml(b) {
+		const block = (title, items, label) =>
+			`<div class="stack gap-2"><h3>${title}</h3>${
+				items?.length
+					? `<div class="chart-wrap"><table class="datatable"><thead><tr><th scope="col">${title}</th><th scope="col">Filtered clicks</th><th scope="col">Recorded visits</th></tr></thead><tbody>${items.map((i) => `<tr><td class="wrap-any">${esc(label(i.value))}</td><td>${num(i.filteredClicks)}</td><td>${num(i.recordedAttempts)}</td></tr>`).join("")}</tbody></table></div>`
+					: '<p class="meta">None in this range yet.</p>'
+			}</div>`;
+		return `<p class="meta">Counted for clicks recorded since breakdowns started (15 Nov 2026). Top 10 of each.</p>
+			${block("Referring site", b.referrerHost, (v) => v ?? "No referring site")}
+			${block("Device", b.device, (v) => DEVICES[v] ?? "Unknown")}
+			${block("Country", b.country, (v) => v ?? "Unknown")}`;
+	}
+
 	function viewClicks() {
 		if (!session) return waiting("Click analytics");
 		const C = S.clicks;
@@ -787,8 +804,9 @@
 			top += statusBox("n-warn", "clock", "butter", "Counts are running late", `New clicks are recorded safely but haven't been counted yet. These numbers are from ${esc(fmtTime(d.freshness.asOf))}. They will catch up without anything lost.`);
 		if (d.reconciliation?.status === "incident")
 			top += alertBox("n-warn", "warn", "butter", "Some recorded clicks are missing from these totals", "Some recorded clicks aren't counted yet. They are kept, and the totals go up once they are counted. Your link worked the whole time.");
+		const paidTier = d.tier?.policy === "paid-test-v1";
 		if (C.notice === "lookback")
-			top += statusBox("n-info", "lock", "butter", `Free shows the last ${maxDays} days`, `You picked ${C.picked} days. Paid will show up to 90 days of clicks. Older counts are kept, not deleted.`, `<a class="btn btn-sm" href="/app/plans" data-nav="/app/plans">See plans</a>`);
+			top += statusBox("n-info", "lock", "butter", `Free shows the last ${maxDays} days`, `You picked ${C.picked} days. Paid shows up to 90 days of clicks. Older counts are kept, not deleted.`, `<a class="btn btn-sm" href="/app/plans" data-nav="/app/plans">See plans</a>`);
 		if (C.notice === "exportFailed")
 			top += alertBox("n-bad", "warn", "butter", "Export did not finish", C.exportReason === "quota" ? "This month's CSV exports are used up. Counts keep being recorded; export again next month." : "The CSV couldn't be made just now. Try again in a minute.", C.exportReason === "quota" ? "" : `<button type="button" class="btn btn-sm" data-act="export">${ic("retry")}Try again</button>`);
 		if (C.notice === "exported") top += statusBox("n-ok", "check", "mint", "CSV exported", `${esc(C.exportName)} · ${C.exportRows} ${C.exportRows === 1 ? "day" : "days"}.`);
@@ -804,7 +822,7 @@
 			<div class="card stack">
 				<div class="range">
 					<div class="stack gap-2"><span class="label">Range</span><div class="seg" role="group" aria-label="Range">${rangeBtns}</div></div>
-					<p class="meta" style="flex:1 1 200px">${esc(fmtDay(d.range.from))} to ${esc(fmtDay(d.range.to))}. Free: the last ${maxDays} days. Dates are UTC.</p>
+					<p class="meta" style="flex:1 1 200px">${esc(fmtDay(d.range.from))} to ${esc(fmtDay(d.range.to))}. ${paidTier ? "Paid" : "Free"}: the last ${maxDays} days. Dates are UTC.</p>
 				</div>
 				<div class="totals">
 					<div class="figure figure-primary"><span class="label">Filtered clicks</span><span class="val">${num(totF)}</span><span class="def">Visits to the short link with known bots and link previews removed (${esc(d.filter?.version ?? "filter-v1")}).</span></div>
@@ -819,7 +837,7 @@
 				<details><summary>Show as a table</summary><div class="chart-wrap"><table class="datatable"><thead><tr><th scope="col">Date (UTC)</th><th scope="col">Filtered clicks</th><th scope="col">Recorded visits</th></tr></thead><tbody>${d.series.map((s) => `<tr><td>${esc(s.date)}</td><td>${num(s.filteredClicks)}</td><td>${num(s.recordedAttempts)}</td></tr>`).join("")}</tbody></table></div></details>
 			</section>
 			<section class="card stack" aria-labelledby="bd-title"><h2 id="bd-title">Where clicks came from</h2>
-				<div class="notice n-acct">${ic("lock", "lilac")}<strong>Breakdowns come with Paid</strong><p>Paid will show clicks by referring site, device and country. Free shows totals and the daily trend.</p></div>
+				${d.breakdowns ? breakdownHtml(d.breakdowns) : `<div class="notice n-acct">${ic("lock", "lilac")}<strong>Breakdowns come with Paid</strong><p>Paid shows clicks by referring site, device and country. Free shows totals and the daily trend.</p></div>`}
 			</section>
 			<section class="card stack" aria-labelledby="ex-title">
 				<h2 id="ex-title">Export</h2>
@@ -882,12 +900,48 @@
 	}
 
 	/* ---- Plans and billing, and the account ---- */
+	// GET /api/v1/me/billing (http-contract §9) decides everything shown: the return from Stripe
+	// Checkout (/billing?checkout=success) only shows "Confirming your subscription" and polls with
+	// a bounded backoff; Paid comes from the server's verified webhook or reconciliation state.
+	const PAID_PRICE = "USD 5.00";
+	const isPaid = () => S.plans.billing?.tier === "paid";
+	function usageMeter(label, used, limit) {
+		const u = Number(used ?? 0);
+		const pct = limit > 0 ? Math.min(100, Math.round((u / limit) * 100)) : 0;
+		return `<div class="meter"><div class="meter-top"><span>${esc(label)}</span><span class="num">${used === null || used === undefined ? "–" : num(u)} of ${num(limit)}</span></div>
+			<div class="meter-track" role="img" aria-label="${num(u)} of ${num(limit)} used"><div class="meter-fill${u >= limit ? " full" : ""}" style="width:${pct}%"></div></div></div>`;
+	}
+	function billingNotice() {
+		const P = S.plans;
+		const b = P.billing;
+		if (P.portalError) return alertBox("n-bad", "offline", "sky", "Payment portal unavailable", "The payment provider's portal isn't answering. Your plan hasn't changed. Try again in a few minutes.");
+		if (P.redirecting) return statusBox("n-info", "clock", "sky", "Waiting for the payment page", "Opening the payment page. If it doesn't open, try again; you won't be charged twice.", `<button type="button" class="btn btn-sm" data-act="upgrade">Return to the payment page</button>`);
+		if (!b) return "";
+		const sub = b.subscription ?? {};
+		if (sub.status === "past_due") {
+			const until = sub.graceUntil ? fmtDate(sub.graceUntil) : "";
+			return alertBox("n-bad", "warn", "butter", "Payment failed", isPaid() ? `The last payment didn't go through. Paid stays on until ${esc(until)} while the payment provider retries. Update your card to keep Paid. Your links keep working either way.` : "The last payment didn't go through and the grace period has ended, so you're on Free. Update your card to turn Paid back on. Your links keep working.", `<button type="button" class="btn btn-sm" data-act="portal">${ic("card", "butter")}Update card</button>`);
+		}
+		if (isPaid() && sub.cancelAtPeriodEnd)
+			return statusBox("n-info", "info", "sky", "Cancellation scheduled", `Paid ends on ${esc(fmtDate(sub.paidThrough))}. After that you're on Free: 5 new links a month and 7 days of click history. Every link keeps working and recording clicks.`);
+		if (isPaid()) return statusBox("n-ok", "check", "mint", "Paid is on", `Renews on ${esc(fmtDate(sub.paidThrough))} for ${PAID_PRICE} (test price). Manage your card or cancel in the payment portal.`);
+		if (b.confirming || (P.returned && P.polling))
+			return statusBox("n-info", "clock", "sky", "Confirming your subscription", "The payment page says you paid. We're waiting for the payment provider to confirm it, which usually takes a few seconds. Paid features turn on when it's confirmed.", '<span class="spin" aria-hidden="true"></span><span class="meta">Checking again every few seconds</span>');
+		if (P.returned && P.timedOut)
+			return statusBox("n-info", "clock", "sky", "Confirming your subscription", "This is taking longer than usual. Nothing is lost: Paid turns on as soon as the payment provider confirms it.", `<button type="button" class="btn btn-sm" data-act="billing-refresh">${ic("retry")}Check again</button>`);
+		if (P.cancelled) return statusBox("n-info", "info", "sky", "Checkout cancelled", "You're still on Free. Nothing was charged.");
+		if (sub.status === "canceled" || sub.status === "expired" || (sub.status === "active" && sub.paidThrough))
+			return statusBox("n-info", "info", "sky", "You are on Free again", `Paid ended${sub.paidThrough ? ` on ${esc(fmtDate(sub.paidThrough))}` : ""}. Your links still work and still record clicks. Click history older than 7 days is hidden until you upgrade again; nothing was deleted.`);
+		return "";
+	}
 	function viewPlans() {
 		if (!session) return waiting("Plans and billing");
 		const P = S.plans;
+		const b = P.billing;
 		const signedIn = !!session?.authenticated;
-		const free = `<section class="card plan${signedIn ? " current" : ""}" aria-labelledby="p-free">
-			<div class="plan-head"><h2 id="p-free">Free</h2>${signedIn ? chip("current") : ""}</div>
+		const paid = isPaid();
+		const free = `<section class="card plan${signedIn && !paid ? " current" : ""}" aria-labelledby="p-free">
+			<div class="plan-head"><h2 id="p-free">Free</h2>${signedIn && !paid ? chip("current") : ""}</div>
 			<p class="price">USD 0 <small>no card needed</small></p>
 			<ul class="limits">
 				<li>${ic("link", "sky")}<span><b>5</b> new links a month in your account</span></li>
@@ -897,23 +951,40 @@
 			</ul>
 			${signedIn ? "" : `<div class="stack gap-2 start">${signInAgain("Sign in to see your plan")}<p class="meta">Guest links need no account and are always free.</p></div>`}
 		</section>`;
-		const paid = `<section class="card plan" aria-labelledby="p-paid">
-			<div class="plan-head"><h2 id="p-paid">Paid</h2></div>
-			<p class="price">USD 5.00 <small>a month · test price, not final</small></p>
+		const busy = P.busy ? ' aria-busy="true" aria-disabled="true"' : "";
+		const confirming = !paid && (b?.confirming || (P.returned && P.polling));
+		const portalBtn = `<button type="button" class="btn" data-act="portal"${busy}>${P.busy === "portal" ? '<span class="spin" aria-hidden="true"></span>' : ic("card", "butter")}Manage payment</button>`;
+		const paidCta = !signedIn
+			? `<button type="button" class="btn btn-account" data-act="signin">${ic("person", "lilac")}Sign in to upgrade</button>`
+			: !b
+				? `<p class="meta">${P.state === "error" ? "Billing isn't answering just now. Try again in a minute." : "Checking your plan…"}</p>`
+				: paid
+					? `${portalBtn}<p class="meta">Change your card, see invoices or cancel in the payment portal.</p>`
+					: confirming
+						? `<button type="button" class="btn" aria-disabled="true">${ic("clock", "sky")}Confirming…</button>`
+						: `<button type="button" class="btn btn-primary" data-act="upgrade"${busy}>${P.busy === "upgrade" ? '<span class="spin" aria-hidden="true"></span>' : ic("card", "butter")}Upgrade to Paid</button><p class="meta">You'll pay on the payment page (test mode: use a test card), then come back here. Cancel any time.</p>${b.portalAvailable ? `${portalBtn}<p class="meta">See past invoices or your card.</p>` : ""}`;
+		const paidCard = `<section class="card plan${paid ? " current" : ""}" aria-labelledby="p-paid">
+			<div class="plan-head"><h2 id="p-paid">Paid</h2>${paid ? chip("current") : ""}</div>
+			<p class="price">${PAID_PRICE} <small>a month · test price, not final</small></p>
 			<ul class="limits">
 				<li>${ic("link", "sky")}<span><b>50</b> new links a month in your account</span></li>
 				<li>${ic("chart", "mint")}<span><b>90 days</b> of click history</span></li>
 				<li>${ic("globe", "sky")}<span>Clicks by referring site, device and country</span></li>
 				<li>${ic("sheet", "mint")}<span><b>20</b> CSV exports a month</span></li>
 			</ul>
-			<p class="meta">Not available yet: upgrading arrives with test-mode checkout in a later release.</p>
+			<div class="stack gap-2 start">${paidCta}</div>
 		</section>`;
+		const planChip = signedIn && b ? chip(paid ? "current" : "free", paid ? "Paid plan" : "Free plan") : "";
+		const usage = signedIn && b?.usage
+			? `<section class="card stack" aria-labelledby="use-title"><div class="row between"><h2 id="use-title">This month</h2><span class="meta">Resets ${esc(fmtDate(b.usage.period?.end))} (UTC)</span></div>
+				<div class="usage">${usageMeter(`New links · ${paid ? "Paid" : "Free"}`, b.usage.ownedLinkCreates?.used, b.usage.ownedLinkCreates?.limit ?? 5)}${usageMeter("CSV exports", b.usage.csvExports?.used, b.usage.csvExports?.limit ?? 1)}</div></section>`
+			: "";
 		let account = "";
 		if (signedIn) {
 			const a = session.account ?? {};
 			const owned = P.me ? `${num(P.me.ownedLinks)} ${P.me.ownedLinks === 1 ? "link" : "links"}` : P.state === "error" ? "Not available just now" : "Counting…";
 			account = `<section class="card stack" aria-labelledby="acct-title">
-				<div class="row between"><h2 id="acct-title">Your account</h2>${chip("free", "Free plan")}</div>
+				<div class="row between"><h2 id="acct-title">Your account</h2>${planChip}</div>
 				<dl class="kv">
 					${a.name && a.name !== a.email ? `<dt>Name</dt><dd class="wrap-any">${esc(a.name)}</dd>` : ""}
 					<dt>Email</dt><dd class="wrap-any">${esc(a.email ?? "")}</dd>
@@ -922,22 +993,26 @@
 			</section>
 			<section class="danger-zone stack" aria-labelledby="del-title">
 				<h2 id="del-title" class="dz-title">Delete my account</h2>
-				<p class="muted">Your links are turned off and removed from the account, and you are signed out everywhere. Guest links you never saved are not affected.</p>
+				<p class="muted">Your links are turned off and removed from the account, any subscription is cancelled, and you are signed out everywhere. Guest links you never saved are not affected.</p>
 				${P.error ? `<p class="field-error" role="alert">${ic("warn", "butter")}<span>The account wasn't deleted: QRWTY didn't answer. Try again in a minute.</span></p>` : ""}
 				<div><button type="button" class="btn btn-danger" data-act="delete-account">${ic("trash", "rose")}Delete my account</button></div>
 			</section>`;
 		}
 		return `<div class="page">
 			<div class="page-head"><div><h1 tabindex="-1">Plans and billing</h1><p class="lead">Short links and QR codes are free without an account. A plan sets how many links your account makes each month and how much click history you see.</p></div>
-			${signedIn ? `<span>${chip("free", "Free plan")}</span>` : ""}</div>
+			${planChip ? `<span>${planChip}</span>` : ""}</div>
 			${bannerHtml()}
-			${statusBox("n-info", "info", "sky", "Test mode", "Payments aren't switched on yet. When they are, they run in the payment provider's test mode and no real card is charged. Every account is on Free for now.")}
-			<div class="plans">${free}${paid}</div>
+			${statusBox("n-info", "info", "sky", "Test mode", "Payments run in the payment provider's test mode. Prices are placeholders and no real card is charged: pay with a test card such as 4242 4242 4242 4242.")}
+			${signedIn ? billingNotice() : ""}
+			${usage}
+			<div class="plans">${free}${paidCard}</div>
 			${account}
 			<section class="card stack" aria-labelledby="faq-title">
 				<h2 id="faq-title">What changes, and what never does</h2>
 				<dl class="kv">
-					<dt>Your links</dt><dd>Never expire or stop on any plan, including after you reach a limit.</dd>
+					<dt>If you cancel</dt><dd>Paid stays on until the end of the month you paid for, then you're on Free.</dd>
+					<dt>If a payment fails</dt><dd>The payment provider retries for 7 days and Paid stays on meanwhile.</dd>
+					<dt>Your links</dt><dd>Never expire or stop on any plan, including after you cancel or reach a limit.</dd>
 					<dt>Deleting a link</dt><dd>Doesn't give back this month's new-link allowance.</dd>
 					<dt>Saving a guest link</dt><dd>Counts as one of the month's new links.</dd>
 				</dl>
@@ -945,17 +1020,86 @@
 		</div>`;
 	}
 
-	async function loadPlans() {
+	/** Reads the plan; on a return from Checkout, polls until Paid is confirmed (about 2 minutes). */
+	async function loadPlans({ poll = false } = {}) {
 		const P = S.plans;
 		if (!session?.authenticated) return;
-		P.state = "loading";
-		const a = await api("GET", "/api/v1/me");
-		if (a.status === 200 && a.data) {
-			P.me = a.data;
+		const q = new URLSearchParams(location.search);
+		if (!poll) {
+			P.returned = location.pathname === "/billing" && q.get("checkout") === "success";
+			P.cancelled = location.pathname === "/billing" && q.get("checkout") === "cancelled";
+			P.redirecting = false;
+			P.portalError = false;
+			P.timedOut = false;
+			P.polling = P.returned;
+			P.pollStarted = Date.now();
+		}
+		P.state = P.billing ? P.state : "loading";
+		const [m, b] = await Promise.all([api("GET", "/api/v1/me"), api("GET", `/api/v1/me/billing${P.returned ? "?checkout=success" : ""}`)]);
+		if (m.status === 200 && m.data) P.me = m.data;
+		if (b.status === 200 && b.data) {
+			P.billing = b.data;
 			P.state = "ready";
-		} else if (a.status === 401) await sessionEnded();
+		} else if (b.status === 401 || m.status === 401) return sessionEnded().then(() => render());
 		else P.state = "error";
+		S.tier = P.billing?.tier ?? S.tier;
+		if (P.returned && P.polling) {
+			if (isPaid()) {
+				P.polling = false;
+				toast("Paid is on");
+			} else if (Date.now() - P.pollStarted > 120_000) {
+				P.polling = false;
+				P.timedOut = true;
+			} else {
+				const wait = Math.min(5000, 1000 + (Date.now() - P.pollStarted) / 10);
+				clearTimeout(P.timer);
+				P.timer = setTimeout(() => {
+					if (S.view === "plans" && P.polling) loadPlans({ poll: true });
+				}, wait);
+			}
+		}
 		if (S.view === "plans") render();
+		else renderNav();
+	}
+
+	async function upgrade() {
+		const P = S.plans;
+		if (P.busy) return;
+		P.busy = "upgrade";
+		P.cancelled = false;
+		P.portalError = false;
+		P.checkoutKey = P.checkoutKey ?? uuid();
+		render();
+		const a = await api("POST", "/api/v1/billing/checkout", { key: P.checkoutKey, body: { plan: "paid-monthly" } });
+		P.busy = false;
+		if (a.status === 200 && typeof a.data?.url === "string" && a.data.url.startsWith("https://checkout.stripe.com/")) {
+			P.redirecting = true;
+			render();
+			location.assign(a.data.url);
+			return;
+		}
+		P.checkoutKey = null;
+		if (a.status === 409 && a.code === "already_subscribed") return loadPlans();
+		if (a.status === 401) await sessionEnded();
+		else toast("The payment page didn't open. Try again in a minute.");
+		render();
+	}
+
+	async function openPortal() {
+		const P = S.plans;
+		if (P.busy) return;
+		P.busy = "portal";
+		P.portalError = false;
+		render();
+		const a = await api("POST", "/api/v1/billing/portal", { key: uuid() });
+		P.busy = false;
+		if (a.status === 200 && typeof a.data?.url === "string" && a.data.url.startsWith("https://billing.stripe.com/")) {
+			location.assign(a.data.url);
+			return;
+		}
+		if (a.status === 401) await sessionEnded();
+		else P.portalError = true;
+		render();
 	}
 
 	async function deleteAccount() {
@@ -1295,6 +1439,13 @@
 				return openConfirm("delete");
 			case "confirm-delete":
 				return deleteLink();
+			case "upgrade":
+				return upgrade();
+			case "portal":
+				return openPortal();
+			case "billing-refresh":
+				Object.assign(S.plans, { timedOut: false });
+				return loadPlans();
 			case "delete-account":
 				return openConfirm("account");
 			case "confirm-delete-account":

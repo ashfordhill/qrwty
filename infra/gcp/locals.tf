@@ -114,11 +114,22 @@ locals {
       min     = 0
     }
     "billing-api" = {
-      env     = merge(local.db.billing, local.oidc, { JEEVES_EXTERNAL_STRIPE_API_URL = "https://api.stripe.com" })
-      secrets = ["sql-billing--billing-api"]
+      env = merge(local.db.billing, local.oidc, {
+        JEEVES_EXTERNAL_STRIPE_API_URL = "https://api.stripe.com"
+        # A7, Stripe test mode: the one allowlisted price (decisions §4: configuration, never
+        # source), the portal configuration Manage payment opens, and where both return.
+        STRIPE_PRICE_PAID_MONTHLY   = var.stripe_price_paid_monthly
+        STRIPE_PORTAL_CONFIGURATION = var.stripe_portal_configuration
+        QRWTY_PUBLIC_ORIGIN_URL     = var.public_origin
+      })
+      # stripe-secret-key: the test-mode secret key; stripe-webhook-secret: the qrwtya endpoint's
+      # signing secret (A7; infra/gcp/scripts/stripe-test.py puts both, piped, never printed).
+      secrets = ["sql-billing--billing-api", "stripe-secret-key", "stripe-webhook-secret"]
       ca      = null
-      # Internal until Stripe's signed webhooks exist (Q10a, not run): the tile clients that call it
-      # send no ID token, so it can't be both public and IAM-protected (Q13 finding).
+      # Internal: Stripe's webhook reaches it through the Worker and Session API
+      # (https://qrwty.io/api/v1/billing/webhook, A7), whose signature over the unchanged bytes is
+      # the only authorization; the tile clients that call it send no ID token, so it can't be both
+      # public and IAM-protected (Q13 finding, AG-14).
       ingress = "INGRESS_TRAFFIC_INTERNAL_ONLY"
       sa      = "billing"
       min     = 0
@@ -145,7 +156,7 @@ locals {
   # auth0-test-user: the A3 smoke's test user, {username, password}, mounted by no process.
   secrets = toset(concat(local.migrate_secrets, [for c in local.caches : "memorystore-ca-${c}"],
     ["link-replay-keys", "signin-client", "session-keys", "auth0-test-user",
-  "client-address-key", "account-erasure-client", "operator-key"]))
+  "client-address-key", "account-erasure-client", "operator-key", "stripe-secret-key", "stripe-webhook-secret"]))
 
   service_accounts = {
     redirect  = "Redirect service"

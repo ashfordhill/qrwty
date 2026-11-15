@@ -13,3 +13,7 @@
 --   none
 -- Template views:
 --   none
+
+-- A7: no tables of its own. Billing API keeps every billing table in
+-- billing-api-customer-billing.sql (schema m_billing_api_customer_billing), one store with one
+-- logical writer; this module reads and writes it there through Billing API's login.

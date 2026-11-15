@@ -14,10 +14,17 @@
 //   GET    /api/v1/links/:id/analytics      the owner's counts         -> Account API (A4)
 //   GET    /api/v1/links/:id/analytics.csv  the same as CSV            -> Account API (A4)
 //   GET    /api/v1/me                 {account, ownedLinks}            -> Account API GET /me
-//   DELETE /api/v1/me                 202 {deletionScheduled}          -> Link API  POST /account/erase,
+//   DELETE /api/v1/me                 202 {deletionScheduled}          -> Billing API POST /account/erase
+//                                     (A7: the subscription is canceled), Link API POST /account/erase,
 //                                     then the issuer's user is deleted (A3b), then every session of
 //                                     the account is revoked
 //   POST   /api/v1/abuse-reports      202 {received}; guest or account  -> Link API  POST /reports (Q09)
+//   GET    /api/v1/me/billing         plan, subscription and usage      -> Billing API GET /billing, with
+//                                     Account API's owned-link usage (A7)
+//   POST   /api/v1/billing/checkout   {plan}; Idempotency-Key           -> Billing API POST /checkout (A7)
+//   POST   /api/v1/billing/portal     the customer portal's URL         -> Billing API POST /portal (A7)
+//   POST   /api/v1/billing/webhook    Stripe's events: no session and no CSRF; the unchanged bytes and
+//                                     Stripe-Signature only            -> Billing API POST /webhook (A7)
 //   GET    /api/v1/operator/links/by-slug/:slug, POST /api/v1/operator/links/:id/block|unblock
 //                                     operator only, else 404           -> Link API  /operator/... (Q09)
 // A guest create and a report carry QRWTY-Admission-Key, the keyed hash of the browser's network
@@ -48,11 +55,14 @@ const LINKS = "/modules/link-api-link-operations";
 const ACCOUNT = "/modules/account-api-my-links";
 const ANALYTICS = "/modules/account-api-link-analytics";
 const ABUSE = "/modules/link-api-abuse-and-moderation";
+const BILLING = "/modules/billing-api-customer-billing";
+const EVENTS = "/modules/billing-api-payment-events";
 const failure = createFailureLog("session-api");
 
 export type ForwardContext = SessionContext & {
 	linkApi: HttpTarget;
 	accountApi: HttpTarget;
+	billingApi: HttpTarget;
 	/** The Worker's client-address key (client-address.ts); absent: every guest is `unverified`. */
 	clientKey?: Uint8Array;
 	/** Deletes the account's user at the issuer (erasure.ts); absent: the user stays (local). */
@@ -268,6 +278,7 @@ export function forwardRoutes() {
 		};
 	const linkApi = (context: ForwardContext) => context.linkApi;
 	const accountApi = (context: ForwardContext) => context.accountApi;
+	const billingApi = (context: ForwardContext) => context.billingApi;
 
 	return defineRoutes<ForwardContext>({
 		"GET /api/v1/session": async (request, context) => {
@@ -363,6 +374,53 @@ export function forwardRoutes() {
 			},
 			false,
 		),
+		"GET /api/v1/me/billing": async (request, context) => {
+			const browser = await who(request, context);
+			if (isAnswer(browser)) return browser;
+			if (browser.kind !== "account")
+				return problem(401, "unauthenticated", "Sign in to continue.", false);
+			const token = await bearer(browser, request, context);
+			if (typeof token !== "string") return token;
+			const headers = { authorization: `Bearer ${token}` };
+			const returned = request.query.checkout === "success" ? "?checkout=success" : "";
+			const [billing, account] = await Promise.all([
+				call(context.billingApi, `${BILLING}/billing${returned}`, request, headers, false),
+				call(context.accountApi, `${ACCOUNT}/me`, request, headers, false),
+			]);
+			if (billing.status !== undefined && billing.status !== 200) return billing;
+			const body = billing.body as { usage?: { ownedLinkCreates?: { used?: number | null } } };
+			const usage = (account.body as { ownedLinkCreates?: { used?: unknown } } | undefined)
+				?.ownedLinkCreates;
+			if (body.usage?.ownedLinkCreates && account.status === 200 && typeof usage?.used === "number")
+				body.usage.ownedLinkCreates.used = usage.used;
+			return { body };
+		},
+		"POST /api/v1/billing/checkout": owner(billingApi, () => `${BILLING}/checkout`, true),
+		"POST /api/v1/billing/portal": owner(billingApi, () => `${BILLING}/portal`, true),
+		"POST /api/v1/billing/webhook": async (request, context) => {
+			// Stripe's signature is the only authorization: the exact bytes go on, with the header.
+			const raw = request.rawBody;
+			const signature = one(request.headers["stripe-signature"]);
+			if (!raw || signature === undefined)
+				return problem(400, "signature_invalid", "The Stripe signature does not verify.", false);
+			try {
+				return await relay(
+					await context.billingApi.request(`${EVENTS}/webhook`, {
+						method: "POST",
+						headers: {
+							accept: "application/json",
+							"content-type": "application/json",
+							"stripe-signature": signature,
+						},
+						body: Buffer.from(raw),
+						signal: request.signal,
+					}),
+				);
+			} catch (error) {
+				failure("forward webhook", error);
+				return unavailable();
+			}
+		},
 		"GET /api/v1/me": async (request, context) => {
 			const browser = await who(request, context);
 			if (isAnswer(browser)) return browser;
@@ -400,6 +458,16 @@ export function forwardRoutes() {
 				);
 			const token = await bearer(browser, request, context);
 			if (typeof token !== "string") return token;
+			// The subscription is canceled first (A7): if Stripe or Billing API fails, nothing else has
+			// happened and the browser's keyed retry starts again; a repeat cancels nothing more.
+			const billed = await call(
+				context.billingApi,
+				`${BILLING}/account/erase`,
+				{ ...request, method: "POST" },
+				{ authorization: `Bearer ${token}` },
+				false,
+			);
+			if (billed.status !== undefined && billed.status !== 200) return billed;
 			// The Management API token is fetched while Link API erases (one round trip saved).
 			const warming = context.eraseUser?.warm(request.signal);
 			const erased = await call(

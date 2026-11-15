@@ -8,6 +8,7 @@
 			"src/modules/account-api/link-analytics/**",
 			"src/modules/analytics-worker/clicks/**",
 			"src/modules/redirect-service/redirect/**",
+			"src/modules/billing-api/billing/**",
 			"test/**",
 			"vitest.config.ts",
 			"biome.json",

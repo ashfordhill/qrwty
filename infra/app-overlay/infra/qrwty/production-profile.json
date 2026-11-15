@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "about": "QRWTY arm A production profile (application-owned, not generated). scripts/qrwty-production-profile.mjs reads it before a generated process or the migration job starts and refuses any emulator, fake, insecure, development, test-only or missing setting with a named reason. Process lists follow the Jeeves 0aea8e7 export of revision 84 (.jeeves/report.json processes.tiles[].environment, each Compose secret, and Link operations' declared settings; A3 adds Session API's and My links' declared settings; A4 the Redirect service's; A6 Session API's client-address-key and account-erasure-client secrets and Link API's operator-key).",
+  "about": "QRWTY arm A production profile (application-owned, not generated). scripts/qrwty-production-profile.mjs reads it before a generated process or the migration job starts and refuses any emulator, fake, insecure, development, test-only or missing setting with a named reason. Process lists follow the Jeeves 0aea8e7 export of revision 84 (.jeeves/report.json processes.tiles[].environment, each Compose secret, and Link operations' declared settings; A3 adds Session API's and My links' declared settings; A4 the Redirect service's; A6 Session API's client-address-key and account-erasure-client secrets and Link API's operator-key; A7 Billing API's Stripe test-mode settings and its stripe-secret-key and stripe-webhook-secret secrets).",
   "secretMount": {
     "variable": "QRWTY_SECRET_MOUNT_DIR",
     "layout": "<QRWTY_SECRET_MOUNT_DIR>/<secret name>/value (one Cloud Run secret volume per secret), named to the process by JEEVES_SECRET_<NAME>_FILE (Jeeves QG34; <NAME> the secret's name upper-cased, - and . as _)"
@@ -54,6 +54,26 @@
       "pattern": "^STRIPE_(API_)?(HOST|PORT|PROTOCOL)$",
       "category": "fake-provider",
       "reason": "Stripe SDK endpoint override (fixture)"
+    }
+  ],
+  "refusedValues": [
+    {
+      "variable": "STRIPE_PRICE_PAID_MONTHLY",
+      "pattern": "^price_TEST_",
+      "category": "test-hook",
+      "reason": "the offline fixture price (decisions §4)"
+    },
+    {
+      "variable": "STRIPE_PRICE_PAID_MONTHLY",
+      "pattern": "^(?!price_[A-Za-z0-9]+$)",
+      "category": "missing-required-value",
+      "reason": "not a Stripe price ID"
+    },
+    {
+      "variable": "STRIPE_PORTAL_CONFIGURATION",
+      "pattern": "^(?!bpc_[A-Za-z0-9]+$)",
+      "category": "missing-required-value",
+      "reason": "not a Stripe portal configuration ID"
     }
   ],
   "fixed": {
@@ -116,10 +136,15 @@
         "JEEVES_EXTERNAL_STRIPE_API_URL",
         "OIDC_AUDIENCE",
         "OIDC_ISSUER",
-        "OIDC_JWKS_URL"
+        "OIDC_JWKS_URL",
+        "QRWTY_PUBLIC_ORIGIN_URL",
+        "STRIPE_PORTAL_CONFIGURATION",
+        "STRIPE_PRICE_PAID_MONTHLY"
       ],
       "secrets": [
-        "sql-billing--billing-api"
+        "sql-billing--billing-api",
+        "stripe-secret-key",
+        "stripe-webhook-secret"
       ]
     },
     "link-api": {

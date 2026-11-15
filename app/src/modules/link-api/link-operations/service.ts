@@ -11,14 +11,16 @@
 //   POST   /links/:id/claim      {claimToken}  Idempotency-Key; signed in only
 //   POST   /account/erase        the Links part of the caller's account deletion
 // Answers follow http-contract §4; another account's link is 404. A guest create is admitted by
-// the guest admission (Q09: abuse-and-moderation/admission.ts) first; paid entitlements are A7's.
+// the guest admission (Q09: abuse-and-moderation/admission.ts) first; an owned create and a claim
+// spend the allowance of the caller's Billing API grant (A7), in the Links transaction.
 
 import { createFailureLog } from "../../../runtime/tile-process.ts";
+import { fetchGrant } from "../../billing-api/billing/grant-client.ts";
 import type { ModuleRequest, ModuleResponse } from "../../entry.ts";
 import { defineRoutes } from "../../entry.ts";
 import { sharedAdmission } from "../abuse-and-moderation/admission.ts";
 import type { Dependencies } from "../link-api-link-operations.slots.ts";
-import { notFound, problem } from "./contract.ts";
+import { notFound, problem, singleHeader } from "./contract.ts";
 import { type CreateContext, createLink } from "./create.ts";
 import { metadataTokenSource } from "./google-credentials.ts";
 import { ownedRoutes } from "./owned.ts";
@@ -86,5 +88,12 @@ function linkOperationsFromSettings(settings: Dependencies["settings"]): LinkOpe
 			}),
 		onFailure: failure,
 		admission: sharedAdmission((error) => failure("admission cache", error)),
+		// A7: the signed-in caller's grant, asked of Billing API with the caller's own bearer.
+		entitlement: (dependencies, request) =>
+			fetchGrant(
+				dependencies.billingApi,
+				singleHeader(request.headers, "authorization"),
+				request.signal,
+			),
 	});
 }

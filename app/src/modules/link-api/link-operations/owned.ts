@@ -3,6 +3,7 @@
 // by a request field; another account's link and an unknown ID are both 404 (http-contract §2).
 
 import { IdempotencyConflict, requestHash } from "../../../runtime/idempotency.ts";
+import { FREE_LIMITS } from "../../billing-api/billing/grant-client.ts";
 import type { Tx } from "../../dependencies.ts";
 import type { ModuleRequest, ModuleResponse } from "../../entry.ts";
 import type { Dependencies } from "../link-api-link-operations.slots.ts";
@@ -17,9 +18,24 @@ import { LINK_COLUMNS, type LinkRow, linkResponse, ownerKey } from "./view.ts";
 const SCHEMA = "m_link_api_link_operations";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
-/** TEST FIXTURE, NOT APPROVED PRICING (decisions §4): every account is on `free-test-v1` until the
- * billing unit (A7) grants paid entitlements. A claim and an owned create each spend one. */
-export const ACCOUNT_POLICY = { name: "free-test-v1", ownedLinkCreatesPerMonth: 5 } as const;
+/** The account's monthly owned-link allowance for one request (decisions §4, TEST FIXTURES): the
+ * limit of Billing API's grant (A7), or Free's when there is no valid grant (`fallback`: Billing
+ * API didn't answer, so running out is 503 billing_unavailable, not 403). Without an entitlement
+ * source (tests), Free's. A claim and an owned create each spend one; a deletion never refunds. */
+export type Allowance = { limit: number; policy: string; fallback: boolean };
+
+export async function allowanceFor(
+	context: CreateContext,
+	dependencies: Dependencies,
+	request: ModuleRequest,
+): Promise<Allowance> {
+	const free = { limit: FREE_LIMITS.ownedLinkCreatesPerMonth, policy: "free-test-v1" };
+	if (!context.entitlement) return { ...free, fallback: false };
+	const grant = await context.entitlement(dependencies, request);
+	return grant
+		? { limit: grant.limits.ownedLinkCreatesPerMonth, policy: grant.policy, fallback: false }
+		: { ...free, fallback: true };
+}
 
 type Owner = { subject: string; key: Buffer };
 type Routed = ModuleRequest & { params: Record<string, string> };
@@ -39,8 +55,17 @@ const linkId = (request: Routed) => {
 	return id !== undefined && UUID.test(id) ? id : undefined;
 };
 
-/** 403 quota_exceeded with the frozen fields: limit, used and periodEnd. */
-function quota(used: number, periodEnd: Date): { status: number; body: unknown } {
+/** 403 quota_exceeded with the frozen fields: limit, used and periodEnd; or, when the limit is
+ * Free's only because Billing API didn't answer, 503 billing_unavailable (retry). */
+function quota(
+	used: number,
+	periodEnd: Date,
+	allowance: Allowance,
+): { status: number; body: unknown } {
+	if (allowance.fallback)
+		return problem(503, "billing_unavailable", "Your plan could not be checked; try again.", true, {
+			retryAfterSeconds: 2,
+		}) as { status: number; body: unknown };
 	return {
 		status: 403,
 		body: {
@@ -48,10 +73,10 @@ function quota(used: number, periodEnd: Date): { status: number; body: unknown }
 				code: "quota_exceeded",
 				message: "This account has no owned-link creations left this month.",
 				retryable: false,
-				limit: ACCOUNT_POLICY.ownedLinkCreatesPerMonth,
+				limit: allowance.limit,
 				used,
 				periodEnd: periodEnd.toISOString(),
-				policy: ACCOUNT_POLICY.name,
+				policy: allowance.policy,
 			},
 		},
 	};
@@ -244,6 +269,7 @@ export function ownedRoutes(context: CreateContext) {
 		if (!id)
 			return problem(403, "claim_invalid", "This claim proof is not valid for the link.", false);
 		const offset = context.hooks.clockOffsetMs();
+		const allowance = await allowanceFor(context, dependencies, request);
 		try {
 			const result = await dependencies.links.idempotent(
 				{
@@ -264,7 +290,7 @@ export function ownedRoutes(context: CreateContext) {
 						sha256(token),
 						me.subject,
 						me.key,
-						ACCOUNT_POLICY.ownedLinkCreatesPerMonth,
+						allowance.limit,
 						offset,
 					]);
 					switch (row?.outcome) {
@@ -289,7 +315,7 @@ export function ownedRoutes(context: CreateContext) {
 								body: unknown;
 							};
 						case "quota":
-							return quota(row.used ?? 0, row.period_end ?? new Date());
+							return quota(row.used ?? 0, row.period_end ?? new Date(), allowance);
 						default:
 							return problem(
 								403,
@@ -308,6 +334,7 @@ export function ownedRoutes(context: CreateContext) {
 				status: result.status,
 				headers: {
 					...(result.status === 200 ? { ETag: `"${answer.version}"` } : {}),
+					...(result.status === 503 ? { "Retry-After": "2" } : {}),
 					...(result.replayed ? { "Idempotent-Replayed": "true" } : {}),
 				},
 				body: result.body,
@@ -352,6 +379,11 @@ export async function createOwnedLink(
 	key: string,
 	input: { destination: string; expiresAt: string | null },
 	random: (size: number) => Uint8Array,
+	allowance: Allowance = {
+		limit: FREE_LIMITS.ownedLinkCreatesPerMonth,
+		policy: "free-test-v1",
+		fallback: false,
+	},
 ): Promise<ModuleResponse> {
 	const offset = context.hooks.clockOffsetMs();
 	try {
@@ -372,9 +404,9 @@ export async function createOwnedLink(
 					}) as { status: number; body: unknown };
 				const [spent] = await tx.query<{ allowed: boolean; used: number; period_end: Date }>(
 					`SELECT * FROM ${SCHEMA}.spend_owned_create($1, $2, $3)`,
-					[me.key, ACCOUNT_POLICY.ownedLinkCreatesPerMonth, at],
+					[me.key, allowance.limit, at],
 				);
-				if (!spent?.allowed) return quota(spent?.used ?? 0, spent?.period_end ?? at);
+				if (!spent?.allowed) return quota(spent?.used ?? 0, spent?.period_end ?? at, allowance);
 				await setChange(tx, "create", "owner");
 				for (const slug of slugCandidates(context.hooks.forcedSlugs(), random)) {
 					const [row] = await tx.query<LinkRow>(
@@ -404,7 +436,7 @@ export async function createOwnedLink(
 			status: result.status,
 			headers: {
 				...(result.status === 201 ? { ETag: `"${answer.version}"` } : {}),
-				...(result.status === 503 ? { "Retry-After": "1" } : {}),
+				...(result.status === 503 ? { "Retry-After": allowance.fallback ? "2" : "1" } : {}),
 				...(result.replayed ? { "Idempotent-Replayed": "true" } : {}),
 			},
 			body: result.body,

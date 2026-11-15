@@ -92,6 +92,29 @@ $step$;
 -- One accepted event: true the first time its ID is seen, false for a duplicate (nothing counted
 -- twice). Two copies taking the same ID at once: the second waits on the receipt's key and then
 -- finds it.
+-- Step 2 (A7): breakdowns per link, UTC day and coarse dimension (device class, country, referrer
+-- host; '' when the event had none), counted in the same transaction as the receipt, for the paid
+-- tier's analytics. Non-synthetic events only; kept 13 months like the daily counts.
+DO $step$
+BEGIN
+  IF EXISTS (SELECT 1 FROM product_migrations WHERE version = 2) THEN
+    RETURN;
+  END IF;
+  CREATE TABLE click_breakdowns (
+    link_id uuid NOT NULL,
+    day date NOT NULL,
+    dimension text NOT NULL CHECK (dimension IN ('device', 'country', 'referrer')),
+    value text NOT NULL CHECK (length(value) <= 253),
+    recorded_attempts bigint NOT NULL DEFAULT 0 CHECK (recorded_attempts >= 0),
+    filtered_clicks bigint NOT NULL DEFAULT 0
+      CHECK (filtered_clicks >= 0 AND filtered_clicks <= recorded_attempts),
+    PRIMARY KEY (link_id, day, dimension, value)
+  );
+  CREATE INDEX click_breakdowns_day ON click_breakdowns (day);
+  INSERT INTO product_migrations (version, name) VALUES (2, 'A7: click breakdowns');
+END
+$step$;
+
 CREATE OR REPLACE FUNCTION record_click(p_event_id uuid, p_link_id uuid, p_event_time timestamptz,
   p_synthetic boolean, p_bot boolean)
 RETURNS boolean
@@ -151,6 +174,7 @@ AS $$
 DECLARE
   v_receipts integer;
   v_days integer;
+  v_breakdowns integer;
 BEGIN
   DELETE FROM click_receipts WHERE event_id IN (
     SELECT event_id FROM click_receipts
@@ -162,7 +186,13 @@ BEGIN
     WHERE day < ((clock_timestamp() AT TIME ZONE 'UTC') - interval '13 months')::date
     ORDER BY day LIMIT p_limit FOR UPDATE SKIP LOCKED);
   GET DIAGNOSTICS v_days = ROW_COUNT;
-  RETURN v_receipts + v_days;
+  -- A7: breakdowns past 13 months, as the daily counts.
+  DELETE FROM click_breakdowns WHERE (link_id, day, dimension, value) IN (
+    SELECT link_id, day, dimension, value FROM click_breakdowns
+    WHERE day < ((clock_timestamp() AT TIME ZONE 'UTC') - interval '13 months')::date
+    ORDER BY day LIMIT p_limit FOR UPDATE SKIP LOCKED);
+  GET DIAGNOSTICS v_breakdowns = ROW_COUNT;
+  RETURN v_receipts + v_days + v_breakdowns;
 END
 $$;
 
@@ -177,3 +207,33 @@ SELECT last_commit_at, last_event_time, last_lag_ms FROM click_pipeline;
 CREATE OR REPLACE VIEW published.click_quarantine_open AS
 SELECT link_id, count(*) AS events, min(received_at) AS oldest
 FROM click_quarantine WHERE repaired_at IS NULL GROUP BY link_id;
+
+-- A7: record_click and, for a first non-synthetic event, its three breakdown rows, in one
+-- statement (one transaction), so a redelivered event ID counts once everywhere.
+CREATE OR REPLACE FUNCTION record_click_v2(p_event_id uuid, p_link_id uuid, p_event_time timestamptz,
+  p_synthetic boolean, p_bot boolean, p_device text, p_country text, p_referrer text)
+RETURNS boolean
+LANGUAGE plpgsql VOLATILE
+SET search_path = m_analytics_worker_click_aggregator, pg_temp
+AS $$
+DECLARE
+  v_first boolean;
+BEGIN
+  v_first := record_click(p_event_id, p_link_id, p_event_time, p_synthetic, p_bot);
+  IF v_first AND NOT p_synthetic THEN
+    INSERT INTO click_breakdowns AS b (link_id, day, dimension, value, recorded_attempts, filtered_clicks)
+    SELECT p_link_id, (p_event_time AT TIME ZONE 'UTC')::date, d.dimension, d.value, 1,
+           CASE WHEN p_bot THEN 0 ELSE 1 END
+    FROM (VALUES ('device', coalesce(p_device, '')), ('country', coalesce(p_country, '')),
+                 ('referrer', coalesce(p_referrer, ''))) AS d (dimension, value)
+    ON CONFLICT (link_id, day, dimension, value) DO UPDATE SET
+      recorded_attempts = b.recorded_attempts + excluded.recorded_attempts,
+      filtered_clicks = b.filtered_clicks + excluded.filtered_clicks;
+  END IF;
+  RETURN v_first;
+END
+$$;
+
+-- A7: what the paid tier's analytics read: breakdown counts per link, day and dimension.
+CREATE OR REPLACE VIEW published.click_breakdowns AS
+SELECT link_id, day, dimension, value, recorded_attempts, filtered_clicks FROM click_breakdowns;
