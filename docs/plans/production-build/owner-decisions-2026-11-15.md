@@ -23,3 +23,23 @@ The owner said: "we shouldn't be implementing this deeply if we have enough info
   - effort per arm, from the ledger;
   - the Jeeves gaps found and fixed;
   - the QL plan's estimate.
+
+## Later the same day
+
+- **"Yes for all recommendations."**
+  - QG34 / B1: each credential can be read from its own file, through `JEEVES_SECRET_<NAME>_FILE`.
+  - B2, B3 and B4: no unit now; QG33 records them as known limits.
+  - QG29: the `JEEVES_MIGRATE_*` interpretation stands.
+  - Arm B's teardown and arm A's single deploy go ahead as already decided.
+- **"Deprioritize testing."** The remaining units use a lighter verification profile. It replaces
+  the heavier unit rules of the Jeeves plans for these units:
+  - **Every unit:** `pnpm check` and the web build.
+  - **e2e:** only when a unit touches studio or web code.
+  - **Docker:** at most the one suite or proof most relevant to the change. Flaky results are
+    reported, not rerun.
+  - **Dropped:** the scratch-clone "new tests fail on HEAD" measurement.
+  - **Regeneration proof:** export both fixtures and list the changed paths, with no install or
+    build.
+  - **Reviews** (QGR3, QLR1) still run, but they re-run only `pnpm check`, plus one proof each if
+    they doubt a claim.
+  - **Exception:** Q13's live probes are the purpose of that unit, so they stay.

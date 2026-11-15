@@ -141,3 +141,4 @@ QG12 running; then QG11, QGR1, B04c, B04b, N03, batch 2 (QG03, QG04, QG06–QG10
   - **A:** Q06 (running), then one live deploy (Q12a+Q13 combined, record, then teardown).
   - **Shared:** S02 (the versions site on qrwty.io and the README results).
   - **Jeeves:** QGB3, batch 3 (with QG28 and QG29), then QL.
+- **Owner, 2026-11-15 ~13:00Z:** yes to all the recommendations (QG34/B1 yes; B2–B4 no unit). Testing is deprioritized: the lighter verification profile in `owner-decisions-2026-11-15.md` applies to every unit from now on.
