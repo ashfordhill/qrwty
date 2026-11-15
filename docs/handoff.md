@@ -641,3 +641,76 @@ pre-rewrite history is kept locally at `refs/backup/pre-rewrite-20261114`.
     was read.
   - **Foreign context:** the session started with foreign Jeeves context (`AGENTS.md`, Git
     status, a memory index); it was ignored.
+
+## Q11: QRWTY visual direction, 2026-11-14
+
+- **Scope.** The coordinator relayed the owner's scope change mid-unit: one direction instead of
+  two. It is picked to fit the owner's own style; there is no skin switch, competitor review,
+  Excalidraw flow sheet, reviewer's-default step or "three choices", and the commit is named
+  `Q11: select QRWTY visual direction`. No second direction was started, so nothing was deleted.
+  No web research was done.
+- **Changed.** New `docs/design/`:
+  - `README.md`: the review record. It has the rationale paragraph citing the style sources, the
+    states, the decisions Q12/B08 should keep, the accessibility treatment and the limitations.
+  - `prototype/`: the clickable static prototype.
+    - `tokens.css` is the token sheet: one set of names, light and dark values, no glass.
+    - `app.css` and `app.js` hold the screens and all 69 states of the brief's flows.
+    - `qr.js` is a QR encoder (byte mode, level M).
+    - The prototype bar has Screen, State and Theme selectors.
+  - `accessible-names.json` (schema-valid, 29 oracle keys plus 36 more) and `accessible-names.md`.
+  - `qr-export/qrwty-7Hq2xP9kLm.png` and `.svg`.
+
+  New `docs/evidence/q11/`: `checks.md`, `contrast.md`, `results/*.json`, 67 screenshots and the
+  check scripts.
+- **Direction: "Steel and Ice".** It is automation-pitch's palette and outline style with the
+  Jeeves refresh's icon and dark-ramp rules:
+  - an icy page and a steel top bar with a cyan rule, ink outlines and hard offset shadows;
+  - Nunito, with one yellow action per view and pastel status families;
+  - solid dark shades and no glass;
+  - a monospace short link and a white QR sticker in both themes.
+- **Checked.** Details are in `docs/evidence/q11/checks.md`.
+  - Mouse-only walkthrough: 4 of 4 runs pass (light/dark x desktop/mobile), covering create, copy
+    (clipboard verified), PNG and SVG download (decoded), save through the sign-in stand-in, My
+    links, edit, disable, analytics, CSV export and upgrade to confirmed Paid. No keyboard events.
+  - Names: all 65 found, 264 lookups.
+  - Overflow: 0 px at 360, 320, 768, landscape, 720 (200% zoom), 1440 and 2560, in all 69 states.
+  - Reduced motion: no infinite animations or transitions.
+  - Contrast: 49 token pairs pass in both themes (text at least 5.97:1); the scan of all rendered
+    text found its lowest at 5.63:1, with 0 failures.
+  - Other: no target under 24 px, outlines at every focus stop, 0 external requests, 0 console
+    errors.
+  - QR: the encoder decodes 220 of 220 samples; the export sample decodes at 120–1184 px.
+  - `git diff --check` is clean and the ledger validates.
+- **Artifact.** One private artifact of the prototype: https://claude.ai/artifact/TwiVwazQku5Js9LfmgsW4q.
+  `scripts/artifact-page.mjs` derives it from `prototype/index.html`. It adds one Google Fonts
+  stylesheet so the owner sees Nunito. Inside the artifact, downloads show the file in a dialog,
+  because the host blocks saving.
+- **Differences from the packet.**
+  1. **Ledger phase.** The schema has no `design` phase, so the attempt (`shared-0645`) is
+     recorded as `ui`.
+  2. **Jeeves files read.** The coordinator's scope change allowed reading two style sources,
+     which overrides the packet's "don't read Jeeves" for those files only. I read
+     `jeeves/docs/plans/ui-refresh/preview.md` and its images `icons-light`, `icons-dark`,
+     `top-bar-light`, `top-bar-dark`, `settings-light`, `settings-dark` and `dark-ramp`. I also
+     read automation-pitch's `index.html`, `src/app/styles/tokens.css` (parts),
+     `src/app/components/StatusBar.css` and `src/board/tiles/robot-figure.svg`. Nothing else
+     in either repository was read.
+  3. **No direct sign-in page.** Save to my links and Sign in go straight to the provider,
+     because the oracle's U02 expects the issuer page right after `result.save`.
+  4. **Additions.** There are 36 accessible names beyond the oracle's keys, for brief states
+     the arms' own tests will need.
+- **Next.**
+  - The pack amendment copies `docs/design/accessible-names.json` (version `q11-2026-11-14.1`).
+  - Q12 and B08 build this one skin.
+  - Self-host Nunito (SIL OFL); the prototype has no font file.
+  - U06 real-phone and printed-code scans are still human steps.
+  - The prototype's sign-in and payment pages are stand-ins, not designs for those providers.
+- **Read for this unit.** The packet, the coordinator's scope message, `AGENTS.md`, the design
+  brief, Q11 in `units.md`, owner decisions §5, §10 and §11 (§11 was committed as `3f9e0d3`
+  during the unit; it matches the scope message), the product and billing contracts, the
+  acceptance UI rows, and the neutral pack v1.4 frozen decisions §4, HTTP contract §7 and §9, and
+  acceptance-oracle §6. I also read the oracle's `ui-names.schema.json`,
+  `src/browser/{names,driver,qr}.ts`, `src/rows/lib/ui.ts` and rows A01, U02–U07, the ledger
+  README and this file's S01 entry. I read nothing in qrwty-baseline and no arm source.
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status,
+  a memory index). I ignored it, apart from the two style sources the coordinator allowed.

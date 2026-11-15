@@ -1,0 +1,313 @@
+{
+  "generatedAt": "2026-11-15T01:31:19.211Z",
+  "runs": [
+    {
+      "theme": "light",
+      "viewport": "desktop",
+      "passed": true,
+      "keyboardUsed": false,
+      "overflowAtEnd": 0,
+      "external": [],
+      "errors": [],
+      "steps": [
+        {
+          "step": "create: paste link and click Shorten",
+          "ok": true,
+          "ms": 866,
+          "detail": {
+            "shortUrl": "https://qrwty.io/QKJOIPAZwj"
+          }
+        },
+        {
+          "step": "result: copy short link",
+          "ok": true,
+          "ms": 50,
+          "detail": {
+            "clipboard": "https://qrwty.io/QKJOIPAZwj"
+          }
+        },
+        {
+          "step": "result: download QR as PNG and SVG",
+          "ok": true,
+          "ms": 379,
+          "detail": {
+            "pngBytes": 33654,
+            "pngDecodes": true,
+            "svgDecodesAt": [
+              150,
+              300,
+              600
+            ]
+          }
+        },
+        {
+          "step": "result: save to my links (sign-in stand-in)",
+          "ok": true,
+          "ms": 76
+        },
+        {
+          "step": "library: open My links and the newest link",
+          "ok": true,
+          "ms": 99,
+          "detail": {
+            "opened": "harbourline-bakery.example"
+          }
+        },
+        {
+          "step": "link: change destination and save",
+          "ok": true,
+          "ms": 94
+        },
+        {
+          "step": "link: disable with confirmation",
+          "ok": true,
+          "ms": 92
+        },
+        {
+          "step": "analytics: open click analytics and export CSV",
+          "ok": true,
+          "ms": 98,
+          "detail": {
+            "csvRows": 7
+          }
+        },
+        {
+          "step": "billing: upgrade, pay on the stand-in, confirm",
+          "ok": true,
+          "ms": 2889
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "viewport": "mobile",
+      "passed": true,
+      "keyboardUsed": false,
+      "overflowAtEnd": 0,
+      "external": [],
+      "errors": [],
+      "steps": [
+        {
+          "step": "create: paste link and click Shorten",
+          "ok": true,
+          "ms": 867,
+          "detail": {
+            "shortUrl": "https://qrwty.io/iyGpV5oaZJ"
+          }
+        },
+        {
+          "step": "result: copy short link",
+          "ok": true,
+          "ms": 24,
+          "detail": {
+            "clipboard": "https://qrwty.io/iyGpV5oaZJ"
+          }
+        },
+        {
+          "step": "result: download QR as PNG and SVG",
+          "ok": true,
+          "ms": 349,
+          "detail": {
+            "pngBytes": 33701,
+            "pngDecodes": true,
+            "svgDecodesAt": [
+              150,
+              300,
+              600
+            ]
+          }
+        },
+        {
+          "step": "result: save to my links (sign-in stand-in)",
+          "ok": true,
+          "ms": 58
+        },
+        {
+          "step": "library: open My links and the newest link",
+          "ok": true,
+          "ms": 87,
+          "detail": {
+            "opened": "harbourline-bakery.example"
+          }
+        },
+        {
+          "step": "link: change destination and save",
+          "ok": true,
+          "ms": 98
+        },
+        {
+          "step": "link: disable with confirmation",
+          "ok": true,
+          "ms": 98
+        },
+        {
+          "step": "analytics: open click analytics and export CSV",
+          "ok": true,
+          "ms": 7726,
+          "detail": {
+            "csvRows": 7
+          }
+        },
+        {
+          "step": "billing: upgrade, pay on the stand-in, confirm",
+          "ok": true,
+          "ms": 2877
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "viewport": "desktop",
+      "passed": true,
+      "keyboardUsed": false,
+      "overflowAtEnd": 0,
+      "external": [],
+      "errors": [],
+      "steps": [
+        {
+          "step": "create: paste link and click Shorten",
+          "ok": true,
+          "ms": 858,
+          "detail": {
+            "shortUrl": "https://qrwty.io/mDfA7iGMpQ"
+          }
+        },
+        {
+          "step": "result: copy short link",
+          "ok": true,
+          "ms": 30,
+          "detail": {
+            "clipboard": "https://qrwty.io/mDfA7iGMpQ"
+          }
+        },
+        {
+          "step": "result: download QR as PNG and SVG",
+          "ok": true,
+          "ms": 311,
+          "detail": {
+            "pngBytes": 33681,
+            "pngDecodes": true,
+            "svgDecodesAt": [
+              150,
+              300,
+              600
+            ]
+          }
+        },
+        {
+          "step": "result: save to my links (sign-in stand-in)",
+          "ok": true,
+          "ms": 47
+        },
+        {
+          "step": "library: open My links and the newest link",
+          "ok": true,
+          "ms": 88,
+          "detail": {
+            "opened": "harbourline-bakery.example"
+          }
+        },
+        {
+          "step": "link: change destination and save",
+          "ok": true,
+          "ms": 100
+        },
+        {
+          "step": "link: disable with confirmation",
+          "ok": true,
+          "ms": 110
+        },
+        {
+          "step": "analytics: open click analytics and export CSV",
+          "ok": true,
+          "ms": 84,
+          "detail": {
+            "csvRows": 7
+          }
+        },
+        {
+          "step": "billing: upgrade, pay on the stand-in, confirm",
+          "ok": true,
+          "ms": 2892
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "viewport": "mobile",
+      "passed": true,
+      "keyboardUsed": false,
+      "overflowAtEnd": 0,
+      "external": [],
+      "errors": [],
+      "steps": [
+        {
+          "step": "create: paste link and click Shorten",
+          "ok": true,
+          "ms": 861,
+          "detail": {
+            "shortUrl": "https://qrwty.io/TKisSjQvvu"
+          }
+        },
+        {
+          "step": "result: copy short link",
+          "ok": true,
+          "ms": 31,
+          "detail": {
+            "clipboard": "https://qrwty.io/TKisSjQvvu"
+          }
+        },
+        {
+          "step": "result: download QR as PNG and SVG",
+          "ok": true,
+          "ms": 3886,
+          "detail": {
+            "pngBytes": 33669,
+            "pngDecodes": true,
+            "svgDecodesAt": [
+              150,
+              300,
+              600
+            ]
+          }
+        },
+        {
+          "step": "result: save to my links (sign-in stand-in)",
+          "ok": true,
+          "ms": 54
+        },
+        {
+          "step": "library: open My links and the newest link",
+          "ok": true,
+          "ms": 71,
+          "detail": {
+            "opened": "harbourline-bakery.example"
+          }
+        },
+        {
+          "step": "link: change destination and save",
+          "ok": true,
+          "ms": 97
+        },
+        {
+          "step": "link: disable with confirmation",
+          "ok": true,
+          "ms": 99
+        },
+        {
+          "step": "analytics: open click analytics and export CSV",
+          "ok": true,
+          "ms": 7715,
+          "detail": {
+            "csvRows": 7
+          }
+        },
+        {
+          "step": "billing: upgrade, pay on the stand-in, confirm",
+          "ok": true,
+          "ms": 2890
+        }
+      ]
+    }
+  ]
+}

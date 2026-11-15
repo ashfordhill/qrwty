@@ -1,0 +1,424 @@
+{
+  "generatedAt": "2026-11-15T01:30:08.748Z",
+  "problems": [],
+  "index": [
+    {
+      "screen": "create",
+      "state": "create.blank",
+      "theme": "light",
+      "viewport": "desktop 1440x900",
+      "file": "screens/create-light-desktop.png",
+      "fold": "screens/create-light-desktop-fold.png"
+    },
+    {
+      "screen": "result",
+      "state": "result.ready",
+      "theme": "light",
+      "viewport": "desktop 1440x900",
+      "file": "screens/result-light-desktop.png",
+      "fold": "screens/result-light-desktop-fold.png"
+    },
+    {
+      "screen": "library",
+      "state": "links.populated",
+      "theme": "light",
+      "viewport": "desktop 1440x900",
+      "file": "screens/library-light-desktop.png",
+      "fold": "screens/library-light-desktop-fold.png"
+    },
+    {
+      "screen": "analytics",
+      "state": "clicks.available",
+      "theme": "light",
+      "viewport": "desktop 1440x900",
+      "file": "screens/analytics-light-desktop.png",
+      "fold": "screens/analytics-light-desktop-fold.png"
+    },
+    {
+      "screen": "billing",
+      "state": "plans.free",
+      "theme": "light",
+      "viewport": "desktop 1440x900",
+      "file": "screens/billing-light-desktop.png",
+      "fold": "screens/billing-light-desktop-fold.png"
+    },
+    {
+      "screen": "create",
+      "state": "create.blank",
+      "theme": "light",
+      "viewport": "mobile 360x800",
+      "file": "screens/create-light-mobile.png",
+      "fold": "screens/create-light-mobile-fold.png"
+    },
+    {
+      "screen": "result",
+      "state": "result.ready",
+      "theme": "light",
+      "viewport": "mobile 360x800",
+      "file": "screens/result-light-mobile.png",
+      "fold": "screens/result-light-mobile-fold.png"
+    },
+    {
+      "screen": "library",
+      "state": "links.populated",
+      "theme": "light",
+      "viewport": "mobile 360x800",
+      "file": "screens/library-light-mobile.png",
+      "fold": "screens/library-light-mobile-fold.png"
+    },
+    {
+      "screen": "analytics",
+      "state": "clicks.available",
+      "theme": "light",
+      "viewport": "mobile 360x800",
+      "file": "screens/analytics-light-mobile.png",
+      "fold": "screens/analytics-light-mobile-fold.png"
+    },
+    {
+      "screen": "billing",
+      "state": "plans.free",
+      "theme": "light",
+      "viewport": "mobile 360x800",
+      "file": "screens/billing-light-mobile.png",
+      "fold": "screens/billing-light-mobile-fold.png"
+    },
+    {
+      "sheet": "create",
+      "theme": "light",
+      "states": [
+        "blank",
+        "pasted",
+        "invalid",
+        "submitting",
+        "double",
+        "offline",
+        "rate",
+        "reputation",
+        "provider",
+        "error"
+      ],
+      "file": "states/create-states-light.png"
+    },
+    {
+      "sheet": "result",
+      "theme": "light",
+      "states": [
+        "ready",
+        "copied",
+        "copyFailed",
+        "opened",
+        "downloaded",
+        "claimExpired",
+        "alreadyClaimed",
+        "saved"
+      ],
+      "file": "states/result-states-light.png"
+    },
+    {
+      "sheet": "signin",
+      "theme": "light",
+      "states": [
+        "start",
+        "success",
+        "failure",
+        "cancelled",
+        "expired",
+        "restored"
+      ],
+      "file": "states/signin-states-light.png"
+    },
+    {
+      "sheet": "links",
+      "theme": "light",
+      "states": [
+        "populated",
+        "empty",
+        "loading",
+        "more",
+        "stale",
+        "network",
+        "unauthorized",
+        "signedOut"
+      ],
+      "file": "states/links-states-light.png"
+    },
+    {
+      "sheet": "link",
+      "theme": "light",
+      "states": [
+        "view",
+        "editing",
+        "validation",
+        "conflict",
+        "saved",
+        "confirmDisable",
+        "disabled",
+        "blocked",
+        "confirmDelete"
+      ],
+      "file": "states/link-states-light.png"
+    },
+    {
+      "sheet": "clicks",
+      "theme": "light",
+      "states": [
+        "available",
+        "none",
+        "delayed",
+        "incident",
+        "lookback",
+        "bounds",
+        "exportFailed",
+        "exported",
+        "paid"
+      ],
+      "file": "states/clicks-states-light.png"
+    },
+    {
+      "sheet": "plans",
+      "theme": "light",
+      "states": [
+        "free",
+        "limit",
+        "checkout",
+        "checkoutCancelled",
+        "confirming",
+        "active",
+        "grace",
+        "portalDown",
+        "cancelScheduled",
+        "downgraded",
+        "deletion",
+        "signedOut"
+      ],
+      "file": "states/plans-states-light.png"
+    },
+    {
+      "sheet": "error",
+      "theme": "light",
+      "states": [
+        "unknown",
+        "deleted",
+        "disabled",
+        "blocked",
+        "outage"
+      ],
+      "file": "states/error-states-light.png"
+    },
+    {
+      "screen": "token-sheet",
+      "theme": "light",
+      "viewport": "desktop 1440x900",
+      "file": "screens/token-sheet-light-desktop.png"
+    },
+    {
+      "screen": "create",
+      "state": "create.blank",
+      "theme": "dark",
+      "viewport": "desktop 1440x900",
+      "file": "screens/create-dark-desktop.png",
+      "fold": "screens/create-dark-desktop-fold.png"
+    },
+    {
+      "screen": "result",
+      "state": "result.ready",
+      "theme": "dark",
+      "viewport": "desktop 1440x900",
+      "file": "screens/result-dark-desktop.png",
+      "fold": "screens/result-dark-desktop-fold.png"
+    },
+    {
+      "screen": "library",
+      "state": "links.populated",
+      "theme": "dark",
+      "viewport": "desktop 1440x900",
+      "file": "screens/library-dark-desktop.png",
+      "fold": "screens/library-dark-desktop-fold.png"
+    },
+    {
+      "screen": "analytics",
+      "state": "clicks.available",
+      "theme": "dark",
+      "viewport": "desktop 1440x900",
+      "file": "screens/analytics-dark-desktop.png",
+      "fold": "screens/analytics-dark-desktop-fold.png"
+    },
+    {
+      "screen": "billing",
+      "state": "plans.free",
+      "theme": "dark",
+      "viewport": "desktop 1440x900",
+      "file": "screens/billing-dark-desktop.png",
+      "fold": "screens/billing-dark-desktop-fold.png"
+    },
+    {
+      "screen": "create",
+      "state": "create.blank",
+      "theme": "dark",
+      "viewport": "mobile 360x800",
+      "file": "screens/create-dark-mobile.png",
+      "fold": "screens/create-dark-mobile-fold.png"
+    },
+    {
+      "screen": "result",
+      "state": "result.ready",
+      "theme": "dark",
+      "viewport": "mobile 360x800",
+      "file": "screens/result-dark-mobile.png",
+      "fold": "screens/result-dark-mobile-fold.png"
+    },
+    {
+      "screen": "library",
+      "state": "links.populated",
+      "theme": "dark",
+      "viewport": "mobile 360x800",
+      "file": "screens/library-dark-mobile.png",
+      "fold": "screens/library-dark-mobile-fold.png"
+    },
+    {
+      "screen": "analytics",
+      "state": "clicks.available",
+      "theme": "dark",
+      "viewport": "mobile 360x800",
+      "file": "screens/analytics-dark-mobile.png",
+      "fold": "screens/analytics-dark-mobile-fold.png"
+    },
+    {
+      "screen": "billing",
+      "state": "plans.free",
+      "theme": "dark",
+      "viewport": "mobile 360x800",
+      "file": "screens/billing-dark-mobile.png",
+      "fold": "screens/billing-dark-mobile-fold.png"
+    },
+    {
+      "sheet": "create",
+      "theme": "dark",
+      "states": [
+        "blank",
+        "pasted",
+        "invalid",
+        "submitting",
+        "double",
+        "offline",
+        "rate",
+        "reputation",
+        "provider",
+        "error"
+      ],
+      "file": "states/create-states-dark.png"
+    },
+    {
+      "sheet": "result",
+      "theme": "dark",
+      "states": [
+        "ready",
+        "copied",
+        "copyFailed",
+        "opened",
+        "downloaded",
+        "claimExpired",
+        "alreadyClaimed",
+        "saved"
+      ],
+      "file": "states/result-states-dark.png"
+    },
+    {
+      "sheet": "signin",
+      "theme": "dark",
+      "states": [
+        "start",
+        "success",
+        "failure",
+        "cancelled",
+        "expired",
+        "restored"
+      ],
+      "file": "states/signin-states-dark.png"
+    },
+    {
+      "sheet": "links",
+      "theme": "dark",
+      "states": [
+        "populated",
+        "empty",
+        "loading",
+        "more",
+        "stale",
+        "network",
+        "unauthorized",
+        "signedOut"
+      ],
+      "file": "states/links-states-dark.png"
+    },
+    {
+      "sheet": "link",
+      "theme": "dark",
+      "states": [
+        "view",
+        "editing",
+        "validation",
+        "conflict",
+        "saved",
+        "confirmDisable",
+        "disabled",
+        "blocked",
+        "confirmDelete"
+      ],
+      "file": "states/link-states-dark.png"
+    },
+    {
+      "sheet": "clicks",
+      "theme": "dark",
+      "states": [
+        "available",
+        "none",
+        "delayed",
+        "incident",
+        "lookback",
+        "bounds",
+        "exportFailed",
+        "exported",
+        "paid"
+      ],
+      "file": "states/clicks-states-dark.png"
+    },
+    {
+      "sheet": "plans",
+      "theme": "dark",
+      "states": [
+        "free",
+        "limit",
+        "checkout",
+        "checkoutCancelled",
+        "confirming",
+        "active",
+        "grace",
+        "portalDown",
+        "cancelScheduled",
+        "downgraded",
+        "deletion",
+        "signedOut"
+      ],
+      "file": "states/plans-states-dark.png"
+    },
+    {
+      "sheet": "error",
+      "theme": "dark",
+      "states": [
+        "unknown",
+        "deleted",
+        "disabled",
+        "blocked",
+        "outage"
+      ],
+      "file": "states/error-states-dark.png"
+    },
+    {
+      "screen": "token-sheet",
+      "theme": "dark",
+      "viewport": "desktop 1440x900",
+      "file": "screens/token-sheet-dark-desktop.png"
+    }
+  ]
+}

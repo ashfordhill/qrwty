@@ -1,0 +1,50 @@
+{
+  "shortUrl": "https://qrwty.io/7Hq2xP9kLm",
+  "files": {
+    "png": {
+      "file": "docs/design/qr-export/qrwty-7Hq2xP9kLm.png"
+    },
+    "svg": {
+      "file": "docs/design/qr-export/qrwty-7Hq2xP9kLm.svg"
+    }
+  },
+  "png": {
+    "px": 1184,
+    "opaque": true,
+    "colours": [
+      "255,255,255",
+      "7,28,40"
+    ],
+    "modulesWithQuietZone": 37,
+    "pxPerModule": 32,
+    "quietZonePx": 128,
+    "quietZoneModules": 4,
+    "printWidthCmAt300dpi": 10
+  },
+  "svg": {
+    "bytes": 3168,
+    "viewBoxModules": 37,
+    "opaqueGround": true,
+    "crispEdges": true
+  },
+  "decodes": {
+    "decoder": "jsqr 1.4.0 (the oracle's)",
+    "pngNativeAndDownscaledPx": {
+      "120": true,
+      "150": true,
+      "236": true,
+      "354": true,
+      "600": true,
+      "native": true
+    },
+    "svgRasterizedPx": {
+      "120": true,
+      "150": true,
+      "300": true,
+      "600": true,
+      "1200": true
+    }
+  },
+  "printSizes": "236 px = 2.0 cm and 354 px = 3.0 cm at 300 dpi; 120-150 px is a small on-screen code",
+  "humanScans": "not run: real-phone scans of the screen and of printed PNG/SVG are U06 human steps (Q12)"
+}
