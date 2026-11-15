@@ -136,3 +136,8 @@ QG12 running; then QG11, QGR1, B04c, B04b, N03, batch 2 (QG03, QG04, QG06–QG10
 - **Q04 (5b927f1):** bindings proven locally on a scratch export at Jeeves 4e87f97 with Events on Google Cloud; R01 and R02 pass, R03 41/42 (session sharing waits for Q07). Q04b, `tofu validate`, needs the owner's OK to download OpenTofu. A-found gaps AG-01 to AG-07 (docs/evidence/q04/a-found-gaps.md) become Jeeves units QG30+ after QG27.
 - **Q05 (33d50e9, 7b432f7) and its review (916bbad), 2026-11-15 ~08:40Z.** Revision 84; the frozen export is byte-identical when regenerated; G0 is 2,926 backend lines (2,871 scaffolding, 55 stubs, UI 0). A-found gaps AG-08 (a queue's provider isn't drawn) and AG-09 (two generated files end with a blank line) join AG-01–AG-07. Coordinator rule: arm A reads Jeeves only at `4e87f97`, never the Jeeves working tree. Ledger note: `agentToolTotals` stays 0 in import records, and the real totals are in coordinator notes.
 - **A lane order now:** Q06 (step 0: Q05c and Q05d), then Q12a and Q13 once the owner allows the OpenTofu download, then Q07.
+- **Wind-down (owner, 2026-11-15 ~11:45Z):** see `owner-decisions-2026-11-15.md`. Remaining queue:
+  - **B:** B-final (record, then teardown).
+  - **A:** Q06 (running), then one live deploy (Q12a+Q13 combined, record, then teardown).
+  - **Shared:** S02 (the versions site on qrwty.io and the README results).
+  - **Jeeves:** QGB3, batch 3 (with QG28 and QG29), then QL.
