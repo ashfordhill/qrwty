@@ -142,3 +142,4 @@ QG12 running; then QG11, QGR1, B04c, B04b, N03, batch 2 (QG03, QG04, QG06–QG10
   - **Shared:** S02 (the versions site on qrwty.io and the README results).
   - **Jeeves:** QGB3, batch 3 (with QG28 and QG29), then QL.
 - **Owner, 2026-11-15 ~13:00Z:** yes to all the recommendations (QG34/B1 yes; B2–B4 no unit). Testing is deprioritized: the lighter verification profile in `owner-decisions-2026-11-15.md` applies to every unit from now on.
+- **Q13 (a6f982b), A's one live deploy:** probes passed on real GCP; about $0.23; torn down. Q13b (free network leftovers) and B-final's leftovers wait for Google to release its serverless addresses. Cloud-found Jeeves gaps AG-13 to AG-17 (docs/evidence/q13/a-found-gaps.md) join AG-10 to AG-12 for a briefs unit after QGR3. **Arms A and B are both stopped. Next in qrwty: S02 (the versions site and the README results).**
