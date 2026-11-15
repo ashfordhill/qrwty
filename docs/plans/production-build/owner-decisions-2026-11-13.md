@@ -146,3 +146,20 @@ care about UI." This replaces section 5 and §10's "both skins".
   desktop/mobile.
 - **Kept lean.** UI work does what the product contract and the UI rows need, and nothing more.
   The run's attention stays on the backend and on Jeeves.
+
+## 12. Amendment, 2026-11-14 night: the managed sign-in provider is Auth0 (free tier)
+
+B08a found GCP Identity Platform incompatible with the frozen web flow. It has no authorization or
+token endpoint for code + PKCE, it issues only ID tokens, and its audience is the project ID shared
+by every tenant. The owner chose **Auth0's free tier** as the managed issuer for both arms' staging.
+The frozen flow stays as it is: code + PKCE, JWT access tokens per API audience, refresh and
+revocation.
+
+- **One tenant, separate per arm.** Each arm gets its own applications and API audiences.
+- **Credentials.** The owner signs up and puts a Management API client in
+  `~/.config/qrwty/auth0.env` (`AUTH0_DOMAIN`, `AUTH0_MGMT_CLIENT_ID`, `AUTH0_MGMT_CLIENT_SECRET`).
+  Units load it by name only, like the Cloudflare and Stripe files.
+- **Local stacks keep Keycloak.** Q04/Q12a (A) and the unit after B09 (B) bind staging to Auth0. If
+  the cloud sign-in rows need the oracle to drive Auth0's login page, a pack amendment adds that
+  for both arms.
+- **Identity Platform stays initialised.** The owner chose to leave it; neither arm uses it.
