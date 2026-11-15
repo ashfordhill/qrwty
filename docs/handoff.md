@@ -935,3 +935,72 @@ verified; cloud activation pending.** Full record: [Q04 checks](evidence/q04/che
 - **Elapsed.** About 60 minutes to the commit, on a monotonic clock (`/proc/uptime`).
 - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
   memory index); it was ignored.
+
+## Q05: freeze QRWTY's generated baseline, 2026-11-15
+
+Arm A, attempt 1 (ledger `a-3636`, role implementer, phase generation-baseline), from QRWTY
+`e17df9c`. Generator: Jeeves **`4e87f97`** only, from `git archive` into `.scratch/Q05/jeeves` with
+its own offline install (`docs/plans/qrwty-lessons/` deleted unread); the Jeeves checkout was only
+read through Git. Pack v1.6. No cloud, Auth0, Cloudflare or Stripe call. Full record:
+[Q05 checks](evidence/q05/checks.md).
+
+- **Commits.** Baseline **`33d50e9c693b4d8d60d723e0de75b79f3570da64`** (`Q05: freeze QRWTY
+  generated baseline`: `app/`, root wiring, `tools/`, evidence, README). The follow-up commit with
+  this entry adds the LOC report run on it (`evidence/q05/loc/`) and
+  [baseline.json](evidence/q05/baseline.json).
+- **Revision 84.** One change, saved through Q01's path (`buildSupportedAuthoringCommand` →
+  `POST /operations`, 200): Click events' **Provider Unspecified → Google Cloud**. Source
+  `4fbcd311…024d`. No other change: all 15 normal controls were listed before and after, and the
+  Provider is the only one a QG fix added. Not changed (for a later revision): Click events'
+  description still says "pending G12"; Billing API's Entitlements stays (QG15 deferred); Redirect's
+  1000 ms request timeout is under the publisher's 2000 ms bound (Q08). Detailed and Simple PNGs by
+  mouse are byte-identical to r83's (the provider isn't drawn, AG-08). No other project changed;
+  the server wasn't restarted.
+- **Export.** The frozen CLI wrote `app/` from the canonical r84 bytes: 87 files, manifest
+  `c4c33e26…7daff`, Click events a Pub/Sub topic, no broker. A second run refuses (`app/` exists;
+  the CLI also refuses with `EEXIST`). Two more fresh exports are identical. **M01 passes** (input =
+  `GET /design`, every manifest hash, 165 generator sources = `4e87f97` blobs, studio same paths,
+  input and templates). Nothing in `app/` is edited; no product code, product SQL, hooks or UI.
+- **Studio vs CLI.** The studio runs Jeeves `79ecb96` plus **uncommitted** generator changes in
+  the checkout (an in-progress Jeeves unit). 14 of 87 files differ, each explained by re-exporting
+  in a scratch copy commit by commit: `39a20be` QG21 (`http.ts`), `1d42570` QG22 (`bootstrap.mjs`,
+  `setup.mjs`), `efbff72` QG23 (README), `79ecb96` QG25 (`nginx.conf`), uncommitted (six process
+  files, `module-clients.ts`, README), plus manifest and report. The frozen output is the baseline.
+- **LOC** (backend only, UI excluded; `tools/loc/`, source-loc-v2 at Jeeves `4e87f97`, Rolldown
+  1.2.15): **G0 2,926** in 45 files = scaffolding **2,871** (34) + stub bodies **55** (11);
+  **first template share 100.00%** (baseline against itself; R + C = B and G0 − R = D hold). Command:
+  `bash tools/loc/source-loc.sh .scratch/Q05/jeeves 33d50e9… 33d50e9… docs/evidence/q05/loc`. It
+  reads Git objects only: a dirty, edited and partly deleted worktree gave byte-identical output;
+  a committed one-line stub edit gave R 2,925, C 1. Support for `app/` (scripts 716, product SQL
+  125, deployment config 343, …) and UI 0 are in the summary (M03 passes at the baseline).
+- **Root commands.** Root `package.json` (no dependencies; `app/` stays its own pnpm project) and
+  pnpm's root lock of itself: `app:install`, `build`, `typecheck`, `check` (typecheck, generated
+  files unchanged, open work), `loc:setup`, `loc`, `ledger:validate`. Build and typecheck exit 0, no
+  diagnostics. **Hook inventory: empty** (no hooks file, every process `hooks: []`). No lint or test
+  runner yet: product units add them.
+- **Smoke.** Scratch copy with a smoke-only override (labels; the two External API URLs Billing and
+  Link API need): `first-run` 152 s, 12 services healthy. The 10 route stubs answer their named
+  501s (Account API's two with a client-credentials token from the scratch Keycloak; without one,
+  401 first), the worker dead-letters a Pub/Sub message with `NOT_IMPLEMENTED`, nothing else
+  fails. Torn down by exact name; no `qrwtya-q05` resource left; no prune.
+- **Checks.** M01, M03, determinism, smoke, build and typecheck, Git-object proof, secret scan
+  (151 files, nothing), `git diff --check` clean outside `app/` (inside, two generated files end
+  with a blank line: AG-09, left as generated), ledger validates.
+- **A-found gaps.** AG-08 (low, notation): a queue's provider isn't drawn. AG-09 (low, cosmetic):
+  two generated files end with a blank line. No generated file needed an edit.
+- **For Q06.** Q04's `infra/app-overlay/` was **not** copied into `app/`: its override needs
+  `QRWTY_LOCAL_TLS_DIR` for every start and doubles each process; install it with
+  `infra/local/install-overlay.py app infra/app-overlay` when product code first runs. New
+  directories under `app/src/` must go in `tools/loc/backend-scope.json`. Set up a runner with
+  `pnpm loc:setup /home/ash/github/jeeves <dir>`. The README's status and measurement table
+  outside the diagram section still say "not generated" (not this unit's to edit).
+- **Q05b.** None: the unit is complete.
+- **Read.** The packet, `AGENTS.md`, this file (Q00–Q04, N01–N06), `units.md` (Q05),
+  `comparison.md`, owner decisions §10–§12, `evidence/q01`, `q02`, `q04` checks and commands,
+  pack v1.6's M rows and loc-method, the ledger README; Jeeves at `4e87f97`: `source-loc.md`, the
+  generator README (parts), `review-batch2.md` (header, For Q05, Runs), `source-loc.ts`, the spec's
+  authoring command and the server's routes. Nothing in qrwty-baseline; `~/.config/qrwty/` not read.
+- **Elapsed.** 26 minutes to the baseline commit (07:45:57Z to 08:12:05Z, wall clock) and about
+  30 to the follow-up.
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
+  memory index); it was ignored.

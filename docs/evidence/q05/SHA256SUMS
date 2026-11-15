@@ -1,4 +1,5 @@
-6c62b3037f39c3cdb4462ab233742c6f11052bc7141400461965e3d759f8600a  ./checks.md
+687d3267b657d310f710a56adeb382828a331d2b9e3dc722ea1f86e904d0c8e4  ./baseline.json
+3c88a577e6e46a3b80b8a6f07025def5126301074af11cf4f811f2c7d443495b  ./checks.md
 8e0fcec626af1de08bde53a850dadcc7c168b2496257d54fb1b4231f42ae5786  ./commands/attribution.sh
 988e41c9e913b2c2591aa711b732bb5757d1acc1f9c5b37945556ff8280ad346  ./commands/export-app.sh
 79fe6d00ae9800f79a61dc5125636b0694c1c3b523523980d308c23f12d267fe  ./commands/m01.py
@@ -18,6 +19,8 @@ d5beb284de232b991efd88b17c130c671511847d82ffce3c3fc3994e924e7cd0  ./jeeves/bluep
 7a6922a0f73f156813472c45c33274d48700aac87186558495a7afa70ce3f3db  ./jeeves/blueprint-v3-r84.json
 be5f4ba1e02332e22c6a18af054d6b355534107f417d1b3e653e3609d264aa49  ./jeeves/provenance.json
 09d9787f062573afc1dedfd644b28e6939878ecf8e82a71ba0fb5f0970c9f492  ./jeeves/studio-generation-preview-r84.json
+a4dde4a7a82b0457e2378600c3bdfcda696e96eec1d44edc1dbbc114efe997cf  ./loc/source-loc-v2.json
+3c71bf93d2089d4d247e67f2c8a8e5f645e7d9e9c48cdd623abe80b4621f5362  ./loc/summary.json
 cc4b278218bc76a590f9b2803de559019dec46486d78353ff62db4c38ab8ab5a  ./records/attribution.json
 25c1b071ce66129eebe70f3806966700689da7622ca2441c455e5ea1372a83b4  ./records/loc-proof/dirty-worktree-summary.json
 d4059173592441f6499b041fb95e0112ba2c79bbf39024c04d71dfa13d89445a  ./records/loc-proof/positive-control-source-loc-v2.json

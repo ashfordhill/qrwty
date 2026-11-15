@@ -1,0 +1,174 @@
+{
+  "method": "source-loc-v2",
+  "parser": "rolldown@1.2.15",
+  "baselineCommit": "33d50e9c693b4d8d60d723e0de75b79f3570da64",
+  "finalCommit": "33d50e9c693b4d8d60d723e0de75b79f3570da64",
+  "baselineManifestSha256": "c4c33e264d6b2a63e38ef87de22e441c2ec251e1dff554580e16e45ceb87daff",
+  "scopeSha256": "8721e79826610aa123b4bf4b5bcd67eb0c793809078bcbcb39e8597b36923a22",
+  "backend": {
+    "G0": 2926,
+    "R": 2926,
+    "C": 0,
+    "D": 0,
+    "B": 2926,
+    "templateSharePercent": 100,
+    "identities": {
+      "R + C = B": true,
+      "G0 - R = D": true
+    },
+    "includedFiles": 45
+  },
+  "baselineSplit": {
+    "scaffolding": {
+      "files": 34,
+      "loc": 2871,
+      "byDirectory": {
+        "src/features": {
+          "files": 1,
+          "loc": 50
+        },
+        "src/modules": {
+          "files": 13,
+          "loc": 171
+        },
+        "src/processes": {
+          "files": 6,
+          "loc": 546
+        },
+        "src/runtime": {
+          "files": 14,
+          "loc": 2104
+        }
+      },
+      "slotsFiles": {
+        "files": 11,
+        "loc": 108
+      }
+    },
+    "stubBodies": {
+      "files": 11,
+      "loc": 55,
+      "allAreStubBodies": true,
+      "paths": [
+        "src/modules/account-api/account-api-link-analytics.ts",
+        "src/modules/account-api/account-api-my-links.ts",
+        "src/modules/analytics-worker/analytics-worker-click-aggregator.ts",
+        "src/modules/billing-api/billing-api-customer-billing.ts",
+        "src/modules/billing-api/billing-api-entitlements.ts",
+        "src/modules/billing-api/billing-api-payment-events.ts",
+        "src/modules/link-api/link-api-abuse-and-moderation.ts",
+        "src/modules/link-api/link-api-link-operations.ts",
+        "src/modules/redirect-service/redirect-service-resolve-and-redirect.ts",
+        "src/modules/session-api/session-api-api-forwarding.ts",
+        "src/modules/session-api/session-api-sign-in-flow.ts"
+      ]
+    },
+    "unclassified": {
+      "files": 0,
+      "loc": 0
+    }
+  },
+  "openWork": {
+    "stubBodies": {
+      "total": 11,
+      "unwritten": 11,
+      "unwrittenPaths": [
+        "src/modules/account-api/account-api-link-analytics.ts",
+        "src/modules/account-api/account-api-my-links.ts",
+        "src/modules/analytics-worker/analytics-worker-click-aggregator.ts",
+        "src/modules/billing-api/billing-api-customer-billing.ts",
+        "src/modules/billing-api/billing-api-entitlements.ts",
+        "src/modules/billing-api/billing-api-payment-events.ts",
+        "src/modules/link-api/link-api-abuse-and-moderation.ts",
+        "src/modules/link-api/link-api-link-operations.ts",
+        "src/modules/redirect-service/redirect-service-resolve-and-redirect.ts",
+        "src/modules/session-api/session-api-api-forwarding.ts",
+        "src/modules/session-api/session-api-sign-in-flow.ts"
+      ]
+    },
+    "hooks": {
+      "files": [],
+      "reportHooks": []
+    },
+    "unreachedIncludedSource": [
+      {
+        "path": "src/features/service-resources.ts",
+        "loc": 50
+      }
+    ]
+  },
+  "ui": {
+    "files": 0,
+    "lines": 0,
+    "byExtension": {},
+    "webDirectoryAtFinal": "absent"
+  },
+  "support": {
+    "scope": "app/ at the final commit; source-loc-v2 exclusions by category",
+    "categories": {
+      "deployment-config": {
+        "files": 6,
+        "lines": 343,
+        "byExtension": {
+          ".dockerignore": 4,
+          "Dockerfile": 31,
+          ".yaml": 1,
+          ".lock": 288,
+          ".conf": 18,
+          ".json": 1
+        }
+      },
+      "package-and-build-config": {
+        "files": 5,
+        "lines": 1550,
+        "byExtension": {
+          ".gitignore": 5,
+          ".json": 49,
+          ".yaml": 1496
+        }
+      },
+      "generator-metadata": {
+        "files": 5,
+        "lines": 5,
+        "byExtension": {
+          ".json": 5
+        }
+      },
+      "docs": {
+        "files": 1,
+        "lines": 15,
+        "byExtension": {
+          ".md": 15
+        }
+      },
+      "generated-sql": {
+        "files": 5,
+        "lines": 10,
+        "byExtension": {
+          ".sql": 10
+        }
+      },
+      "product-sql": {
+        "files": 8,
+        "lines": 125,
+        "byExtension": {
+          ".sql": 125
+        }
+      },
+      "scripts": {
+        "files": 10,
+        "lines": 716,
+        "byExtension": {
+          ".mjs": 716
+        }
+      },
+      "configuration-source": {
+        "files": 2,
+        "lines": 2,
+        "byExtension": {
+          ".ts": 2
+        }
+      }
+    }
+  }
+}

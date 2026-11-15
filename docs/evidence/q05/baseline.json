@@ -1,0 +1,34 @@
+{
+  "format": "qrwty-q05-baseline-v1",
+  "run": "qrwty-r1-20261114",
+  "arm": "a",
+  "baselineCommit": "33d50e9c693b4d8d60d723e0de75b79f3570da64",
+  "subject": "Q05: freeze QRWTY generated baseline",
+  "appTree": "c209a832a9c1ef64e1fa2234b9bfc0a7c37036c2",
+  "manifestSha256": "c4c33e264d6b2a63e38ef87de22e441c2ec251e1dff554580e16e45ceb87daff",
+  "design": {
+    "project": "d1e59607-0616-418d-83d5-4cfe5bcb4b11",
+    "revision": 84,
+    "canonicalSha256": "4fbcd311992737c402d22d28415765b598f806c1c01a35ead81eb5ec6d3b024d"
+  },
+  "generator": {
+    "jeevesCommit": "4e87f97bdc8ce590edd479e16308c892b9049554",
+    "command": "pnpm --filter @jeeves/generator export:v2 <canonical r84 source> <qrwty>/app (docs/evidence/q05/commands/export-app.sh)"
+  },
+  "loc": {
+    "method": "source-loc-v2",
+    "parser": "rolldown@1.2.15",
+    "toolCommit": "4e87f97bdc8ce590edd479e16308c892b9049554",
+    "command": "bash tools/loc/source-loc.sh .scratch/Q05/jeeves 33d50e9c693b4d8d60d723e0de75b79f3570da64 33d50e9c693b4d8d60d723e0de75b79f3570da64 docs/evidence/q05/loc",
+    "cli": "cd <qrwty> && <runner>/jeeves-generator/node_modules/.bin/tsx <runner>/jeeves-generator/src/source-loc-cli.ts app <baseline> <final> <scope from git show <final>:tools/loc/backend-scope.json>",
+    "report": "loc/source-loc-v2.json",
+    "summary": "loc/summary.json",
+    "scopeSha256": "8721e79826610aa123b4bf4b5bcd67eb0c793809078bcbcb39e8597b36923a22",
+    "G0": 2926,
+    "scaffolding": 2871,
+    "stubBodies": 55,
+    "firstTemplateSharePercent": 100,
+    "backendOnly": true,
+    "uiExcluded": true
+  }
+}

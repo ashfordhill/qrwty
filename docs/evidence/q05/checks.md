@@ -1,7 +1,8 @@
 # Q05 checks: QRWTY's frozen generated baseline
 
 Arm A, Q05, attempt 1 (ledger `a-3636`, role implementer, phase generation-baseline), run
-`qrwty-r1-20261114`. QRWTY started at `e17df9c`. Started 2026-11-15T07:45:57Z. Generator: Jeeves
+`qrwty-r1-20261114`. QRWTY started at `e17df9c`; main moved to `2e1752b` during the unit (the
+coordinator's commit, which also carried this attempt's start record `a-3636`). Started 2026-11-15T07:45:57Z. Generator: Jeeves
 **`4e87f97`** (QGR2) only, from `git archive` into `.scratch/Q05/jeeves` with its own offline
 install (`pnpm install --frozen-lockfile --offline --ignore-scripts`, exit 0, 265 packages, 0
 downloaded); `docs/plans/qrwty-lessons/` was deleted from it unread. Nothing in the Jeeves checkout
@@ -10,8 +11,8 @@ Node 24.21.0, pnpm 12.16.1, Python 3.12.3, Docker 29.9.1, Compose 5.6.0, Chromiu
 (`@playwright/test` 1.63.0 from the frozen copy).
 
 The baseline is `app/` in the commit **`Q05: freeze QRWTY generated baseline`**. Its full hash
-can't be inside itself; the follow-up commit records it in `docs/evidence/q05/baseline.json` with the
-LOC report run on it.
+can't be inside itself; the follow-up commit records it, **`33d50e9c693b4d8d60d723e0de75b79f3570da64`**,
+in [baseline.json](baseline.json) with the LOC report run on it ([loc/](loc/summary.json)).
 
 ## 1. The new revision: 84
 
@@ -148,7 +149,10 @@ narrowing the working-tree scope to `src/runtime` (each would change or refuse t
 Positive control: committing a one-line change to one stub body and running baseline → that commit
 gave R 2,925, C 1, D 1, B 2,926, share 99.97%. The clone was deleted afterwards.
 
-The report on the real baseline commit is in the follow-up commit (`loc/`), with the commit hash.
+The report on the real baseline commit `33d50e9` is in the follow-up commit:
+[source-loc-v2.json](loc/source-loc-v2.json) (the CLI's output, unchanged) and
+[summary.json](loc/summary.json). Apart from the two commit hashes, both are identical to the trial
+run's on the scratch clone.
 
 ## 6. Root commands
 
