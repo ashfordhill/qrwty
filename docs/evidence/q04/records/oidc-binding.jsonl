@@ -1,0 +1,6 @@
+{"case":"no token (Optional)","status":200,"body":{"signedIn":false}}
+{"case":"issuer and audience as configured","status":200,"body":{"signedIn":true,"subject":"q04-subject","username":"q04-probe"}}
+{"case":"local Keycloak audience identity-web","status":401,"body":{"error":"SIGN_IN_REQUIRED","message":"Sign in to continue."}}
+{"case":"issuer without its trailing slash","status":401,"body":{"error":"SIGN_IN_REQUIRED","message":"Sign in to continue."}}
+{"case":"another issuer","status":401,"body":{"error":"SIGN_IN_REQUIRED","message":"Sign in to continue."}}
+{"case":"startup line","started":3}

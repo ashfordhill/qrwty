@@ -1,0 +1,1 @@
+{"empty credential (AUTH_DISABLED)":{"set":"ok","get":"ok","states":["available"]},"static password against AUTH_DISABLED":{"set":"ok","get":"ok","states":["available"]}}

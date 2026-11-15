@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "about": "QRWTY arm A production profile (application-owned, not generated). scripts/qrwty-production-profile.mjs reads it before a generated process or the migration job starts and refuses any emulator, fake, insecure, development, test-only or missing setting with a named reason. Process lists follow the Jeeves 4e87f97 export of revision 83 with Click events on Google Cloud (.jeeves/report.json processes.tiles[].environment, plus each External API's JEEVES_EXTERNAL_<ID>_URL and each Compose secret).",
+  "secretMount": {
+    "variable": "QRWTY_SECRET_MOUNT_DIR",
+    "layout": "<QRWTY_SECRET_MOUNT_DIR>/<secret name>/value (one Cloud Run secret volume per secret)",
+    "linkDir": "/tmp/qrwty-secrets"
+  },
+  "required": {
+    "QRWTY_PROFILE": "production",
+    "JEEVES_REQUIRE_TLS": "true"
+  },
+  "forbidden": [
+    {
+      "pattern": "^PUBSUB_EMULATOR_HOST$",
+      "category": "emulator-endpoint",
+      "reason": "Pub/Sub emulator endpoint"
+    },
+    {
+      "pattern": "^METADATA_SERVER_DETECTION$",
+      "category": "emulator-endpoint",
+      "reason": "metadata-server lookup turned off (emulator-only; production credentials come from the metadata server)"
+    },
+    {
+      "pattern": "^(STORAGE_EMULATOR_HOST|FIRESTORE_EMULATOR_HOST|DATASTORE_EMULATOR_HOST|SPANNER_EMULATOR_HOST|BIGTABLE_EMULATOR_HOST)$",
+      "category": "emulator-endpoint",
+      "reason": "Google Cloud emulator endpoint"
+    },
+    {
+      "pattern": "^NODE_TLS_REJECT_UNAUTHORIZED$",
+      "category": "tls-verification-disabled",
+      "reason": "Node-wide TLS verification override"
+    },
+    {
+      "pattern": "^NODE_EXTRA_CA_CERTS$",
+      "category": "tls-verification-disabled",
+      "reason": "extra trusted CA (local test CA)"
+    },
+    {
+      "pattern": "^GOOGLE_APPLICATION_CREDENTIALS$",
+      "category": "development-secret",
+      "reason": "key-file credentials (production uses the service account through the metadata server)"
+    },
+    {
+      "pattern": "^SECRET_DIR$",
+      "category": "development-secret",
+      "reason": "credential directory set directly (production credentials come only from QRWTY_SECRET_MOUNT_DIR)"
+    },
+    {
+      "pattern": "^(ORACLE_|QRWTY_TEST_|QRWTY_FAULT_|QRWTY_CLOCK_)",
+      "category": "test-hook",
+      "reason": "test-only hook"
+    },
+    {
+      "pattern": "^STRIPE_(API_)?(HOST|PORT|PROTOCOL)$",
+      "category": "fake-provider",
+      "reason": "Stripe SDK endpoint override (fixture)"
+    }
+  ],
+  "fixed": {
+    "JEEVES_EXTERNAL_STRIPE_API_URL": "https://api.stripe.com",
+    "JEEVES_EXTERNAL_REPUTATION_API_URL": "https://webrisk.googleapis.com"
+  },
+  "processes": {
+    "redirect-service": {
+      "env": [
+        "JEEVES_CACHE_HOT_ROUTES_HOST",
+        "JEEVES_CACHE_HOT_ROUTES_PORT",
+        "JEEVES_CACHE_HOT_ROUTES_TLS",
+        "JEEVES_DATABASE_LINKS_HOST",
+        "JEEVES_DATABASE_LINKS_PORT",
+        "JEEVES_DATABASE_LINKS_TLS",
+        "JEEVES_PUBSUB_PROJECT"
+      ],
+      "secrets": [
+        "sql-links--redirect-service",
+        "cache-hot-routes"
+      ]
+    },
+    "analytics-worker": {
+      "env": [
+        "JEEVES_DATABASE_ANALYTICS_HOST",
+        "JEEVES_DATABASE_ANALYTICS_PORT",
+        "JEEVES_DATABASE_ANALYTICS_TLS",
+        "JEEVES_PUBSUB_PROJECT"
+      ],
+      "secrets": [
+        "sql-analytics--analytics-worker"
+      ]
+    },
+    "account-api": {
+      "env": [
+        "JEEVES_DATABASE_ANALYTICS_HOST",
+        "JEEVES_DATABASE_ANALYTICS_PORT",
+        "JEEVES_DATABASE_ANALYTICS_TLS",
+        "JEEVES_DATABASE_LINKS_HOST",
+        "JEEVES_DATABASE_LINKS_PORT",
+        "JEEVES_DATABASE_LINKS_TLS",
+        "JEEVES_TILE_BILLING_API_URL",
+        "OIDC_AUDIENCE",
+        "OIDC_ISSUER",
+        "OIDC_JWKS_URL"
+      ],
+      "secrets": [
+        "sql-analytics--account-api",
+        "sql-links--account-api"
+      ]
+    },
+    "billing-api": {
+      "env": [
+        "JEEVES_DATABASE_BILLING_HOST",
+        "JEEVES_DATABASE_BILLING_PORT",
+        "JEEVES_DATABASE_BILLING_TLS",
+        "JEEVES_EXTERNAL_STRIPE_API_URL",
+        "OIDC_AUDIENCE",
+        "OIDC_ISSUER",
+        "OIDC_JWKS_URL"
+      ],
+      "secrets": [
+        "sql-billing--billing-api"
+      ]
+    },
+    "link-api": {
+      "env": [
+        "JEEVES_CACHE_ADMISSION_CACHE_HOST",
+        "JEEVES_CACHE_ADMISSION_CACHE_PORT",
+        "JEEVES_CACHE_ADMISSION_CACHE_TLS",
+        "JEEVES_DATABASE_LINKS_HOST",
+        "JEEVES_DATABASE_LINKS_PORT",
+        "JEEVES_DATABASE_LINKS_TLS",
+        "JEEVES_EXTERNAL_REPUTATION_API_URL",
+        "JEEVES_TILE_BILLING_API_URL",
+        "OIDC_AUDIENCE",
+        "OIDC_ISSUER",
+        "OIDC_JWKS_URL"
+      ],
+      "secrets": [
+        "sql-links--link-api",
+        "cache-admission-cache"
+      ]
+    },
+    "session-api": {
+      "env": [
+        "JEEVES_DATABASE_SESSIONS_HOST",
+        "JEEVES_DATABASE_SESSIONS_PORT",
+        "JEEVES_DATABASE_SESSIONS_TLS",
+        "JEEVES_IDENTITY_IDENTITY_URL",
+        "JEEVES_TILE_ACCOUNT_API_URL",
+        "JEEVES_TILE_BILLING_API_URL",
+        "JEEVES_TILE_LINK_API_URL"
+      ],
+      "secrets": [
+        "sql-sessions--session-api"
+      ]
+    },
+    "migrate": {
+      "env": [
+        "PGHOST",
+        "PGPORT"
+      ],
+      "secrets": [
+        "postgres-admin",
+        "owner-analytics",
+        "owner-billing",
+        "owner-links",
+        "owner-sessions",
+        "identity-owner-identity",
+        "sql-analytics--account-api",
+        "sql-links--account-api",
+        "sql-analytics--analytics-worker",
+        "sql-billing--billing-api",
+        "sql-links--link-api",
+        "sql-links--redirect-service",
+        "sql-sessions--session-api",
+        "identity-identity"
+      ]
+    }
+  },
+  "emptySecretAllowed": {
+    "about": "Memorystore for Valkey runs with authorization AUTH_DISABLED (IAM_AUTH needs an access token refreshed hourly, which the generated cache client, reading its credential once, cannot send; TOKEN_AUTH is unverified, Q12a): with QRWTY_CACHE_AUTH_DISABLED=true these caches' secrets may be absent or empty, the preflight then gives the process an empty credential file, and the generated client sends no AUTH. Recorded as A-found gap AG-04.",
+    "secrets": [
+      "cache-hot-routes",
+      "cache-admission-cache"
+    ]
+  }
+}

@@ -1,0 +1,574 @@
+[
+  {
+    "name": "terminate",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "terminate",
+      "redirect-service-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "drainedMs": 713,
+      "boundMs": 10000,
+      "exitCode": 0
+    },
+    "stdoutTail": "{\"drainedMs\":713,\"boundMs\":10000,\"exitCode\":0}\n",
+    "stderrTail": "",
+    "durationMs": 768,
+    "timedOut": false
+  },
+  {
+    "name": "start",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "start",
+      "redirect-service-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 517,
+    "timedOut": false
+  },
+  {
+    "name": "restart",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "restart",
+      "redirect-service-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 1102,
+    "timedOut": false
+  },
+  {
+    "name": "terminate",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "terminate",
+      "redirect-service-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "drainedMs": 644,
+      "boundMs": 10000,
+      "exitCode": 0
+    },
+    "stdoutTail": "{\"drainedMs\":644,\"boundMs\":10000,\"exitCode\":0}\n",
+    "stderrTail": "",
+    "durationMs": 697,
+    "timedOut": false
+  },
+  {
+    "name": "start",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "start",
+      "redirect-service-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 513,
+    "timedOut": false
+  },
+  {
+    "name": "restart",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "restart",
+      "redirect-service-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 1098,
+    "timedOut": false
+  },
+  {
+    "name": "terminate",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "terminate",
+      "session-api-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "drainedMs": 694,
+      "boundMs": 10000,
+      "exitCode": 0
+    },
+    "stdoutTail": "{\"drainedMs\":694,\"boundMs\":10000,\"exitCode\":0}\n",
+    "stderrTail": "",
+    "durationMs": 750,
+    "timedOut": false
+  },
+  {
+    "name": "start",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "start",
+      "session-api-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 515,
+    "timedOut": false
+  },
+  {
+    "name": "restart",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "restart",
+      "session-api-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 1113,
+    "timedOut": false
+  },
+  {
+    "name": "terminate",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "terminate",
+      "session-api-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "drainedMs": 711,
+      "boundMs": 10000,
+      "exitCode": 0
+    },
+    "stdoutTail": "{\"drainedMs\":711,\"boundMs\":10000,\"exitCode\":0}\n",
+    "stderrTail": "",
+    "durationMs": 762,
+    "timedOut": false
+  },
+  {
+    "name": "start",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "start",
+      "session-api-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 520,
+    "timedOut": false
+  },
+  {
+    "name": "restart",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "restart",
+      "session-api-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 968,
+    "timedOut": false
+  },
+  {
+    "name": "terminate",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "terminate",
+      "link-api-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "drainedMs": 731,
+      "boundMs": 10000,
+      "exitCode": 0
+    },
+    "stdoutTail": "{\"drainedMs\":731,\"boundMs\":10000,\"exitCode\":0}\n",
+    "stderrTail": "",
+    "durationMs": 787,
+    "timedOut": false
+  },
+  {
+    "name": "start",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "start",
+      "link-api-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 540,
+    "timedOut": false
+  },
+  {
+    "name": "restart",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "restart",
+      "link-api-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 1123,
+    "timedOut": false
+  },
+  {
+    "name": "terminate",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "terminate",
+      "link-api-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "drainedMs": 697,
+      "boundMs": 10000,
+      "exitCode": 0
+    },
+    "stdoutTail": "{\"drainedMs\":697,\"boundMs\":10000,\"exitCode\":0}\n",
+    "stderrTail": "",
+    "durationMs": 752,
+    "timedOut": false
+  },
+  {
+    "name": "start",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "start",
+      "link-api-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 673,
+    "timedOut": false
+  },
+  {
+    "name": "restart",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "restart",
+      "link-api-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 1088,
+    "timedOut": false
+  },
+  {
+    "name": "terminate",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "terminate",
+      "account-api-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "drainedMs": 659,
+      "boundMs": 10000,
+      "exitCode": 0
+    },
+    "stdoutTail": "{\"drainedMs\":659,\"boundMs\":10000,\"exitCode\":0}\n",
+    "stderrTail": "",
+    "durationMs": 710,
+    "timedOut": false
+  },
+  {
+    "name": "start",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "start",
+      "account-api-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 546,
+    "timedOut": false
+  },
+  {
+    "name": "restart",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "restart",
+      "account-api-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 1122,
+    "timedOut": false
+  },
+  {
+    "name": "terminate",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "terminate",
+      "account-api-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "drainedMs": 687,
+      "boundMs": 10000,
+      "exitCode": 0
+    },
+    "stdoutTail": "{\"drainedMs\":687,\"boundMs\":10000,\"exitCode\":0}\n",
+    "stderrTail": "",
+    "durationMs": 736,
+    "timedOut": false
+  },
+  {
+    "name": "start",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "start",
+      "account-api-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 515,
+    "timedOut": false
+  },
+  {
+    "name": "restart",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "restart",
+      "account-api-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 1148,
+    "timedOut": false
+  },
+  {
+    "name": "terminate",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "terminate",
+      "billing-api-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "drainedMs": 694,
+      "boundMs": 10000,
+      "exitCode": 0
+    },
+    "stdoutTail": "{\"drainedMs\":694,\"boundMs\":10000,\"exitCode\":0}\n",
+    "stderrTail": "",
+    "durationMs": 744,
+    "timedOut": false
+  },
+  {
+    "name": "start",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "start",
+      "billing-api-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 508,
+    "timedOut": false
+  },
+  {
+    "name": "restart",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "restart",
+      "billing-api-1"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 1122,
+    "timedOut": false
+  },
+  {
+    "name": "terminate",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "terminate",
+      "billing-api-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "drainedMs": 653,
+      "boundMs": 10000,
+      "exitCode": 0
+    },
+    "stdoutTail": "{\"drainedMs\":653,\"boundMs\":10000,\"exitCode\":0}\n",
+    "stderrTail": "",
+    "durationMs": 709,
+    "timedOut": false
+  },
+  {
+    "name": "start",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "start",
+      "billing-api-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 541,
+    "timedOut": false
+  },
+  {
+    "name": "restart",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "restart",
+      "billing-api-2"
+    ],
+    "exitCode": 0,
+    "json": {
+      "ok": true
+    },
+    "stdoutTail": "{\"ok\":true}\n",
+    "stderrTail": "",
+    "durationMs": 1100,
+    "timedOut": false
+  },
+  {
+    "name": "inspect",
+    "argv": [
+      "node",
+      "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+      "inspect",
+      "dbConnections"
+    ],
+    "exitCode": 0,
+    "json": {
+      "byService": {
+        "redirect-service": {
+          "current": 0,
+          "max": 20
+        },
+        "session-api": {
+          "current": 0,
+          "max": 20
+        },
+        "link-api": {
+          "current": 0,
+          "max": 20
+        },
+        "account-api": {
+          "current": 2,
+          "max": 40
+        },
+        "billing-api": {
+          "current": 2,
+          "max": 20
+        },
+        "analytics-worker": {
+          "current": 0,
+          "max": 20
+        }
+      }
+    },
+    "stdoutTail": "{\"byService\":{\"redirect-service\":{\"current\":0,\"max\":20},\"session-api\":{\"current\":0,\"max\":20},\"link-api\":{\"current\":0,\"max\":20},\"account-api\":{\"current\":2,\"max\":40},\"billing-api\":{\"current\":2,\"max\":20},\"analytics-worker\":{\"current\":0,\"max\":20}}}\n",
+    "stderrTail": "",
+    "durationMs": 261,
+    "timedOut": false
+  }
+]

@@ -1,0 +1,20 @@
+{
+ "ok": true,
+ "check": "lint_iac (structural; not tofu validate)",
+ "counts": {
+  "files": 10,
+  "resources": 32,
+  "data": 1,
+  "variables": 11,
+  "locals": 21,
+  "providers": [
+   "hashicorp/google"
+  ]
+ },
+ "exemptNames": [
+  "local.dead_letter_topic",
+  "local.subscription",
+  "local.topic"
+ ],
+ "errors": []
+}

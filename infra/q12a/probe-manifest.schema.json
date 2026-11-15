@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qrwty.io/schemas/q12a-probe-manifest-v1.json",
+  "title": "QRWTY arm A: Q12a live-probe manifest",
+  "description": "The live checks Q12a runs on GCP, each with its expected result, region and versions, cost inputs and teardown. Every probe starts 'not run'; only Q12a's own evidence may change that. Prices are null until Q12a requotes them from the provider's price list before apply (owner decisions §1).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "arm", "prefix", "project", "region", "versions", "budget", "probes", "teardown"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "arm": { "const": "a" },
+    "prefix": { "const": "qrwtya-" },
+    "project": { "type": "string", "pattern": "^[a-z][a-z0-9-]{4,28}[a-z0-9]$" },
+    "region": { "const": "us-central1" },
+    "versions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["jeevesGenerator", "image", "opentofu", "googleProvider", "postgres", "valkey", "pubsubClient", "node"],
+      "properties": {
+        "jeevesGenerator": { "type": "string", "pattern": "^[0-9a-f]{7,40}$" },
+        "image": { "type": "string", "minLength": 1 },
+        "opentofu": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "googleProvider": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "postgres": { "type": "string" },
+        "valkey": { "type": "string" },
+        "pubsubClient": { "type": "string" },
+        "node": { "type": "string" }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["create", "reuse", "alertsUsd"],
+      "properties": {
+        "create": { "const": false },
+        "reuse": { "type": "string", "minLength": 1 },
+        "alertsUsd": { "type": "array", "items": { "type": "number" }, "minItems": 3 }
+      }
+    },
+    "probes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "bindings", "checks", "steps", "expected", "region", "resources", "costInputs", "teardown", "status", "localEvidence"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^P[0-9]{2}$" },
+          "title": { "type": "string", "minLength": 5 },
+          "bindings": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+          "checks": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^(G(0[1-9]|1[0-3])|R0[1-6]|A[0-2][0-9]|F[01][0-9]|D[01][0-9])$" } },
+          "steps": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 5 } },
+          "expected": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 5 } },
+          "region": { "const": "us-central1" },
+          "resources": { "type": "array", "items": { "type": "string", "pattern": "^(qrwtya-[a-z0-9.@-]+|click-events(--analytics-worker(\\.failed)?)?|budget:existing|auth0:[a-z-]+)$" } },
+          "costInputs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["resource", "unit", "quantity", "hours", "priceUsdPerUnitHour", "priceSource"],
+              "properties": {
+                "resource": { "type": "string" },
+                "unit": { "type": "string" },
+                "quantity": { "type": "number", "minimum": 0 },
+                "hours": { "type": "number", "minimum": 0 },
+                "priceUsdPerUnitHour": { "type": ["number", "null"] },
+                "priceSource": { "type": "string", "format": "uri" }
+              }
+            }
+          },
+          "teardown": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 4 } },
+          "status": { "const": "not run" },
+          "localEvidence": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "teardown": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 4 } }
+  }
+}

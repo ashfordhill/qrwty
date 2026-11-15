@@ -1,0 +1,146 @@
+# QRWTY arm A: the application's own Compose override (not generated; no export writes it).
+# Docker Compose merges it into every call the generated scripts make. It is the local TEST
+# profile: it injects what the generated code leaves to the application and nothing more.
+#   - Labels: every container and image carries qrwty.arm=a.
+#   - Two copies of every application process (R03, F07); each HTTP copy has a loopback test port.
+#   - Verified TLS (JEEVES_*_TLS=verify-full, QG10) to PostgreSQL and both Valkey caches, with a
+#     throwaway CA from infra/local/tls-certs.sh in QRWTY_LOCAL_TLS_DIR (outside the app tree).
+#     PostgreSQL rejects plain TCP for every login except the setup admin and Keycloak's own.
+#   - External API base URLs (QG20) point at the oracle's local provider fixtures on the host.
+# Production uses none of this: see infra/app-overlay/infra/qrwty/production-profile.json, whose
+# preflight refuses each of these test settings.
+x-arm: &arm
+  qrwty.arm: a
+x-ca: &ca ${QRWTY_LOCAL_TLS_DIR:?Set QRWTY_LOCAL_TLS_DIR (infra/local/tls-certs.sh)}/ca.crt:/qrwty-tls/ca.crt:ro
+x-tls-dir: &tlsdir ${QRWTY_LOCAL_TLS_DIR:?Set QRWTY_LOCAL_TLS_DIR (infra/local/tls-certs.sh)}:/qrwty-tls:ro
+x-app: &app
+  labels: *arm
+  build:
+    labels: *arm
+  volumes: [*ca]
+  deploy:
+    replicas: 2
+x-host-gateway: &hostgateway ["host.docker.internal:host-gateway"]
+
+services:
+  app-redirect-service:
+    <<: *app
+    ports: ["127.0.0.1:47221-47222:3000"]
+    environment:
+      JEEVES_DATABASE_LINKS_TLS: verify-full
+      JEEVES_DATABASE_LINKS_CA_FILE: /qrwty-tls/ca.crt
+      JEEVES_CACHE_HOT_ROUTES_TLS: verify-full
+      JEEVES_CACHE_HOT_ROUTES_CA_FILE: /qrwty-tls/ca.crt
+  app-session-api:
+    <<: *app
+    ports: ["127.0.0.1:47223-47224:3000"]
+    environment:
+      JEEVES_DATABASE_SESSIONS_TLS: verify-full
+      JEEVES_DATABASE_SESSIONS_CA_FILE: /qrwty-tls/ca.crt
+  app-link-api:
+    <<: *app
+    ports: ["127.0.0.1:47225-47226:3000"]
+    extra_hosts: *hostgateway
+    environment:
+      JEEVES_DATABASE_LINKS_TLS: verify-full
+      JEEVES_DATABASE_LINKS_CA_FILE: /qrwty-tls/ca.crt
+      JEEVES_CACHE_ADMISSION_CACHE_TLS: verify-full
+      JEEVES_CACHE_ADMISSION_CACHE_CA_FILE: /qrwty-tls/ca.crt
+      JEEVES_EXTERNAL_REPUTATION_API_URL: http://host.docker.internal:47212
+  app-account-api:
+    <<: *app
+    ports: ["127.0.0.1:47227-47228:3000"]
+    environment:
+      JEEVES_DATABASE_LINKS_TLS: verify-full
+      JEEVES_DATABASE_LINKS_CA_FILE: /qrwty-tls/ca.crt
+      JEEVES_DATABASE_ANALYTICS_TLS: verify-full
+      JEEVES_DATABASE_ANALYTICS_CA_FILE: /qrwty-tls/ca.crt
+  app-billing-api:
+    <<: *app
+    ports: ["127.0.0.1:47229-47230:3000"]
+    extra_hosts: *hostgateway
+    environment:
+      JEEVES_DATABASE_BILLING_TLS: verify-full
+      JEEVES_DATABASE_BILLING_CA_FILE: /qrwty-tls/ca.crt
+      JEEVES_EXTERNAL_STRIPE_API_URL: http://host.docker.internal:47211
+  app-analytics-worker:
+    <<: *app
+    environment:
+      JEEVES_DATABASE_ANALYTICS_TLS: verify-full
+      JEEVES_DATABASE_ANALYTICS_CA_FILE: /qrwty-tls/ca.crt
+  app-edge:
+    labels: *arm
+  identity-identity:
+    labels: *arm
+  local-pubsub:
+    labels: *arm
+  local-postgres:
+    labels: *arm
+    volumes: [*tlsdir]
+    command:
+      - sh
+      - -ec
+      - >-
+        install -d -o postgres -g postgres -m 0700 /var/lib/postgresql/tls &&
+        install -o postgres -g postgres -m 0600 /qrwty-tls/local-postgres.key /var/lib/postgresql/tls/server.key &&
+        install -o postgres -g postgres -m 0644 /qrwty-tls/local-postgres.crt /var/lib/postgresql/tls/server.crt &&
+        install -o postgres -g postgres -m 0644 /qrwty-tls/pg_hba.conf /var/lib/postgresql/tls/pg_hba.conf &&
+        exec docker-entrypoint.sh postgres -c ssl=on
+        -c ssl_cert_file=/var/lib/postgresql/tls/server.crt
+        -c ssl_key_file=/var/lib/postgresql/tls/server.key
+        -c hba_file=/var/lib/postgresql/tls/pg_hba.conf
+  cache-hot-routes:
+    labels: *arm
+    volumes: [*tlsdir]
+    command:
+      - sh
+      - -ec
+      - >-
+        exec valkey-server --requirepass "$$(cat /run/secrets/cache-hot-routes)" --maxmemory 128mb
+        --maxmemory-policy allkeys-lru --appendonly yes --port 0 --tls-port 6379
+        --tls-cert-file /qrwty-tls/cache-hot-routes.crt --tls-key-file /qrwty-tls/cache-hot-routes.key
+        --tls-ca-cert-file /qrwty-tls/ca.crt --tls-auth-clients no
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - REDISCLI_AUTH="$$(cat /run/secrets/cache-hot-routes)" valkey-cli --tls --cacert /qrwty-tls/ca.crt -h cache-hot-routes ping | grep -q PONG
+  cache-admission-cache:
+    labels: *arm
+    volumes: [*tlsdir]
+    command:
+      - sh
+      - -ec
+      - >-
+        exec valkey-server --requirepass "$$(cat /run/secrets/cache-admission-cache)" --maxmemory 128mb
+        --maxmemory-policy allkeys-lru --appendonly yes --port 0 --tls-port 6379
+        --tls-cert-file /qrwty-tls/cache-admission-cache.crt --tls-key-file /qrwty-tls/cache-admission-cache.key
+        --tls-ca-cert-file /qrwty-tls/ca.crt --tls-auth-clients no
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - REDISCLI_AUTH="$$(cat /run/secrets/cache-admission-cache)" valkey-cli --tls --cacert /qrwty-tls/ca.crt -h cache-admission-cache ping | grep -q PONG
+  setup-migrate:
+    labels: *arm
+    build:
+      labels: *arm
+    volumes: [*ca]
+    environment:
+      # migrate.mjs follows PGSSLMODE and reads no CA file (Jeeves QGR2 finding 11); Node's extra CA
+      # file makes verify-full check the local CA's chain and the host name.
+      PGSSLMODE: verify-full
+      NODE_EXTRA_CA_CERTS: /qrwty-tls/ca.crt
+  setup-pubsub:
+    labels: *arm
+    build:
+      labels: *arm
+
+networks:
+  default:
+    labels: *arm
+volumes:
+  postgres-data:
+    labels: *arm
+  cache-hot-routes:
+    labels: *arm
+  cache-admission-cache:
+    labels: *arm

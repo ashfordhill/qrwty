@@ -1,0 +1,9 @@
+{
+  "what": "AG-02 experiment: JEEVES_REQUIRE_TLS=true does not refuse NODE_TLS_REJECT_UNAUTHORIZED=0, and that variable turns off certificate verification for the generated runtime's fetch-based clients (externalTarget, identityTarget, httpTarget, the sign-in key set) while pg and Valkey keep verifying (their explicit rejectUnauthorized: true wins).",
+  "setup": "One-off containers of the production image qrwtya-q04-app on the internal network qrwtya-q04-rehearsal: an HTTPS server with a certificate from the local test CA (not in Node's roots) and the stack's verified-TLS PostgreSQL reached with an unrelated CA (wrong-ca).",
+  "runs": [
+    {"NODE_TLS_REJECT_UNAUTHORIZED": null, "fetch": "refused: UNABLE_TO_VERIFY_LEAF_SIGNATURE", "pgWrongCa": "refused: UNABLE_TO_VERIFY_LEAF_SIGNATURE"},
+    {"NODE_TLS_REJECT_UNAUTHORIZED": "0", "fetch": "connected 200", "pgWrongCa": "refused: UNABLE_TO_VERIFY_LEAF_SIGNATURE"}
+  ],
+  "generatedOnlyR01": "records/r01-matrix-generated.jsonl, setting node-tls-reject-off: session-api, link-api, account-api and billing-api start and become ready with it set under JEEVES_REQUIRE_TLS=true."
+}

@@ -1,0 +1,1 @@
+{"ok":false,"lint":{"ok": true, "errors": []},"tofu":{"status":"blocked","reason":"OpenTofu 1.13.2 or the local google 8.8.1 provider mirror is not installed"}}

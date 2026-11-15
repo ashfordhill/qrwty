@@ -1,0 +1,13 @@
+{
+ "ok": true,
+ "manifest": [],
+ "faults": {
+  "missing-teardown": true,
+  "passed-status": true,
+  "other-region": true,
+  "unprefixed-resource": true,
+  "creates-budget": true,
+  "invented-price": true
+ },
+ "probes": 12
+}

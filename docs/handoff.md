@@ -854,3 +854,84 @@ pre-rewrite history is kept locally at `refs/backup/pre-rewrite-20261114`.
     file, was read.
   - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, a memory
     index, Git status); it was ignored.
+
+## Q04: prepare QRWTY cloud bindings without provisioning, 2026-11-15
+
+Arm A, attempt 1 (ledger `a-3332`, role implementer, phase cloud), from QRWTY `086a599`; main moved
+to `511bd54` during the unit (the coordinator's commit, which also carried this attempt's start
+record). Generator: Jeeves **`4e87f97`** only, from `git archive` into `.scratch/Q04/jeeves` with its
+own offline install; nothing in the Jeeves checkout was run or written. Pack v1.6 from a scratch
+copy (`verify_pack.py` OK). No cloud, Auth0, Cloudflare or billing call. Status: **locally
+verified; cloud activation pending.** Full record: [Q04 checks](evidence/q04/checks.md).
+
+- **Changed.**
+  - `infra/app-overlay/`: the application's own files for the export (no generated file):
+    `compose.override.yaml` (local test profile: `qrwty.arm=a` labels, two copies of every process
+    on loopback test ports, `verify-full` TLS to PostgreSQL and both caches with a throwaway CA, the
+    External API fixture URLs), `scripts/qrwty-production-profile.mjs` (the production preflight)
+    and `infra/qrwty/production-profile.json`.
+  - `infra/local/`: `tls-certs.sh`, `install-overlay.py` (refuses generated paths),
+    `verify-generated.py`, `profile-check.mjs` (R01's production start), `oracle-commands.mjs` and
+    `ordinary-build.sh` (oracle adapter commands).
+  - `infra/gcp/`: the OpenTofu draft (32 resources: VPC, PSA, PSC policy, Cloud SQL by socket,
+    two Memorystore for Valkey instances, Pub/Sub topic, subscription, dead letter, Cloud Storage
+    archive, seven service accounts and least-privilege IAM, 15 secrets with no credential values,
+    Artifact Registry, five Cloud Run services, the worker pool and the migration job),
+    `lint_iac.py`, `lint_selftest.sh`, `validate.sh`, `terraform.tfvars.example`.
+  - `infra/q12a/`: the probe manifest (P01–P12), its schema and validator. `infra/README.md`.
+  - `docs/evidence/q04/`: checks, binding inventory, limitations, A-found gaps, commands, records,
+    the oracle adapter and results, and the probe bodies used only in the scratch export.
+- **Bindings proven locally** (on the scratch export, Click events on Google Cloud): endpoints from
+  the environment; `verify-full` TLS to PostgreSQL (TLSv1.3 per request; plain text rejected by the
+  server; wrong CA refused) and to Valkey; `JEEVES_REQUIRE_TLS`; the sign-in's issuer and audience
+  (Auth0-shaped issuer with A's audience accepted, `identity-web`, the slashless issuer and another
+  issuer 401); `JEEVES_IDENTITY_IDENTITY_URL` (Keycloak realm 200); `JEEVES_EXTERNAL_*_URL`
+  (validation only); Pub/Sub on the emulator (awaited publish, messageId, dedup by ID, dead letter
+  with `x-terminal-code`, subscription settings); migrations with a CREATEDB CREATEROLE
+  non-superuser admin, twice at once and again (no PUBLIC CONNECT, no CREATE for runtime logins);
+  a cache without AUTH; the Cloud Run secret layout. Production profile: Session, Account, Billing
+  and Link API start ready; Redirect and Analytics stop at Pub/Sub credentials (expected).
+- **Checks.** Oracle v1.6: R01 **passed**, R02 **passed**, R03 **failed** 41/42 (only "session
+  shared through external state": the product session route is 404 until Q07). R01 matrix: 96/96
+  refused with a named reason by the production profile; the generated runtime alone 59/96, named
+  15/96. Drain under load: 12,117 requests all 202 while a copy drained (1.1 s, exit 0);
+  connections ≤ 20 for two copies. `lint_iac.py` 0 errors, its self-test 8/8 faults detected;
+  **`tofu validate` not run** (OpenTofu not installed; the download was refused by the session's
+  permission policy): `validate.sh` reports `blocked`. Probe manifest valid, 6/6 faults rejected.
+  `verify-generated.py`: no generated file changed. Secret scan clean. `git diff --check` clean
+  (trailing spaces stripped from two captured logs and one record first).
+  Ledger validates.
+- **A-found gaps** ([details](evidence/q04/a-found-gaps.md)): AG-01 (low) configuration validated
+  between probes; AG-02 (medium) `JEEVES_REQUIRE_TLS` doesn't refuse
+  `NODE_TLS_REJECT_UNAUTHORIZED=0`, which unverifies the fetch-based clients and the key set; AG-03
+  (medium) one `SECRET_DIR` while Cloud Run mounts one secret per path; AG-04 (medium) the cache
+  client can't use Memorystore IAM auth; AG-05 (low) Pub/Sub names compiled, not namespaceable;
+  AG-06 (low) migrations always provision the local Keycloak database; AG-07 (docs) README row for
+  the Identity client. Each has a workaround in the overlay or IaC, or none needed.
+- **Q12a backlog**: the probe manifest's P01–P12 (budget read, image push, `tofu validate` and
+  apply, secret bootstrap, migration job, managed stores and probes, Pub/Sub ACK/IAM/archive, Auth0
+  issuer and audience, ingress and internal calls, drain on Cloud Run, a live profile refusal,
+  providers at no charge), each with expected results, cost inputs (prices null until requoted)
+  and teardown.
+- **Q04b** (the one check not run): install OpenTofu 1.13.2 and a google 8.8.1 provider mirror,
+  run `infra/gcp/validate.sh` to exit 0, and fix any schema error in `infra/gcp/*.tf` (the draft
+  targets provider 8.x arguments read from its 8.8.1 documentation, never validated). Needs the
+  owner's permission to download the binary and provider. Q12a's P03 starts with it otherwise.
+- **For Q05.** Q05 saves the real revision with Click events on Google Cloud, and adds
+  `infra/app-overlay/` into `app/` after the untouched baseline commit (they are application files,
+  not baseline). Session API's stub needs the browser-facing issuer from an override variable (QGR2
+  "For Q05"). R03's session check passes only once Q07 exists.
+- **Docker.** Project `qrwtya-q04` (24 containers), the rehearsal network, one-off `qrwtya-q04-*`
+  containers and the image `qrwtya-q04-app` were removed by exact name; no prune; arm B's and Jeeves's
+  containers untouched. Inventory of `qrwtya`/`qrwty.arm=a` resources empty before and after.
+- **Read.** The packet, `AGENTS.md`, this file (Q00–Q03b, N01–N06, S01, Q11), the plan's
+  `units.md` (Q04, Q05, Q12a, Q13), `local-to-cloud.md`, `architecture.md`, `durable-clicks.md`,
+  `jeeves-gaps.md`, owner decisions §1–§12, `docs/evidence/q01`–`q03` through their handoff entries
+  and Q01's design JSON (Q03's `capabilities.md` was not read in full), pack v1.6's acceptance spec, R rows,
+  adapter schema and README; Jeeves at `4e87f97` only: `jeeves-generator/README.md`,
+  `review-batch2.md` and the export's own files. `docs/plans/qrwty-lessons/` was deleted unread from
+  the scratch copy. Public docs: Cloud Run secrets, Memorystore IAM auth, Pub/Sub retention, and the
+  google provider 8.8.1 resource pages. Nothing in qrwty-baseline; `~/.config/qrwty/` not read.
+- **Elapsed.** About 60 minutes to the commit, on a monotonic clock (`/proc/uptime`).
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
+  memory index); it was ignored.

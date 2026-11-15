@@ -1,0 +1,260 @@
+{
+  "schemaVersion": 1,
+  "arm": "a",
+  "prefix": "qrwtya-",
+  "project": "project-f46f6d6a-8e74-42a0-ab1",
+  "region": "us-central1",
+  "versions": {
+    "jeevesGenerator": "4e87f97bdc8ce590edd479e16308c892b9049554",
+    "image": "local image sha256:ebeb7475ba5478dd9e3cad04cd3d320bdabdb2182ed14e37e60fcbe6a0ea4f97 (14 layers, layer list sha256 5c6c1f5e6a133be0); the registry digest is recorded by P02",
+    "opentofu": "1.13.2",
+    "googleProvider": "8.8.1",
+    "postgres": "Cloud SQL POSTGRES_17 (local: postgres 17.11-alpine3.23)",
+    "valkey": "Memorystore for Valkey VALKEY_8_0 (local: valkey 8.1.10-alpine)",
+    "pubsubClient": "@google-cloud/pubsub 6.3.2",
+    "node": "24.21.0 (node:24.21.0-bookworm-slim)"
+  },
+  "budget": {
+    "create": false,
+    "reuse": "The trial project's existing billing budget (owner decisions §1 and §10); Q12a reads it before any apply and creates none.",
+    "alertsUsd": [10, 25, 50]
+  },
+  "probes": [
+    {
+      "id": "P01",
+      "title": "Budget and inventory before anything is created",
+      "bindings": ["billing budget"],
+      "checks": ["R06"],
+      "steps": [
+        "gcloud billing budgets list --billing-account=<the project's account> --format=json (read only); confirm thresholds 10, 25 and 50 USD cover the project",
+        "List every resource whose name starts with qrwtya- (run, sql, memorystore, pubsub, storage, secrets, iam, compute): expect none",
+        "Requote each costInputs row below from its priceSource and record the hourly prices in Q12a's evidence"
+      ],
+      "expected": ["The existing budget has alerts at 10, 25 and 50 USD; no qrwtya- resource exists yet", "Every priceUsdPerUnitHour below is filled from the price list before apply"],
+      "region": "us-central1",
+      "resources": ["budget:existing"],
+      "costInputs": [],
+      "teardown": ["nothing created"],
+      "status": "not run",
+      "localEvidence": []
+    },
+    {
+      "id": "P02",
+      "title": "Push the locally built image and keep its digest",
+      "bindings": ["image digest"],
+      "checks": ["R05", "G09"],
+      "steps": [
+        "tofu apply -target=google_artifact_registry_repository.images (after a saved plan)",
+        "docker tag the Q05 image (built once) and push it to us-central1-docker.pkg.dev/<project>/qrwtya-images/app; record the registry digest",
+        "Set var.image to the digest; every service, the worker pool and the job use that one reference"
+      ],
+      "expected": ["The pushed image's config is the local image's (same layers, user node)", "Every Cloud Run resource reports the same image digest"],
+      "region": "us-central1",
+      "resources": ["qrwtya-images"],
+      "costInputs": [
+        { "resource": "Artifact Registry storage", "unit": "GB-month as hours", "quantity": 0.3, "hours": 720, "priceUsdPerUnitHour": null, "priceSource": "https://cloud.google.com/artifact-registry/pricing" }
+      ],
+      "teardown": ["gcloud artifacts docker images delete <image>@<digest> --delete-tags", "tofu destroy -target=google_artifact_registry_repository.images"],
+      "status": "not run",
+      "localEvidence": ["docs/evidence/q04/records/image.json"]
+    },
+    {
+      "id": "P03",
+      "title": "Apply the network, stores, Pub/Sub, secrets and service accounts",
+      "bindings": ["VPC and Direct VPC egress", "private services access", "PSC policy", "Cloud SQL", "Memorystore", "Pub/Sub", "archive bucket", "Secret Manager", "service accounts and IAM"],
+      "checks": ["G01", "G12"],
+      "steps": [
+        "Install OpenTofu 1.13.2 and the google 8.8.1 provider mirror; infra/gcp/validate.sh must pass (fmt, init -backend=false, validate) before anything else",
+        "tofu plan -out=q12a.plan with terraform.tfvars; review that every name starts with qrwtya- except click-events, click-events--analytics-worker and click-events--analytics-worker.failed (AG-05)",
+        "tofu apply q12a.plan (without the Cloud Run resources first: -target the stores, Pub/Sub, secrets and IAM)"
+      ],
+      "expected": ["Apply succeeds with exactly the planned resources", "Cloud SQL has no public address; both Memorystore instances are CLUSTER_DISABLED with SERVER_AUTHENTICATION", "The analytics subscription reads back ack 60 s, retry 1-10 s, dead letter after 100, retention 31 d, no expiration"],
+      "region": "us-central1",
+      "resources": ["qrwtya-vpc", "qrwtya-run", "qrwtya-psa", "qrwtya-memorystore", "qrwtya-pg", "qrwtya-hot-routes", "qrwtya-admission-cache", "click-events", "click-events--analytics-worker", "click-events--analytics-worker.failed", "qrwtya-click-events-archive", "qrwtya-click-archive-project-f46f6d6a-8e74-42a0-ab1"],
+      "costInputs": [
+        { "resource": "Cloud SQL Enterprise db-f1-micro (30-day free trial instance if eligible)", "unit": "instance", "quantity": 1, "hours": 48, "priceUsdPerUnitHour": null, "priceSource": "https://cloud.google.com/sql/pricing" },
+        { "resource": "Memorystore for Valkey SHARED_CORE_NANO node", "unit": "node", "quantity": 2, "hours": 48, "priceUsdPerUnitHour": null, "priceSource": "https://cloud.google.com/memorystore/docs/valkey/pricing" },
+        { "resource": "Private Service Connect endpoints (Memorystore)", "unit": "endpoint", "quantity": 4, "hours": 48, "priceUsdPerUnitHour": null, "priceSource": "https://cloud.google.com/vpc/pricing#psc-forwarding-rules" },
+        { "resource": "Pub/Sub topic and subscription retention (31 d)", "unit": "GiB-month as hours", "quantity": 0.1, "hours": 48, "priceUsdPerUnitHour": null, "priceSource": "https://cloud.google.com/pubsub/pricing" },
+        { "resource": "Secret Manager active versions", "unit": "version", "quantity": 15, "hours": 48, "priceUsdPerUnitHour": null, "priceSource": "https://cloud.google.com/secret-manager/pricing" }
+      ],
+      "teardown": ["Set deletion_protection = false and apply", "tofu destroy (removes prevent_destroy on the topic and subscriptions first)", "Confirm no qrwtya- resource and none of the three click-events names remain"],
+      "status": "not run",
+      "localEvidence": ["docs/evidence/q04/records/lint-iac.json"]
+    },
+    {
+      "id": "P04",
+      "title": "Bootstrap credentials without printing them",
+      "bindings": ["Secret Manager versions", "Cloud SQL postgres admin password"],
+      "checks": ["G01", "R04"],
+      "steps": [
+        "For each secret in output secret_ids: generate 32 random bytes locally and pipe them to gcloud secrets versions add <id> --data-file=- (never echoed, never in a file in the repository)",
+        "gcloud sql users set-password postgres --instance=qrwtya-pg --prompt-for-password with the value of qrwtya-postgres-admin, read from stdin",
+        "Leave the two caches without a secret (AUTH_DISABLED, AG-04)"
+      ],
+      "expected": ["15 secrets have one enabled version (14 credentials and the Memorystore CA)", "No credential appears in the plan, the state, a log or the evidence"],
+      "region": "us-central1",
+      "resources": ["qrwtya-postgres-admin", "qrwtya-sql-links--redirect-service"],
+      "costInputs": [],
+      "teardown": ["Covered by P03's destroy (secrets and their versions)"],
+      "status": "not run",
+      "localEvidence": ["docs/evidence/q04/binding-inventory.json"]
+    },
+    {
+      "id": "P05",
+      "title": "Migrations as a release job with Cloud SQL's non-superuser admin",
+      "bindings": ["PGHOST /cloudsql/<connection>", "migration job", "restricted roles"],
+      "checks": ["G06"],
+      "steps": [
+        "tofu apply -target=google_cloud_run_v2_job.migrate",
+        "gcloud run jobs execute qrwtya-migrate --wait, twice at the same time; then once more",
+        "A read-only check (a one-off job with the same image) lists pg_database.datacl and has_database_privilege('postgres', <db>, 'CONNECT')"
+      ],
+      "expected": ["All three executions exit 0; the third applies no template migration", "No database keeps a PUBLIC CONNECT; the admin has no CONNECT of its own; every runtime login lacks CREATE", "The preflight logged profile-ok for migrate before migrate.mjs ran"],
+      "region": "us-central1",
+      "resources": ["qrwtya-migrate", "qrwtya-pg"],
+      "costInputs": [
+        { "resource": "Cloud Run job vCPU-seconds and GiB-seconds", "unit": "execution", "quantity": 3, "hours": 0.05, "priceUsdPerUnitHour": null, "priceSource": "https://cloud.google.com/run/pricing" }
+      ],
+      "teardown": ["Covered by P03's destroy"],
+      "status": "not run",
+      "localEvidence": ["docs/evidence/q04/records/managed-migrate.jsonl"]
+    },
+    {
+      "id": "P06",
+      "title": "Deploy the five services and the worker pool; startup probes pass on managed stores",
+      "bindings": ["Cloud SQL socket", "Memorystore TLS", "Pub/Sub topic probe", "Direct VPC egress"],
+      "checks": ["G01", "G09", "G12"],
+      "steps": [
+        "tofu apply the Cloud Run services and the worker pool",
+        "Read each revision's logs: profile-ok, then every probe line ok (database SELECT 1 over the socket, cache PING over TLS, Pub/Sub topic or subscription exists)",
+        "If a cache probe reports a certificate name mismatch, set var.memorystore_tls_servername from the live certificate and redeploy"
+      ],
+      "expected": ["Every revision becomes ready; no probe fails", "Cloud SQL is reached only through the connector on a private-IP-only instance", "Memorystore's managed CA verifies with verify-full, with or without _TLS_SERVERNAME (recorded)"],
+      "region": "us-central1",
+      "resources": ["qrwtya-redirect-service", "qrwtya-session-api", "qrwtya-link-api", "qrwtya-account-api", "qrwtya-billing-api", "qrwtya-analytics-worker"],
+      "costInputs": [
+        { "resource": "Cloud Run instance (1 vCPU, 512 MiB), redirect min 1", "unit": "instance", "quantity": 1, "hours": 48, "priceUsdPerUnitHour": null, "priceSource": "https://cloud.google.com/run/pricing" },
+        { "resource": "Cloud Run worker pool instance (1 vCPU, 512 MiB)", "unit": "instance", "quantity": 1, "hours": 48, "priceUsdPerUnitHour": null, "priceSource": "https://cloud.google.com/run/pricing" }
+      ],
+      "teardown": ["tofu destroy -target the six Cloud Run resources (after deletion_protection = false)"],
+      "status": "not run",
+      "localEvidence": ["docs/evidence/q04/records/bindings-probe.jsonl", "docs/evidence/q04/records/r01-matrix-profile.jsonl"]
+    },
+    {
+      "id": "P07",
+      "title": "Managed Pub/Sub acknowledgement, IAM and the archive",
+      "bindings": ["Pub/Sub publisher ACK", "subscription and dead letter", "Cloud Storage export subscription", "workload IAM"],
+      "checks": ["G04", "G12"],
+      "steps": [
+        "Through a temporary probe body in a staging-only revision (never the product image), publish 100 events with known messageIds and record each ACK latency",
+        "Read them back from a temporary capture subscription qrwtya-q12a-capture; send one poison message and read it from click-events--analytics-worker.failed with x-terminal-code",
+        "Wait up to 10 minutes for an Avro object under gs://qrwtya-click-archive-<project>/click-events/ carrying the messageId attribute",
+        "Call publish with another service's account: expect PERMISSION_DENIED"
+      ],
+      "expected": ["Every publish resolves only after Pub/Sub's ACK; p50 and p99 recorded", "The dead letter and the archive work with the Pub/Sub service agent's grants", "Only the Redirect service may publish to click-events"],
+      "region": "us-central1",
+      "resources": ["click-events", "click-events--analytics-worker", "click-events--analytics-worker.failed", "qrwtya-click-events-archive", "qrwtya-q12a-capture"],
+      "costInputs": [
+        { "resource": "Pub/Sub throughput (minimum billable volume)", "unit": "GiB", "quantity": 0.01, "hours": 1, "priceUsdPerUnitHour": null, "priceSource": "https://cloud.google.com/pubsub/pricing" },
+        { "resource": "Cloud Storage standard storage (archive objects)", "unit": "GiB-month as hours", "quantity": 0.01, "hours": 48, "priceUsdPerUnitHour": null, "priceSource": "https://cloud.google.com/storage/pricing" }
+      ],
+      "teardown": ["gcloud pubsub subscriptions delete qrwtya-q12a-capture", "Remove the probe revision; route 100 % to the product revision"],
+      "status": "not run",
+      "localEvidence": ["docs/evidence/q04/records/bindings-probe.jsonl", "docs/evidence/q04/records/drain-under-load.json"]
+    },
+    {
+      "id": "P08",
+      "title": "Auth0 issuer and A's API audience on the generated guard",
+      "bindings": ["OIDC_ISSUER", "OIDC_AUDIENCE", "OIDC_JWKS_URL", "JEEVES_IDENTITY_IDENTITY_URL"],
+      "checks": ["G03"],
+      "steps": [
+        "In Q12a/Q13 create A's Auth0 application and API (owner decisions §12; credentials from ~/.config/qrwty/auth0.env by name only)",
+        "Issue a token for A's audience and call GET /modules/link-api-sign-in/me through an internal caller; repeat with B's audience, an expired token and another tenant's issuer",
+        "From Session API's revision, request JEEVES_IDENTITY_IDENTITY_URL + /.well-known/openid-configuration"
+      ],
+      "expected": ["A's token: signedIn true; B's audience, an expired token and another issuer: 401", "The issuer string matches Auth0's iss exactly, with its trailing slash", "Session API reaches the tenant origin"],
+      "region": "us-central1",
+      "resources": ["auth0:application", "auth0:api"],
+      "costInputs": [],
+      "teardown": ["Delete A's temporary test users only; keep A's Auth0 application and API for Q13"],
+      "status": "not run",
+      "localEvidence": ["docs/evidence/q04/records/oidc-binding.jsonl"]
+    },
+    {
+      "id": "P09",
+      "title": "Ingress, internal calls and workload identity",
+      "bindings": ["Cloud Run ingress", "invoker_iam_disabled", "JEEVES_TILE_<ID>_URL", "service accounts"],
+      "checks": ["G01", "G09"],
+      "steps": [
+        "From outside the VPC, request qrwtya-link-api and qrwtya-account-api's run.app URLs: expect refusal",
+        "From Session API (Direct VPC egress, Private Google Access), call each JEEVES_TILE_*_URL /healthz",
+        "Check that deterministic_urls equals service_urls",
+        "Record that the public services' run.app URLs bypass the qrwty.io edge until Q13 restricts the origin"
+      ],
+      "expected": ["Internal-only services refuse outside requests and answer the VPC", "Tile URLs resolve as configured", "The bypass is recorded as a Q13 finding, not passed"],
+      "region": "us-central1",
+      "resources": ["qrwtya-link-api", "qrwtya-account-api", "qrwtya-session-api"],
+      "costInputs": [],
+      "teardown": ["Covered by P06's teardown"],
+      "status": "not run",
+      "localEvidence": []
+    },
+    {
+      "id": "P10",
+      "title": "Startup, drain and restart on Cloud Run",
+      "bindings": ["SIGTERM and the 10 s window", "/healthz startup and liveness probes", "min and max instances"],
+      "checks": ["G09", "R03"],
+      "steps": [
+        "Deploy a new revision under steady probe traffic and watch the old instances' logs for the drain",
+        "Scale the worker pool from 1 to 2 and back"
+      ],
+      "expected": ["Each old instance exits 0 within 10 s of SIGTERM (locally about 1 s)", "No request fails during the rollout beyond admission 503s with Retry-After"],
+      "region": "us-central1",
+      "resources": ["qrwtya-redirect-service", "qrwtya-analytics-worker"],
+      "costInputs": [],
+      "teardown": ["Covered by P06's teardown"],
+      "status": "not run",
+      "localEvidence": ["docs/evidence/q04/oracle/results/results.jsonl", "docs/evidence/q04/records/drain-under-load.json"]
+    },
+    {
+      "id": "P11",
+      "title": "The production profile refuses a forbidden setting on Cloud Run",
+      "bindings": ["the preflight", "JEEVES_REQUIRE_TLS"],
+      "checks": ["R01"],
+      "steps": [
+        "Deploy a revision of qrwtya-session-api with PUBSUB_EMULATOR_HOST set, at 0 % traffic",
+        "Read its logs, then delete the revision"
+      ],
+      "expected": ["The revision never becomes ready; its log has profile-refused naming PUBSUB_EMULATOR_HOST"],
+      "region": "us-central1",
+      "resources": ["qrwtya-session-api"],
+      "costInputs": [],
+      "teardown": ["gcloud run revisions delete <revision>"],
+      "status": "not run",
+      "localEvidence": ["docs/evidence/q04/records/r01-matrix-profile.jsonl"]
+    },
+    {
+      "id": "P12",
+      "title": "Provider endpoints from Cloud Run at no charge",
+      "bindings": ["JEEVES_EXTERNAL_STRIPE_API_URL", "JEEVES_EXTERNAL_REPUTATION_API_URL"],
+      "checks": ["G10"],
+      "steps": [
+        "Once Billing API's and Link API's stubs exist (Q07-Q10a), call Stripe test mode (livemode=false) and one Web Risk lookup of a synthetic URL"
+      ],
+      "expected": ["Both reachable through the generated externalTarget with the preflight's fixed base URLs; no live payment or charge"],
+      "region": "us-central1",
+      "resources": ["qrwtya-billing-api", "qrwtya-link-api"],
+      "costInputs": [],
+      "teardown": ["nothing created"],
+      "status": "not run",
+      "localEvidence": []
+    }
+  ],
+  "teardown": [
+    "Set deletion_protection = false in terraform.tfvars and tofu apply",
+    "Remove prevent_destroy from the topic and subscriptions (a reviewed edit) and tofu destroy",
+    "Delete the image digest and the repository (P02)",
+    "List resources named qrwtya- and the three click-events names: expect none; record the final cost from billing reports"
+  ]
+}

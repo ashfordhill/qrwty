@@ -1,0 +1,246 @@
+# The five HTTP processes as Cloud Run services, the Analytics worker as a worker pool and the
+# migrations as a job: one image digest, selected by command and environment only.
+resource "google_cloud_run_v2_service" "http" {
+  for_each = local.http
+
+  name                 = "${local.p}${each.key}"
+  location             = var.region
+  ingress              = each.value.ingress
+  invoker_iam_disabled = true # the generated tile clients send no ID token; internal-only ingress restricts link/account (Q12a probe)
+  deletion_protection  = var.deletion_protection
+  labels = {
+    arm = "a"
+  }
+
+  template {
+    service_account                  = google_service_account.run[each.value.sa].email
+    timeout                          = "30s"
+    max_instance_request_concurrency = 100
+    execution_environment            = "EXECUTION_ENVIRONMENT_GEN2"
+
+    scaling {
+      min_instance_count = each.value.min
+      max_instance_count = var.max_instances
+    }
+
+    vpc_access {
+      egress = "ALL_TRAFFIC"
+      network_interfaces {
+        network    = google_compute_network.vpc.id
+        subnetwork = google_compute_subnetwork.run.id
+      }
+    }
+
+    containers {
+      image   = var.image
+      command = ["/bin/sh", "-c", local.command[each.key]]
+
+      ports {
+        container_port = 3000 # compiled in the generated process config
+      }
+      resources {
+        limits = {
+          cpu    = "1"
+          memory = "512Mi"
+        }
+        cpu_idle = true
+      }
+
+      dynamic "env" {
+        for_each = merge(local.profile, each.value.env)
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
+
+      startup_probe {
+        http_get {
+          path = "/healthz"
+          port = 3000
+        }
+        period_seconds    = 2
+        timeout_seconds   = 1
+        failure_threshold = 30
+      }
+      liveness_probe {
+        http_get {
+          path = "/healthz"
+          port = 3000
+        }
+        period_seconds    = 10
+        failure_threshold = 3
+      }
+
+      volume_mounts {
+        name       = "cloudsql"
+        mount_path = "/cloudsql"
+      }
+      dynamic "volume_mounts" {
+        for_each = toset(concat(each.value.secrets, each.value.uses_ca ? ["memorystore-ca"] : []))
+        content {
+          name       = "s-${replace(volume_mounts.key, "--", "-")}"
+          mount_path = volume_mounts.key == "memorystore-ca" ? local.ca_mount : "${local.secret_mount}/${volume_mounts.key}"
+        }
+      }
+    }
+
+    volumes {
+      name = "cloudsql"
+      cloud_sql_instance {
+        instances = [google_sql_database_instance.pg.connection_name]
+      }
+    }
+    dynamic "volumes" {
+      for_each = toset(concat(each.value.secrets, each.value.uses_ca ? ["memorystore-ca"] : []))
+      content {
+        name = "s-${replace(volumes.key, "--", "-")}"
+        secret {
+          secret = google_secret_manager_secret.s[volumes.key].secret_id
+          items {
+            version = "latest"
+            path    = "value"
+          }
+        }
+      }
+    }
+  }
+
+  depends_on = [google_secret_manager_secret_iam_member.reader, google_project_iam_member.sql_client]
+}
+
+# The Analytics worker listens on no port: a worker pool, not a service.
+resource "google_cloud_run_v2_worker_pool" "analytics" {
+  name                = "${local.p}analytics-worker"
+  location            = var.region
+  deletion_protection = var.deletion_protection
+  labels = {
+    arm = "a"
+  }
+
+  scaling {
+    manual_instance_count = var.analytics_workers
+  }
+
+  template {
+    service_account = google_service_account.run["analytics"].email
+
+    vpc_access {
+      egress = "ALL_TRAFFIC"
+      network_interfaces {
+        network    = google_compute_network.vpc.id
+        subnetwork = google_compute_subnetwork.run.id
+      }
+    }
+
+    containers {
+      image   = var.image
+      command = ["/bin/sh", "-c", local.command["analytics-worker"]]
+
+      dynamic "env" {
+        for_each = merge(local.profile, local.worker.env)
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
+      volume_mounts {
+        name       = "cloudsql"
+        mount_path = "/cloudsql"
+      }
+      volume_mounts {
+        name       = "s-sql-analytics-analytics-worker"
+        mount_path = "${local.secret_mount}/sql-analytics--analytics-worker"
+      }
+    }
+
+    volumes {
+      name = "cloudsql"
+      cloud_sql_instance {
+        instances = [google_sql_database_instance.pg.connection_name]
+      }
+    }
+    volumes {
+      name = "s-sql-analytics-analytics-worker"
+      secret {
+        secret = google_secret_manager_secret.s["sql-analytics--analytics-worker"].secret_id
+        items {
+          version = "latest"
+          path    = "value"
+        }
+      }
+    }
+  }
+
+  depends_on = [google_secret_manager_secret_iam_member.reader, google_project_iam_member.sql_client]
+}
+
+# Migrations: an explicit release job (never every replica at startup). migrate.mjs holds an
+# advisory lock, so a second run waits; it creates the databases, roles and grants as the
+# non-superuser `postgres` admin (Jeeves QG12).
+resource "google_cloud_run_v2_job" "migrate" {
+  name                = "${local.p}migrate"
+  location            = var.region
+  deletion_protection = var.deletion_protection
+  labels = {
+    arm = "a"
+  }
+
+  template {
+    task_count = 1
+    template {
+      service_account = google_service_account.run["migrate"].email
+      max_retries     = 0
+      timeout         = "600s"
+
+      containers {
+        image   = var.image
+        command = ["/bin/sh", "-c", "node scripts/qrwty-production-profile.mjs migrate && SECRET_DIR=/tmp/qrwty-secrets exec node scripts/migrate.mjs"]
+
+        dynamic "env" {
+          for_each = merge(local.profile, {
+            PGHOST = "/cloudsql/${google_sql_database_instance.pg.connection_name}"
+            PGPORT = "5432"
+          })
+          content {
+            name  = env.key
+            value = env.value
+          }
+        }
+        volume_mounts {
+          name       = "cloudsql"
+          mount_path = "/cloudsql"
+        }
+        dynamic "volume_mounts" {
+          for_each = toset(local.migrate_secrets)
+          content {
+            name       = "s-${replace(volume_mounts.key, "--", "-")}"
+            mount_path = "${local.secret_mount}/${volume_mounts.key}"
+          }
+        }
+      }
+
+      volumes {
+        name = "cloudsql"
+        cloud_sql_instance {
+          instances = [google_sql_database_instance.pg.connection_name]
+        }
+      }
+      dynamic "volumes" {
+        for_each = toset(local.migrate_secrets)
+        content {
+          name = "s-${replace(volumes.key, "--", "-")}"
+          secret {
+            secret = google_secret_manager_secret.s[volumes.key].secret_id
+            items {
+              version = "latest"
+              path    = "value"
+            }
+          }
+        }
+      }
+    }
+  }
+
+  depends_on = [google_secret_manager_secret_iam_member.reader, google_project_iam_member.sql_client]
+}

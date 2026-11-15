@@ -1,0 +1,284 @@
+{
+  "schemaVersion": 1,
+  "arm": "a",
+  "commit": "511bd54c5243e3530e71c4f68862929e2455c83e",
+  "images": {
+    "app": "sha256:ebeb7475ba5478dd9e3cad04cd3d320bdabdb2182ed14e37e60fcbe6a0ea4f97"
+  },
+  "publicEntry": {
+    "url": "http://127.0.0.1:47201",
+    "origin": "http://127.0.0.1:47201"
+  },
+  "edgeTokenEnv": "ORACLE_EDGE_TOKEN",
+  "services": {
+    "redirect-service": {
+      "roles": [
+        "redirect"
+      ],
+      "replicas": [
+        {
+          "name": "redirect-service-1",
+          "url": "http://127.0.0.1:47221",
+          "container": "qrwtya-q04-app-redirect-service-1"
+        },
+        {
+          "name": "redirect-service-2",
+          "url": "http://127.0.0.1:47222",
+          "container": "qrwtya-q04-app-redirect-service-2"
+        }
+      ],
+      "health": "/healthz",
+      "readiness": "/healthz"
+    },
+    "session-api": {
+      "roles": [
+        "session"
+      ],
+      "replicas": [
+        {
+          "name": "session-api-1",
+          "url": "http://127.0.0.1:47223",
+          "container": "qrwtya-q04-app-session-api-1"
+        },
+        {
+          "name": "session-api-2",
+          "url": "http://127.0.0.1:47224",
+          "container": "qrwtya-q04-app-session-api-2"
+        }
+      ],
+      "health": "/healthz",
+      "readiness": "/healthz"
+    },
+    "link-api": {
+      "roles": [
+        "link"
+      ],
+      "replicas": [
+        {
+          "name": "link-api-1",
+          "url": "http://127.0.0.1:47225",
+          "container": "qrwtya-q04-app-link-api-1"
+        },
+        {
+          "name": "link-api-2",
+          "url": "http://127.0.0.1:47226",
+          "container": "qrwtya-q04-app-link-api-2"
+        }
+      ],
+      "health": "/healthz",
+      "readiness": "/healthz"
+    },
+    "account-api": {
+      "roles": [
+        "account"
+      ],
+      "replicas": [
+        {
+          "name": "account-api-1",
+          "url": "http://127.0.0.1:47228",
+          "container": "qrwtya-q04-app-account-api-1"
+        },
+        {
+          "name": "account-api-2",
+          "url": "http://127.0.0.1:47227",
+          "container": "qrwtya-q04-app-account-api-2"
+        }
+      ],
+      "health": "/healthz",
+      "readiness": "/healthz"
+    },
+    "billing-api": {
+      "roles": [
+        "billing"
+      ],
+      "replicas": [
+        {
+          "name": "billing-api-1",
+          "url": "http://127.0.0.1:47230",
+          "container": "qrwtya-q04-app-billing-api-1"
+        },
+        {
+          "name": "billing-api-2",
+          "url": "http://127.0.0.1:47229",
+          "container": "qrwtya-q04-app-billing-api-2"
+        }
+      ],
+      "health": "/healthz",
+      "readiness": "/healthz"
+    }
+  },
+  "workers": [
+    {
+      "name": "analytics-worker-1",
+      "kind": "analytics",
+      "container": "qrwtya-q04-app-analytics-worker-1"
+    },
+    {
+      "name": "analytics-worker-2",
+      "kind": "analytics",
+      "container": "qrwtya-q04-app-analytics-worker-2"
+    }
+  ],
+  "commands": {
+    "terminate": {
+      "argv": [
+        "node",
+        "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+        "terminate",
+        "{target}"
+      ],
+      "cwd": "../../../../.scratch/Q04/export",
+      "timeoutMs": 120000
+    },
+    "start": {
+      "argv": [
+        "node",
+        "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+        "start",
+        "{target}"
+      ],
+      "cwd": "../../../../.scratch/Q04/export",
+      "timeoutMs": 120000
+    },
+    "restart": {
+      "argv": [
+        "node",
+        "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+        "restart",
+        "{target}"
+      ],
+      "cwd": "../../../../.scratch/Q04/export",
+      "timeoutMs": 120000
+    },
+    "stop": {
+      "argv": [
+        "node",
+        "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+        "stop",
+        "{target}"
+      ],
+      "cwd": "../../../../.scratch/Q04/export",
+      "timeoutMs": 120000
+    },
+    "kill": {
+      "argv": [
+        "node",
+        "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+        "kill",
+        "{target}"
+      ],
+      "cwd": "../../../../.scratch/Q04/export",
+      "timeoutMs": 120000
+    },
+    "inspect": {
+      "argv": [
+        "node",
+        "/home/ash/github/qrwty/infra/local/oracle-commands.mjs",
+        "inspect",
+        "{what}"
+      ],
+      "cwd": "../../../../.scratch/Q04/export",
+      "timeoutMs": 120000
+    },
+    "ordinaryBuildAndTest": {
+      "argv": [
+        "bash",
+        "/home/ash/github/qrwty/infra/local/ordinary-build.sh"
+      ],
+      "cwd": "../../../../.scratch/Q04/export",
+      "timeoutMs": 300000
+    }
+  },
+  "productionProfileCheck": {
+    "command": {
+      "argv": [
+        "node",
+        "/home/ash/github/qrwty/infra/local/profile-check.mjs",
+        "check",
+        "{process}",
+        "{setting}",
+        "{category}",
+        "profile"
+      ],
+      "cwd": "../../../../.scratch/Q04/export",
+      "timeoutMs": 60000
+    },
+    "processes": [
+      "redirect-service",
+      "analytics-worker",
+      "account-api",
+      "billing-api",
+      "link-api",
+      "session-api"
+    ],
+    "settings": [
+      {
+        "name": "pubsub-emulator-host",
+        "category": "emulator-endpoint"
+      },
+      {
+        "name": "metadata-detection-off",
+        "category": "emulator-endpoint"
+      },
+      {
+        "name": "compose-database-host",
+        "category": "emulator-endpoint"
+      },
+      {
+        "name": "emulator-pubsub-project",
+        "category": "emulator-endpoint"
+      },
+      {
+        "name": "stripe-fixture-url",
+        "category": "fake-provider"
+      },
+      {
+        "name": "local-issuer",
+        "category": "fake-provider"
+      },
+      {
+        "name": "development-secret-dir",
+        "category": "development-secret"
+      },
+      {
+        "name": "development-credential",
+        "category": "development-secret"
+      },
+      {
+        "name": "node-tls-reject-off",
+        "category": "tls-verification-disabled"
+      },
+      {
+        "name": "database-tls-disable",
+        "category": "tls-verification-disabled"
+      },
+      {
+        "name": "require-tls-off",
+        "category": "tls-verification-disabled"
+      },
+      {
+        "name": "missing-database-host",
+        "category": "missing-required-value"
+      },
+      {
+        "name": "missing-secret-mount",
+        "category": "missing-required-value"
+      },
+      {
+        "name": "placeholder-db-password",
+        "category": "placeholder-credential"
+      },
+      {
+        "name": "oracle-edge-token",
+        "category": "test-hook"
+      },
+      {
+        "name": "test-clock",
+        "category": "test-hook"
+      }
+    ]
+  },
+  "deploymentPreparation": {
+    "limitations": "../limitations.json"
+  }
+}
