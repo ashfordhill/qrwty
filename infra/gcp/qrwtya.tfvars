@@ -6,4 +6,4 @@ project_id             = "project-f46f6d6a-8e74-42a0-ab1"
 region                 = "us-central1"
 auth0_api_audience     = "https://api.qrwtya.qrwty.io"
 reputation_credentials = "metadata" # the production profile requires it (Q13, AG-13)
-analytics_workers      = 0          # trial credit: none until A4 writes the click aggregator
+analytics_workers      = 1          # trial credit: one copy of the click aggregator (A4)

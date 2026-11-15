@@ -49,10 +49,11 @@ project's one budget (USD 50 a month, alerts at USD 10, 25 and 50) is reused.
 | Where | What |
 | --- | --- |
 | `https://qrwty.io/healthz` | Session API's readiness, through the `qrwty-edge` Worker ([deploy/cloudflare](../deploy/cloudflare/README.md)). Cloud Run's front end keeps `run.app/healthz`, and no other spelling reaches the route (AG-15), so the Worker asks `GET /modules/session-api-sign-in-flow`: the process admits a stub request only once it is ready, so any answer below 500, or the stub's 501, is `ready` |
-| `https://qrwty.io/api/*`, `/auth/*` | Session API's API forwarding and sign-in stubs, any method: since A3 the browser's sessions, sign-in, links and account routes ([A3 handoff](../docs/handoff.md)) |
+| `https://qrwty.io/api/*`, `/auth/*` | Session API's API forwarding and sign-in stubs, any method: since A3 the browser's sessions, sign-in, links and account routes, since A4 a link's analytics and CSV ([handoff](../docs/handoff.md)) |
+| `https://qrwty.io/<slug>` | GET and HEAD of a short link (10 base62 characters, one segment): the Redirect service's resolve-and-redirect stub (A4); 302 only after the click's Pub/Sub ACK |
 | `https://qrwty.io/`, `/versions/` | The Worker's own placeholder and static pages (A5 replaces the home page with the app) |
-| Cloud Run services | `qrwtya-session-api` (public, unauthenticated invocation allowed: the Worker can't send a Google ID token, AG-14), `qrwtya-redirect-service` (public ingress, IAM-protected until A4), `qrwtya-link-api`, `qrwtya-account-api`, `qrwtya-billing-api` (internal ingress, reached over the VPC). All minimum 0 instances, maximum 3, 1 vCPU / 512 MiB, CPU only while serving |
-| Cloud Run worker pool | `qrwtya-analytics-worker` at 0 instances (`analytics_workers` in `qrwtya.tfvars`; A4 sets 1) |
+| Cloud Run services | `qrwtya-session-api` (public, unauthenticated invocation allowed: the Worker can't send a Google ID token, AG-14), `qrwtya-redirect-service` (public, unauthenticated invocation allowed since A4, for the same reason), `qrwtya-link-api`, `qrwtya-account-api`, `qrwtya-billing-api` (internal ingress, reached over the VPC). All minimum 0 instances, maximum 3, 1 vCPU / 512 MiB, CPU only while serving |
+| Cloud Run worker pool | `qrwtya-analytics-worker` at 1 instance since A4 (`analytics_workers` in `qrwtya.tfvars`): the click aggregator on `click-events--analytics-worker--analytics-worker-click-aggregator` |
 | Cloud Run job | `qrwtya-migrate` (run by `redeploy.sh` before the services roll) |
 | Stores | Cloud SQL `qrwtya-pg` (PostgreSQL 17, db-f1-micro, 10 GiB, private address, no backups), Memorystore for Valkey `qrwtya-hot-routes` and `qrwtya-admission-cache` (shared-core-nano, TLS, `AUTH_DISABLED`; each process's `JEEVES_SECRET_CACHE_<ID>_FILE` is `/dev/null`, an empty credential, which works on Cloud Run: both caches answer PING over verify-full TLS at startup), Pub/Sub `click-events` with its subscription, dead letters and Avro archive in `gs://qrwtya-click-archive-<project>` |
 | Images | Artifact Registry `qrwtya-images/app`, tagged `app-<first 12 of app/'s git tree hash>`; every Cloud Run resource runs one digest |
@@ -114,8 +115,9 @@ read it, then `QRWTY_TF_WORK=<dir> infra/gcp/scripts/tf.sh apply x.tfplan`.
 At the Q13 list prices ([cost-quote.json](../docs/evidence/q13/cost-quote.json)), idle, about
 **USD 0.124 an hour, USD 3.0 a day** of trial credit: Memorystore 2 nodes USD 1.53 a day, its 4 PSC
 endpoints USD 0.96, Cloud SQL and its disk USD 0.31, Cloud NAT and its IP USD 0.15, secrets USD
-0.03; Cloud Run at minimum 0, the worker pool at 0, Artifact Registry and the state bucket round to
-nothing. Requests add Cloud Run's request-based CPU and memory (USD 0.000024 a vCPU-second) once
+0.03; since A4 the worker pool's one always-on instance adds about USD 1.0 a day (USD 0.043 an
+hour), so about **USD 4.0 a day** in all; Cloud Run at minimum 0, Artifact Registry and the state
+bucket round to nothing. Requests add Cloud Run's request-based CPU and memory (USD 0.000024 a vCPU-second) once
 traffic arrives. The budget's alerts (USD 10, 25 and 50 a month) are reached after about 3, 8 and
 17 days of uptime.
 

@@ -19,7 +19,8 @@
 # 4. Worker: deploy/cloudflare/deploy.sh (the qrwty-edge Worker; it checks /build.json).
 # 5. Smoke: https://qrwty.io/healthz is a ready Session API, /versions/ answers 200, and /api/* and
 #    /auth/* are answered by Session API (since A3: 401 for a cookieless create, 302 to the issuer
-#    for /auth/login), not by the Worker.
+#    for /auth/login), not by the Worker, and (since A4) an unknown short link is the Redirect
+#    service's 404 page.
 #
 # Idempotent: the same release reuses its image, both plans then have no changes, the
 # migrations find nothing to do and the Worker uploads the same code.
@@ -160,6 +161,17 @@ for (const [method, path] of [["POST", "/api/v1/links"], ["GET", "/auth/login"]]
 	console.log(`${reached || location ? "PASS" : "FAIL"}  ${method} ${path} -> ${answer.status} ${line(answer.text)}`);
 	if (!reached && !location) problems.push(path);
 }
+// A4: a short link the Redirect service doesn't know is its own 404 page (the Worker's says
+// "Nothing here"); a cold Redirect service (minimum 0) may first answer 503.
+let unknown;
+for (let attempt = 0; attempt < 10; attempt += 1) {
+	unknown = await get("/Zz0Zz0Zz0Z");
+	if (unknown.status !== 503) break;
+	await new Promise((resolve) => setTimeout(resolve, 3000));
+}
+const redirected = unknown.status === 404 && unknown.text.includes("This short link doesn't exist.");
+console.log(`${redirected ? "PASS" : "FAIL"}  GET /Zz0Zz0Zz0Z -> ${unknown.status} ${unknown.type}`);
+if (!redirected) problems.push("/<slug>");
 if (problems.length) {
 	console.log(`smoke failed: ${problems.join(", ")}`);
 	process.exit(1);

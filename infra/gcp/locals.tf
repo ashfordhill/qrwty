@@ -52,10 +52,14 @@ locals {
   # (compose.yaml secrets), and how it is reached. Values are production values; none is secret.
   http = {
     "redirect-service" = {
-      env     = merge(local.db.links, local.cache["hot-routes"], { JEEVES_PUBSUB_PROJECT = var.project_id, QRWTY_CACHE_AUTH_DISABLED = "true" })
+      env = merge(local.db.links, local.cache["hot-routes"], {
+        JEEVES_PUBSUB_PROJECT     = var.project_id
+        QRWTY_CACHE_AUTH_DISABLED = "true"
+        QRWTY_PUBLIC_ORIGIN_URL   = var.public_origin # the only host that redirects (A4)
+      })
       secrets = ["sql-links--redirect-service"]
       ca      = "hot-routes"          # Memorystore's CA is per instance (GOOGLE_MANAGED_PER_INSTANCE_CA, Q13)
-      ingress = "INGRESS_TRAFFIC_ALL" # the qrwty.io Worker is the trusted edge (Q13 restricts the origin)
+      ingress = "INGRESS_TRAFFIC_ALL" # the qrwty.io Worker sends each short link here (A4)
       sa      = "redirect"
       min     = 0 # trial credit: no idle copy (A2)
     }
@@ -115,9 +119,9 @@ locals {
     }
   }
   # Public origins that allow unauthenticated invocation (no Cloud Run IAM). The qrwty.io Worker
-  # proxies the browser's /api/*, /auth/* and /healthz to Session API (A2) and can't send a Google
-  # ID token (AG-14). The Redirect service stays IAM-protected until A4 routes short links to it.
-  open = toset(["session-api"])
+  # proxies the browser's /api/*, /auth/* and /healthz to Session API (A2), and GET and HEAD of
+  # each short link to the Redirect service (A4); it can't send a Google ID token (AG-14).
+  open = toset(["session-api", "redirect-service"])
 
   worker = {
     env     = merge(local.db.analytics, { JEEVES_PUBSUB_PROJECT = var.project_id })

@@ -449,6 +449,125 @@ describe("session api proxy", () => {
 	});
 });
 
+describe("redirect service proxy", () => {
+	const redirectOrigin = (answer?: (request: Request) => Response | Promise<Response>) => ({
+		...fakeOrigin(answer),
+		url: "https://qrwtya-redirect-service-1.us-central1.run.app/",
+	});
+
+	it("sends GET and HEAD of a short link to the module, without query, cookies or address", async () => {
+		const session = fakeOrigin();
+		const redirect = redirectOrigin(
+			() =>
+				new Response(null, {
+					status: 302,
+					headers: {
+						location: "https://example.com/a?b=c",
+						"cache-control": "no-store",
+						"qrwty-click-event": "11111111-2222-4333-8444-555555555555",
+					},
+				}),
+		);
+		const response = await handle(
+			new Request("https://qrwty.io/Abcdef1234?utm=x", {
+				headers: {
+					cookie: "__Host-qrwty=s",
+					authorization: "Bearer t",
+					"cf-connecting-ip": "203.0.113.9",
+					"user-agent": "Mozilla/5.0",
+					referer: "https://news.example.org/a",
+				},
+			}),
+			build,
+			fakeAssets(),
+			session,
+			redirect,
+		);
+		expect(response.status).toBe(302);
+		expect(response.headers.get("location")).toBe("https://example.com/a?b=c");
+		expect(response.headers.get("qrwty-click-event")).toBe("11111111-2222-4333-8444-555555555555");
+		expect(response.headers.get("cache-control")).toBe("no-store, no-transform");
+		expectSecurityHeaders(response);
+		const sent = redirect.seen[0] as Request;
+		expect(sent.url).toBe(
+			"https://qrwtya-redirect-service-1.us-central1.run.app/modules/redirect-service-resolve-and-redirect/Abcdef1234",
+		);
+		expect(sent.redirect).toBe("manual");
+		expect(sent.headers.get("x-forwarded-host")).toBe("qrwty.io");
+		expect(sent.headers.get("user-agent")).toBe("Mozilla/5.0");
+		expect(sent.headers.get("referer")).toBe("https://news.example.org/a");
+		for (const name of ["cookie", "authorization", "x-forwarded-for", "cf-connecting-ip"])
+			expect(sent.headers.get(name), name).toBeNull();
+		const head = await handle(
+			new Request("https://qrwty.io/Abcdef1234", { method: "HEAD" }),
+			build,
+			undefined,
+			session,
+			redirect,
+		);
+		expect(head.status).toBe(302);
+		expect(redirect.seen[1]?.method).toBe("HEAD");
+		expect(session.seen).toHaveLength(0);
+	});
+
+	it("keeps every reserved path and other methods away from the Redirect service", async () => {
+		const session = fakeOrigin();
+		const redirect = redirectOrigin();
+		for (const path of [
+			"/",
+			"/versions/",
+			"/versions",
+			"/healthz",
+			"/build.json",
+			"/api/v1/session",
+			"/auth/login",
+			"/app/",
+			"/assets/app.js",
+			"/Abcdef123",
+			"/Abcdef12345",
+			"/Abcdef1234/",
+			"/Abcdef-234",
+		])
+			await handle(new Request(`https://qrwty.io${path}`), build, fakeAssets(), session, redirect);
+		expect(redirect.seen).toHaveLength(0);
+		const post = await handle(
+			new Request("https://qrwty.io/Abcdef1234", { method: "POST" }),
+			build,
+			undefined,
+			session,
+			redirect,
+		);
+		expect(post.status).toBe(405);
+		expect(post.headers.get("allow")).toBe("GET, HEAD");
+		const www = await handle(
+			new Request("https://www.qrwty.io/Abcdef1234"),
+			build,
+			undefined,
+			session,
+			redirect,
+		);
+		expect(www.status).toBe(301);
+		expect(www.headers.get("location")).toBe("https://qrwty.io/Abcdef1234");
+		expect(redirect.seen).toHaveLength(0);
+	});
+
+	it("answers 503 without Location when the Redirect service can't be reached", async () => {
+		const redirect = redirectOrigin(() => {
+			throw new TypeError("network");
+		});
+		const down = await handle(
+			new Request("https://qrwty.io/Abcdef1234"),
+			build,
+			undefined,
+			undefined,
+			redirect,
+		);
+		expect(down.status).toBe(503);
+		expect(down.headers.get("location")).toBeNull();
+		expect(down.headers.get("retry-after")).toBe("1");
+	});
+});
+
 describe("worker entry", () => {
 	it("reads the build from the environment", async () => {
 		const response = await worker.fetch(new Request("https://qrwty.io/build.json"), {

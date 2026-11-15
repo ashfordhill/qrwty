@@ -1,8 +1,9 @@
 // The qrwty.io edge router: a placeholder page, build info, the www and b redirects, the static
-// /versions/ pages (Workers static assets, fetched through the ASSETS binding) and, since A2, arm
-// A's Session API behind /api/*, /auth/* and /healthz.
-// `route` is pure (Request in, Response out); `handle` adds the assets and the Session API origin,
-// which tests replace.
+// /versions/ pages (Workers static assets, fetched through the ASSETS binding), since A2 arm A's
+// Session API behind /api/*, /auth/* and /healthz, and since A4 its Redirect service behind each
+// short link, GET or HEAD /<slug>.
+// `route` is pure (Request in, Response out); `handle` adds the assets and the two origins, which
+// tests replace.
 
 export interface Build {
 	commit: string;
@@ -46,6 +47,25 @@ export const SESSION_ROUTES: ReadonlyArray<{ prefix: string; module: string }> =
  * any answer below 500, or a stub's 501, means ready.
  */
 export const SESSION_READY_PROBE = "/modules/session-api-sign-in-flow";
+
+/**
+ * A short link's path: one segment of exactly 10 base62 characters (http-contract §1). Every path
+ * the Worker or Session API already answers fails it, so none needs its own exception: `/`,
+ * `/versions/`, `/api/`, `/auth/`, `/healthz`, `/build.json`, and the UI's future `/app/` and
+ * `/assets/` (a slash, or a dot, or another length). The SQL refuses a reserved word as a slug.
+ */
+export const SHORT_LINK_PATH = /^\/[0-9A-Za-z]{10}$/;
+/** The Redirect service's module: it answers every path below it, and sees `/<slug>`. */
+export const REDIRECT_MODULE = "redirect-service-resolve-and-redirect";
+
+/**
+ * The Redirect service's URL for a short link, or null when the path isn't one. The short URL's
+ * query is never forwarded (http-contract §5).
+ */
+export function redirectTarget(url: URL, origin: string): string | null {
+	if (!SHORT_LINK_PATH.test(url.pathname)) return null;
+	return `${origin.replace(/\/+$/, "")}/modules/${REDIRECT_MODULE}${url.pathname}`;
+}
 
 /** The upstream URL for a proxied request, or null when the path isn't Session API's. */
 export function sessionTarget(url: URL, origin: string): string | null {
@@ -100,6 +120,8 @@ export async function readiness(request: Request, origin: Origin): Promise<Respo
 // Request headers the Worker sets itself or that only describe the hop to Cloudflare.
 const DROPPED_REQUEST =
 	/^(host|connection|keep-alive|te|trailer|transfer-encoding|upgrade|proxy-.*|cf-.*|cdn-loop|x-forwarded-.*|x-real-ip|forwarded)$/;
+// A redirect needs no session or credential, and the Redirect service gets no client address.
+const DROPPED_FOR_REDIRECT = /^(cookie|authorization)$/;
 const DROPPED_RESPONSE =
 	/^(connection|keep-alive|transfer-encoding|upgrade|alt-svc|server|via|x-cloud-trace-context)$/;
 
@@ -107,16 +129,23 @@ const DROPPED_RESPONSE =
  * Forwards a request to Session API: any method, the body, cookies and the query, with the
  * browser's address in X-Forwarded-For and the public host in X-Forwarded-Host. Redirects come
  * back to the browser as they are. Every answer gets the security headers and no-transform.
+ * For the Redirect service (`redirect`), cookies, Authorization and the address stay behind.
  */
-export async function proxy(request: Request, target: string, origin: Origin): Promise<Response> {
+export async function proxy(
+	request: Request,
+	target: string,
+	origin: Origin,
+	redirect = false,
+): Promise<Response> {
 	const headers = new Headers();
 	request.headers.forEach((value, name) => {
-		if (!DROPPED_REQUEST.test(name)) headers.set(name, value);
+		if (!DROPPED_REQUEST.test(name) && !(redirect && DROPPED_FOR_REDIRECT.test(name)))
+			headers.set(name, value);
 	});
 	headers.set("x-forwarded-host", APEX_HOST);
 	headers.set("x-forwarded-proto", "https");
 	const client = request.headers.get("cf-connecting-ip");
-	if (client) headers.set("x-forwarded-for", client);
+	if (client && !redirect) headers.set("x-forwarded-for", client);
 	const bodyless = request.method === "GET" || request.method === "HEAD";
 	let upstream: Response;
 	try {
@@ -186,14 +215,17 @@ export function contentSecurityPolicy(pathname: string): string {
 
 /**
  * The Worker's answer: b.qrwty.io goes to B's record; with an origin, /api/*, /auth/* (any
- * method) and /healthz go to Session API; /versions/ is served from the static assets with the
- * security headers added; and everything else is `route`.
+ * method) and /healthz go to Session API; with `redirector`, GET and HEAD of a short link go
+ * to the Redirect service (another method gets the Worker's 405, `Allow: GET, HEAD`); /versions/
+ * is served from the static assets with the security headers added; and everything else is
+ * `route`.
  */
 export async function handle(
 	request: Request,
 	build: Build,
 	assets?: Assets,
 	origin?: Origin,
+	redirector?: Origin,
 ): Promise<Response> {
 	const url = new URL(request.url);
 	if (url.hostname === B_HOST) {
@@ -206,6 +238,10 @@ export async function handle(
 		}
 		const target = sessionTarget(url, origin.url);
 		if (target) return proxy(request, target, origin);
+	}
+	if (url.hostname === APEX_HOST && redirector && (request.method === "GET" || head)) {
+		const target = redirectTarget(url, redirector.url);
+		if (target) return proxy(request, target, redirector, true);
 	}
 	if (url.hostname === WWW_HOST || (request.method !== "GET" && !head) || !assets) {
 		return route(request, build);

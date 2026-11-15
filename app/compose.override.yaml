@@ -33,6 +33,8 @@ services:
       JEEVES_DATABASE_LINKS_CA_FILE: /qrwty-tls/ca.crt
       JEEVES_CACHE_HOT_ROUTES_TLS: verify-full
       JEEVES_CACHE_HOT_ROUTES_CA_FILE: /qrwty-tls/ca.crt
+      # A4: the only host that redirects, the edge's loopback address.
+      QRWTY_PUBLIC_ORIGIN_URL: http://127.0.0.1:${LOCAL_HTTP_PORT:?Set LOCAL_HTTP_PORT}
   app-session-api:
     <<: *app
     ports: ["127.0.0.1:47223-47224:3000"]

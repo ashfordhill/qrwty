@@ -3,13 +3,20 @@
 import type { ModuleMessage } from "../entry.ts";
 import type { Dependencies } from "./analytics-worker-click-aggregator.slots.ts";
 import { declareSettings } from "../../runtime/settings.ts";
+import { createFailureLog } from "../../runtime/tile-process.ts";
+import { clickAggregator } from "./clicks/aggregate.ts";
 
 /** The settings this module reads, by name: text(), integer(), url(), secret() or keyRing();
  * optional(kind) for an optional one. Values come from the process environment, secrets from
  * SECRET_DIR files. */
 export const settings = declareSettings({});
 
-/** Handles each message from the queues it consumes. "Not implemented" sends the message to its queue's .failed; any other error is retried. */
+const failure = createFailureLog("analytics-worker");
+let aggregate: ((message: ModuleMessage) => Promise<unknown>) | undefined;
+
+/** Handles each message from the queues it consumes. "Not implemented" sends the message to its queue's .failed; any other error is retried.
+ * What it does with each click event is in clicks/aggregate.ts. */
 export async function analyticsWorkerClickAggregator(dependencies: Dependencies, message: ModuleMessage): Promise<void> {
-  throw new Error("Not implemented: Click aggregator");
+  aggregate ??= clickAggregator({ db: dependencies.analytics, onFailure: failure });
+  await aggregate(message);
 }

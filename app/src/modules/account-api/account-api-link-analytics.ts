@@ -3,13 +3,17 @@
 import type { ModuleRequest, ModuleResponse } from "../entry.ts";
 import type { Dependencies } from "./account-api-link-analytics.slots.ts";
 import { declareSettings } from "../../runtime/settings.ts";
+import { analyticsRoutes } from "./link-analytics/routes.ts";
 
 /** The settings this module reads, by name: text(), integer(), url(), secret() or keyRing();
  * optional(kind) for an optional one. Values come from the process environment, secrets from
  * SECRET_DIR files. */
 export const settings = declareSettings({});
 
-/** Answers any method on /modules/account-api-link-analytics and every path below it. */
+const routes = analyticsRoutes();
+
+/** Answers any method on /modules/account-api-link-analytics and every path below it. The routes
+ * are in link-analytics/routes.ts (Billing API isn't called until A7's entitlements). */
 export async function accountApiLinkAnalytics(dependencies: Dependencies, request: ModuleRequest): Promise<ModuleResponse> {
-  throw new Error("Not implemented: Link analytics");
+  return routes(request, dependencies);
 }

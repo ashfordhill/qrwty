@@ -1698,3 +1698,153 @@ account deletion work live; two small follow-ups are named as **A3b** below.
   units found to jump.
 - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
   memory index); it was ignored.
+
+## A4: short links redirect and clicks are counted on qrwty.io, 2026-11-15
+
+Arm A, A4 attempt 1 (role implementer), from QRWTY `3bdc60c`. Q08 and Q10 of `units.md`, written in
+the application-owned stub bodies and product SQL of the Redirect service, the Analytics worker,
+Account API and Session API, against pack v1.6's `decisions.md`, `http-contract.md`,
+`product-contract.md` and `durable-clicks.md`. Light checks, as the owner decided: no oracle, no
+review, no records. Status: **done**; no A4b is needed (known limits below).
+
+- **Live on `https://qrwty.io`** (`.scratch/A4/smoke.mjs`, headless Chromium through Auth0
+  Universal Login, 10/10):
+  1. guest create: 201, `https://qrwty.io/My94GqMtq4`;
+  2. `GET /My94GqMtq4` (a browser's user agent): 302, `Location` equal to the destination, a
+     `QRWTY-Click-Event` UUID, `Cache-Control: no-store, no-transform`, 408 ms from this machine
+     (110 ms at the service, the Pub/Sub ACK included); a second GET with `curl/8.5.0`: 302;
+  3. `HEAD`: 302 with the same `Location`, no `QRWTY-Click-Event`, no event;
+  4. sign-in as A3's test user, then the claim: 200, `owned: true`;
+  5. `GET /api/v1/links/<id>/analytics` showed `{recordedAttempts: 2, filteredClicks: 1}` (the curl
+     GET is a bot, HEAD none) **3 s after the click**, `freshness {delayed: false, lagMs: 1070}`,
+     `reconciliation ok`, 7 days, `breakdowns: null`; `.../analytics.csv`: 200 `text/csv`, the
+     header line and 7 rows, the last `2026-11-15,2,1`; an unknown link's analytics 404;
+  6. an unknown slug, `/Zz0Zz0Zz0Z`: the Redirect service's 404 page, no `Location`.
+
+  The services logged no error; the HEAD was served from Hot routes in 3 ms at the service.
+- **Routing on qrwty.io** (`deploy/cloudflare/`, the `qrwty-edge` Worker):
+  - `GET` and `HEAD /<slug>`, a single path segment of exactly 10 base62 characters, go to the
+    Redirect service, `/modules/redirect-service-resolve-and-redirect/<slug>`
+    (`REDIRECT_SERVICE_ORIGIN` in `wrangler.toml`). The query, cookies, `Authorization` and the
+    browser's address stay behind; `User-Agent` and `Referer` pass; `X-Forwarded-Host: qrwty.io`.
+  - Another method on a slug path gets the Worker's 405 `Allow: GET, HEAD`. Unreachable: 503 with
+    `Retry-After: 1`, no `Location`.
+  - No reserved path has that shape: `/`, `/versions/`, `/api/`, `/auth/`, `/healthz`,
+    `/build.json`, `/app/`, `/assets/` keep their answers (unit-tested); `www` still 301s.
+  - `qrwtya-redirect-service` allows unauthenticated invocation (`local.open`, as A2 did for
+    Session API; AG-14). `deploy.sh` loads `~/.config/qrwty/cloudflare.env` as before.
+- **Redirect service** (`src/modules/redirect-service/redirect/`, the stub body):
+  - the host must be the public origin's (`QRWTY_PUBLIC_ORIGIN_URL`, now a declared setting of the
+    stub, set in `infra/gcp/locals.tf`, the production profile and the local override), else 404;
+    the slug must be 10 base62 characters, else 404; GET and HEAD only, else 405;
+  - the route: Hot routes when the entry is still valid, else `published.link_routes` (domain 1,
+    with the Redirect service's own login). Each entry carries an absolute `validatedUntil`, its
+    read + 30 s, checked on every hit and never extended; no negative caching. Misses for one slug
+    share one read per process (coalescing), with at most 16 reads in flight (else 503). A cache
+    failure falls back to the database; both down is 503;
+  - states: unknown 404, disabled, deleted or expired 410, blocked 403 (a safety page with no
+    destination); all error pages are short HTML with `no-store` (the generated service sets it);
+  - GET: a click event v1 (http-contract §6) with a server-made UUID, published with
+    `messageId = eventId` and awaited. Only coarse fields: device class (filter-v1's bot rule), the
+    referrer's host (never a path, query or IP), `country: null` and `synthetic: false` (both need
+    an authenticated edge, which doesn't exist yet). A rejected or late publish is 503,
+    `Retry-After: 2`, no `Location`, with the event ID (it may be stored). After the ACK, expiry and
+    the entry's deadline are checked again (410 or 503 with the event ID); only then 302;
+  - **the diagram's setting:** the Redirect service's Request timeout stays 1000 ms. The generated
+    publisher's 2000 ms (and the database client's 2000 ms) are longer, so the stub bounds the
+    publish at **500 ms**, the route read at 400 ms and the whole answer at 850 ms; the stub, not
+    the admission's 503 `DEADLINE`, answers (AG-26).
+- **Analytics worker** (`src/modules/analytics-worker/clicks/`, the stub body, and the module's
+  product SQL, step 1): it consumes `click-events--analytics-worker--analytics-worker-click-aggregator`.
+  - Each valid event within the replay horizon (31 days back, 5 minutes ahead) is one call of
+    `record_click`: the receipt (`click_receipts`, keyed by event ID) and the daily aggregate
+    (`click_daily`: recorded attempts with bots, filtered clicks without, synthetic apart) commit in
+    one statement, and the generated loop acknowledges only after it returns. A duplicate counts
+    nothing; ten simultaneous copies of one event count once (integration test).
+  - Anything else (malformed, another schema, a `messageId` that isn't the event ID, outside the
+    horizon) goes to `click_quarantine` with its bytes (64 KiB at most) and a reason, once per
+    message and reason, and is acknowledged; a database failure throws, so the loop keeps the
+    message.
+  - Retention: `purge_expired` deletes at most 1,000 receipts past 35 days and aggregate rows past
+    13 months, oldest first, at most once a minute as messages arrive (AG-29). Storage: one receipt
+    (about 80 bytes with its index) per event for 35 days, one aggregate row per link and day.
+  - No row holds an IP address, user agent, referrer path or query, destination or cookie.
+  - The archive subscription and the analytics subscription are unchanged from Q04/Q13 (31 days, no
+    expiry, dead letters after 100 attempts).
+  - The worker pool runs **1** instance (`analytics_workers = 1`).
+- **Owner analytics** (`src/modules/account-api/link-analytics/routes.ts`, a `defineRoutes`
+  table; Session API forwards `GET /api/v1/links/:id/analytics` and `.../analytics.csv` with only
+  `from` and `to`, and relays the CSV text and its file name):
+  - ownership from `published.owned_links` by the verified subject's owner key: another account's
+    link and an unknown ID are 404;
+  - the range: inclusive UTC dates, default the last 7 days; a bad date 400 `invalid_request`,
+    `from` after `to` or over 366 days 400 `invalid_range`, before the tier's lookback 403
+    `tier_restricted`;
+  - the answer has http-contract §7's fields: `totals`, a `series` with every day, `breakdowns:
+    null`, `freshness {asOf, delayed, lagMs}` (the last commit, and that event's lag; delayed above
+    60 s), `reconciliation` (`incident` while the link, or an event with no valid link, has an open
+    quarantine; else `delayed` or `ok`), `filter` (`filter-v1` with its definition) and
+    `lookback {maxDays: 7, limitedByTier}`;
+  - the CSV: `date,recorded_attempts,filtered_clicks`, spreadsheet-safe cells, CRLF lines,
+    `Content-Disposition: attachment`.
+- **Jeeves helpers.** Used: the generated Pub/Sub publisher and loop, `defineRoutes`,
+  `declareSettings`. Not used: `transaction` (each change is one SQL function call, so it would
+  only add round trips), `idempotent` (it keeps 24-hour HTTP answers, not 35-day event receipts;
+  AG-30) and `signal` (the publisher and the database client take none; AG-26).
+- **Deploy.** `QRWTY_REDEPLOY_DIR=.scratch/A4/redeploy infra/gcp/scripts/redeploy.sh HEAD` at
+  `8c65c6e` (this unit's code, committed first because `redeploy.sh` builds a commit; this commit
+  amends it with these docs, then the same command ran again so `/build.json` names it): image
+  `app-466d66adef65` (`sha256:4ee32a3d…f95b`); the migration job changed and executed (Analytics
+  step 1 applied); 6 stack changes (5 services and the worker pool); the Worker redeployed; the
+  redeploy smoke **5/5**, which now includes the unknown slug's 404 from the Redirect service.
+- **Checks.**
+  - `app/`: build, `typecheck:test` and Biome pass; **160 unit tests** (19 new:
+    `test/unit/redirect.test.ts`, `test/unit/clicks.test.ts`).
+  - **Integration on PostgreSQL 17.11** (`infra/local/test-postgres.sh`, removed afterwards):
+    **31 passed**, 4 new in `test/integration/clicks.test.ts`: a claimed link's redirect through
+    `published.link_routes` with the Redirect service's login (which can't read the tables), HEAD
+    without an event, 410 once disabled; the events fed to the aggregator on a fresh Analytics
+    database (product SQL applied twice and granted as `migrate.mjs` does): one recorded, a
+    redelivery a duplicate, ten simultaneous copies counted once, poison quarantined once; the
+    owner's report (2 recorded, 1 filtered, `incident` then `ok` once repaired) and CSV; another
+    account and an unknown ID 404; Account API's login can't read the tables; the purge in bounded
+    batches (3, then 2).
+  - `deploy/cloudflare`: `pnpm check` passes (Biome, tsc, vitest **33/33**, 3 new).
+  - Root `pnpm check`: exit 0, 71 generated files unchanged.
+  - `infra/gcp/validate.sh` (pinned OpenTofu and mirror): lint ok, fmt, init and validate 0.
+  - Secret scan of the staged diff (credential shapes): none. `git diff --check` clean.
+- **Template gaps** ([details](evidence/a4/a-found-gaps.md)): AG-26 (medium) the generated
+  publisher's and database client's bounds exceed the tile's Request timeout, and take no deadline
+  or signal; AG-27 (low) the publisher sets no attribute but `messageId`, so §6's `schemaVersion`
+  attribute is missing; AG-28 (low) the cache has no conditional write; AG-29 (medium) no timer for
+  a worker stub and no backlog signal for freshness; AG-30 (low) no consumer dedup helper.
+- **Known limits** (none blocks the owner's use; none is an A4b):
+  - the CSV export allowance (free 1 a month) isn't metered, and every account gets free-test-v1's
+    7-day lookback without breakdowns, until A7's entitlements (Billing API);
+  - no authenticated edge yet, so `country` is null and `QRWTY-Synthetic` is ignored; the
+    Redirect service's run.app URL is reachable without Cloudflare and answers the same redirects;
+  - a stopped worker shows as an old `freshness.asOf`, not as `delayed` (AG-29); the quarantine has
+    no repair-and-replay command yet (an operator can read it, and mark `repaired_at`);
+  - Q08's fault runs (multi-replica races, stalled sockets, publisher faults at startup) and Q10's
+    archive replay and retention-alarm tests were not run (light checks); the integration test
+    covers dedup, concurrency and purge on a real database.
+- **Credit.** The worker pool's always-on instance adds about USD 1.0 a day at Q13's list prices
+  (USD 0.043 an hour), so idle is about **USD 4.0 a day** of trial credit; requests add Cloud Run's
+  request CPU and Pub/Sub's throughput charge (not quoted here).
+- **Running.** Nothing locally: the test PostgreSQL was removed by name. Live: everything A3 left,
+  the worker pool at 1, and the redirect route.
+- **Next: A5** (the UI). The browser reads analytics at `/api/v1/links/{id}/analytics` and
+  downloads `/api/v1/links/{id}/analytics.csv`; a short link's error pages are the Redirect
+  service's HTML.
+- **Read.** The packet, `AGENTS.md`, this file (Q06, Q13, S02, A1, A2, A3), `units.md` (Q08, Q10),
+  pack v1.6's `decisions.md`, `http-contract.md`, `product-contract.md` and `durable-clicks.md`; the
+  generated README, `dependencies.ts`, `entry.ts`, `http.ts`, `tile-http.ts`, `admission.ts`,
+  `module-clients.ts` (publisher, loop, cache), `tile-loop.ts`, the Redirect, Analytics and Account
+  processes, `products.mjs` and `infra/local.json`; A3's Link operations views, My links and
+  forwarding; `infra/gcp` and the Worker. `~/.config/qrwty/`: `cloudflare.env` only through
+  `deploy.sh`, `auth0.env` only through `tf.sh` (never printed); the test user's credentials from
+  Secret Manager into the smoke's memory only.
+- **Elapsed.** 20:01:07Z to about 20:35Z on the host clock (about 35 minutes), a clock earlier units
+  found to jump.
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
+  memory index); it was ignored.

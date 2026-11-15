@@ -11,6 +11,8 @@
 //   DELETE /api/v1/links/:id          tombstone                        -> Link API  DELETE
 //   POST   /api/v1/links/:id/claim    claim with the guest's proof     -> Link API  POST .../claim
 //   GET    /api/v1/me/links           cursor pages                     -> Account API GET /links
+//   GET    /api/v1/links/:id/analytics      the owner's counts         -> Account API (A4)
+//   GET    /api/v1/links/:id/analytics.csv  the same as CSV            -> Account API (A4)
 //   GET    /api/v1/me                 {account, ownedLinks}            -> Account API GET /me
 //   DELETE /api/v1/me                 202 {deletionScheduled}          -> Link API  POST /account/erase,
 //                                     then every session of the account is revoked
@@ -34,6 +36,7 @@ import { accessToken, type Browser, identify, openTokens } from "./sessions.ts";
 
 const LINKS = "/modules/link-api-link-operations";
 const ACCOUNT = "/modules/account-api-my-links";
+const ANALYTICS = "/modules/account-api-link-analytics";
 const failure = createFailureLog("session-api");
 
 export type ForwardContext = SessionContext & { linkApi: HttpTarget; accountApi: HttpTarget };
@@ -72,6 +75,20 @@ async function relay(response: Response): Promise<ModuleResponse> {
 		if (value) headers[as] = value;
 	}
 	if (response.status === 204) return { status: 204, headers };
+	// The analytics export (A4): its CSV text and file name, as Account API sent them.
+	const type = response.headers.get("content-type") ?? "";
+	if (response.status === 200 && type.startsWith("text/csv")) {
+		const disposition = response.headers.get("content-disposition");
+		return {
+			status: 200,
+			headers: {
+				...headers,
+				"Content-Type": type,
+				...(disposition ? { "Content-Disposition": disposition } : {}),
+			},
+			body: await response.text(),
+		};
+	}
 	const text = await response.text();
 	let body: unknown;
 	try {
@@ -194,6 +211,16 @@ export function forwardRoutes() {
 			);
 		};
 	const link = (request: Routed) => `${LINKS}/links/${encodeURIComponent(request.params.id ?? "")}`;
+	/** Account API's analytics path for a link, with only `from` and `to` of the query. */
+	const analytics = (suffix: string) => (request: Routed) => {
+		const query = new URLSearchParams();
+		for (const name of ["from", "to"]) {
+			const value = request.query[name];
+			if (value !== undefined) for (const item of [value].flat()) query.append(name, item);
+		}
+		const text = query.toString();
+		return `${ANALYTICS}/links/${encodeURIComponent(request.params.id ?? "")}/${suffix}${text ? `?${text}` : ""}`;
+	};
 	const linkApi = (context: ForwardContext) => context.linkApi;
 	const accountApi = (context: ForwardContext) => context.accountApi;
 
@@ -250,6 +277,8 @@ export function forwardRoutes() {
 		"PATCH /api/v1/links/:id": owner(linkApi, link, true),
 		"DELETE /api/v1/links/:id": owner(linkApi, link, true),
 		"POST /api/v1/links/:id/claim": owner(linkApi, (request) => `${link(request)}/claim`, true),
+		"GET /api/v1/links/:id/analytics": owner(accountApi, analytics("analytics"), false),
+		"GET /api/v1/links/:id/analytics.csv": owner(accountApi, analytics("analytics.csv"), false),
 		"GET /api/v1/me/links": owner(
 			accountApi,
 			(request) => {

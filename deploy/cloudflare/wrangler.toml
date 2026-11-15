@@ -29,5 +29,8 @@ not_found_handling = "none"
 # Arm A's Session API on Cloud Run (A2): the Worker proxies /api/*, /auth/* and /healthz to it.
 # Its deterministic run.app URL (https://<service>-<project number>.<region>.run.app); it allows
 # unauthenticated invocation (infra/gcp/locals.tf, local.open). Not a credential.
+# Arm A's Redirect service (A4): the Worker sends GET and HEAD of each short link, /<slug>, to it;
+# it allows unauthenticated invocation too.
 [vars]
 SESSION_API_ORIGIN = "https://qrwtya-session-api-523800841789.us-central1.run.app"
+REDIRECT_SERVICE_ORIGIN = "https://qrwtya-redirect-service-523800841789.us-central1.run.app"
