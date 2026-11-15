@@ -43,3 +43,21 @@ The owner said: "we shouldn't be implementing this deeply if we have enough info
   - **Reviews** (QGR3, QLR1) still run, but they re-run only `pnpm check`, plus one proof each if
     they doubt a claim.
   - **Exception:** Q13's live probes are the purpose of that unit, so they stay.
+
+## Evening: finish A with a UI, to play with it
+
+The owner: "let's finish A, along with a UI so we can play with the features … we don't need to be
+spending money … this is a business plan on pause."
+
+- **Finish arm A:** sessions and accounts, redirect and clicks, analytics, abuse, billing, quotas,
+  and a UI in the Q11 style. Use the lighter checks: build, typecheck, unit tests and a live smoke
+  on qrwty.io. No oracle campaigns, no review units and no "records".
+- **Regenerate A from today's Jeeves first.** The A/B numbers in the README stay as recorded. This
+  becomes the "Jeeves now" version.
+- **Live on qrwty.io from the start, on the GCP trial credit only.** The trial never charges the
+  card unless it is upgraded, so it never is.
+  - Smallest tiers, with Cloud Run at minimum 0 where possible.
+  - Auth0 free tier, Stripe **test mode** (test cards), Web Risk free tier.
+  - qrwty.io/ becomes the app once the UI lands; `/versions/` stays.
+- **Jeeves:** QL work stays paused until the owner picks units. A's new template gaps are recorded,
+  not fixed, unless the owner asks.
