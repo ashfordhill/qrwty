@@ -1,0 +1,15 @@
+-- Entitlements, a Custom, in Billing API writes Billing: its product tables and published views.
+-- Write them here. Export never overwrites your edits: export afresh and carry them over.
+-- first-run and start run this file every time, after the template migrations and views, as
+-- the setup-only owner o_billing of d_billing, in one transaction with search_path m_billing_api_entitlements:
+-- unqualified names land in schema m_billing_api_entitlements. Keep it re-runnable (IF NOT EXISTS, CREATE OR
+-- REPLACE), with no BEGIN or COMMIT. A failure rolls the database back, and setup names this file.
+--
+-- Its own tables, in m_billing_api_entitlements: only r_billing__billing_api (Billing API) selects, inserts, updates and deletes.
+-- What others may read goes in views in published (CREATE OR REPLACE VIEW published.<name> AS ...),
+-- which every login on this database may select:
+--   r_billing__billing_api (Billing API)
+-- Template tables it may read, by qualified name:
+--   none
+-- Template views:
+--   none

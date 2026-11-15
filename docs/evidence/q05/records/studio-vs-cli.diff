@@ -1,0 +1,241 @@
+--- frozen-cli/README.md
++++ studio/README.md
+@@ -4,7 +4,7 @@
+
+ Node 24.21.0 and pnpm 12.16.1. Run `pnpm install --frozen-lockfile` then `pnpm build`. `package.json`, `pnpm-lock.yaml` and `pnpm-workspace.yaml` are yours: add a package with `pnpm add <name>@<exact version>`. `pnpm-workspace.yaml`'s `allowBuilds` says which packages' install scripts run: the template's dependencies run none (`protobufjs: false`), so neither command needs `--ignore-scripts`. Set a unique `COMPOSE_PROJECT_NAME` and three distinct free loopback ports: `LOCAL_HTTP_PORT`, `LOCAL_IDENTITY_PORT`, `LOCAL_OBJECT_PORT`. Run `pnpm first-run` once, `pnpm stop` to stop all profiles and `pnpm start` for normal restart. Reuse those exact values and private .runtime with the original Docker volumes. No resets or credential rotation occur. An interrupted single-use storage bootstrap requires manual inspection.
+
+-**Your own configuration.** `compose.override.yaml` beside `compose.yaml` is yours: export never writes it and `update:v2` never touches it. Docker Compose merges it into every command `pnpm first-run`, `start` and `stop` run, so give your modules their own `environment` and `secrets` there, or add a service of your own (for example a scheduler that calls your routes). Don't redefine a generated service's image, command, ports or healthcheck. A change applies at the next `pnpm start`.
++**Your own configuration.** `compose.override.yaml` beside `compose.yaml` is yours: export never writes it and `update:v2` never touches it. Docker Compose merges it into every command `pnpm first-run`, `start` and `stop` run, so give your modules their own `environment` and `secrets` there, or add a service of your own (for example a scheduler that calls your routes). A service of your own starts with `pnpm start` only when a generated service `depends_on` it, which your override may add; otherwise start it with your own `docker compose up`. Don't redefine a generated service's image, command, ports or healthcheck. A change applies at the next `pnpm start`.
+
+ Migration owners/admin are mounted only into setup. Runtime logins receive no implicit table access; features contribute explicit relation/view grants. PostgreSQL names are quoted and provider/composed-name limits refuse rather than truncate. Storage originals remain private; local public websites are a declared local-security limitation.
+
+@@ -12,12 +12,12 @@
+
+ Runnable processes: each application tile runs as `app-<id>` from `src/processes/<id>.ts`, healthy once its ready marker exists; HTTP processes answer `GET /healthz` on port 3000 inside the Compose network. `app-edge` publishes each public HTTP process at `http://127.0.0.1:$LOCAL_HTTP_PORT/api/<id>/` and answers `GET /healthz` itself; internal ones are reached only inside the network at `http://app-<id>:3000`. A module's routes are under `/modules/<module id>`: a stub or a generated hook in `src/modules/` answers 501 `NOT_IMPLEMENTED` until you write it. A consumer module or worker template runs a loop on its queue (a topic's `<topic>--<id>` subscriber): "Not implemented" sends the message to `<queue>.failed` with one log line, other errors retry within the loop's limit (a stub's 5 times, waiting 250 ms doubling up to 10 s), an unreachable store waits 5 s and keeps the attempt, a failed `fetch` to an outside host keeps the normal retries, and `pnpm stop` drains the loops. Every store or channel a stub links to is provisioned for its tile with its links' widest access (a database login with CONNECT and USAGE on public, SELECT on the database's `published` views and on another owner's template views; a queue, topic or subscriber; a cache; a bucket key; a search service with no index), and `src/runtime/module-clients.ts` gives each stub real clients, each probed once at startup. Each module that writes a database has its own SQL file, `infra/postgres/<database>/modules/<module>.sql`, yours to write: `first-run` and `start` run it every time, after the template migrations and views, as the setup-only owner in schema `m_<module>`, so keep it re-runnable (`IF NOT EXISTS`, `CREATE OR REPLACE`). Only its tile's login uses that schema; every login on the database may SELECT what it publishes as views in `published`, and nothing else of its tables. `first-run` and `start` start them only while `processes.runnable` in .jeeves/report.json is true; its `processes.tiles` lists each process's routes, loops and provisioned stores. No restart policy: a failed process stays exited until `pnpm start`.
+
+-**Endpoints from the environment.** Each process reads the endpoints it uses from its environment as it builds each client, with no default: `JEEVES_DATABASE_<ID>_HOST` (a host, or an absolute Unix socket directory) and `_PORT` for each database, `JEEVES_CACHE_<ID>_HOST` and `_PORT` for each cache, `JEEVES_BROKER_HOST` and `JEEVES_BROKER_PORT` for the broker, and `JEEVES_TILE_<ID>_URL` (absolute `http:` or `https:`, with no credentials, query or fragment) for each tile its stubs call, where `<ID>` is the tile ID upper-cased with `-` as `_`. A process that publishes to or consumes a Pub/Sub topic reads `JEEVES_PUBSUB_PROJECT`, a Google Cloud project ID (a lowercase letter, then up to 29 lowercase letters, digits or `-`, optionally after `<domain>:`); `compose.yaml` also sets `PUBSUB_EMULATOR_HOST` for the local emulator and `METADATA_SERVER_DETECTION: none`, so the client looks for no Google metadata server; a deployment leaves both unset. Each External API its stubs call is at `JEEVES_EXTERNAL_<ID>_URL`, by the same URL rule, which `compose.yaml` doesn't set: the value is yours, so set it in `compose.override.yaml` (and in your deployment); until it is set the process fails startup with `Invalid endpoint JEEVES_EXTERNAL_<ID>_URL`. Here `app-billing-api` reads `JEEVES_EXTERNAL_STRIPE_API_URL`; `app-link-api` reads `JEEVES_EXTERNAL_REPUTATION_API_URL`. A failed call to an External API keeps a loop's normal retries. A process whose stubs call the Identity reads `JEEVES_IDENTITY_<ID>_URL`, the Identity's base URL as the process reaches it, by the same URL rule: `compose.yaml` sets Keycloak's address inside the network, `http://identity-<id>:8080` (a stub adds the realm's paths, `/realms/<id>/...`); a deployment sets its issuer's origin, or another address its processes reach. A sign-in's `OIDC_ISSUER` is what tokens carry, which a container can't reach locally, so it isn't the client's base. A lost connection to the Identity waits as an unreachable store's does. A missing or invalid one fails startup with `Invalid endpoint <variable>`, never its value. Each database and cache also reads its transport, `JEEVES_DATABASE_<ID>_TLS` or `JEEVES_CACHE_<ID>_TLS`, with no default: `disable` (plain text, which `PGSSLMODE` can't change) or `verify-full` (TLS that checks the certificate chain and the host name); with `verify-full`, `_CA_FILE` is an optional PEM file (else Node's roots; one that can't be read fails startup with `Unreadable CA file <variable>`) and `_TLS_SERVERNAME` the optional name the certificate carries when it isn't the host (a managed instance reached by a private address). With `JEEVES_REQUIRE_TLS=true` (else unset), startup fails with `Insecure endpoint <variable>` for a database or cache whose transport isn't `verify-full` (a database's Unix socket directory is local transport and passes), a `JEEVES_TILE_<ID>_URL`, `JEEVES_EXTERNAL_<ID>_URL`, `JEEVES_IDENTITY_<ID>_URL`, `OIDC_ISSUER` or `OIDC_JWKS_URL` that isn't `https:`, and any `PUBSUB_EMULATOR_HOST`; the broker, object storage and search are plain text and aren't checked. `compose.yaml` sets the local values (`disable`, and no `JEEVES_REQUIRE_TLS`); a deployment sets its own. Object storage and search are still reached at their local names. Each process reads (also `processes.tiles[].environment` in .jeeves/report.json):
++**Endpoints from the environment.** Each process reads the endpoints it uses from its environment as it builds each client, with no default: `JEEVES_DATABASE_<ID>_HOST` (a host, or an absolute Unix socket directory) and `_PORT` for each database, `JEEVES_CACHE_<ID>_HOST` and `_PORT` for each cache, `JEEVES_BROKER_HOST` and `JEEVES_BROKER_PORT` for the broker, and `JEEVES_TILE_<ID>_URL` (absolute `http:` or `https:`, with no credentials, query, fragment or whitespace) for each tile its stubs call, where `<ID>` is the tile ID upper-cased with `-` as `_`. A process that publishes to or consumes a Pub/Sub topic reads `JEEVES_PUBSUB_PROJECT`, a Google Cloud project ID (a lowercase letter, then up to 29 lowercase letters, digits or `-`, optionally after `<domain>:`); `compose.yaml` also sets `PUBSUB_EMULATOR_HOST` for the local emulator and `METADATA_SERVER_DETECTION: none`, so the client looks for no Google metadata server; a deployment leaves both unset. Each External API its stubs call is at `JEEVES_EXTERNAL_<ID>_URL`, by the same URL rule, which `compose.yaml` doesn't set: the value is yours, so set it in `compose.override.yaml` (and in your deployment); until it is set the process fails startup with `Invalid endpoint JEEVES_EXTERNAL_<ID>_URL`. A failed call to an External API keeps a loop's normal retries. A process whose stubs call the Identity reads `JEEVES_IDENTITY_<ID>_URL`, the Identity's base URL as the process reaches it, by the same URL rule: `compose.yaml` sets Keycloak's address inside the network, `http://identity-<id>:8080` (a stub adds the realm's paths, `/realms/<id>/...`); a deployment sets its issuer's origin, or another address its processes reach. A sign-in's `OIDC_ISSUER` is what tokens carry, which a container can't reach locally, so it isn't the client's base. A lost connection to the Identity waits as an unreachable store's does. A missing or invalid one fails startup with `Invalid endpoint <variable>`, never its value. Each database and cache also reads its transport, `JEEVES_DATABASE_<ID>_TLS` or `JEEVES_CACHE_<ID>_TLS`, with no default: `disable` (plain text, which `PGSSLMODE` can't change) or `verify-full` (TLS that checks the certificate chain and the host name); with `verify-full`, `_CA_FILE` is an optional PEM file (else Node's roots; one that can't be read fails startup with `Unreadable CA file <variable>`) and `_TLS_SERVERNAME` the optional name the certificate carries when it isn't the host (a managed instance reached by a private address). With `JEEVES_REQUIRE_TLS=true` (else unset), startup fails with `Insecure endpoint <variable>` for a database or cache whose transport isn't `verify-full` (a database's Unix socket directory is local transport and passes), a `JEEVES_TILE_<ID>_URL`, `JEEVES_EXTERNAL_<ID>_URL`, `JEEVES_IDENTITY_<ID>_URL`, `OIDC_ISSUER` or `OIDC_JWKS_URL` that isn't `https:`, and any `PUBSUB_EMULATOR_HOST`; the broker, object storage and search are plain text and aren't checked. `compose.yaml` sets the local values (`disable`, and no `JEEVES_REQUIRE_TLS`); a deployment sets its own. Object storage and search are still reached at their local names. Each process reads (also `processes.tiles[].environment` in .jeeves/report.json):
+
+ - `app-account-api`: `JEEVES_DATABASE_ANALYTICS_HOST`, `JEEVES_DATABASE_ANALYTICS_PORT`, `JEEVES_DATABASE_ANALYTICS_TLS`, `JEEVES_DATABASE_LINKS_HOST`, `JEEVES_DATABASE_LINKS_PORT`, `JEEVES_DATABASE_LINKS_TLS`, `JEEVES_TILE_BILLING_API_URL`, `OIDC_AUDIENCE`, `OIDC_ISSUER`, `OIDC_JWKS_URL`
+ - `app-analytics-worker`: `JEEVES_DATABASE_ANALYTICS_HOST`, `JEEVES_DATABASE_ANALYTICS_PORT`, `JEEVES_DATABASE_ANALYTICS_TLS`, `JEEVES_PUBSUB_PROJECT`, `METADATA_SERVER_DETECTION`, `PUBSUB_EMULATOR_HOST`
+-- `app-billing-api`: `JEEVES_DATABASE_BILLING_HOST`, `JEEVES_DATABASE_BILLING_PORT`, `JEEVES_DATABASE_BILLING_TLS`, `OIDC_AUDIENCE`, `OIDC_ISSUER`, `OIDC_JWKS_URL`
+-- `app-link-api`: `JEEVES_CACHE_ADMISSION_CACHE_HOST`, `JEEVES_CACHE_ADMISSION_CACHE_PORT`, `JEEVES_CACHE_ADMISSION_CACHE_TLS`, `JEEVES_DATABASE_LINKS_HOST`, `JEEVES_DATABASE_LINKS_PORT`, `JEEVES_DATABASE_LINKS_TLS`, `JEEVES_TILE_BILLING_API_URL`, `OIDC_AUDIENCE`, `OIDC_ISSUER`, `OIDC_JWKS_URL`
++- `app-billing-api`: `JEEVES_DATABASE_BILLING_HOST`, `JEEVES_DATABASE_BILLING_PORT`, `JEEVES_DATABASE_BILLING_TLS`, `JEEVES_EXTERNAL_STRIPE_API_URL`, `OIDC_AUDIENCE`, `OIDC_ISSUER`, `OIDC_JWKS_URL`
++- `app-link-api`: `JEEVES_CACHE_ADMISSION_CACHE_HOST`, `JEEVES_CACHE_ADMISSION_CACHE_PORT`, `JEEVES_CACHE_ADMISSION_CACHE_TLS`, `JEEVES_DATABASE_LINKS_HOST`, `JEEVES_DATABASE_LINKS_PORT`, `JEEVES_DATABASE_LINKS_TLS`, `JEEVES_EXTERNAL_REPUTATION_API_URL`, `JEEVES_TILE_BILLING_API_URL`, `OIDC_AUDIENCE`, `OIDC_ISSUER`, `OIDC_JWKS_URL`
+ - `app-redirect-service`: `JEEVES_CACHE_HOT_ROUTES_HOST`, `JEEVES_CACHE_HOT_ROUTES_PORT`, `JEEVES_CACHE_HOT_ROUTES_TLS`, `JEEVES_DATABASE_LINKS_HOST`, `JEEVES_DATABASE_LINKS_PORT`, `JEEVES_DATABASE_LINKS_TLS`, `JEEVES_PUBSUB_PROJECT`, `METADATA_SERVER_DETECTION`, `PUBSUB_EMULATOR_HOST`
+ - `app-session-api`: `JEEVES_DATABASE_SESSIONS_HOST`, `JEEVES_DATABASE_SESSIONS_PORT`, `JEEVES_DATABASE_SESSIONS_TLS`, `JEEVES_IDENTITY_IDENTITY_URL`, `JEEVES_TILE_ACCOUNT_API_URL`, `JEEVES_TILE_BILLING_API_URL`, `JEEVES_TILE_LINK_API_URL`
+
+--- frozen-cli/infra/edge/nginx.conf
++++ studio/infra/edge/nginx.conf
+@@ -12,7 +12,7 @@
+     location /api/billing-api/ { set $backend app-billing-api:3000; rewrite ^/api/billing-api/(.*)$ /$1 break; proxy_pass http://$backend; }
+     location /api/redirect-service/ { set $backend app-redirect-service:3000; rewrite ^/api/redirect-service/(.*)$ /$1 break; proxy_pass http://$backend; }
+     location /api/session-api/ { set $backend app-session-api:3000; rewrite ^/api/session-api/(.*)$ /$1 break; proxy_pass http://$backend; }
+-    location @unavailable { return 503 '{"error":"UNAVAILABLE","message":"Service unavailable."}'; }
++    location @unavailable { add_header Retry-After 1 always; return 503 '{"error":"UNAVAILABLE","message":"Service unavailable."}'; }
+     location / { return 404 '{"error":"NOT_FOUND","message":"Route not found."}'; }
+   }
+ }
+--- frozen-cli/scripts/bootstrap.mjs
++++ studio/scripts/bootstrap.mjs
+@@ -1,4 +1,4 @@
+-import { existsSync, writeFileSync } from "node:fs";
++import { chmodSync, existsSync, writeFileSync } from "node:fs";
+ import { compose, plan } from "./common.mjs";
+
+ const garage = (...args) => compose("exec", "-T", "local-objects", "/garage", ...args);
+@@ -20,10 +20,13 @@
+     secretAccessKey = result.match(/Secret key:\s*(\S+)/)?.[1];
+   if (!accessKeyId || !secretAccessKey)
+     throw new Error("Storage key output changed; inspect private runtime without logging keys.");
+-  writeFileSync(`.runtime/secrets/${name}`, JSON.stringify({ accessKeyId, secretAccessKey }), {
++  const path = `.runtime/secrets/${name}`;
++  writeFileSync(path, JSON.stringify({ accessKeyId, secretAccessKey }), {
+     mode: 0o644,
+     flag: "wx",
+   });
++  // The host's umask masks `mode`; containers run as `node`, so set it exactly.
++  chmodSync(path, 0o644);
+ }
+ for (const binding of plan.storage)
+   garage(
+--- frozen-cli/scripts/setup.mjs
++++ studio/scripts/setup.mjs
+@@ -1,5 +1,5 @@
+ import { randomBytes } from "node:crypto";
+-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
++import { chmodSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
+ import { plan } from "./common.mjs";
+
+ /** Called only after local.mjs has checked exact-project Docker state and free ports. */
+@@ -9,8 +9,12 @@
+   mkdirSync(".runtime", { mode: 0o700 });
+   mkdirSync(".runtime/secrets", { mode: 0o700 });
+   const values = {};
+-  const write = (name, value, mode = 0o644) =>
+-    writeFileSync(`.runtime/secrets/${name}`, value, { mode, flag: "wx" });
++  const write = (name, value, mode = 0o644) => {
++    const path = `.runtime/secrets/${name}`;
++    writeFileSync(path, value, { mode, flag: "wx" });
++    // The host's umask masks `mode`; containers run as `node`, so set it exactly.
++    chmodSync(path, mode);
++  };
+   for (const name of plan.secrets.filter(
+     (name) =>
+       !plan.generatedSecrets.includes(name) &&
+--- frozen-cli/src/processes/account-api.ts
++++ studio/src/processes/account-api.ts
+@@ -53,7 +53,8 @@
+   // "Not implemented" answers 501 with one log line per module and hook a second.
+   const log = createNotImplementedLog(config.tile);
+   // Module clients (src/runtime/module-clients.ts): one per store or channel this tile's stubs
+-  // use, each probed once before the process is ready; a failed probe fails startup.
++  // use, each probed once before the process is ready; a failed probe fails startup, except
++  // a cache's, which is logged.
+   const probe = createProbeLog(config.tile);
+   const clients = {
+     "analytics": await databaseClient(scope, probe, { tile: config.tile, resource: "analytics" }),
+@@ -79,13 +80,14 @@
+     // The audience its tokens carry is the deployment's; Compose sets the local client's.
+     if (!process.env.OIDC_AUDIENCE) throw new Error("OIDC_AUDIENCE must name the audience of the sign-in tokens.");
+     // So are its issuer and key set (Compose sets the local ones): each an absolute http: or
+-    // https: URL, or startup fails naming the variable, never its value. With JEEVES_REQUIRE_TLS
+-    // set to true (else absent), each must be https: (`Insecure endpoint <variable>`).
++    // https: URL with no whitespace (URL.parse would trim it, but the issuer is compared as set),
++    // or startup fails naming the variable, never its value. With JEEVES_REQUIRE_TLS set to
++    // true (else absent), each must be https: (`Insecure endpoint <variable>`).
+     const requireTls = process.env.JEEVES_REQUIRE_TLS;
+     if (requireTls !== undefined && requireTls !== "true") throw new Error("Invalid endpoint JEEVES_REQUIRE_TLS");
+     const signInUrl = (name: "OIDC_ISSUER" | "OIDC_JWKS_URL") => {
+       const value = process.env[name] ?? "";
+-      const protocol = URL.parse(value)?.protocol;
++      const protocol = /\s/.test(value) ? undefined : URL.parse(value)?.protocol;
+       if (protocol !== "http:" && protocol !== "https:") throw new Error(`Invalid endpoint ${name}`);
+       if (requireTls && protocol !== "https:") throw new Error(`Insecure endpoint ${name}`);
+       return value;
+--- frozen-cli/src/processes/analytics-worker.ts
++++ studio/src/processes/analytics-worker.ts
+@@ -30,7 +30,8 @@
+   // queue's .failed with one log line per module and hook a second; stopping drains them.
+   const loopLog = createLoopLog(config.tile);
+   // Module clients (src/runtime/module-clients.ts): one per store or channel this tile's stubs
+-  // use, each probed once before the process is ready; a failed probe fails startup.
++  // use, each probed once before the process is ready; a failed probe fails startup, except
++  // a cache's, which is logged.
+   const probe = createProbeLog(config.tile);
+   const clients = {
+     "analytics": await databaseClient(scope, probe, { tile: config.tile, resource: "analytics" }),
+--- frozen-cli/src/processes/billing-api.ts
++++ studio/src/processes/billing-api.ts
+@@ -59,7 +59,8 @@
+   // "Not implemented" answers 501 with one log line per module and hook a second.
+   const log = createNotImplementedLog(config.tile);
+   // Module clients (src/runtime/module-clients.ts): one per store or channel this tile's stubs
+-  // use, each probed once before the process is ready; a failed probe fails startup.
++  // use, each probed once before the process is ready; a failed probe fails startup, except
++  // a cache's, which is logged.
+   const probe = createProbeLog(config.tile);
+   const clients = {
+     "billing": await databaseClient(scope, probe, { tile: config.tile, resource: "billing" }),
+@@ -88,13 +89,14 @@
+     // The audience its tokens carry is the deployment's; Compose sets the local client's.
+     if (!process.env.OIDC_AUDIENCE) throw new Error("OIDC_AUDIENCE must name the audience of the sign-in tokens.");
+     // So are its issuer and key set (Compose sets the local ones): each an absolute http: or
+-    // https: URL, or startup fails naming the variable, never its value. With JEEVES_REQUIRE_TLS
+-    // set to true (else absent), each must be https: (`Insecure endpoint <variable>`).
++    // https: URL with no whitespace (URL.parse would trim it, but the issuer is compared as set),
++    // or startup fails naming the variable, never its value. With JEEVES_REQUIRE_TLS set to
++    // true (else absent), each must be https: (`Insecure endpoint <variable>`).
+     const requireTls = process.env.JEEVES_REQUIRE_TLS;
+     if (requireTls !== undefined && requireTls !== "true") throw new Error("Invalid endpoint JEEVES_REQUIRE_TLS");
+     const signInUrl = (name: "OIDC_ISSUER" | "OIDC_JWKS_URL") => {
+       const value = process.env[name] ?? "";
+-      const protocol = URL.parse(value)?.protocol;
++      const protocol = /\s/.test(value) ? undefined : URL.parse(value)?.protocol;
+       if (protocol !== "http:" && protocol !== "https:") throw new Error(`Invalid endpoint ${name}`);
+       if (requireTls && protocol !== "https:") throw new Error(`Insecure endpoint ${name}`);
+       return value;
+--- frozen-cli/src/processes/link-api.ts
++++ studio/src/processes/link-api.ts
+@@ -53,7 +53,8 @@
+   // "Not implemented" answers 501 with one log line per module and hook a second.
+   const log = createNotImplementedLog(config.tile);
+   // Module clients (src/runtime/module-clients.ts): one per store or channel this tile's stubs
+-  // use, each probed once before the process is ready; a failed probe fails startup.
++  // use, each probed once before the process is ready; a failed probe fails startup, except
++  // a cache's, which is logged.
+   const probe = createProbeLog(config.tile);
+   const clients = {
+     "admission-cache": await cacheClient(scope, probe, { cache: "admission-cache" }),
+@@ -82,13 +83,14 @@
+     // The audience its tokens carry is the deployment's; Compose sets the local client's.
+     if (!process.env.OIDC_AUDIENCE) throw new Error("OIDC_AUDIENCE must name the audience of the sign-in tokens.");
+     // So are its issuer and key set (Compose sets the local ones): each an absolute http: or
+-    // https: URL, or startup fails naming the variable, never its value. With JEEVES_REQUIRE_TLS
+-    // set to true (else absent), each must be https: (`Insecure endpoint <variable>`).
++    // https: URL with no whitespace (URL.parse would trim it, but the issuer is compared as set),
++    // or startup fails naming the variable, never its value. With JEEVES_REQUIRE_TLS set to
++    // true (else absent), each must be https: (`Insecure endpoint <variable>`).
+     const requireTls = process.env.JEEVES_REQUIRE_TLS;
+     if (requireTls !== undefined && requireTls !== "true") throw new Error("Invalid endpoint JEEVES_REQUIRE_TLS");
+     const signInUrl = (name: "OIDC_ISSUER" | "OIDC_JWKS_URL") => {
+       const value = process.env[name] ?? "";
+-      const protocol = URL.parse(value)?.protocol;
++      const protocol = /\s/.test(value) ? undefined : URL.parse(value)?.protocol;
+       if (protocol !== "http:" && protocol !== "https:") throw new Error(`Invalid endpoint ${name}`);
+       if (requireTls && protocol !== "https:") throw new Error(`Insecure endpoint ${name}`);
+       return value;
+--- frozen-cli/src/processes/redirect-service.ts
++++ studio/src/processes/redirect-service.ts
+@@ -36,7 +36,8 @@
+   // "Not implemented" answers 501 with one log line per module and hook a second.
+   const log = createNotImplementedLog(config.tile);
+   // Module clients (src/runtime/module-clients.ts): one per store or channel this tile's stubs
+-  // use, each probed once before the process is ready; a failed probe fails startup.
++  // use, each probed once before the process is ready; a failed probe fails startup, except
++  // a cache's, which is logged.
+   const probe = createProbeLog(config.tile);
+   const clients = {
+     "click-events": await pubsubPublisher(scope, probe, { topic: "click-events" }),
+--- frozen-cli/src/processes/session-api.ts
++++ studio/src/processes/session-api.ts
+@@ -42,7 +42,8 @@
+   // "Not implemented" answers 501 with one log line per module and hook a second.
+   const log = createNotImplementedLog(config.tile);
+   // Module clients (src/runtime/module-clients.ts): one per store or channel this tile's stubs
+-  // use, each probed once before the process is ready; a failed probe fails startup.
++  // use, each probed once before the process is ready; a failed probe fails startup, except
++  // a cache's, which is logged.
+   const probe = createProbeLog(config.tile);
+   const clients = {
+     "account-api": httpTarget({ tile: "account-api" }),
+--- frozen-cli/src/runtime/http.ts
++++ studio/src/runtime/http.ts
+@@ -83,7 +83,12 @@
+     const status =
+       error && typeof error === "object" && "statusCode" in error ? error.statusCode : undefined;
+     const clientError = status === 400 || status === 413 || status === 415;
+-    if (!clientError) failed();
++    if (!clientError) {
++      failed();
++      // Any other error (a dependency's, such as `Query read timeout`, or a stub's own) answers the
++      // fallback 503, which says when to retry too: one second, unless the route set its own.
++      if (!reply.hasHeader("Retry-After")) reply.header("Retry-After", "1");
++    }
+     reply.code(clientError ? status : 503).send({
+       error: clientError ? "INVALID_REQUEST" : "UNAVAILABLE",
+       message: clientError ? "Invalid request." : "Service unavailable.",
+--- frozen-cli/src/runtime/module-clients.ts
++++ studio/src/runtime/module-clients.ts
+@@ -65,8 +65,10 @@
+ /** A port: an integer 1–65535. */
+ const port = (value: string) =>
+   /^[1-9][0-9]{0,4}$/.test(value) && Number(value) <= 65535 ? Number(value) : undefined;
+-/** A URL: absolute `http:` or `https:`, with no credentials, query or fragment. */
++/** A URL: absolute `http:` or `https:`, with no credentials, query, fragment or whitespace (which
++ * `new URL` trims or drops, so the value the client uses would not be the one checked). */
+ const url = (value: string) => {
++  if (/\s/.test(value)) return undefined;
+   let parsed: URL;
+   try {
+     parsed = new URL(value);

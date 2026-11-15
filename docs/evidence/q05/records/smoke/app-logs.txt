@@ -1,0 +1,34 @@
+app-session-api-1  | {"event":"probe","tile":"session-api","level":"info","client":"sessions","kind":"database","check":"SELECT 1","result":"ok"}
+app-account-api-1  | {"event":"probe","tile":"account-api","level":"info","client":"analytics","kind":"database","check":"SELECT 1","result":"ok"}
+app-link-api-1     | {"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+app-session-api-1  | Application ready
+app-link-api-1     | {"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+app-session-api-1  | {"level":"warn","event":"not-implemented","tile":"session-api","module":"session-api-sign-in-flow","what":"Sign-in flow","route":"GET /modules/session-api-sign-in-flow/*","action":"answered 501"}
+app-session-api-1  | {"level":"warn","event":"not-implemented","tile":"session-api","module":"session-api-api-forwarding","what":"API forwarding","route":"POST /modules/session-api-api-forwarding/*","action":"answered 501"}
+app-billing-api-1  | {"event":"probe","tile":"billing-api","level":"info","client":"billing","kind":"database","check":"SELECT 1","result":"ok"}
+app-billing-api-1       | {"level":"info","event":"started","tile":"billing-api","module":"billing-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+app-billing-api-1       | Application ready
+app-analytics-worker-1  | {"event":"probe","tile":"analytics-worker","level":"info","client":"analytics","kind":"database","check":"SELECT 1","result":"ok"}
+app-analytics-worker-1  | {"event":"probe","tile":"analytics-worker","level":"info","client":"click-events--analytics-worker","kind":"queue","check":"the Pub/Sub subscription exists","result":"ok"}
+app-analytics-worker-1  | {"level":"info","event":"broker","tile":"analytics-worker","what":"broker consume click-events--analytics-worker","state":"available"}
+app-analytics-worker-1  | Application ready
+app-analytics-worker-1  | {"level":"warn","event":"not-implemented","tile":"analytics-worker","module":"analytics-worker-click-aggregator","what":"Click aggregator","queue":"click-events--analytics-worker","messageId":"q05-probe-1","action":"sent to click-events--analytics-worker.failed (NOT_IMPLEMENTED)"}
+app-account-api-1  | {"event":"probe","tile":"account-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+app-account-api-1       | {"level":"info","event":"started","tile":"account-api","module":"account-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Required on every module route"]}
+app-account-api-1       | Application ready
+app-account-api-1       | {"level":"warn","event":"not-implemented","tile":"account-api","module":"account-api-my-links","what":"My links","route":"GET /modules/account-api-my-links","action":"answered 501"}
+app-account-api-1       | {"level":"warn","event":"not-implemented","tile":"account-api","module":"account-api-link-analytics","what":"Link analytics","route":"GET /modules/account-api-link-analytics","action":"answered 501"}
+app-billing-api-1       | {"level":"warn","event":"not-implemented","tile":"billing-api","module":"billing-api-customer-billing","what":"Customer billing","route":"POST /modules/billing-api-customer-billing/*","action":"answered 501"}
+app-billing-api-1       | {"level":"warn","event":"not-implemented","tile":"billing-api","module":"billing-api-payment-events","what":"Payment events","route":"POST /modules/billing-api-payment-events","action":"answered 501"}
+app-billing-api-1       | {"level":"warn","event":"not-implemented","tile":"billing-api","module":"billing-api-entitlements","what":"Entitlements","route":"GET /modules/billing-api-entitlements","action":"answered 501"}
+app-link-api-1     | {"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+app-link-api-1          | {"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+app-link-api-1          | Application ready
+app-link-api-1          | {"level":"warn","event":"not-implemented","tile":"link-api","module":"link-api-link-operations","what":"Link operations","route":"POST /modules/link-api-link-operations/*","action":"answered 501"}
+app-link-api-1          | {"level":"warn","event":"not-implemented","tile":"link-api","module":"link-api-abuse-and-moderation","what":"Abuse and moderation","route":"POST /modules/link-api-abuse-and-moderation/*","action":"answered 501"}
+app-redirect-service-1  | {"event":"probe","tile":"redirect-service","level":"info","client":"click-events","kind":"queue","check":"the Pub/Sub topic exists","result":"ok"}
+app-redirect-service-1  | {"level":"info","event":"cache","tile":"redirect-service","cache":"hot-routes","state":"available"}
+app-redirect-service-1  | {"event":"probe","tile":"redirect-service","level":"info","client":"hot-routes","kind":"cache","check":"PING","result":"ok"}
+app-redirect-service-1  | {"event":"probe","tile":"redirect-service","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+app-redirect-service-1  | Application ready
+app-redirect-service-1  | {"level":"warn","event":"not-implemented","tile":"redirect-service","module":"redirect-service-resolve-and-redirect","what":"Resolve and redirect","route":"GET /modules/redirect-service-resolve-and-redirect/*","action":"answered 501"}

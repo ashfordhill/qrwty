@@ -1,0 +1,220 @@
+{
+  "format": "qrwty-q05-provenance-v1",
+  "run": "qrwty-r1-20261114",
+  "unit": "Q05",
+  "attempt": 1,
+  "project": {
+    "id": "d1e59607-0616-418d-83d5-4cfe5bcb4b11",
+    "name": "QRWTY · production candidate v1",
+    "revision": 84,
+    "previousRevision": 83,
+    "updatedAt": "2026-11-15T07:53:01.637Z",
+    "operationId": 7037,
+    "database": "owner's jeeves database through the dev API on 127.0.0.1:4310 (not restarted)"
+  },
+  "change": {
+    "command": {
+      "type": "edit",
+      "element": "click-events",
+      "settings": {
+        "kind": "queue",
+        "mode": "work-queue",
+        "provider": "google-cloud"
+      }
+    },
+    "path": "architecture.studio.elements[click-events].settings.provider",
+    "from": "unspecified",
+    "to": "google-cloud",
+    "savedThrough": "buildSupportedAuthoringCommand (Jeeves 4e87f97 @jeeves/spec; the studio's installed support equals the frozen registry's) then POST /projects/<id>/operations {baseRevision: 83, ops, source: \"api\"}",
+    "batchSha256": "3a2b79cb196cd5dfc712d3e10dd5db838306694f0aaa191ef7a8094b94939507",
+    "otherChanges": "none (revision field 83 -> 84 only)"
+  },
+  "source": {
+    "schemaVersion": 3,
+    "canonicalSha256": "4fbcd311992737c402d22d28415765b598f806c1c01a35ead81eb5ec6d3b024d",
+    "normalizedInputSha256": "82ce0f5aea5b5930623945051ad6e870574f88a2efa32f1f1d7c7920a6aa0c4f",
+    "hashEncoding": "UTF-8 JSON with recursively sorted object keys; array order preserved",
+    "downloadedSourceJson": {
+      "file": "QRWTY-production-candidate-v1-r84-source.json",
+      "sha256": "fc667058f5afda93dec50fcb17f09929f7f1c46979c5a6036ce4b9e03e8239ef",
+      "note": "pretty-printed studio download; canonical form is app/.jeeves/inputs/design.json"
+    }
+  },
+  "generation": {
+    "jeevesCommit": "4e87f97bdc8ce590edd479e16308c892b9049554",
+    "subject": "QGR2: review QRWTY gap batch 2",
+    "how": "git archive 4e87f97 into .scratch/Q05/jeeves (docs/plans/qrwty-lessons deleted unread), pnpm install --frozen-lockfile --offline --ignore-scripts, pnpm --filter @jeeves/generator export:v2 <canonical r84> <qrwty>/app",
+    "generator": {
+      "id": "jeeves-v2",
+      "version": "0.1.0-experimental.1"
+    },
+    "registrySha256": "46f9cb0b1ea5cfcbcbfdf16dc76573775ef92d13f9e64f1709edeeb6ec00c09c",
+    "runtime": {
+      "id": "local-runtime",
+      "sha256": "71dcdadd55b30121d87b5fbf89c77494ac56146bd6333a22e473c3ff4555eaec",
+      "version": "0.1.0"
+    },
+    "templates": [
+      {
+        "ref": {
+          "id": "module-stub",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d",
+          "version": "0.1.0"
+        },
+        "selection": "session-api-sign-in-flow"
+      },
+      {
+        "ref": {
+          "id": "module-stub",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d",
+          "version": "0.1.0"
+        },
+        "selection": "session-api-api-forwarding"
+      },
+      {
+        "ref": {
+          "id": "verified-identity",
+          "sha256": "c321a5d7392e9a9a15cf73d8cf2db427b5533150e33d716c47c5edb49ad7e492",
+          "version": "0.1.0"
+        },
+        "selection": "link-api-sign-in"
+      },
+      {
+        "ref": {
+          "id": "module-stub",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d",
+          "version": "0.1.0"
+        },
+        "selection": "link-api-link-operations"
+      },
+      {
+        "ref": {
+          "id": "module-stub",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d",
+          "version": "0.1.0"
+        },
+        "selection": "link-api-abuse-and-moderation"
+      },
+      {
+        "ref": {
+          "id": "module-stub",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d",
+          "version": "0.1.0"
+        },
+        "selection": "redirect-service-resolve-and-redirect"
+      },
+      {
+        "ref": {
+          "id": "verified-identity",
+          "sha256": "c321a5d7392e9a9a15cf73d8cf2db427b5533150e33d716c47c5edb49ad7e492",
+          "version": "0.1.0"
+        },
+        "selection": "account-api-sign-in"
+      },
+      {
+        "ref": {
+          "id": "module-stub",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d",
+          "version": "0.1.0"
+        },
+        "selection": "account-api-my-links"
+      },
+      {
+        "ref": {
+          "id": "module-stub",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d",
+          "version": "0.1.0"
+        },
+        "selection": "account-api-link-analytics"
+      },
+      {
+        "ref": {
+          "id": "verified-identity",
+          "sha256": "c321a5d7392e9a9a15cf73d8cf2db427b5533150e33d716c47c5edb49ad7e492",
+          "version": "0.1.0"
+        },
+        "selection": "billing-api-sign-in"
+      },
+      {
+        "ref": {
+          "id": "module-stub",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d",
+          "version": "0.1.0"
+        },
+        "selection": "billing-api-customer-billing"
+      },
+      {
+        "ref": {
+          "id": "module-stub",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d",
+          "version": "0.1.0"
+        },
+        "selection": "billing-api-payment-events"
+      },
+      {
+        "ref": {
+          "id": "module-stub",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d",
+          "version": "0.1.0"
+        },
+        "selection": "billing-api-entitlements"
+      },
+      {
+        "ref": {
+          "id": "module-stub",
+          "sha256": "07c32da0ca7211cd86c35ec521a7dbca94ebe2654560601e275d88ce8720cb1d",
+          "version": "0.1.0"
+        },
+        "selection": "analytics-worker-click-aggregator"
+      }
+    ],
+    "manifestSha256": "c4c33e264d6b2a63e38ef87de22e441c2ec251e1dff554580e16e45ceb87daff",
+    "files": 87
+  },
+  "studio": {
+    "jeevesHead": "79ecb96e7eb0916f7c7de3d1709da0873427a6d7",
+    "subject": "QG25: the edge's 502, 503 and 504 carry Retry-After",
+    "uncommittedGeneratorChanges": "yes: 11 files under jeeves-generator/ were modified in the checkout (an in-progress Jeeves unit) and the API server (tsx watch) served them. The diff of jeeves-generator, jeeves/packages and jeeves/apps/server against HEAD was read before the save (SHA-256 d76c8aadb63e33e14a789e816b9321eebdf6a567a355059c732bb12df01e3229) and again after the studio export (SHA-256 c7cb3e6a43b63a39a01afbe3011415f0d908f226d11c88f286abfb08b0cdb87a, the copy used for attribution); the tree kept changing in between",
+    "webRenderer": {
+      "appVersion": "0.1.0",
+      "commit": "73bd4a8496d43a64b46b5d7e97a381de1de80653",
+      "trackedTreeDirtyAtBuild": true,
+      "mode": "development",
+      "treeVerification": "Development server: verify Git identity/tree at capture; HMR can change source after startup.",
+      "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36"
+    },
+    "previewRegistrySha256": "ad98a82585ee82e37f27c2e3a2c39f8e0044c024d216d5396e6c34021b263cff",
+    "previewArchive": {
+      "filename": "jeeves-local-v2-experimental.zip",
+      "format": "zip-store-v1",
+      "bytes": 4024285,
+      "sha256": "a837fdc80aaa12a318f8af0de1fc9c8b5a589727bffb11f9d56a3ee933a1930e",
+      "manifestSha256": "709578ff8a4efdb87582b143109c33a64d4762cca8eae05b6d8b24437e1c30ed",
+      "files": 87,
+      "payloadBytes": 4011475
+    },
+    "attribution": "records/attribution.json",
+    "exportedAt": "2026-11-15T07:54:06.048Z"
+  },
+  "renders": {
+    "detailed": {
+      "file": "QRWTY-production-candidate-v1-r84-detailed.png",
+      "sha256": "826a9efba1c0beb311b2aa45cd95bcd50e41ae7c3f722584f11ded5c3ed6f965"
+    },
+    "simple": {
+      "file": "QRWTY-production-candidate-v1-r84.png",
+      "sha256": "5384d2182a2aef752178dcc4d739808779dbba4a84c5c89c47e332802696473b"
+    },
+    "note": "byte-identical to revision 83's renders (docs/evidence/q01/jeeves/): a queue's provider is not drawn"
+  },
+  "blueprint": {
+    "v3": {
+      "file": "blueprint-v3-r84.json",
+      "sha256": "7a6922a0f73f156813472c45c33274d48700aac87186558495a7afa70ce3f3db"
+    },
+    "v2": {
+      "file": "blueprint-v2-refusal-r84.json",
+      "status": 422
+    }
+  }
+}

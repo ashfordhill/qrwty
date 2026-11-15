@@ -1,0 +1,660 @@
+{
+  "method": "source-loc-v2",
+  "parser": "rolldown@1.2.15",
+  "app": "app",
+  "baselineCommit": "6d4f986c3d3dd5e2f7ba3defde727c274ea38561",
+  "finalCommit": "1348d0663f0e6dd913abb77e26ac515a736b58da",
+  "baselineManifestSha256": "c4c33e264d6b2a63e38ef87de22e441c2ec251e1dff554580e16e45ceb87daff",
+  "scope": {
+    "version": 1,
+    "backendPaths": [
+      "src/runtime",
+      "src/features",
+      "src/modules",
+      "src/processes"
+    ],
+    "uiPaths": [],
+    "configurationPaths": [
+      "src/features/application-bindings.ts",
+      "src/features/local-bindings.ts"
+    ]
+  },
+  "scopeSha256": "8721e79826610aa123b4bf4b5bcd67eb0c793809078bcbcb39e8597b36923a22",
+  "rules": {
+    "scope": "Backend production JS/TS in src directories, classified by an explicit scope. UI is excluded regardless of location; unclassified eligible source refuses the report. Tests, fixtures, configuration, declarations and build/vendor output excluded.",
+    "lines": "Physical nonblank lines after parsed comments are removed; indentation ignored, other code and wrapping preserved.",
+    "attribution": "Longest ordered matching lines in the same path are retained template lines; other final lines are post-template. New paths are entirely post-template; renames are not inferred.",
+    "interpretation": "Source composition only. Includes boilerplate and stubs; does not measure working behavior, quality, labor saved or agent versus human authorship."
+  },
+  "totals": {
+    "includedFiles": 45,
+    "baselineLoc": 2926,
+    "finalLoc": 2926,
+    "retainedTemplateLoc": 2925,
+    "postTemplateLoc": 1,
+    "removedOrReplacedTemplateLoc": 1,
+    "templatePercent": 99.97
+  },
+  "included": [
+    {
+      "path": "src/features/service-resources.ts",
+      "baselineSha256": "e31b042dae55ce92d3c74689fe98acd8066059dd75148c67159fa60df7cf21dd",
+      "finalSha256": "e31b042dae55ce92d3c74689fe98acd8066059dd75148c67159fa60df7cf21dd",
+      "baselineLoc": 50,
+      "finalLoc": 50,
+      "retainedTemplateLoc": 50,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/account-api/account-api-link-analytics.slots.ts",
+      "baselineSha256": "e880162f3d38aef3fde9180515d85a3aa3dd622a270fd0a0b8e949f953fcd048",
+      "finalSha256": "e880162f3d38aef3fde9180515d85a3aa3dd622a270fd0a0b8e949f953fcd048",
+      "baselineLoc": 11,
+      "finalLoc": 11,
+      "retainedTemplateLoc": 11,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/account-api/account-api-link-analytics.ts",
+      "baselineSha256": "c81f20912b50b2730cd72f0ee7ac0b7fbd70374fc8530dfb938a3754a37cff93",
+      "finalSha256": "c81f20912b50b2730cd72f0ee7ac0b7fbd70374fc8530dfb938a3754a37cff93",
+      "baselineLoc": 5,
+      "finalLoc": 5,
+      "retainedTemplateLoc": 5,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/account-api/account-api-my-links.slots.ts",
+      "baselineSha256": "aba2f5e9e6bb8af206d9c031c9062f3946bdf735dfda0370ab3a7d0418cf6516",
+      "finalSha256": "aba2f5e9e6bb8af206d9c031c9062f3946bdf735dfda0370ab3a7d0418cf6516",
+      "baselineLoc": 7,
+      "finalLoc": 7,
+      "retainedTemplateLoc": 7,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/account-api/account-api-my-links.ts",
+      "baselineSha256": "961bae3f39d09fb97fe101d6e338e4c90a2b6e79ae6f011d1410b7dacec7aa32",
+      "finalSha256": "961bae3f39d09fb97fe101d6e338e4c90a2b6e79ae6f011d1410b7dacec7aa32",
+      "baselineLoc": 5,
+      "finalLoc": 5,
+      "retainedTemplateLoc": 5,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/analytics-worker/analytics-worker-click-aggregator.slots.ts",
+      "baselineSha256": "acc35b8fff698e326cac1712ce992cc7a1a43668a93b1dc51cf93343654c76eb",
+      "finalSha256": "acc35b8fff698e326cac1712ce992cc7a1a43668a93b1dc51cf93343654c76eb",
+      "baselineLoc": 8,
+      "finalLoc": 8,
+      "retainedTemplateLoc": 8,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/analytics-worker/analytics-worker-click-aggregator.ts",
+      "baselineSha256": "c34af6136fcd84bfddc01dd8bdccd6fe1f43c691b6ae7566321bec0a7f4506e8",
+      "finalSha256": "c34af6136fcd84bfddc01dd8bdccd6fe1f43c691b6ae7566321bec0a7f4506e8",
+      "baselineLoc": 5,
+      "finalLoc": 5,
+      "retainedTemplateLoc": 5,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/billing-api/billing-api-customer-billing.slots.ts",
+      "baselineSha256": "7de0b95bd895659d742cd9531e9f3a3886631f9004e59dcdcacb821a9420898f",
+      "finalSha256": "7de0b95bd895659d742cd9531e9f3a3886631f9004e59dcdcacb821a9420898f",
+      "baselineLoc": 9,
+      "finalLoc": 9,
+      "retainedTemplateLoc": 9,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/billing-api/billing-api-customer-billing.ts",
+      "baselineSha256": "94bed1fbf54f6c10705f9058edee7bc1ca6254b386657c427fd3f7abc984c9d0",
+      "finalSha256": "94bed1fbf54f6c10705f9058edee7bc1ca6254b386657c427fd3f7abc984c9d0",
+      "baselineLoc": 5,
+      "finalLoc": 5,
+      "retainedTemplateLoc": 5,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/billing-api/billing-api-entitlements.slots.ts",
+      "baselineSha256": "166f77fa33b3fa0a1369ad1df843e5679eae8e85b7b0b892da44b3e0e9148a62",
+      "finalSha256": "166f77fa33b3fa0a1369ad1df843e5679eae8e85b7b0b892da44b3e0e9148a62",
+      "baselineLoc": 7,
+      "finalLoc": 7,
+      "retainedTemplateLoc": 7,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/billing-api/billing-api-entitlements.ts",
+      "baselineSha256": "cb0398ca4a86c85c9d6d7ea9265031592910d0d6dfa28d72a1d782e59b065a8f",
+      "finalSha256": "cb0398ca4a86c85c9d6d7ea9265031592910d0d6dfa28d72a1d782e59b065a8f",
+      "baselineLoc": 5,
+      "finalLoc": 5,
+      "retainedTemplateLoc": 5,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/billing-api/billing-api-payment-events.slots.ts",
+      "baselineSha256": "82a530ecedd97e3e1ee46ee27607572629fddb960fc77c3e7169fa06572c77ac",
+      "finalSha256": "82a530ecedd97e3e1ee46ee27607572629fddb960fc77c3e7169fa06572c77ac",
+      "baselineLoc": 9,
+      "finalLoc": 9,
+      "retainedTemplateLoc": 9,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/billing-api/billing-api-payment-events.ts",
+      "baselineSha256": "eda5669163d34117ef9019a794503db42b59db7674a01c81a88ecbbdabda064f",
+      "finalSha256": "eda5669163d34117ef9019a794503db42b59db7674a01c81a88ecbbdabda064f",
+      "baselineLoc": 5,
+      "finalLoc": 5,
+      "retainedTemplateLoc": 5,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/dependencies.ts",
+      "baselineSha256": "c9629db44ce56025ccf32192120e94f45a65955dc60725e020a2908f76a4eb2e",
+      "finalSha256": "c9629db44ce56025ccf32192120e94f45a65955dc60725e020a2908f76a4eb2e",
+      "baselineLoc": 39,
+      "finalLoc": 39,
+      "retainedTemplateLoc": 39,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/entry.ts",
+      "baselineSha256": "7a3efffaf9ef4aec92296eeb81bd40fdbd29b0738c9f01837a480b544b86f96c",
+      "finalSha256": "7a3efffaf9ef4aec92296eeb81bd40fdbd29b0738c9f01837a480b544b86f96c",
+      "baselineLoc": 24,
+      "finalLoc": 24,
+      "retainedTemplateLoc": 24,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/link-api/link-api-abuse-and-moderation.slots.ts",
+      "baselineSha256": "71b0dbc32750bfb16f6abc7c9c823b4bc39d53eb9c7b74c0eeee6e03d8cf94f6",
+      "finalSha256": "71b0dbc32750bfb16f6abc7c9c823b4bc39d53eb9c7b74c0eeee6e03d8cf94f6",
+      "baselineLoc": 9,
+      "finalLoc": 9,
+      "retainedTemplateLoc": 9,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/link-api/link-api-abuse-and-moderation.ts",
+      "baselineSha256": "548f8b75cd1a239a98c04577e09bab934f9d15027a4cb50dd07e417062224af9",
+      "finalSha256": "548f8b75cd1a239a98c04577e09bab934f9d15027a4cb50dd07e417062224af9",
+      "baselineLoc": 5,
+      "finalLoc": 5,
+      "retainedTemplateLoc": 5,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/link-api/link-api-link-operations.slots.ts",
+      "baselineSha256": "99165be9cfda87bc2f9f2b81f533d17c027d1767f44bfed02649cfa3efa76f64",
+      "finalSha256": "99165be9cfda87bc2f9f2b81f533d17c027d1767f44bfed02649cfa3efa76f64",
+      "baselineLoc": 13,
+      "finalLoc": 13,
+      "retainedTemplateLoc": 13,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/link-api/link-api-link-operations.ts",
+      "baselineSha256": "e8e00cd1cdf084e86c33b1235f80ba0b78ef6c483a16fcb42d3b96eae08240c8",
+      "finalSha256": "c8b38a70002ce37534277b566e00cfc912542a2ebedbaf242ffeddde3a94f620",
+      "baselineLoc": 5,
+      "finalLoc": 5,
+      "retainedTemplateLoc": 4,
+      "postTemplateLoc": 1,
+      "removedOrReplacedTemplateLoc": 1
+    },
+    {
+      "path": "src/modules/redirect-service/redirect-service-resolve-and-redirect.slots.ts",
+      "baselineSha256": "5765b1dab407fcead45b6b04fd75f4d50be68b0d90be841edded6cf30db24747",
+      "finalSha256": "5765b1dab407fcead45b6b04fd75f4d50be68b0d90be841edded6cf30db24747",
+      "baselineLoc": 11,
+      "finalLoc": 11,
+      "retainedTemplateLoc": 11,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/redirect-service/redirect-service-resolve-and-redirect.ts",
+      "baselineSha256": "0a51a85e917e87018befc4e6478cd7b535b7c7d46993081c8a5e5f7b49cff6f2",
+      "finalSha256": "0a51a85e917e87018befc4e6478cd7b535b7c7d46993081c8a5e5f7b49cff6f2",
+      "baselineLoc": 5,
+      "finalLoc": 5,
+      "retainedTemplateLoc": 5,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/session-api/session-api-api-forwarding.slots.ts",
+      "baselineSha256": "816c7c5d8888a8f95b4e936a6521888e7d27cd726e9fcf5c1cbb889b0df558cc",
+      "finalSha256": "816c7c5d8888a8f95b4e936a6521888e7d27cd726e9fcf5c1cbb889b0df558cc",
+      "baselineLoc": 15,
+      "finalLoc": 15,
+      "retainedTemplateLoc": 15,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/session-api/session-api-api-forwarding.ts",
+      "baselineSha256": "a930be5b701d152b97a1c51f5a99864c690684bb388be761a5afca37fef4fdab",
+      "finalSha256": "a930be5b701d152b97a1c51f5a99864c690684bb388be761a5afca37fef4fdab",
+      "baselineLoc": 5,
+      "finalLoc": 5,
+      "retainedTemplateLoc": 5,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/session-api/session-api-sign-in-flow.slots.ts",
+      "baselineSha256": "45e29e5dfe1d4ed8d4a7101547b99cb4f0156e60142ed9bf358cb9c815f7ab1f",
+      "finalSha256": "45e29e5dfe1d4ed8d4a7101547b99cb4f0156e60142ed9bf358cb9c815f7ab1f",
+      "baselineLoc": 9,
+      "finalLoc": 9,
+      "retainedTemplateLoc": 9,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/modules/session-api/session-api-sign-in-flow.ts",
+      "baselineSha256": "189d2ca103c121470082218159e68370b0d01289d145c7d01c55d527db3dcadb",
+      "finalSha256": "189d2ca103c121470082218159e68370b0d01289d145c7d01c55d527db3dcadb",
+      "baselineLoc": 5,
+      "finalLoc": 5,
+      "retainedTemplateLoc": 5,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/processes/account-api.ts",
+      "baselineSha256": "522793cf3475c4a2b5ddbbb6c612074fe5f00f245bb28731fe9c136d8f0ff363",
+      "finalSha256": "522793cf3475c4a2b5ddbbb6c612074fe5f00f245bb28731fe9c136d8f0ff363",
+      "baselineLoc": 117,
+      "finalLoc": 117,
+      "retainedTemplateLoc": 117,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/processes/analytics-worker.ts",
+      "baselineSha256": "07b43d3a3319d44983d4dcd68474795a3d7fc0b6eb72dcf28a3ddfbe32a24906",
+      "finalSha256": "07b43d3a3319d44983d4dcd68474795a3d7fc0b6eb72dcf28a3ddfbe32a24906",
+      "baselineLoc": 40,
+      "finalLoc": 40,
+      "retainedTemplateLoc": 40,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/processes/billing-api.ts",
+      "baselineSha256": "413b050052fe784be61712572ec2da188fdf559c3007222ce7b0eb3a12aec9cf",
+      "finalSha256": "413b050052fe784be61712572ec2da188fdf559c3007222ce7b0eb3a12aec9cf",
+      "baselineLoc": 133,
+      "finalLoc": 133,
+      "retainedTemplateLoc": 133,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/processes/link-api.ts",
+      "baselineSha256": "5002e834ada170c9c4e7489c3ecc416d376505095c9f1241e215e95fbe791928",
+      "finalSha256": "5002e834ada170c9c4e7489c3ecc416d376505095c9f1241e215e95fbe791928",
+      "baselineLoc": 120,
+      "finalLoc": 120,
+      "retainedTemplateLoc": 120,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/processes/redirect-service.ts",
+      "baselineSha256": "4fcda29dfcd4e9d78bda5303779950c611f8847bcd5a5db0699e9a69b19c6fbb",
+      "finalSha256": "4fcda29dfcd4e9d78bda5303779950c611f8847bcd5a5db0699e9a69b19c6fbb",
+      "baselineLoc": 59,
+      "finalLoc": 59,
+      "retainedTemplateLoc": 59,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/processes/session-api.ts",
+      "baselineSha256": "da8d6accdc900bdb5ffa235141893a5eed72db03525035046cdf405b6b8f3697",
+      "finalSha256": "da8d6accdc900bdb5ffa235141893a5eed72db03525035046cdf405b6b8f3697",
+      "baselineLoc": 77,
+      "finalLoc": 77,
+      "retainedTemplateLoc": 77,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/runtime/admission.ts",
+      "baselineSha256": "17de7157d83777e7281d8fe9b3069fed58597e35df6d37eacf959cca641b9f06",
+      "finalSha256": "17de7157d83777e7281d8fe9b3069fed58597e35df6d37eacf959cca641b9f06",
+      "baselineLoc": 74,
+      "finalLoc": 74,
+      "retainedTemplateLoc": 74,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/runtime/amqp.ts",
+      "baselineSha256": "b0251aab519c9b1ac5bac5d6bd1f6d011b3498eae002644d99c6af362064d0b3",
+      "finalSha256": "b0251aab519c9b1ac5bac5d6bd1f6d011b3498eae002644d99c6af362064d0b3",
+      "baselineLoc": 348,
+      "finalLoc": 348,
+      "retainedTemplateLoc": 348,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/runtime/delivery.ts",
+      "baselineSha256": "8f4eb7ac0327338913b89714550b1a3b78c214534f1ffef8e2404da53734a5c4",
+      "finalSha256": "8f4eb7ac0327338913b89714550b1a3b78c214534f1ffef8e2404da53734a5c4",
+      "baselineLoc": 210,
+      "finalLoc": 210,
+      "retainedTemplateLoc": 210,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/runtime/http.ts",
+      "baselineSha256": "4c421a50869e0cd19e9785b99b855255e041981db31b8d4e7fd17048ebc7a33b",
+      "finalSha256": "4c421a50869e0cd19e9785b99b855255e041981db31b8d4e7fd17048ebc7a33b",
+      "baselineLoc": 123,
+      "finalLoc": 123,
+      "retainedTemplateLoc": 123,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/runtime/identity.ts",
+      "baselineSha256": "ce012fad6b404d7482048886c640f9b4c24e6b3b68e8bac96b869a44599a4db7",
+      "finalSha256": "ce012fad6b404d7482048886c640f9b4c24e6b3b68e8bac96b869a44599a4db7",
+      "baselineLoc": 43,
+      "finalLoc": 43,
+      "retainedTemplateLoc": 43,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/runtime/local.ts",
+      "baselineSha256": "53429e097013bbf7dad6e581bf523f3035ec358652b9738d62f0b5a6ac310165",
+      "finalSha256": "53429e097013bbf7dad6e581bf523f3035ec358652b9738d62f0b5a6ac310165",
+      "baselineLoc": 10,
+      "finalLoc": 10,
+      "retainedTemplateLoc": 10,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/runtime/module-clients.ts",
+      "baselineSha256": "c2269feabe3527f319835bad38290f18926f066a043f3c11938a08770696155a",
+      "finalSha256": "c2269feabe3527f319835bad38290f18926f066a043f3c11938a08770696155a",
+      "baselineLoc": 496,
+      "finalLoc": 496,
+      "retainedTemplateLoc": 496,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/runtime/postgres.ts",
+      "baselineSha256": "76c7bd47367780fa3908bfd7ca4f8343b93419ca2a36a8de7df2ff9a7e31fa32",
+      "finalSha256": "76c7bd47367780fa3908bfd7ca4f8343b93419ca2a36a8de7df2ff9a7e31fa32",
+      "baselineLoc": 42,
+      "finalLoc": 42,
+      "retainedTemplateLoc": 42,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/runtime/process.ts",
+      "baselineSha256": "505827525af0ed1f57a3c85ab3b9d1a8e0fd56638116c23f2e0b0a30734ef54b",
+      "finalSha256": "505827525af0ed1f57a3c85ab3b9d1a8e0fd56638116c23f2e0b0a30734ef54b",
+      "baselineLoc": 111,
+      "finalLoc": 111,
+      "retainedTemplateLoc": 111,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/runtime/tile-guard.ts",
+      "baselineSha256": "e983a9b57dff0b898242770016009b54dad4c0af724e85f3393e29f0dc7e98c1",
+      "finalSha256": "e983a9b57dff0b898242770016009b54dad4c0af724e85f3393e29f0dc7e98c1",
+      "baselineLoc": 80,
+      "finalLoc": 80,
+      "retainedTemplateLoc": 80,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/runtime/tile-http.ts",
+      "baselineSha256": "e65c51616a40cda495ee6329d5e35c6cd032bd6c70a0c7b07ab32829d4f549e7",
+      "finalSha256": "e65c51616a40cda495ee6329d5e35c6cd032bd6c70a0c7b07ab32829d4f549e7",
+      "baselineLoc": 70,
+      "finalLoc": 70,
+      "retainedTemplateLoc": 70,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/runtime/tile-loop.ts",
+      "baselineSha256": "43d760eee82d3104b572a27c04eb1f79094d261328ff27678b1b367adad848da",
+      "finalSha256": "43d760eee82d3104b572a27c04eb1f79094d261328ff27678b1b367adad848da",
+      "baselineLoc": 252,
+      "finalLoc": 252,
+      "retainedTemplateLoc": 252,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/runtime/tile-process.ts",
+      "baselineSha256": "80a485b77c8c29fbb1568181163b4ffb57bc101989962371451c88b666d1cfd7",
+      "finalSha256": "80a485b77c8c29fbb1568181163b4ffb57bc101989962371451c88b666d1cfd7",
+      "baselineLoc": 74,
+      "finalLoc": 74,
+      "retainedTemplateLoc": 74,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    },
+    {
+      "path": "src/runtime/valkey.ts",
+      "baselineSha256": "c9688d1c291f0f59f8a6923bfc75d5c44504a5fd97a5086711699b4ae0e8ee00",
+      "finalSha256": "c9688d1c291f0f59f8a6923bfc75d5c44504a5fd97a5086711699b4ae0e8ee00",
+      "baselineLoc": 171,
+      "finalLoc": 171,
+      "retainedTemplateLoc": 171,
+      "postTemplateLoc": 0,
+      "removedOrReplacedTemplateLoc": 0
+    }
+  ],
+  "excluded": [
+    {
+      "path": ".dockerignore",
+      "reason": "outside-src"
+    },
+    {
+      "path": ".gitignore",
+      "reason": "outside-src"
+    },
+    {
+      "path": ".jeeves/inputs/design.json",
+      "reason": "outside-src"
+    },
+    {
+      "path": ".jeeves/manifest.json",
+      "reason": "outside-src"
+    },
+    {
+      "path": ".jeeves/normalized.json",
+      "reason": "outside-src"
+    },
+    {
+      "path": ".jeeves/report.json",
+      "reason": "outside-src"
+    },
+    {
+      "path": "Dockerfile",
+      "reason": "outside-src"
+    },
+    {
+      "path": "README.md",
+      "reason": "outside-src"
+    },
+    {
+      "path": "compose.yaml",
+      "reason": "outside-src"
+    },
+    {
+      "path": "diagnostics/generation.json",
+      "reason": "outside-src"
+    },
+    {
+      "path": "ffmpeg-os.lock",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/edge/nginx.conf",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/local.json",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/postgres/analytics/000-foundation.sql",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/postgres/analytics/modules/analytics-worker-click-aggregator.sql",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/postgres/billing/000-foundation.sql",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/postgres/billing/modules/billing-api-customer-billing.sql",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/postgres/billing/modules/billing-api-entitlements.sql",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/postgres/billing/modules/billing-api-payment-events.sql",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/postgres/identity/000-foundation.sql",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/postgres/links/000-foundation.sql",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/postgres/links/modules/link-api-abuse-and-moderation.sql",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/postgres/links/modules/link-api-link-operations.sql",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/postgres/sessions/000-foundation.sql",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/postgres/sessions/modules/session-api-api-forwarding.sql",
+      "reason": "outside-src"
+    },
+    {
+      "path": "infra/postgres/sessions/modules/session-api-sign-in-flow.sql",
+      "reason": "outside-src"
+    },
+    {
+      "path": "package.json",
+      "reason": "outside-src"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "reason": "outside-src"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "reason": "outside-src"
+    },
+    {
+      "path": "scripts/bootstrap.mjs",
+      "reason": "outside-src"
+    },
+    {
+      "path": "scripts/broker-init.mjs",
+      "reason": "outside-src"
+    },
+    {
+      "path": "scripts/common.mjs",
+      "reason": "outside-src"
+    },
+    {
+      "path": "scripts/local.mjs",
+      "reason": "outside-src"
+    },
+    {
+      "path": "scripts/migrate.mjs",
+      "reason": "outside-src"
+    },
+    {
+      "path": "scripts/products.mjs",
+      "reason": "outside-src"
+    },
+    {
+      "path": "scripts/pubsub-init.mjs",
+      "reason": "outside-src"
+    },
+    {
+      "path": "scripts/setup.mjs",
+      "reason": "outside-src"
+    },
+    {
+      "path": "scripts/status.mjs",
+      "reason": "outside-src"
+    },
+    {
+      "path": "scripts/storage-config.mjs",
+      "reason": "outside-src"
+    },
+    {
+      "path": "src/features/application-bindings.ts",
+      "reason": "configuration-or-build"
+    },
+    {
+      "path": "src/features/local-bindings.ts",
+      "reason": "configuration-or-build"
+    },
+    {
+      "path": "tsconfig.json",
+      "reason": "outside-src"
+    }
+  ]
+}

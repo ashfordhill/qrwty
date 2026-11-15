@@ -1,0 +1,92 @@
+{
+ "format": "qrwty-q05-attribution-v1",
+ "method": "docs/evidence/q05/commands/attribution.sh: a git-archive copy of Jeeves 4e87f97 exports the saved r84 source; each later commit's jeeves-generator diff is applied with patch and the source exported again; last the checkout's uncommitted generator diff",
+ "frozenCliEqualsChainStart": true,
+ "steps": [
+  {
+   "commit": "39a20be",
+   "subject": "QG21: the fallback 503 carries Retry-After too",
+   "changedFiles": [
+    ".jeeves/manifest.json",
+    ".jeeves/report.json",
+    "src/runtime/http.ts"
+   ]
+  },
+  {
+   "commit": "1d42570",
+   "subject": "QG22: secret files are 0644 whatever the host umask",
+   "changedFiles": [
+    ".jeeves/manifest.json",
+    ".jeeves/report.json",
+    "scripts/bootstrap.mjs",
+    "scripts/setup.mjs"
+   ]
+  },
+  {
+   "commit": "efbff72",
+   "subject": "QG23: two sentences deployers need",
+   "changedFiles": [
+    ".jeeves/manifest.json",
+    ".jeeves/report.json",
+    "README.md"
+   ]
+  },
+  {
+   "commit": "79ecb96",
+   "subject": "QG25: the edge's 502, 503 and 504 carry Retry-After",
+   "changedFiles": [
+    ".jeeves/manifest.json",
+    ".jeeves/report.json",
+    "infra/edge/nginx.conf"
+   ]
+  },
+  {
+   "commit": "uncommitted",
+   "subject": "Jeeves checkout working tree at 79ecb96 (an uncommitted Jeeves unit in progress), captured after the studio export",
+   "changedFiles": [
+    ".jeeves/manifest.json",
+    ".jeeves/report.json",
+    "README.md",
+    "src/processes/account-api.ts",
+    "src/processes/analytics-worker.ts",
+    "src/processes/billing-api.ts",
+    "src/processes/link-api.ts",
+    "src/processes/redirect-service.ts",
+    "src/processes/session-api.ts",
+    "src/runtime/module-clients.ts"
+   ]
+  }
+ ],
+ "studioVsChainEnd": {
+  "differ": [
+   ".jeeves/manifest.json",
+   ".jeeves/report.json",
+   "src/runtime/module-clients.ts"
+  ],
+  "explanation": "The uncommitted working tree changed between the studio export (07:54:06Z) and the capture of its diff (07:55:00Z), or the server had not yet reloaded that edit: one comment in src/runtime/module-clients.ts (from the template module-clients.ts.template) reads differently; .jeeves/manifest.json and .jeeves/report.json differ only by that template's and file's hashes and sizes. Every other file of the studio export equals the chain end."
+ },
+ "patchSha256": {
+  "1d42570.patch": "c9dc1effb5938dd433c1a6d6094e1c354d61fcc5e50e2aba93b92c70f8d67a21",
+  "39a20be.patch": "8a262274496e1649ee2cc13c8798a186dde695b8bc27ce9d05ef8107ef888931",
+  "79ecb96.patch": "9650e1203e047295f59aa2d9d0cd42ec885769713b643a51dc2d1399fea14f08",
+  "efbff72.patch": "c8b019a971ecb0acadfafb4054aec4955b9040027b0fcc6262a734a4c8c3049e",
+  "worktree.patch": "c7cb3e6a43b63a39a01afbe3011415f0d908f226d11c88f286abfb08b0cdb87a"
+ },
+ "everyStudioDifferenceExplained": true,
+ "studioDiffersFromFrozenCli": [
+  ".jeeves/manifest.json",
+  ".jeeves/report.json",
+  "README.md",
+  "infra/edge/nginx.conf",
+  "scripts/bootstrap.mjs",
+  "scripts/setup.mjs",
+  "src/processes/account-api.ts",
+  "src/processes/analytics-worker.ts",
+  "src/processes/billing-api.ts",
+  "src/processes/link-api.ts",
+  "src/processes/redirect-service.ts",
+  "src/processes/session-api.ts",
+  "src/runtime/http.ts",
+  "src/runtime/module-clients.ts"
+ ]
+}

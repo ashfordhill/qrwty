@@ -1,0 +1,1 @@
+$ pnpm --dir app exec tsc -p tsconfig.json --noEmit

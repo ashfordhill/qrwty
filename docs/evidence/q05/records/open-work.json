@@ -1,0 +1,327 @@
+{
+  "hooks": {
+    "files": [],
+    "processRows": []
+  },
+  "applicationFiles": [
+    {
+      "path": "infra/postgres/analytics/modules/analytics-worker-click-aggregator.sql",
+      "asGenerated": true
+    },
+    {
+      "path": "infra/postgres/billing/modules/billing-api-customer-billing.sql",
+      "asGenerated": true
+    },
+    {
+      "path": "infra/postgres/billing/modules/billing-api-entitlements.sql",
+      "asGenerated": true
+    },
+    {
+      "path": "infra/postgres/billing/modules/billing-api-payment-events.sql",
+      "asGenerated": true
+    },
+    {
+      "path": "infra/postgres/links/modules/link-api-abuse-and-moderation.sql",
+      "asGenerated": true
+    },
+    {
+      "path": "infra/postgres/links/modules/link-api-link-operations.sql",
+      "asGenerated": true
+    },
+    {
+      "path": "infra/postgres/sessions/modules/session-api-api-forwarding.sql",
+      "asGenerated": true
+    },
+    {
+      "path": "infra/postgres/sessions/modules/session-api-sign-in-flow.sql",
+      "asGenerated": true
+    },
+    {
+      "path": "package.json",
+      "asGenerated": true
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "asGenerated": true
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "asGenerated": true
+    },
+    {
+      "path": "src/modules/account-api/account-api-link-analytics.ts",
+      "asGenerated": true
+    },
+    {
+      "path": "src/modules/account-api/account-api-my-links.ts",
+      "asGenerated": true
+    },
+    {
+      "path": "src/modules/analytics-worker/analytics-worker-click-aggregator.ts",
+      "asGenerated": true
+    },
+    {
+      "path": "src/modules/billing-api/billing-api-customer-billing.ts",
+      "asGenerated": true
+    },
+    {
+      "path": "src/modules/billing-api/billing-api-entitlements.ts",
+      "asGenerated": true
+    },
+    {
+      "path": "src/modules/billing-api/billing-api-payment-events.ts",
+      "asGenerated": true
+    },
+    {
+      "path": "src/modules/link-api/link-api-abuse-and-moderation.ts",
+      "asGenerated": true
+    },
+    {
+      "path": "src/modules/link-api/link-api-link-operations.ts",
+      "asGenerated": true
+    },
+    {
+      "path": "src/modules/redirect-service/redirect-service-resolve-and-redirect.ts",
+      "asGenerated": true
+    },
+    {
+      "path": "src/modules/session-api/session-api-api-forwarding.ts",
+      "asGenerated": true
+    },
+    {
+      "path": "src/modules/session-api/session-api-sign-in-flow.ts",
+      "asGenerated": true
+    }
+  ],
+  "stubModules": [
+    {
+      "module": "session-api-sign-in-flow",
+      "name": "Sign-in flow",
+      "host": "session-api",
+      "kind": "custom"
+    },
+    {
+      "module": "session-api-api-forwarding",
+      "name": "API forwarding",
+      "host": "session-api",
+      "kind": "custom"
+    },
+    {
+      "module": "link-api-link-operations",
+      "name": "Link operations",
+      "host": "link-api",
+      "kind": "custom"
+    },
+    {
+      "module": "link-api-abuse-and-moderation",
+      "name": "Abuse and moderation",
+      "host": "link-api",
+      "kind": "custom"
+    },
+    {
+      "module": "redirect-service-resolve-and-redirect",
+      "name": "Resolve and redirect",
+      "host": "redirect-service",
+      "kind": "custom"
+    },
+    {
+      "module": "account-api-my-links",
+      "name": "My links",
+      "host": "account-api",
+      "kind": "data-access"
+    },
+    {
+      "module": "account-api-link-analytics",
+      "name": "Link analytics",
+      "host": "account-api",
+      "kind": "custom"
+    },
+    {
+      "module": "billing-api-customer-billing",
+      "name": "Customer billing",
+      "host": "billing-api",
+      "kind": "custom"
+    },
+    {
+      "module": "billing-api-payment-events",
+      "name": "Payment events",
+      "host": "billing-api",
+      "kind": "custom"
+    },
+    {
+      "module": "billing-api-entitlements",
+      "name": "Entitlements",
+      "host": "billing-api",
+      "kind": "custom"
+    },
+    {
+      "module": "analytics-worker-click-aggregator",
+      "name": "Click aggregator",
+      "host": "analytics-worker",
+      "kind": "custom"
+    }
+  ],
+  "processes": [
+    {
+      "service": "app-account-api",
+      "shape": "http",
+      "exposure": "internal",
+      "hooks": [],
+      "notImplemented": [
+        {
+          "method": "ANY",
+          "path": "/modules/account-api-my-links",
+          "answers": "501 \"Not implemented: My links\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/account-api-my-links/*",
+          "answers": "501 \"Not implemented: My links\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/account-api-link-analytics",
+          "answers": "501 \"Not implemented: Link analytics\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/account-api-link-analytics/*",
+          "answers": "501 \"Not implemented: Link analytics\" until it is written"
+        }
+      ],
+      "loops": []
+    },
+    {
+      "service": "app-analytics-worker",
+      "shape": "worker",
+      "exposure": null,
+      "hooks": [],
+      "notImplemented": [],
+      "loops": [
+        {
+          "answers": "\"Not implemented: Click aggregator\" sends the message to click-events--analytics-worker.failed (NOT_IMPLEMENTED) until it is written; other errors retry 5 times",
+          "module": "analytics-worker-click-aggregator",
+          "queue": "click-events--analytics-worker"
+        }
+      ]
+    },
+    {
+      "service": "app-billing-api",
+      "shape": "http",
+      "exposure": "public",
+      "hooks": [],
+      "notImplemented": [
+        {
+          "method": "ANY",
+          "path": "/modules/billing-api-customer-billing",
+          "answers": "501 \"Not implemented: Customer billing\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/billing-api-customer-billing/*",
+          "answers": "501 \"Not implemented: Customer billing\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/billing-api-payment-events",
+          "answers": "501 \"Not implemented: Payment events\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/billing-api-payment-events/*",
+          "answers": "501 \"Not implemented: Payment events\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/billing-api-entitlements",
+          "answers": "501 \"Not implemented: Entitlements\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/billing-api-entitlements/*",
+          "answers": "501 \"Not implemented: Entitlements\" until it is written"
+        }
+      ],
+      "loops": []
+    },
+    {
+      "service": "app-link-api",
+      "shape": "http",
+      "exposure": "internal",
+      "hooks": [],
+      "notImplemented": [
+        {
+          "method": "ANY",
+          "path": "/modules/link-api-link-operations",
+          "answers": "501 \"Not implemented: Link operations\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/link-api-link-operations/*",
+          "answers": "501 \"Not implemented: Link operations\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/link-api-abuse-and-moderation",
+          "answers": "501 \"Not implemented: Abuse and moderation\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/link-api-abuse-and-moderation/*",
+          "answers": "501 \"Not implemented: Abuse and moderation\" until it is written"
+        }
+      ],
+      "loops": []
+    },
+    {
+      "service": "app-redirect-service",
+      "shape": "http",
+      "exposure": "public",
+      "hooks": [],
+      "notImplemented": [
+        {
+          "method": "ANY",
+          "path": "/modules/redirect-service-resolve-and-redirect",
+          "answers": "501 \"Not implemented: Resolve and redirect\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/redirect-service-resolve-and-redirect/*",
+          "answers": "501 \"Not implemented: Resolve and redirect\" until it is written"
+        }
+      ],
+      "loops": []
+    },
+    {
+      "service": "app-session-api",
+      "shape": "http",
+      "exposure": "public",
+      "hooks": [],
+      "notImplemented": [
+        {
+          "method": "ANY",
+          "path": "/modules/session-api-sign-in-flow",
+          "answers": "501 \"Not implemented: Sign-in flow\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/session-api-sign-in-flow/*",
+          "answers": "501 \"Not implemented: Sign-in flow\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/session-api-api-forwarding",
+          "answers": "501 \"Not implemented: API forwarding\" until it is written"
+        },
+        {
+          "method": "ANY",
+          "path": "/modules/session-api-api-forwarding/*",
+          "answers": "501 \"Not implemented: API forwarding\" until it is written"
+        }
+      ],
+      "loops": []
+    }
+  ],
+  "requiredGaps": 11,
+  "applicationComplete": false
+}

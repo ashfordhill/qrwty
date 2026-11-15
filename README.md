@@ -69,22 +69,31 @@ independent implementations, measured work and explicit review gates.
 
 ### Saved Jeeves diagram
 
-The backend as saved in Jeeves: project **QRWTY · production candidate v1**, revision 83, Detailed
-view (each tile's modules shown), exported by the studio ([Q01 checks](docs/evidence/q01/checks.md)). Jeeves generates code
-from this diagram: 3 of its 14 modules come from a template (Sign-in) and 11 are stubs to
-write. The [as-found export](docs/evidence/q02/checks.md) builds and starts healthy, and every
-product route still answers 501: a diagnostic baseline, not the application.
+The backend as saved in Jeeves: project **QRWTY · production candidate v1**, revision 84, Detailed
+view (each tile's modules shown), exported by the studio ([Q05 checks](docs/evidence/q05/checks.md)).
+Revision 84 changed one setting: the Click events queue runs on **Google Cloud** Pub/Sub. A queue's
+provider isn't drawn, so the image is the same as revision 83's. Jeeves generates code from this
+diagram: 3 of its 14 modules come from a template (Sign-in) and 11 are stubs to write. The frozen
+generator (Jeeves `4e87f97`) exported it untouched into [`app/`](app/README.md), the generated
+baseline: it builds and starts healthy, and every product route still answers 501. That is the
+measurement starting point, not the application.
 
-![QRWTY backend saved in Jeeves (Detailed view, with each tile's modules): Session API, Link API, Redirect service, Account API, Billing API and Analytics worker with their databases, caches, click queue, identity and external APIs](docs/evidence/q01/jeeves/QRWTY-production-candidate-v1-r83-detailed.png)
+![QRWTY backend saved in Jeeves (Detailed view, with each tile's modules): Session API, Link API, Redirect service, Account API, Billing API and Analytics worker with their databases, caches, click queue, identity and external APIs](docs/evidence/q05/jeeves/QRWTY-production-candidate-v1-r84-detailed.png)
 
-[Simple view](docs/evidence/q01/jeeves/QRWTY-production-candidate-v1-r83.png) ·
-[Saved source JSON](docs/evidence/q01/jeeves/QRWTY-production-candidate-v1-r83-source.json) ·
-[Blueprint v3](docs/evidence/q01/jeeves/blueprint-v3-r83.json) ·
-[Generation report](docs/evidence/q01/jeeves/generation-preview-r83.json) ·
-[Provenance](docs/evidence/q01/jeeves/provenance.json) ·
-[Export ZIP](docs/evidence/q02/artifact/sha256-dcaff3aa004e3b2a04b09c2162e7b7c5295c13f4927d3ece31af9339b2a3cd14.zip) ·
-[Export classification and build](docs/evidence/q02/checks.md) ·
-[Scope inventory](docs/evidence/q02/scope-inventory.md)
+[Simple view](docs/evidence/q05/jeeves/QRWTY-production-candidate-v1-r84.png) ·
+[Saved source JSON](docs/evidence/q05/jeeves/QRWTY-production-candidate-v1-r84-source.json) ·
+[Blueprint v3](docs/evidence/q05/jeeves/blueprint-v3-r84.json) ·
+[Generation report](app/.jeeves/report.json) ·
+[Provenance](docs/evidence/q05/jeeves/provenance.json) ·
+[Baseline checks, studio comparison and LOC runner](docs/evidence/q05/checks.md)
+
+History: [revision 83](docs/evidence/q01/jeeves/QRWTY-production-candidate-v1-r83-detailed.png)
+(Q01, Click events on the default broker) ·
+[its source JSON](docs/evidence/q01/jeeves/QRWTY-production-candidate-v1-r83-source.json) ·
+[provenance](docs/evidence/q01/jeeves/provenance.json) ·
+[as-found export ZIP](docs/evidence/q02/artifact/sha256-dcaff3aa004e3b2a04b09c2162e7b7c5295c13f4927d3ece31af9339b2a3cd14.zip) ·
+[export classification and build](docs/evidence/q02/checks.md) ·
+[scope inventory](docs/evidence/q02/scope-inventory.md)
 
 ### Explanatory overview (Excalidraw)
 

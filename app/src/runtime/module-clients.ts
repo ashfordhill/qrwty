@@ -1,0 +1,628 @@
+// Generated scaffold: real clients behind the module stubs' interfaces (src/modules/dependencies.ts),
+// one per store or channel a tile's stubs use. Export rewrites this file. Each client reads its
+// endpoint from the environment (`JEEVES_*`; compose.yaml sets the local ones), then runs one
+// bounded startup probe that its access allows; a failed probe fails the process's startup, but
+// a cache that is down is logged and the process starts without it. With JEEVES_REQUIRE_TLS=true,
+// a plain-text or emulator endpoint fails startup (`Insecure endpoint <variable>`).
+import { readFileSync } from "node:fs";
+import { localLogins } from "../features/local-bindings.ts";
+import { createPostgres } from "./postgres.ts";
+import { randomUUID as pubsubMessageId } from "node:crypto";
+import { PubSub } from "@google-cloud/pubsub";
+import type { Message, Subscription } from "@google-cloud/pubsub";
+import { UNREACHABLE_WAIT_MS, validateDeliveryBinding, type Delivery } from "./delivery.ts";
+import {
+  failureStep,
+  type LoopConsumer,
+  type LoopConsumerOptions,
+  type LoopTransport,
+} from "./tile-loop.ts";
+import { createFailureLog } from "./tile-process.ts";
+import { createValkeyCache } from "./valkey.ts";
+import type {
+  CacheClient,
+  DatabaseReadWriter,
+  HttpTarget,
+  ObjectStore,
+  QueuePublisher,
+  SearchIndex,
+} from "../modules/dependencies.ts";
+import type { ProcessScope } from "./process.ts";
+import { NotImplemented } from "./tile-process.ts";
+
+/** A dependency that isn't provisioned locally (another provider, an Identity no sign-in binds, a
+ * stub's token check, a CDN, a tile that runs no process): calling it, or any of its members,
+ * answers "Not implemented: <what>". */
+export function unavailable<T extends object>(what: string): T {
+  const fail = () => Promise.reject(new NotImplemented(what));
+  return new Proxy(fail, {
+    get: (_target, property) =>
+      typeof property === "string" && property !== "then" ? fail : undefined,
+  }) as unknown as T;
+}
+
+/** An endpoint's variable, `JEEVES_<KIND>_<ID>_<PART>`: the tile ID upper-cased, `-` as `_`. */
+const variable = (kind: string, id: string, part: string) =>
+  `JEEVES_${kind}_${id.toUpperCase().replace(/-/g, "_")}_${part}`;
+/** One endpoint from the process's environment, read when its client is built and before its
+ * probe. There is no default: a missing or invalid value fails startup naming the variable,
+ * never the value. */
+function endpoint<T>(name: string, parse: (value: string) => T | undefined): T {
+  const value = process.env[name];
+  const parsed = value === undefined ? undefined : parse(value);
+  if (parsed === undefined) throw new Error(`Invalid endpoint ${name}`);
+  return parsed;
+}
+/** A host: 1–253 letters, digits, `.` or `-`; for a database also an absolute path (a Unix
+ * socket directory, as `pg` reads it). */
+const host =
+  (socket = false) =>
+  (value: string) =>
+    /^[A-Za-z0-9.-]{1,253}$/.test(value) ||
+    (socket && value.startsWith("/") && !/[\u0000-\u001f\u007f]/.test(value))
+      ? value
+      : undefined;
+/** A port: an integer 1–65535. */
+const port = (value: string) =>
+  /^[1-9][0-9]{0,4}$/.test(value) && Number(value) <= 65535 ? Number(value) : undefined;
+/** A URL: absolute `http:` or `https:`, with no credentials, query or fragment. */
+const url = (value: string) => {
+  let parsed: URL;
+  try {
+    parsed = new URL(value);
+  } catch {
+    return undefined;
+  }
+  return (parsed.protocol === "http:" || parsed.protocol === "https:") &&
+    !parsed.username &&
+    !parsed.password &&
+    !value.includes("?") &&
+    !value.includes("#")
+    ? value
+    : undefined;
+};
+
+/** `JEEVES_REQUIRE_TLS` (QG10): `true` makes startup refuse a plain-text or emulator endpoint
+ * (`Insecure endpoint <variable>`); absent, nothing is refused; any other value fails naming it. */
+function requireTls(): boolean {
+  const value = process.env.JEEVES_REQUIRE_TLS;
+  if (value === undefined) return false;
+  if (value === "true") return true;
+  throw new Error("Invalid endpoint JEEVES_REQUIRE_TLS");
+}
+/** How a client reaches a database or cache (QG10). `disable`: plain text (for a database also a
+ * Unix socket). `verify-full`: TLS that checks the certificate chain against `ca` (PEM; else
+ * Node's roots) and the host name, or `servername` when the certificate carries another name. */
+type Transport = { mode: "disable" } | { mode: "verify-full"; ca?: string; servername?: string };
+/**
+ * A database's or cache's transport from the environment, read with its endpoint: `JEEVES_<KIND>_
+ * <ID>_TLS`, `disable` or `verify-full`, with no default. With `verify-full`, `_CA_FILE` is an
+ * optional PEM file, read now (one that can't be read fails `Unreadable CA file <variable>`), and
+ * `_TLS_SERVERNAME` the optional name the certificate carries when it isn't the host (a host
+ * name, by the host rule). With
+ * `JEEVES_REQUIRE_TLS=true`, `disable` fails `Insecure endpoint <the _TLS variable>`, except on a
+ * database's Unix socket directory, which is local transport.
+ */
+function transport(kind: "DATABASE" | "CACHE", id: string, hostname: string): Transport {
+  const strict = requireTls();
+  const name = variable(kind, id, "TLS");
+  const mode = endpoint(name, (value) =>
+    value === "disable" || value === "verify-full" ? value : undefined,
+  );
+  if (mode === "disable") {
+    if (strict && !hostname.startsWith("/")) throw new Error(`Insecure endpoint ${name}`);
+    return { mode };
+  }
+  const named = variable(kind, id, "TLS_SERVERNAME");
+  const certified =
+    process.env[named] === undefined ? undefined : endpoint(named, host());
+  const caFile = variable(kind, id, "CA_FILE");
+  const path = process.env[caFile];
+  let ca: string | undefined;
+  if (path !== undefined)
+    try {
+      ca = readFileSync(path, "utf8");
+    } catch (error) {
+      const code = (error as { code?: unknown } | null)?.code;
+      throw new Error(
+        `Unreadable CA file ${caFile}${typeof code === "string" && /^E[A-Z]+$/.test(code) ? ` (${code})` : ""}`,
+      );
+    }
+  return {
+    mode,
+    ...(ca !== undefined && { ca }),
+    ...(certified !== undefined && { servername: certified }),
+  };
+}
+
+/** The probe log; it names its tile, for a client's own lines after startup. */
+export type ProbeLog = ((entry: Record<string, unknown>) => void) & { readonly tile: string };
+/** One JSON line per client probe: `ok` once it passes, `unavailable` for a cache that is down,
+ * or the error before startup fails. */
+export function createProbeLog(tile: string): ProbeLog {
+  return Object.assign(
+    (entry: Record<string, unknown>) =>
+      console.log(JSON.stringify({ event: "probe", tile, ...entry })),
+    { tile },
+  );
+}
+const describe = (error: unknown) =>
+  (error instanceof Error ? `${error.name}: ${error.message}` : String(error)).slice(0, 300);
+/** Runs one bounded startup check (5 s); a failure is logged and fails startup. */
+async function probed(
+  log: ProbeLog,
+  client: { client: string; kind: string; check: string },
+  check: () => Promise<unknown>,
+) {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    await Promise.race([
+      check(),
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new Error("Probe deadline (5 s)")), 5000);
+      }),
+    ]);
+  } catch (error) {
+    log({ level: "error", ...client, result: "failed", error: describe(error) });
+    throw new Error(`Startup probe failed: ${client.kind} ${client.client}`);
+  } finally {
+    clearTimeout(timer);
+  }
+  log({ level: "info", ...client, result: "ok" });
+}
+
+/** A database through the tile's own runtime login: CONNECT and USAGE on public, and SELECT on
+ * what another owner publishes when the tile may only read it. Stubs own no tables: a module's
+ * own tables need a migration and grants of their own. Its endpoint is
+ * `JEEVES_DATABASE_<ID>_HOST` (a host or a Unix socket directory) and `_PORT`, and its transport
+ * `_TLS` (`transport`). Probe: SELECT 1. */
+export async function databaseClient(
+  scope: ProcessScope,
+  log: ProbeLog,
+  binding: { tile: string; resource: string },
+): Promise<DatabaseReadWriter> {
+  const login = localLogins.find(
+    (item) => item.resource === binding.resource && item.host === binding.tile,
+  );
+  if (!login) throw new Error(`No runtime login for ${binding.resource}`);
+  const hostname = endpoint(variable("DATABASE", binding.resource, "HOST"), host(true));
+  const pool = createPostgres({
+    hostname,
+    port: endpoint(variable("DATABASE", binding.resource, "PORT"), port),
+    tls: transport("DATABASE", binding.resource, hostname),
+    login,
+    poolSize: 10,
+    statementTimeoutMs: 2000,
+    connectionTimeoutMs: 2000,
+  });
+  // An idle connection's error is not fatal: the next query reconnects.
+  pool.on("error", () => {});
+  scope.own(() => pool.end());
+  await probed(log, { client: binding.resource, kind: "database", check: "SELECT 1" }, () =>
+    pool.query("SELECT 1"),
+  );
+  const run = (sql: string, values?: readonly unknown[]) =>
+    pool.query(sql, values ? [...values] : undefined);
+  return {
+    async query<Row = Record<string, unknown>>(sql: string, values?: readonly unknown[]) {
+      return (await run(sql, values)).rows as Row[];
+    },
+    async execute(sql, values) {
+      return { rowCount: (await run(sql, values)).rowCount ?? 0 };
+    },
+  };
+}
+/** A Google Cloud project ID, optionally `<domain>:` scoped: a lowercase letter, then up to 29
+ * lowercase letters, digits or `-`. */
+const pubsubProject = (value: string) =>
+  /^(?:[a-z0-9.-]{1,63}:)?[a-z][a-z0-9-]{0,29}$/.test(value) ? value : undefined;
+/** A publish settles within this (the client's own deadline too), and at most this many are
+ * outstanding in a process. */
+const pubsubDeadlineMs = 2000;
+const pubsubOutstanding = 1000;
+/** Every Pub/Sub client's gRPC channel tries a lost connection again after 500 ms, doubling to at
+ * most 2000 ms (gRPC's own maximum is 120 s), so it reconnects soon after Pub/Sub is back (QG09). */
+const pubsubChannel = {
+  "grpc.initial_reconnect_backoff_ms": 500,
+  "grpc.max_reconnect_backoff_ms": 2000,
+};
+/** With `JEEVES_REQUIRE_TLS=true`, a set `PUBSUB_EMULATOR_HOST` (a plain-text emulator) fails
+ * `Insecure endpoint PUBSUB_EMULATOR_HOST` before a Pub/Sub client is built. */
+function refuseEmulator() {
+  if (requireTls() && process.env.PUBSUB_EMULATOR_HOST !== undefined)
+    throw new Error("Insecure endpoint PUBSUB_EMULATOR_HOST");
+}
+/** A Google Cloud Pub/Sub topic a module publishes to, through the official client, in the project
+ * `JEEVES_PUBSUB_PROJECT` with Application Default Credentials; locally `PUBSUB_EMULATOR_HOST`
+ * points the client at the emulator. `publish` resolves only once Pub/Sub has acknowledged the
+ * message, which carries the module's `messageId` (else a fresh ID) as its `messageId` attribute:
+ * Pub/Sub gives a resent message a new ID, so a consumer deduplicates on the attribute. `key` is not
+ * used. A publish fails after 2000 ms (`Publish deadline`), and while 1000 are outstanding the next
+ * fails at once (`Publisher queue full`), with the client's default batching. Processes never
+ * create or change topics or subscriptions. Closing waits for outstanding publishes, then closes
+ * the client. Probe: the topic exists. */
+export async function pubsubPublisher(
+  scope: ProcessScope,
+  log: ProbeLog,
+  binding: { topic: string },
+): Promise<QueuePublisher> {
+  refuseEmulator();
+  const client = new PubSub({
+    projectId: endpoint("JEEVES_PUBSUB_PROJECT", pubsubProject),
+    ...pubsubChannel,
+  });
+  const topic = client.topic(binding.topic, { gaxOpts: { timeout: pubsubDeadlineMs } });
+  const outstanding = new Set<Promise<unknown>>();
+  let closed = false;
+  scope.own(async () => {
+    closed = true;
+    await Promise.allSettled([...outstanding]);
+    await client.close();
+  });
+  await probed(
+    log,
+    { client: binding.topic, kind: "queue", check: "the Pub/Sub topic exists" },
+    async () => {
+      const [exists] = await topic.exists();
+      if (!exists) throw new Error(`Pub/Sub topic ${binding.topic} not found`);
+    },
+  );
+  return {
+    publish(message, options) {
+      if (closed) return Promise.reject(new Error("Publisher closed"));
+      if (outstanding.size >= pubsubOutstanding)
+        return Promise.reject(new Error("Publisher queue full"));
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      const sent: Promise<unknown> = Promise.race([
+        topic.publishMessage({
+          data: Buffer.from(message),
+          attributes: { messageId: options?.messageId ?? pubsubMessageId() },
+        }),
+        new Promise<never>((_, reject) => {
+          timer = setTimeout(
+            () => reject(new Error(`Publish deadline (${pubsubDeadlineMs} ms)`)),
+            pubsubDeadlineMs,
+          );
+        }),
+      ]).finally(() => {
+        clearTimeout(timer);
+        outstanding.delete(sent);
+      });
+      outstanding.add(sent);
+      return sent.then(() => undefined);
+    },
+  };
+}
+/** The wait before a subscriber that closed on an error opens again, and between its checks. */
+const pubsubReopenMs = 5000;
+/** `work`, or a rejection `<what> (<ms> ms)` once `ms` pass. */
+function within<T>(work: Promise<T>, ms: number, what: string): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  return Promise.race([
+    work,
+    new Promise<never>((_, reject) => {
+      timer = setTimeout(() => reject(new Error(`${what} (${ms} ms)`)), ms);
+    }),
+  ]).finally(() => clearTimeout(timer));
+}
+/** Resolves after `ms`, or at once when `signal` aborts. */
+function pause(ms: number, signal: AbortSignal): Promise<void> {
+  if (signal.aborted) return Promise.resolve();
+  return new Promise((resolve) => {
+    const done = () => {
+      clearTimeout(timer);
+      signal.removeEventListener("abort", done);
+      resolve();
+    };
+    const timer = setTimeout(done, ms);
+    signal.addEventListener("abort", done, { once: true });
+  });
+}
+/**
+ * A loop's transport on its tile's Pub/Sub subscription `<topic>--<tile>` (QG08), through the
+ * official client in `JEEVES_PUBSUB_PROJECT` with Application Default Credentials (locally
+ * `PUBSUB_EMULATOR_HOST`), with the contract a RabbitMQ loop has:
+ * - one streaming-pull subscriber per loop, handing over at most the loop's Concurrency messages
+ *   at a time (`maxMessages`, no excess); the client extends each one's lease while it is in hand;
+ * - a message is acknowledged only after its handler resolves;
+ * - a retryable failure is nacked, and the subscription's retry policy spaces its redelivery;
+ * - a terminal one (a `NonRetryable`, or a failure on delivery attempt retry limit + 1) is
+ *   published to `<topic>--<tile>.failed` with its attributes and `x-terminal-code`, then
+ *   acknowledged once Pub/Sub has that copy (within 2000 ms); if it hasn't, the message is nacked;
+ * - an unreachable store keeps the message: 5 s later the handler runs again with the same message
+ *   and attempt;
+ * - a subscriber error, or a failed `.failed` copy, tells `onState` `unavailable` once, and
+ *   `available` when a message arrives again; a subscriber that closes on an error opens again 5 s
+ *   later, once its messages in hand have settled and its subscription answers (`available`), or
+ *   tries again 5 s after that. Nothing here fails the process.
+ * Closing stops taking messages, cuts a wait short (that message is nacked) and lets the handlers
+ * in hand settle, then closes the subscription, which nacks what it held back, and the client. A
+ * message's `attempt` is Pub/Sub's delivery attempt, which every redelivery counts, a nack at
+ * close or a lost lease too. Processes never create or change subscriptions. Probe: the
+ * subscription exists.
+ */
+export function pubsubLoop(log: ProbeLog): LoopTransport {
+  return { retries: "transport", open: (options) => pubsubConsumer(log, options) };
+}
+async function pubsubConsumer(log: ProbeLog, options: LoopConsumerOptions): Promise<LoopConsumer> {
+  validateDeliveryBinding(options);
+  if (
+    !Number.isSafeInteger(options.concurrency) ||
+    options.concurrency < 1 ||
+    options.concurrency > 100000
+  )
+    throw new Error("Invalid consumer concurrency");
+  refuseEmulator();
+  const client = new PubSub({
+    projectId: endpoint("JEEVES_PUBSUB_PROJECT", pubsubProject),
+    ...pubsubChannel,
+  });
+  const subscribe = () =>
+    client.subscription(options.queue, {
+      flowControl: { maxMessages: options.concurrency, allowExcessMessages: false },
+    });
+  const failedTopic = client.topic(options.failedQueue, { gaxOpts: { timeout: pubsubDeadlineMs } });
+  const answers = async (subscription: Subscription) => {
+    const [exists] = await subscription.exists();
+    if (!exists) throw new Error(`Pub/Sub subscription ${options.queue} not found`);
+  };
+  /** One subscriber: a lost one takes no message, and its client has nacked those it held. */
+  type Generation = { subscription: Subscription; lost: boolean; stop: AbortController };
+  let current: Generation | undefined;
+  const inFlight = new Set<Promise<void>>();
+  let closing = false;
+  let retry: ReturnType<typeof setTimeout> | undefined;
+  let shutdown: Promise<void> | undefined;
+  let reported: "available" | "unavailable" | undefined;
+  const report = (state: "available" | "unavailable", error?: unknown) => {
+    if (state === reported) return;
+    reported = state;
+    try {
+      options.onState?.(state, error);
+    } catch {
+      /* The consumer goes on as it would without the report. */
+    }
+  };
+  let finishClosed!: (result: { fatal: boolean }) => void;
+  const closed = new Promise<{ fatal: boolean }>((resolve) => {
+    finishClosed = resolve;
+  });
+
+  async function deliver(generation: Generation, message: Message) {
+    const attempt =
+      Number.isSafeInteger(message.deliveryAttempt) && message.deliveryAttempt >= 1
+        ? message.deliveryAttempt
+        : 1;
+    const id = message.attributes.messageId;
+    const delivery: Delivery = {
+      messageId: typeof id === "string" && id !== "" ? id : message.id,
+      headers: { ...message.attributes },
+      deliveryCount: attempt,
+      redelivered: attempt > 1,
+    };
+    for (;;) {
+      let failure: unknown;
+      try {
+        await options.handle(message.data, delivery);
+        if (!generation.lost) message.ack();
+        return;
+      } catch (error) {
+        failure = error;
+      }
+      if (generation.lost) return;
+      const next = failureStep(failure, attempt, options.retryLimit);
+      if (next.step === "retry") return message.nack();
+      if (next.step === "wait") {
+        // The store failed, not the message: keep it and run it again with the same attempt.
+        await pause(UNREACHABLE_WAIT_MS, generation.stop.signal);
+        if (generation.lost) return;
+        if (closing) return message.nack();
+        continue;
+      }
+      try {
+        await within(
+          failedTopic.publishMessage({
+            data: message.data,
+            attributes: { ...message.attributes, "x-terminal-code": next.code },
+          }),
+          pubsubDeadlineMs,
+          "Publish deadline",
+        );
+        if (!generation.lost) message.ack();
+      } catch (error) {
+        // Redelivered: the message is never lost, and the next delivery tries the copy again.
+        if (!generation.lost) message.nack();
+        report("unavailable", error);
+      }
+      return;
+    }
+  }
+  function open(subscription: Subscription): Generation {
+    const generation: Generation = { subscription, lost: false, stop: new AbortController() };
+    let cause: unknown;
+    subscription.on("error", (error: unknown) => {
+      cause = error;
+      if (!generation.lost && !closing) report("unavailable", error);
+    });
+    subscription.on("close", () =>
+      lose(generation, cause ?? new Error("Pub/Sub subscriber closed")),
+    );
+    // Adding the listener starts the streaming pull.
+    subscription.on("message", (message: Message) => {
+      // Draining or lost, a message stays with the client, which nacks it as it closes.
+      if (closing || generation.lost) return;
+      report("available");
+      const task = deliver(generation, message);
+      inFlight.add(task);
+      void task.finally(() => inFlight.delete(task)).catch(() => {});
+    });
+    return generation;
+  }
+  // A subscriber that closes on its own lost its stream for good: its client nacked what it held.
+  function lose(generation: Generation, error: unknown) {
+    if (closing || generation.lost) return;
+    generation.lost = true;
+    generation.stop.abort();
+    if (generation !== current) return;
+    current = undefined;
+    report("unavailable", error);
+    later();
+  }
+  function later() {
+    if (closing || retry) return;
+    retry = setTimeout(() => {
+      retry = undefined;
+      void reopen();
+    }, pubsubReopenMs);
+  }
+  async function reopen() {
+    // As a RabbitMQ consumer does, the next subscriber opens only after the lost one's messages
+    // settle, so the messages in hand never exceed the Concurrency.
+    await Promise.allSettled([...inFlight]);
+    if (closing) return;
+    const subscription = subscribe();
+    try {
+      await within(answers(subscription), 5000, "Pub/Sub check deadline");
+    } catch (error) {
+      report("unavailable", error);
+      later();
+      return;
+    }
+    if (closing) return;
+    current = open(subscription);
+    report("available");
+  }
+  function close(): Promise<void> {
+    if (shutdown) return shutdown;
+    closing = true;
+    clearTimeout(retry);
+    retry = undefined;
+    current?.stop.abort();
+    return (shutdown = (async () => {
+      await Promise.allSettled([...inFlight]);
+      const generation = current;
+      current = undefined;
+      if (generation) await generation.subscription.close().catch(() => {});
+      await client.close().catch(() => {});
+      finishClosed({ fatal: false });
+    })());
+  }
+
+  const first = subscribe();
+  try {
+    await probed(
+      log,
+      { client: options.queue, kind: "queue", check: "the Pub/Sub subscription exists" },
+      () => answers(first),
+    );
+  } catch (error) {
+    await client.close().catch(() => {});
+    throw error;
+  }
+  current = open(first);
+  report("available");
+  return { close, closed };
+}
+/** A cache (Valkey) with its password, through the cache read's bounded client
+ * (`createValkeyCache`): a command settles within 150 ms and at most 32 wait; while no client is
+ * connected a command fails at once (`Cache unavailable`). A lost or stalled client is destroyed
+ * and a new one tried every 5 s; each change is logged, a `cache <cache>` failure line when it
+ * is lost and an info line when it is available. Closing destroys the client, so a drain never
+ * waits on the cache. Its endpoint is `JEEVES_CACHE_<ID>_HOST` and `_PORT`, and its transport
+ * `_TLS` (`transport`). Probe: PING; a cache that is down at startup logs `unavailable` and the
+ * process starts without it. */
+export async function cacheClient(
+  scope: ProcessScope,
+  log: ProbeLog,
+  binding: { cache: string },
+): Promise<CacheClient> {
+  const failure = createFailureLog(log.tile);
+  const hostname = endpoint(variable("CACHE", binding.cache, "HOST"), host());
+  const endpoints = {
+    hostname,
+    port: endpoint(variable("CACHE", binding.cache, "PORT"), port),
+    tls: transport("CACHE", binding.cache, hostname),
+  };
+  const cache = await createValkeyCache({
+    binding: { ...endpoints, secret: `cache-${binding.cache}` },
+    onState: (state, error) =>
+      state === "unavailable"
+        ? failure(`cache ${binding.cache}`, error ?? new Error("Cache unavailable"))
+        : console.log(
+            JSON.stringify({
+              level: "info",
+              event: "cache",
+              tile: log.tile,
+              cache: binding.cache,
+              state,
+            }),
+          ),
+  });
+  scope.own(() => cache.close());
+  const probe = { client: binding.cache, kind: "cache", check: "PING" };
+  try {
+    await cache.ping();
+    log({ level: "info", ...probe, result: "ok" });
+  } catch {
+    log({ level: "warn", ...probe, result: "unavailable" });
+  }
+  return {
+    async get(key) {
+      return (await cache.get(key)) ?? undefined;
+    },
+    async set(key, value, ttlSeconds) {
+      await cache.set(key, value, ttlSeconds ? { EX: ttlSeconds } : undefined);
+    },
+    async delete(key) {
+      await cache.delete(key);
+    },
+  };
+}
+/** An HTTP client on the base URL in the environment variable `name`, read now (an absolute
+ * `http:` or `https:` URL, else `Invalid endpoint <name>`; with `JEEVES_REQUIRE_TLS=true` it must
+ * be `https:`, else `Insecure endpoint <name>`). `request(path, init)` resolves `path` against the
+ * base and passes `init` to `fetch` as it is, so a stub bounds a call with
+ * `signal: AbortSignal.timeout(ms)` and adds its own headers (a credential from a `SECRET_DIR`
+ * file); the client reads no credential. It has no probe. With `internal`, a rejected `fetch` is
+ * marked `Symbol.for("jeeves.internal-call")`, so a lost connection waits as a store's does. */
+function target(name: string, internal: boolean): HttpTarget {
+  const base = endpoint(name, url);
+  if (requireTls() && new URL(base).protocol !== "https:")
+    throw new Error(`Insecure endpoint ${name}`);
+  return {
+    request: (path, init) =>
+      internal
+        ? fetch(new URL(path, base), init).catch((error: unknown) => {
+            if (typeof error === "object" && error !== null)
+              Reflect.set(error, Symbol.for("jeeves.internal-call"), true);
+            throw error;
+          })
+        : fetch(new URL(path, base), init),
+  };
+}
+/** Another application tile's process at `JEEVES_TILE_<ID>_URL` (locally `http://app-<id>:3000`,
+ * inside the network; with `JEEVES_REQUIRE_TLS=true` it must be `https:`, or startup fails
+ * `Insecure endpoint JEEVES_TILE_<ID>_URL`). It has no probe and no `depends_on`: that process may
+ * start after this one. Its failures count as an unreachable service: a rejected `fetch` is marked
+ * `Symbol.for("jeeves.internal-call")`, so a lost connection to that process waits as a store's
+ * does, not as an outside call. */
+export function httpTarget(binding: { tile: string }): HttpTarget {
+  return target(variable("TILE", binding.tile, "URL"), true);
+}
+/** An External API at the base URL in the variable `base`, its `JEEVES_EXTERNAL_<ID>_URL`. The
+ * application sets it (locally in `compose.override.yaml`; `compose.yaml` doesn't), so until it is
+ * set startup fails `Invalid endpoint JEEVES_EXTERNAL_<ID>_URL`; with `JEEVES_REQUIRE_TLS=true` it
+ * must be `https:`. A rejected `fetch` is not marked: an outside call keeps the normal retries. */
+export function externalTarget(base: string): HttpTarget {
+  return target(base, false);
+}
+/** The Identity a sign-in binds, at `JEEVES_IDENTITY_<ID>_URL`: its base URL as this process
+ * reaches it (locally Keycloak inside the network, `http://identity-<id>:8080`, so a stub adds the
+ * realm's paths, `/realms/<id>/...`; a deployment sets its issuer's origin, or another address its
+ * processes reach; with `JEEVES_REQUIRE_TLS=true` it must be `https:`). A sign-in's `OIDC_ISSUER`
+ * is what tokens carry, which a container can't always reach, so it isn't the base. A provisioned
+ * service: a rejected `fetch` is marked `Symbol.for("jeeves.internal-call")`, so a lost connection
+ * waits as a store's does. */
+export function identityTarget(binding: { identity: string }): HttpTarget {
+  return target(variable("IDENTITY", binding.identity, "URL"), true);
+}

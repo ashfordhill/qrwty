@@ -1,0 +1,26 @@
+{
+  "method": "source-loc-v2",
+  "jeeves": {
+    "commit": "4e87f97bdc8ce590edd479e16308c892b9049554",
+    "subject": "QGR2: review QRWTY gap batch 2"
+  },
+  "files": {
+    "jeeves-generator/src/source-loc.ts": "a66602e64f0b02a473452f9a437c747a30a2891876621970836f86a12dea7e61",
+    "jeeves-generator/src/source-loc-cli.ts": "0f5d291d084ac94144fe8e50d91fd318d76db63ce45006cc31fe4ce180e0a565",
+    "jeeves-generator/package.json": "9d13e9418f6851212da1a1226c95e8ebfd0620988aa6d405beb5408080a8154c",
+    "package.json": "8cb4505922585832ded44f72249851312d609d8dcb605524eb1521f1bd9f5e99",
+    "pnpm-lock.yaml": "6335059bacb8c2853e4fe3d728ee89640db951e3c1d3fbfa4d9b554b310f696a",
+    "pnpm-workspace.yaml": "ac8836b85db1bfd9a2e6dd2240efcdcd89d352b33f3625e8cd3e36091b4ac24c"
+  },
+  "methodDocument": {
+    "path": "docs/field-projects/source-loc.md",
+    "sha256": "c9b5106ffa5a4d574ce3a7713de85c4b3d1d00da4d65b9372337548b34240076"
+  },
+  "installed": {
+    "rolldown": "1.2.15",
+    "zod": "4.5.4",
+    "tsx": "4.23.15"
+  },
+  "node": "24.21.0",
+  "pnpm": "12.16.1"
+}

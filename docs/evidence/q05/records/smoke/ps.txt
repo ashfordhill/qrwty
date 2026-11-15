@@ -1,0 +1,12 @@
+qrwtya-q05-app-account-api-1 Up 18 seconds (healthy) a
+qrwtya-q05-app-analytics-worker-1 Up 20 seconds (healthy) a
+qrwtya-q05-app-billing-api-1 Up 18 seconds (healthy) a
+qrwtya-q05-app-edge-1 Up 12 seconds (healthy) a
+qrwtya-q05-app-link-api-1 Up 19 seconds (healthy) a
+qrwtya-q05-app-redirect-service-1 Up 20 seconds (healthy) a
+qrwtya-q05-app-session-api-1 Up 19 seconds (healthy) a
+qrwtya-q05-cache-admission-cache-1 Up About a minute (healthy) a
+qrwtya-q05-cache-hot-routes-1 Up About a minute (healthy) a
+qrwtya-q05-identity-identity-1 Up About a minute (healthy) a
+qrwtya-q05-local-postgres-1 Up About a minute (healthy) a
+qrwtya-q05-local-pubsub-1 Up About a minute (healthy) a

@@ -1,0 +1,2362 @@
+{
+  "base": {
+    "revision": 83,
+    "canonicalSha256": "a3c978d1dc3f29229e942f7f73394ff4ff2fbc3d09ea4da12189d5202c9d753b"
+  },
+  "supportSha256": {
+    "studio": "7140e4441ea18c1559b15b541bfc14217deeddb3b712d5ed161e262920ffe7ce",
+    "frozen": "7140e4441ea18c1559b15b541bfc14217deeddb3b712d5ed161e262920ffe7ce",
+    "equal": true
+  },
+  "command": {
+    "type": "edit",
+    "element": "click-events",
+    "settings": {
+      "kind": "queue",
+      "mode": "work-queue",
+      "provider": "google-cloud"
+    }
+  },
+  "batchesEqual": true,
+  "batch": {
+    "baseRevision": 83,
+    "ops": [
+      {
+        "op": "setStudio",
+        "studio": {
+          "version": 1,
+          "elements": [
+            {
+              "element": "session-api",
+              "definition": {
+                "id": "studio-service",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "service",
+                "language": "typescript",
+                "exposure": "internal",
+                "execution": "docker"
+              }
+            },
+            {
+              "element": "identity",
+              "definition": {
+                "id": "studio-identity",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "identity",
+                "language": "typescript",
+                "exposure": "public",
+                "provider": "oidc",
+                "execution": "docker"
+              }
+            },
+            {
+              "element": "sessions",
+              "definition": {
+                "id": "studio-database",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "database",
+                "engine": "unspecified",
+                "provider": "unspecified"
+              },
+              "owner": {
+                "kind": "element",
+                "id": "session-api"
+              }
+            },
+            {
+              "element": "link-api",
+              "definition": {
+                "id": "studio-service",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "service",
+                "language": "typescript",
+                "exposure": "internal",
+                "execution": "docker"
+              }
+            },
+            {
+              "element": "account-api",
+              "definition": {
+                "id": "studio-service",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "service",
+                "language": "typescript",
+                "exposure": "internal",
+                "execution": "docker"
+              }
+            },
+            {
+              "element": "billing-api",
+              "definition": {
+                "id": "studio-service",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "service",
+                "language": "typescript",
+                "exposure": "internal",
+                "execution": "docker"
+              }
+            },
+            {
+              "element": "links",
+              "definition": {
+                "id": "studio-database",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "database",
+                "engine": "unspecified",
+                "provider": "unspecified"
+              },
+              "owner": {
+                "kind": "element",
+                "id": "link-api"
+              }
+            },
+            {
+              "element": "admission-cache",
+              "definition": {
+                "id": "studio-cache",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "cache",
+                "engine": "unspecified",
+                "provider": "unspecified"
+              },
+              "owner": {
+                "kind": "element",
+                "id": "link-api"
+              }
+            },
+            {
+              "element": "reputation-api",
+              "definition": {
+                "id": "studio-external-api",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "external-api",
+                "category": "generic",
+                "provider": "unspecified"
+              }
+            },
+            {
+              "element": "redirect-service",
+              "definition": {
+                "id": "studio-service",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "service",
+                "language": "typescript",
+                "exposure": "internal",
+                "execution": "docker"
+              }
+            },
+            {
+              "element": "hot-routes",
+              "definition": {
+                "id": "studio-cache",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "cache",
+                "engine": "unspecified",
+                "provider": "unspecified"
+              },
+              "owner": {
+                "kind": "element",
+                "id": "redirect-service"
+              }
+            },
+            {
+              "element": "click-events",
+              "definition": {
+                "id": "studio-queue",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "queue",
+                "mode": "work-queue",
+                "provider": "google-cloud"
+              },
+              "owner": {
+                "kind": "element",
+                "id": "redirect-service"
+              }
+            },
+            {
+              "element": "analytics-worker",
+              "definition": {
+                "id": "studio-worker",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "worker",
+                "language": "typescript",
+                "execution": "docker"
+              }
+            },
+            {
+              "element": "analytics",
+              "definition": {
+                "id": "studio-database",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "database",
+                "engine": "unspecified",
+                "provider": "unspecified"
+              },
+              "owner": {
+                "kind": "element",
+                "id": "analytics-worker"
+              }
+            },
+            {
+              "element": "billing",
+              "definition": {
+                "id": "studio-database",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "database",
+                "engine": "unspecified",
+                "provider": "unspecified"
+              },
+              "owner": {
+                "kind": "element",
+                "id": "billing-api"
+              }
+            },
+            {
+              "element": "stripe-api",
+              "definition": {
+                "id": "studio-external-api",
+                "version": "1.0.0"
+              },
+              "settings": {
+                "kind": "external-api",
+                "category": "generic",
+                "provider": "unspecified"
+              }
+            }
+          ],
+          "packages": [],
+          "connections": [
+            {
+              "connection": "session-api-identity",
+              "settings": {}
+            },
+            {
+              "connection": "session-api-sessions",
+              "settings": {}
+            },
+            {
+              "connection": "session-api-link-api",
+              "settings": {}
+            },
+            {
+              "connection": "session-api-account-api",
+              "settings": {}
+            },
+            {
+              "connection": "session-api-billing-api",
+              "settings": {}
+            },
+            {
+              "connection": "link-api-links",
+              "settings": {}
+            },
+            {
+              "connection": "link-api-identity",
+              "settings": {}
+            },
+            {
+              "connection": "link-api-admission-cache",
+              "settings": {}
+            },
+            {
+              "connection": "link-api-reputation-api",
+              "settings": {}
+            },
+            {
+              "connection": "link-api-billing-api",
+              "settings": {}
+            },
+            {
+              "connection": "redirect-service-links",
+              "settings": {}
+            },
+            {
+              "connection": "redirect-service-hot-routes",
+              "settings": {}
+            },
+            {
+              "connection": "redirect-service-click-events",
+              "settings": {
+                "channelUse": "publish"
+              }
+            },
+            {
+              "connection": "click-events-analytics-worker",
+              "settings": {
+                "channelUse": "consume"
+              }
+            },
+            {
+              "connection": "analytics-worker-analytics",
+              "settings": {}
+            },
+            {
+              "connection": "account-api-identity",
+              "settings": {}
+            },
+            {
+              "connection": "account-api-links",
+              "settings": {}
+            },
+            {
+              "connection": "account-api-analytics",
+              "settings": {}
+            },
+            {
+              "connection": "account-api-billing-api",
+              "settings": {}
+            },
+            {
+              "connection": "billing-api-identity",
+              "settings": {}
+            },
+            {
+              "connection": "billing-api-billing",
+              "settings": {}
+            },
+            {
+              "connection": "billing-api-stripe-api",
+              "settings": {}
+            }
+          ],
+          "components": [
+            {
+              "id": "session-api-sign-in-flow",
+              "host": "session-api",
+              "name": "Sign-in flow",
+              "description": "OIDC authorization code with PKCE, state and nonce; creates, refreshes and revokes cookie sessions (Secure, HttpOnly). Keeps the guest claim proof flow in the same tab.",
+              "settings": {
+                "kind": "custom"
+              }
+            },
+            {
+              "id": "session-api-api-forwarding",
+              "host": "session-api",
+              "name": "API forwarding",
+              "description": "Checks the session cookie and CSRF on mutations, then forwards the bearer token (none on guest create) to Link, Account and Billing APIs. Refreshes tokens with Identity.",
+              "settings": {
+                "kind": "custom"
+              }
+            },
+            {
+              "id": "link-api-sign-in",
+              "host": "link-api",
+              "name": "Sign-in",
+              "description": "Optional: guest create sends no token and is anonymous; an invalid or expired token is 401. Owner, claim and operator routes still check the verified subject.",
+              "settings": {
+                "kind": "auth-guard",
+                "credential": "jwt",
+                "signIn": "optional"
+              }
+            },
+            {
+              "id": "link-api-link-operations",
+              "host": "link-api",
+              "name": "Link operations",
+              "description": "Create (guest or owned) with CSPRNG slugs, idempotency keys and admission; claim with one-time proof; If-Match edits; tombstone deletes. Reputation check and entitlement grant first.",
+              "settings": {
+                "kind": "custom"
+              }
+            },
+            {
+              "id": "link-api-abuse-and-moderation",
+              "host": "link-api",
+              "name": "Abuse and moderation",
+              "description": "Bounded public abuse reports (202, no disposition shown) and block or unblock under a separate operator permission. A report alone never disables a link.",
+              "settings": {
+                "kind": "custom"
+              }
+            },
+            {
+              "id": "redirect-service-resolve-and-redirect",
+              "host": "redirect-service",
+              "name": "Resolve and redirect",
+              "description": "Host + slug via Hot routes, else the Links public view; state and expiry; publish the click and await its ACK; recheck; then 302 with no-store. Otherwise 404/410/403, or 503 with no Location.",
+              "settings": {
+                "kind": "custom"
+              }
+            },
+            {
+              "id": "account-api-sign-in",
+              "host": "account-api",
+              "name": "Sign-in",
+              "description": "Required: every route needs a valid token. Each query is scoped to the verified subject, cursors included.",
+              "settings": {
+                "kind": "auth-guard",
+                "credential": "jwt",
+                "signIn": "required"
+              }
+            },
+            {
+              "id": "account-api-my-links",
+              "host": "account-api",
+              "name": "My links",
+              "description": "Cursor pages (at most 50, by created_at and id) of the caller's own links from the Links owner view.",
+              "settings": {
+                "kind": "data-access",
+                "readRouting": "primary"
+              }
+            },
+            {
+              "id": "account-api-link-analytics",
+              "host": "account-api",
+              "name": "Link analytics",
+              "description": "Owner-only counts, ranges, freshness and bounded CSV export. Checks ownership in the Links owner view and the tier's lookback and export allowance with Billing API.",
+              "settings": {
+                "kind": "custom"
+              }
+            },
+            {
+              "id": "billing-api-sign-in",
+              "host": "billing-api",
+              "name": "Sign-in",
+              "description": "Optional, so Stripe reaches the webhook without a token. Customer routes still require a signed-in owner; the webhook is authorized by its Stripe signature instead.",
+              "settings": {
+                "kind": "auth-guard",
+                "credential": "jwt",
+                "signIn": "optional"
+              }
+            },
+            {
+              "id": "billing-api-customer-billing",
+              "host": "billing-api",
+              "name": "Customer billing",
+              "description": "Signed-in owner only: plan status, hosted Checkout and portal sessions from allowlisted prices, allowed return URLs and idempotency keys. CSRF is checked by Session API.",
+              "settings": {
+                "kind": "custom"
+              }
+            },
+            {
+              "id": "billing-api-payment-events",
+              "host": "billing-api",
+              "name": "Payment events",
+              "description": "No session: verifies the Stripe signature over the raw body bytes, stores the event in the inbox before 2xx, then reconciles subscriptions from Stripe under a lease.",
+              "settings": {
+                "kind": "custom"
+              }
+            },
+            {
+              "id": "billing-api-entitlements",
+              "host": "billing-api",
+              "name": "Entitlements",
+              "description": "Entitlement grants valid for at most 60 seconds, for Link API and Account API only. Fails closed for paid-gated operations when no valid grant exists.",
+              "settings": {
+                "kind": "custom"
+              }
+            },
+            {
+              "id": "analytics-worker-click-aggregator",
+              "host": "analytics-worker",
+              "name": "Click aggregator",
+              "description": "Validates and deduplicates each click event within a bounded horizon, updates aggregates and acknowledges after commit. Poison events go to quarantine, never dropped.",
+              "settings": {
+                "kind": "custom"
+              }
+            }
+          ],
+          "componentConnections": [
+            {
+              "id": "session-api-sign-in-flow-identity",
+              "from": "session-api-sign-in-flow",
+              "to": {
+                "kind": "element",
+                "id": "identity",
+                "via": "session-api-identity"
+              }
+            },
+            {
+              "id": "session-api-sign-in-flow-sessions",
+              "from": "session-api-sign-in-flow",
+              "to": {
+                "kind": "element",
+                "id": "sessions",
+                "via": "session-api-sessions"
+              }
+            },
+            {
+              "id": "session-api-api-forwarding-sessions",
+              "from": "session-api-api-forwarding",
+              "to": {
+                "kind": "element",
+                "id": "sessions",
+                "via": "session-api-sessions"
+              }
+            },
+            {
+              "id": "session-api-api-forwarding-identity",
+              "from": "session-api-api-forwarding",
+              "to": {
+                "kind": "element",
+                "id": "identity",
+                "via": "session-api-identity"
+              }
+            },
+            {
+              "id": "session-api-api-forwarding-link-api",
+              "from": "session-api-api-forwarding",
+              "to": {
+                "kind": "element",
+                "id": "link-api",
+                "via": "session-api-link-api"
+              }
+            },
+            {
+              "id": "session-api-api-forwarding-account-api",
+              "from": "session-api-api-forwarding",
+              "to": {
+                "kind": "element",
+                "id": "account-api",
+                "via": "session-api-account-api"
+              }
+            },
+            {
+              "id": "session-api-api-forwarding-billing-api",
+              "from": "session-api-api-forwarding",
+              "to": {
+                "kind": "element",
+                "id": "billing-api",
+                "via": "session-api-billing-api"
+              }
+            },
+            {
+              "id": "link-api-sign-in-identity",
+              "from": "link-api-sign-in",
+              "to": {
+                "kind": "element",
+                "id": "identity",
+                "via": "link-api-identity"
+              }
+            },
+            {
+              "id": "link-api-link-operations-links",
+              "from": "link-api-link-operations",
+              "to": {
+                "kind": "element",
+                "id": "links",
+                "via": "link-api-links"
+              }
+            },
+            {
+              "id": "link-api-link-operations-admission-cache",
+              "from": "link-api-link-operations",
+              "to": {
+                "kind": "element",
+                "id": "admission-cache",
+                "via": "link-api-admission-cache"
+              }
+            },
+            {
+              "id": "link-api-link-operations-reputation-api",
+              "from": "link-api-link-operations",
+              "to": {
+                "kind": "element",
+                "id": "reputation-api",
+                "via": "link-api-reputation-api"
+              }
+            },
+            {
+              "id": "link-api-link-operations-billing-api",
+              "from": "link-api-link-operations",
+              "to": {
+                "kind": "element",
+                "id": "billing-api",
+                "via": "link-api-billing-api"
+              }
+            },
+            {
+              "id": "link-api-abuse-and-moderation-links",
+              "from": "link-api-abuse-and-moderation",
+              "to": {
+                "kind": "element",
+                "id": "links",
+                "via": "link-api-links"
+              }
+            },
+            {
+              "id": "link-api-abuse-and-moderation-admission-cache",
+              "from": "link-api-abuse-and-moderation",
+              "to": {
+                "kind": "element",
+                "id": "admission-cache",
+                "via": "link-api-admission-cache"
+              }
+            },
+            {
+              "id": "redirect-service-resolve-and-redirect-links",
+              "from": "redirect-service-resolve-and-redirect",
+              "to": {
+                "kind": "element",
+                "id": "links",
+                "via": "redirect-service-links"
+              }
+            },
+            {
+              "id": "redirect-service-resolve-and-redirect-hot-routes",
+              "from": "redirect-service-resolve-and-redirect",
+              "to": {
+                "kind": "element",
+                "id": "hot-routes",
+                "via": "redirect-service-hot-routes"
+              }
+            },
+            {
+              "id": "redirect-service-resolve-and-redirect-click-events",
+              "from": "redirect-service-resolve-and-redirect",
+              "to": {
+                "kind": "element",
+                "id": "click-events",
+                "via": "redirect-service-click-events"
+              }
+            },
+            {
+              "id": "account-api-sign-in-identity",
+              "from": "account-api-sign-in",
+              "to": {
+                "kind": "element",
+                "id": "identity",
+                "via": "account-api-identity"
+              }
+            },
+            {
+              "id": "account-api-my-links-links",
+              "from": "account-api-my-links",
+              "to": {
+                "kind": "element",
+                "id": "links",
+                "via": "account-api-links"
+              }
+            },
+            {
+              "id": "account-api-link-analytics-links",
+              "from": "account-api-link-analytics",
+              "to": {
+                "kind": "element",
+                "id": "links",
+                "via": "account-api-links"
+              }
+            },
+            {
+              "id": "account-api-link-analytics-analytics",
+              "from": "account-api-link-analytics",
+              "to": {
+                "kind": "element",
+                "id": "analytics",
+                "via": "account-api-analytics"
+              }
+            },
+            {
+              "id": "account-api-link-analytics-billing-api",
+              "from": "account-api-link-analytics",
+              "to": {
+                "kind": "element",
+                "id": "billing-api",
+                "via": "account-api-billing-api"
+              }
+            },
+            {
+              "id": "billing-api-sign-in-identity",
+              "from": "billing-api-sign-in",
+              "to": {
+                "kind": "element",
+                "id": "identity",
+                "via": "billing-api-identity"
+              }
+            },
+            {
+              "id": "billing-api-customer-billing-billing",
+              "from": "billing-api-customer-billing",
+              "to": {
+                "kind": "element",
+                "id": "billing",
+                "via": "billing-api-billing"
+              }
+            },
+            {
+              "id": "billing-api-customer-billing-stripe-api",
+              "from": "billing-api-customer-billing",
+              "to": {
+                "kind": "element",
+                "id": "stripe-api",
+                "via": "billing-api-stripe-api"
+              }
+            },
+            {
+              "id": "billing-api-payment-events-billing",
+              "from": "billing-api-payment-events",
+              "to": {
+                "kind": "element",
+                "id": "billing",
+                "via": "billing-api-billing"
+              }
+            },
+            {
+              "id": "billing-api-payment-events-stripe-api",
+              "from": "billing-api-payment-events",
+              "to": {
+                "kind": "element",
+                "id": "stripe-api",
+                "via": "billing-api-stripe-api"
+              }
+            },
+            {
+              "id": "billing-api-entitlements-billing",
+              "from": "billing-api-entitlements",
+              "to": {
+                "kind": "element",
+                "id": "billing",
+                "via": "billing-api-billing"
+              }
+            },
+            {
+              "id": "analytics-worker-click-aggregator-click-events",
+              "from": "analytics-worker-click-aggregator",
+              "to": {
+                "kind": "element",
+                "id": "click-events",
+                "via": "click-events-analytics-worker"
+              }
+            },
+            {
+              "id": "analytics-worker-click-aggregator-analytics",
+              "from": "analytics-worker-click-aggregator",
+              "to": {
+                "kind": "element",
+                "id": "analytics",
+                "via": "analytics-worker-analytics"
+              }
+            }
+          ],
+          "entries": [
+            {
+              "id": "upload-session-api",
+              "lane": "upload",
+              "element": "session-api"
+            },
+            {
+              "id": "upload-billing-api",
+              "lane": "upload",
+              "element": "billing-api"
+            },
+            {
+              "id": "download-redirect-service",
+              "lane": "download",
+              "element": "redirect-service"
+            }
+          ],
+          "actions": [
+            {
+              "lane": "download",
+              "name": "Open link"
+            },
+            {
+              "lane": "upload",
+              "name": "Create, manage & pay"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "inMemory": {
+    "revision": 84,
+    "canonicalSha256": "4fbcd311992737c402d22d28415765b598f806c1c01a35ead81eb5ec6d3b024d",
+    "errors": [
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "No exact behavior profile is selected; application behavior remains unspecified.",
+        "target": {
+          "path": [
+            "scope",
+            "profile",
+            "profile-unspecified"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Included and excluded behavior requirements are unspecified.",
+        "target": {
+          "path": [
+            "scope",
+            "profile",
+            "requirements-unspecified"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "API and failure contracts are unspecified; explicit ownership declarations are reported separately. Names, labels and modules establish no behavior.",
+        "target": {
+          "path": [
+            "scope",
+            "contract",
+            "contracts-unspecified"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Logical owner and role for session-api are unspecified; legacy ownership supplies no declaration.",
+        "target": {
+          "element": "session-api",
+          "path": [
+            "ownership",
+            "roles",
+            "session-api"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Resource authority for sessions is unspecified; its legacy inferred writer is separate.",
+        "target": {
+          "element": "sessions",
+          "path": [
+            "ownership",
+            "resources",
+            "sessions"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Resource authority for links is unspecified; its legacy inferred writer is separate.",
+        "target": {
+          "element": "links",
+          "path": [
+            "ownership",
+            "resources",
+            "links"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Resource authority for admission-cache is unspecified; its legacy inferred writer is separate.",
+        "target": {
+          "element": "admission-cache",
+          "path": [
+            "ownership",
+            "resources",
+            "admission-cache"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Logical owner and role for redirect-service are unspecified; legacy ownership supplies no declaration.",
+        "target": {
+          "element": "redirect-service",
+          "path": [
+            "ownership",
+            "roles",
+            "redirect-service"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Resource authority for hot-routes is unspecified; its legacy inferred writer is separate.",
+        "target": {
+          "element": "hot-routes",
+          "path": [
+            "ownership",
+            "resources",
+            "hot-routes"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Logical owner and role for analytics-worker are unspecified; legacy ownership supplies no declaration.",
+        "target": {
+          "element": "analytics-worker",
+          "path": [
+            "ownership",
+            "roles",
+            "analytics-worker"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Resource authority for analytics is unspecified; its legacy inferred writer is separate.",
+        "target": {
+          "element": "analytics",
+          "path": [
+            "ownership",
+            "resources",
+            "analytics"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Resource authority for billing is unspecified; its legacy inferred writer is separate.",
+        "target": {
+          "element": "billing",
+          "path": [
+            "ownership",
+            "resources",
+            "billing"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Dependency session-api-sessions has unspecified access intent; its legacy inferred access is not a grant.",
+        "target": {
+          "connection": "session-api-sessions",
+          "path": [
+            "ownership",
+            "dependencies",
+            "session-api-sessions"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Dependency link-api-links has unspecified access intent; its legacy inferred access is not a grant.",
+        "target": {
+          "connection": "link-api-links",
+          "path": [
+            "ownership",
+            "dependencies",
+            "link-api-links"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Dependency link-api-admission-cache has unspecified access intent; its legacy inferred access is not a grant.",
+        "target": {
+          "connection": "link-api-admission-cache",
+          "path": [
+            "ownership",
+            "dependencies",
+            "link-api-admission-cache"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Dependency redirect-service-links has unspecified access intent; its legacy inferred access is not a grant.",
+        "target": {
+          "connection": "redirect-service-links",
+          "path": [
+            "ownership",
+            "dependencies",
+            "redirect-service-links"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Dependency redirect-service-hot-routes has unspecified access intent; its legacy inferred access is not a grant.",
+        "target": {
+          "connection": "redirect-service-hot-routes",
+          "path": [
+            "ownership",
+            "dependencies",
+            "redirect-service-hot-routes"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Dependency analytics-worker-analytics has unspecified access intent; its legacy inferred access is not a grant.",
+        "target": {
+          "connection": "analytics-worker-analytics",
+          "path": [
+            "ownership",
+            "dependencies",
+            "analytics-worker-analytics"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Dependency account-api-links has unspecified access intent; its legacy inferred access is not a grant.",
+        "target": {
+          "connection": "account-api-links",
+          "path": [
+            "ownership",
+            "dependencies",
+            "account-api-links"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Dependency account-api-analytics has unspecified access intent; its legacy inferred access is not a grant.",
+        "target": {
+          "connection": "account-api-analytics",
+          "path": [
+            "ownership",
+            "dependencies",
+            "account-api-analytics"
+          ]
+        }
+      },
+      {
+        "code": "CONFIG_REQUIRED",
+        "severity": "error",
+        "message": "Dependency billing-api-billing has unspecified access intent; its legacy inferred access is not a grant.",
+        "target": {
+          "connection": "billing-api-billing",
+          "path": [
+            "ownership",
+            "dependencies",
+            "billing-api-billing"
+          ]
+        }
+      },
+      {
+        "code": "NEEDS_TEMPLATE",
+        "severity": "error",
+        "message": "Declared template only; an installed implementation must be resolved by the generation host.",
+        "target": {
+          "path": [
+            "generation",
+            "selections",
+            0,
+            "template"
+          ],
+          "element": "session-api"
+        }
+      },
+      {
+        "code": "NEEDS_TEMPLATE",
+        "severity": "error",
+        "message": "Declared template only; an installed implementation must be resolved by the generation host.",
+        "target": {
+          "path": [
+            "generation",
+            "selections",
+            1,
+            "template"
+          ],
+          "element": "session-api"
+        }
+      },
+      {
+        "code": "NEEDS_TEMPLATE",
+        "severity": "error",
+        "message": "Declared template only; an installed implementation must be resolved by the generation host.",
+        "target": {
+          "path": [
+            "generation",
+            "selections",
+            2,
+            "template"
+          ],
+          "element": "link-api"
+        }
+      },
+      {
+        "code": "NEEDS_TEMPLATE",
+        "severity": "error",
+        "message": "Declared template only; an installed implementation must be resolved by the generation host.",
+        "target": {
+          "path": [
+            "generation",
+            "selections",
+            3,
+            "template"
+          ],
+          "element": "link-api"
+        }
+      },
+      {
+        "code": "NEEDS_TEMPLATE",
+        "severity": "error",
+        "message": "Declared template only; an installed implementation must be resolved by the generation host.",
+        "target": {
+          "path": [
+            "generation",
+            "selections",
+            4,
+            "template"
+          ],
+          "element": "link-api"
+        }
+      },
+      {
+        "code": "NEEDS_TEMPLATE",
+        "severity": "error",
+        "message": "Declared template only; an installed implementation must be resolved by the generation host.",
+        "target": {
+          "path": [
+            "generation",
+            "selections",
+            5,
+            "template"
+          ],
+          "element": "redirect-service"
+        }
+      },
+      {
+        "code": "NEEDS_TEMPLATE",
+        "severity": "error",
+        "message": "Declared template only; an installed implementation must be resolved by the generation host.",
+        "target": {
+          "path": [
+            "generation",
+            "selections",
+            6,
+            "template"
+          ],
+          "element": "account-api"
+        }
+      },
+      {
+        "code": "NEEDS_TEMPLATE",
+        "severity": "error",
+        "message": "Declared template only; an installed implementation must be resolved by the generation host.",
+        "target": {
+          "path": [
+            "generation",
+            "selections",
+            7,
+            "template"
+          ],
+          "element": "account-api"
+        }
+      },
+      {
+        "code": "NEEDS_TEMPLATE",
+        "severity": "error",
+        "message": "Declared template only; an installed implementation must be resolved by the generation host.",
+        "target": {
+          "path": [
+            "generation",
+            "selections",
+            8,
+            "template"
+          ],
+          "element": "account-api"
+        }
+      },
+      {
+        "code": "NEEDS_TEMPLATE",
+        "severity": "error",
+        "message": "Declared template only; an installed implementation must be resolved by the generation host.",
+        "target": {
+          "path": [
+            "generation",
+            "selections",
+            9,
+            "template"
+          ],
+          "element": "billing-api"
+        }
+      },
+      {
+        "code": "NEEDS_TEMPLATE",
+        "severity": "error",
+        "message": "Declared template only; an installed implementation must be resolved by the generation host.",
+        "target": {
+          "path": [
+            "generation",
+            "selections",
+            10,
+            "template"
+          ],
+          "element": "billing-api"
+        }
+      },
+      {
+        "code": "NEEDS_TEMPLATE",
+        "severity": "error",
+        "message": "Declared template only; an installed implementation must be resolved by the generation host.",
+        "target": {
+          "path": [
+            "generation",
+            "selections",
+            11,
+            "template"
+          ],
+          "element": "billing-api"
+        }
+      },
+      {
+        "code": "NEEDS_TEMPLATE",
+        "severity": "error",
+        "message": "Declared template only; an installed implementation must be resolved by the generation host.",
+        "target": {
+          "path": [
+            "generation",
+            "selections",
+            12,
+            "template"
+          ],
+          "element": "billing-api"
+        }
+      },
+      {
+        "code": "NEEDS_TEMPLATE",
+        "severity": "error",
+        "message": "Declared template only; an installed implementation must be resolved by the generation host.",
+        "target": {
+          "path": [
+            "generation",
+            "selections",
+            13,
+            "template"
+          ],
+          "element": "analytics-worker"
+        }
+      }
+    ],
+    "exportBlockersStudio": [],
+    "exportBlockersFrozen": []
+  },
+  "controls": {
+    "before": {
+      "studio": [
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "components",
+            2,
+            "settings",
+            "signIn"
+          ],
+          "value": "optional",
+          "supported": {
+            "values": [
+              "required",
+              "optional"
+            ]
+          },
+          "process": null
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "components",
+            6,
+            "settings",
+            "signIn"
+          ],
+          "value": "required",
+          "supported": {
+            "values": [
+              "required",
+              "optional"
+            ]
+          },
+          "process": null
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "components",
+            9,
+            "settings",
+            "signIn"
+          ],
+          "value": "optional",
+          "supported": {
+            "values": [
+              "required",
+              "optional"
+            ]
+          },
+          "process": null
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            4,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "account-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            4,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "account-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            12,
+            "settings",
+            "concurrency"
+          ],
+          "value": 1,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 1024
+            }
+          },
+          "process": "analytics-worker"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            5,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "billing-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            5,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "billing-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            3,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "link-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            3,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "link-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            9,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "redirect-service"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            9,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "redirect-service"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            0,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "session-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            0,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "session-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            11,
+            "settings",
+            "provider"
+          ],
+          "value": "unspecified",
+          "supported": {
+            "values": [
+              "unspecified",
+              "self-hosted",
+              "google-cloud"
+            ]
+          },
+          "process": null
+        }
+      ],
+      "frozen": [
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "components",
+            2,
+            "settings",
+            "signIn"
+          ],
+          "value": "optional",
+          "supported": {
+            "values": [
+              "required",
+              "optional"
+            ]
+          },
+          "process": null
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "components",
+            6,
+            "settings",
+            "signIn"
+          ],
+          "value": "required",
+          "supported": {
+            "values": [
+              "required",
+              "optional"
+            ]
+          },
+          "process": null
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "components",
+            9,
+            "settings",
+            "signIn"
+          ],
+          "value": "optional",
+          "supported": {
+            "values": [
+              "required",
+              "optional"
+            ]
+          },
+          "process": null
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            4,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "account-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            4,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "account-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            12,
+            "settings",
+            "concurrency"
+          ],
+          "value": 1,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 1024
+            }
+          },
+          "process": "analytics-worker"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            5,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "billing-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            5,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "billing-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            3,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "link-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            3,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "link-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            9,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "redirect-service"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            9,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "redirect-service"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            0,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "session-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            0,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "session-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            11,
+            "settings",
+            "provider"
+          ],
+          "value": "unspecified",
+          "supported": {
+            "values": [
+              "unspecified",
+              "self-hosted",
+              "google-cloud"
+            ]
+          },
+          "process": null
+        }
+      ]
+    },
+    "after": {
+      "studio": [
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "components",
+            2,
+            "settings",
+            "signIn"
+          ],
+          "value": "optional",
+          "supported": {
+            "values": [
+              "required",
+              "optional"
+            ]
+          },
+          "process": null
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "components",
+            6,
+            "settings",
+            "signIn"
+          ],
+          "value": "required",
+          "supported": {
+            "values": [
+              "required",
+              "optional"
+            ]
+          },
+          "process": null
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "components",
+            9,
+            "settings",
+            "signIn"
+          ],
+          "value": "optional",
+          "supported": {
+            "values": [
+              "required",
+              "optional"
+            ]
+          },
+          "process": null
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            4,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "account-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            4,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "account-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            12,
+            "settings",
+            "concurrency"
+          ],
+          "value": 1,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 1024
+            }
+          },
+          "process": "analytics-worker"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            5,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "billing-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            5,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "billing-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            3,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "link-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            3,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "link-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            9,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "redirect-service"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            9,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "redirect-service"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            0,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "session-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            0,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "session-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            11,
+            "settings",
+            "provider"
+          ],
+          "value": "google-cloud",
+          "supported": {
+            "values": [
+              "unspecified",
+              "self-hosted",
+              "google-cloud"
+            ]
+          },
+          "process": null
+        }
+      ],
+      "frozen": [
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "components",
+            2,
+            "settings",
+            "signIn"
+          ],
+          "value": "optional",
+          "supported": {
+            "values": [
+              "required",
+              "optional"
+            ]
+          },
+          "process": null
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "components",
+            6,
+            "settings",
+            "signIn"
+          ],
+          "value": "required",
+          "supported": {
+            "values": [
+              "required",
+              "optional"
+            ]
+          },
+          "process": null
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "components",
+            9,
+            "settings",
+            "signIn"
+          ],
+          "value": "optional",
+          "supported": {
+            "values": [
+              "required",
+              "optional"
+            ]
+          },
+          "process": null
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            4,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "account-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            4,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "account-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            12,
+            "settings",
+            "concurrency"
+          ],
+          "value": 1,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 1024
+            }
+          },
+          "process": "analytics-worker"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            5,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "billing-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            5,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "billing-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            3,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "link-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            3,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "link-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            9,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "redirect-service"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            9,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "redirect-service"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            0,
+            "settings",
+            "requestTimeoutMs"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 300000
+            }
+          },
+          "process": "session-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            0,
+            "settings",
+            "concurrencyLimit"
+          ],
+          "value": 1000,
+          "supported": {
+            "integer": {
+              "min": 1,
+              "max": 100000
+            }
+          },
+          "process": "session-api"
+        },
+        {
+          "path": [
+            "architecture",
+            "studio",
+            "elements",
+            11,
+            "settings",
+            "provider"
+          ],
+          "value": "google-cloud",
+          "supported": {
+            "values": [
+              "unspecified",
+              "self-hosted",
+              "google-cloud"
+            ]
+          },
+          "process": null
+        }
+      ]
+    }
+  }
+}

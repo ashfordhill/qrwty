@@ -1,0 +1,91 @@
+$ node scripts/local.mjs stop
+ Container qrwtya-q05-app-link-api-1 Stopping
+ Container qrwtya-q05-app-account-api-1 Stopping
+ Container qrwtya-q05-app-edge-1 Stopping
+ Container qrwtya-q05-app-analytics-worker-1 Stopping
+ Container qrwtya-q05-app-link-api-1 Stopped
+ Container qrwtya-q05-cache-admission-cache-1 Stopping
+ Container qrwtya-q05-app-analytics-worker-1 Stopped
+ Container qrwtya-q05-app-account-api-1 Stopped
+ Container qrwtya-q05-app-edge-1 Stopped
+ Container qrwtya-q05-app-session-api-1 Stopping
+ Container qrwtya-q05-app-billing-api-1 Stopping
+ Container qrwtya-q05-app-redirect-service-1 Stopping
+ Container qrwtya-q05-cache-admission-cache-1 Stopped
+ Container qrwtya-q05-app-session-api-1 Stopped
+ Container qrwtya-q05-app-redirect-service-1 Stopped
+ Container qrwtya-q05-cache-hot-routes-1 Stopping
+ Container qrwtya-q05-local-pubsub-1 Stopping
+ Container qrwtya-q05-app-billing-api-1 Stopped
+ Container qrwtya-q05-identity-identity-1 Stopping
+ Container qrwtya-q05-cache-hot-routes-1 Stopped
+ Container qrwtya-q05-identity-identity-1 Stopped
+ Container qrwtya-q05-local-postgres-1 Stopping
+ Container qrwtya-q05-local-postgres-1 Stopped
+ Container qrwtya-q05-local-pubsub-1 Stopped
+stop exit=0
+ Container qrwtya-q05-app-edge-1 Stopping
+ Container qrwtya-q05-app-analytics-worker-1 Stopping
+ Container qrwtya-q05-app-account-api-1 Stopping
+ Container qrwtya-q05-app-link-api-1 Stopping
+ Container qrwtya-q05-app-edge-1 Stopped
+ Container qrwtya-q05-app-edge-1 Removing
+ Container qrwtya-q05-app-account-api-1 Stopped
+ Container qrwtya-q05-app-account-api-1 Removing
+ Container qrwtya-q05-app-link-api-1 Stopped
+ Container qrwtya-q05-app-link-api-1 Removing
+ Container qrwtya-q05-app-analytics-worker-1 Stopped
+ Container qrwtya-q05-app-analytics-worker-1 Removing
+ Container qrwtya-q05-app-edge-1 Removed
+ Container qrwtya-q05-app-session-api-1 Stopping
+ Container qrwtya-q05-app-billing-api-1 Stopping
+ Container qrwtya-q05-app-redirect-service-1 Stopping
+ Container qrwtya-q05-app-session-api-1 Stopped
+ Container qrwtya-q05-app-session-api-1 Removing
+ Container qrwtya-q05-app-billing-api-1 Stopped
+ Container qrwtya-q05-app-billing-api-1 Removing
+ Container qrwtya-q05-app-redirect-service-1 Stopped
+ Container qrwtya-q05-app-redirect-service-1 Removing
+ Container qrwtya-q05-app-link-api-1 Removed
+ Container qrwtya-q05-cache-admission-cache-1 Stopping
+ Container qrwtya-q05-cache-admission-cache-1 Stopped
+ Container qrwtya-q05-cache-admission-cache-1 Removing
+ Container qrwtya-q05-app-redirect-service-1 Removed
+ Container qrwtya-q05-app-session-api-1 Removed
+ Container qrwtya-q05-app-account-api-1 Removed
+ Container qrwtya-q05-app-analytics-worker-1 Removed
+ Container qrwtya-q05-app-billing-api-1 Removed
+ Container qrwtya-q05-local-pubsub-1 Stopping
+ Container qrwtya-q05-identity-identity-1 Stopping
+ Container qrwtya-q05-cache-hot-routes-1 Stopping
+ Container qrwtya-q05-identity-identity-1 Stopped
+ Container qrwtya-q05-identity-identity-1 Removing
+ Container qrwtya-q05-cache-hot-routes-1 Stopped
+ Container qrwtya-q05-cache-hot-routes-1 Removing
+ Container qrwtya-q05-local-pubsub-1 Stopped
+ Container qrwtya-q05-local-pubsub-1 Removing
+ Container qrwtya-q05-cache-admission-cache-1 Removed
+ Container qrwtya-q05-local-pubsub-1 Removed
+ Container qrwtya-q05-cache-hot-routes-1 Removed
+ Container qrwtya-q05-identity-identity-1 Removed
+ Container qrwtya-q05-local-postgres-1 Stopping
+ Container qrwtya-q05-local-postgres-1 Stopped
+ Container qrwtya-q05-local-postgres-1 Removing
+ Container qrwtya-q05-local-postgres-1 Removed
+ Volume qrwtya-q05_postgres-data Removing
+ Volume qrwtya-q05_cache-hot-routes Removing
+ Volume qrwtya-q05_cache-admission-cache Removing
+ Network qrwtya-q05_default Removing
+ Volume qrwtya-q05_postgres-data Removed
+ Volume qrwtya-q05_cache-hot-routes Removed
+ Volume qrwtya-q05_cache-admission-cache Removed
+ Network qrwtya-q05_default Removed
+down exit=0
+Untagged: qrwtya-q05-app:latest
+Deleted: sha256:feaaf44f5bd5123b6919daea4ad66ffba19ea6cc4acbd39f189c3b3ae89615a7
+image rm exit=0
+containers:
+labelled containers:
+volumes:
+networks:
+images:

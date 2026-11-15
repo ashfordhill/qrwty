@@ -1,0 +1,15 @@
+$ pnpm run typecheck && pnpm run verify:generated && pnpm run open-work
+$ pnpm --dir app exec tsc -p tsconfig.json --noEmit
+$ python3 infra/local/verify-generated.py app
+{"ok": true, "generatedChecked": 64, "generatedChanged": [], "applicationFiles": [{"path": "infra/postgres/analytics/modules/analytics-worker-click-aggregator.sql", "asGenerated": true}, {"path": "infra/postgres/billing/modules/billing-api-customer-billing.sql", "asGenerated": true}, {"path": "infra/postgres/billing/modules/billing-api-entitlements.sql", "asGenerated": true}, {"path": "infra/postgres/billing/modules/billing-api-payment-events.sql", "asGenerated": true}, {"path": "infra/postgres/links/modules/link-api-abuse-and-moderation.sql", "asGenerated": true}, {"path": "infra/postgres/links/modules/link-api-link-operations.sql", "asGenerated": true}, {"path": "infra/postgres/sessions/modules/session-api-api-forwarding.sql", "asGenerated": true}, {"path": "infra/postgres/sessions/modules/session-api-sign-in-flow.sql", "asGenerated": true}, {"path": "package.json", "asGenerated": true}, {"path": "pnpm-lock.yaml", "asGenerated": true}, {"path": "pnpm-workspace.yaml", "asGenerated": true}, {"path": "src/modules/account-api/account-api-link-analytics.ts", "asGenerated": true}, {"path": "src/modules/account-api/account-api-my-links.ts", "asGenerated": true}, {"path": "src/modules/analytics-worker/analytics-worker-click-aggregator.ts", "asGenerated": true}, {"path": "src/modules/billing-api/billing-api-customer-billing.ts", "asGenerated": true}, {"path": "src/modules/billing-api/billing-api-entitlements.ts", "asGenerated": true}, {"path": "src/modules/billing-api/billing-api-payment-events.ts", "asGenerated": true}, {"path": "src/modules/link-api/link-api-abuse-and-moderation.ts", "asGenerated": true}, {"path": "src/modules/link-api/link-api-link-operations.ts", "asGenerated": true}, {"path": "src/modules/redirect-service/redirect-service-resolve-and-redirect.ts", "asGenerated": true}, {"path": "src/modules/session-api/session-api-api-forwarding.ts", "asGenerated": true}, {"path": "src/modules/session-api/session-api-sign-in-flow.ts", "asGenerated": true}]}
+$ node tools/open-work.mjs app
+hooks: 0 files, 0 process rows
+application files: 22 (22 still as generated)
+stub modules: 11; required gaps: 11
+  app-account-api: 2 routes answer 501
+  app-analytics-worker: 0 routes answer 501, loops: analytics-worker-click-aggregator
+  app-billing-api: 3 routes answer 501
+  app-link-api: 2 routes answer 501
+  app-redirect-service: 1 routes answer 501
+  app-session-api: 2 routes answer 501
+application complete: false

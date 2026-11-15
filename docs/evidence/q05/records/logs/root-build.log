@@ -1,0 +1,2 @@
+$ pnpm --dir app run build
+$ tsc -p tsconfig.json

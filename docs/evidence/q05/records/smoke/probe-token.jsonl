@@ -1,0 +1,4 @@
+{"via":"keycloak","client":"q05-smoke","iss":"http://127.0.0.1:47242/realms/identity","aud":["identity-web","account"],"hasSub":true}
+{"via":"inside","method":"GET","path":"http://app-account-api:3000/modules/account-api-sign-in/me","bearer":"client-credentials token","status":200,"body":"{\"signedIn\":true,\"subject\":\"<service account>\",\"username\":\"service-account-q05-smoke\"}"}
+{"via":"inside","method":"GET","path":"http://app-account-api:3000/modules/account-api-my-links","bearer":"client-credentials token","status":501,"body":"{\"error\":\"NOT_IMPLEMENTED\",\"message\":\"Not implemented: My links\"}"}
+{"via":"inside","method":"GET","path":"http://app-account-api:3000/modules/account-api-link-analytics","bearer":"client-credentials token","status":501,"body":"{\"error\":\"NOT_IMPLEMENTED\",\"message\":\"Not implemented: Link analytics\"}"}

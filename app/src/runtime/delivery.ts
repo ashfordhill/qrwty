@@ -1,0 +1,240 @@
+export interface Delivery {
+  messageId: string | undefined;
+  headers: Record<string, unknown>;
+  deliveryCount: number;
+  redelivered: boolean;
+}
+export type MessageHandler = (body: Buffer, delivery: Delivery) => Promise<void>;
+export class NonRetryable extends Error {
+  readonly code: string;
+  constructor(code: string) {
+    super(code);
+    if (!/^[A-Z][A-Z0-9_]{0,79}$/.test(code)) throw new Error("Invalid terminal code");
+    this.code = code;
+  }
+}
+export interface ConsumerHooks {
+  onTerminal?: (body: Buffer, delivery: Delivery, error: unknown) => Promise<void>;
+  /** Notification only; do not await close from a handler or terminal hook in its own drain. */
+  onFatal?: (error: unknown) => void;
+}
+export interface DeliveryMessage<Receipt> {
+  body: Buffer;
+  messageId?: string;
+  headers: Record<string, unknown>;
+  redelivered: boolean;
+  receipt: Receipt;
+}
+export interface DeliveryTransport<Receipt> {
+  cancel(): Promise<void>;
+  /** Must resolve only after the destination broker confirms persistence. */
+  republish(
+    destination: string,
+    message: DeliveryMessage<Receipt>,
+    headers: Record<string, unknown>,
+  ): Promise<void>;
+  ack(receipt: Receipt): void;
+  /** Close channel before connection, after cancellation and admitted work. */
+  close(): Promise<void>;
+}
+
+/** The wait before a message whose store was unreachable goes back to its queue. */
+export const UNREACHABLE_WAIT_MS = 5000;
+const socketCodes = new Set([
+  "ECONNREFUSED",
+  "ECONNRESET",
+  "ENOTFOUND",
+  "EAI_AGAIN",
+  "ETIMEDOUT",
+  "EHOSTUNREACH",
+  "ENETUNREACH",
+  "EPIPE",
+]);
+/** Set by `httpTarget` on a failed call to another tile: that call is not an outside one. */
+const internalCall = Symbol.for("jeeves.internal-call");
+/**
+ * `unreachable`: whether an error says the store could not be reached, rather than that the
+ * message failed. It looks at the error, its `cause` chain (up to five deep) and each of an
+ * `AggregateError`'s `errors` for a Node socket code (ECONNREFUSED, ECONNRESET, ENOTFOUND,
+ * EAI_AGAIN, ETIMEDOUT, EHOSTUNREACH, ENETUNREACH, EPIPE), a PostgreSQL SQLSTATE of class 08 or
+ * 57P01–57P03, or a `pg` message that starts with "Connection terminated", contains "timeout
+ * exceeded when trying to connect" or is exactly "Query read timeout" (the pool's client-side
+ * bound: a stalled database sent no reply). A statement timeout (57014), a constraint violation or
+ * any other error is not unreachable. Nor is an outside call: on the way, a `TypeError` "fetch
+ * failed" that isn't marked `Symbol.for("jeeves.internal-call")` (as `httpTarget` marks a call to
+ * another tile) answers false at once, so the message keeps the normal retries. An application's
+ * SDK that doesn't use `fetch` still looks like a store; it can throw `NonRetryable` to end a
+ * message.
+ */
+export function unreachable(error: unknown): boolean {
+  const found = (value: unknown, depth: number): boolean => {
+    if (depth > 5 || typeof value !== "object" || value === null) return false;
+    if (
+      value instanceof TypeError &&
+      value.message === "fetch failed" &&
+      Reflect.get(value, internalCall) !== true
+    )
+      return false;
+    const { code, message, cause } = value as { code?: unknown; message?: unknown; cause?: unknown };
+    if (
+      typeof code === "string" &&
+      (socketCodes.has(code) || code.startsWith("08") || /^57P0[123]$/.test(code))
+    )
+      return true;
+    if (
+      typeof message === "string" &&
+      (message.startsWith("Connection terminated") ||
+        message.includes("timeout exceeded when trying to connect") ||
+        message === "Query read timeout")
+    )
+      return true;
+    if (value instanceof AggregateError && value.errors.some((item) => found(item, depth + 1)))
+      return true;
+    return found(cause, depth + 1);
+  };
+  return found(error, 0);
+}
+
+/** Durable effects remain the handler's responsibility. This provides at-least-once
+ * delivery, bounded retry and drain on one channel; `createConsumer` reconnects with a new
+ * runner. A message whose store is unreachable waits `UNREACHABLE_WAIT_MS` and goes back to its
+ * queue with the same attempt. It makes no exactly-once promise. */
+export interface DeliveryBinding {
+  queue: string;
+  failedQueue: string;
+  retryLimit: number;
+}
+export function validateDeliveryBinding(options: DeliveryBinding): void {
+  if (
+    !options.queue ||
+    !options.failedQueue ||
+    options.queue === options.failedQueue ||
+    !Number.isSafeInteger(options.retryLimit) ||
+    options.retryLimit < 0 ||
+    options.retryLimit > 10000
+  )
+    throw new Error("Invalid delivery binding");
+}
+export function createDeliveryRunner<Receipt>(
+  options: ConsumerHooks &
+    DeliveryBinding & {
+      handle: MessageHandler;
+      transport: DeliveryTransport<Receipt>;
+    },
+) {
+  validateDeliveryBinding(options);
+  let closing = false;
+  let fatalClosure = false;
+  let shutdown: Promise<void> | undefined;
+  const inFlight = new Set<Promise<void>>();
+  // close() ends every wait for an unreachable store at once.
+  const stopping = new AbortController();
+  let finishClosed!: (result: { fatal: boolean }) => void;
+  const closed = new Promise<{ fatal: boolean }>((resolve) => {
+    finishClosed = resolve;
+  });
+  function wait(ms: number): Promise<void> {
+    const signal = stopping.signal;
+    if (signal.aborted) return Promise.resolve();
+    return new Promise((resolve) => {
+      const done = () => {
+        clearTimeout(timer);
+        signal.removeEventListener("abort", done);
+        resolve();
+      };
+      const timer = setTimeout(done, ms);
+      signal.addEventListener("abort", done, { once: true });
+    });
+  }
+  function fatal(error: unknown) {
+    if (!fatalClosure) {
+      fatalClosure = true;
+      try {
+        options.onFatal?.(error);
+      } catch {
+        /* Notification cannot interrupt the drain. */
+      }
+    }
+    // Never await here: the initiating delivery is itself included in the drain.
+    void close();
+  }
+  function close(): Promise<void> {
+    if (shutdown) return shutdown;
+    closing = true;
+    stopping.abort();
+    return (shutdown = (async () => {
+      await options.transport.cancel().catch(() => {});
+      await Promise.allSettled([...inFlight]);
+      await options.transport.close().catch(() => {});
+      finishClosed({ fatal: fatalClosure });
+    })());
+  }
+  return {
+    closed,
+    close,
+    fatal,
+    accept(message: DeliveryMessage<Receipt>) {
+      if (closing) return; // Unacked deliveries return to the broker when the channel closes.
+      const task = Promise.resolve().then(async () => {
+        const headers = { ...message.headers };
+        const raw = headers["x-delivery-attempt"] ?? 0;
+        const attempts =
+          typeof raw === "number" &&
+          Number.isSafeInteger(raw) &&
+          raw >= 0 &&
+          raw <= options.retryLimit
+            ? raw
+            : options.retryLimit;
+        const delivery: Delivery = {
+          messageId: message.messageId,
+          headers,
+          deliveryCount: attempts + 1,
+          redelivered: message.redelivered,
+        };
+        try {
+          await options.handle(message.body, delivery);
+          if (!fatalClosure) options.transport.ack(message.receipt);
+        } catch (error) {
+          if (fatalClosure) return;
+          if (unreachable(error) && !(error instanceof NonRetryable)) {
+            // The store failed, not the message: the attempt doesn't count.
+            await wait(UNREACHABLE_WAIT_MS);
+            // Unacked, the delivery returns to the broker when the channel closes.
+            if (closing || fatalClosure) return;
+            try {
+              await options.transport.republish(options.queue, message, headers);
+              if (!fatalClosure) options.transport.ack(message.receipt);
+            } catch (failure) {
+              fatal(failure);
+            }
+            return;
+          }
+          const terminal = error instanceof NonRetryable || attempts >= options.retryLimit;
+          try {
+            if (terminal) await options.onTerminal?.(message.body, delivery, error);
+            if (fatalClosure) return;
+            await options.transport.republish(
+              terminal ? options.failedQueue : options.queue,
+              message,
+              {
+                ...headers,
+                "x-delivery-attempt": attempts + 1,
+                ...(terminal
+                  ? {
+                      "x-terminal-code":
+                        error instanceof NonRetryable ? error.code : "RETRY_EXHAUSTED",
+                    }
+                  : {}),
+              },
+            );
+            if (!fatalClosure) options.transport.ack(message.receipt);
+          } catch (failure) {
+            fatal(failure);
+          }
+        }
+      });
+      inFlight.add(task);
+      void task.finally(() => inFlight.delete(task)).catch(fatal);
+    },
+  };
+}

@@ -1,0 +1,1739 @@
+{
+  "format": "jeeves-diagram-capture-v1",
+  "capturedAt": "2026-11-15T07:53:58.645Z",
+  "project": {
+    "id": "d1e59607-0616-418d-83d5-4cfe5bcb4b11",
+    "name": "QRWTY · production candidate v1",
+    "revision": 84
+  },
+  "source": {
+    "designSha256": "4fbcd311992737c402d22d28415765b598f806c1c01a35ead81eb5ec6d3b024d",
+    "hashEncoding": "UTF-8 JSON with recursively sorted object keys; array order preserved",
+    "schemaVersion": 3
+  },
+  "renderer": {
+    "appVersion": "0.1.0",
+    "commit": "73bd4a8496d43a64b46b5d7e97a381de1de80653",
+    "trackedTreeDirtyAtBuild": true,
+    "mode": "development",
+    "treeVerification": "Development server: verify Git identity/tree at capture; HMR can change source after startup.",
+    "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36"
+  },
+  "image": {
+    "filename": "QRWTY-production-candidate-v1-r84-detailed.png",
+    "sha256": "826a9efba1c0beb311b2aa45cd95bcd50e41ae7c3f722584f11ded5c3ed6f965",
+    "width": 3776,
+    "height": 2884,
+    "scale": 2,
+    "margin": 32,
+    "background": "#e8f4fa",
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "w": 1888,
+      "h": 1442
+    },
+    "font": "Nunito Variable",
+    "embeddedFontCssSha256": "f8eec7af9098771a705fa759c8df6faa7031d2a4f58c2d15f6eb793bbf79709d"
+  },
+  "view": {
+    "canvas": "detailed",
+    "modules": "module hosts as containers; module links from and into their rows",
+    "relationships": "all projected relationships",
+    "selection": "omitted",
+    "camera": "full bounds at 1 board pixel per CSS pixel; interactive camera ignored",
+    "ownerExpansion": "canonical process tiles",
+    "owners": [
+      {
+        "id": "billing-api-owner",
+        "name": "Billing API",
+        "requestedExpanded": false,
+        "fallbackExpanded": false,
+        "rendered": "roles"
+      },
+      {
+        "id": "identity-owner",
+        "name": "Identity",
+        "requestedExpanded": false,
+        "fallbackExpanded": false,
+        "rendered": "roles"
+      },
+      {
+        "id": "link-api-owner",
+        "name": "Link API",
+        "requestedExpanded": false,
+        "fallbackExpanded": false,
+        "rendered": "roles"
+      },
+      {
+        "id": "account-api-owner",
+        "name": "Account API",
+        "requestedExpanded": false,
+        "fallbackExpanded": false,
+        "rendered": "roles"
+      }
+    ]
+  },
+  "layout": {
+    "key": "[[[\"@actor\",128,160,null],[\"@download\",128,128,0],[\"@upload\",128,128,2],[\"redirect-service\",256,128,0,[[\"header-in\",\"in\",32],[\"redirect-service-resolve-and-redirect:out\",\"out\",64]]],[\"links\",128,128,1],[\"hot-routes\",128,128,0],[\"click-events\",128,128,0],[\"analytics-worker\",256,128,0,[[\"analytics-worker-click-aggregator:in\",\"in\",64],[\"analytics-worker-click-aggregator:out\",\"out\",64]]],[\"analytics\",128,128,1],[\"session-api\",256,160,2,[[\"header-in\",\"in\",32],[\"session-api-sign-in-flow:out\",\"out\",64],[\"session-api-api-forwarding:out\",\"out\",96]]],[\"billing-api\",256,224,2,[[\"header-in\",\"in\",32],[\"billing-api-sign-in:out\",\"out\",64],[\"billing-api-customer-billing:out\",\"out\",96],[\"billing-api-payment-events:out\",\"out\",128],[\"billing-api-entitlements:out\",\"out\",160]]],[\"identity\",128,128,2],[\"sessions\",128,128,2],[\"link-api\",256,192,2,[[\"header-in\",\"in\",32],[\"link-api-sign-in:out\",\"out\",64],[\"link-api-link-operations:out\",\"out\",96],[\"link-api-abuse-and-moderation:out\",\"out\",128]]],[\"account-api\",256,192,2,[[\"header-in\",\"in\",32],[\"account-api-sign-in:out\",\"out\",64],[\"account-api-my-links:out\",\"out\",96],[\"account-api-link-analytics:out\",\"out\",128]]],[\"billing\",128,128,2],[\"stripe-api\",128,128,2],[\"admission-cache\",128,128,2],[\"reputation-api\",128,128,2]],[[\"@actor-download\",\"@actor\",\"@download\",0,0,null],[\"@actor-upload\",\"@actor\",\"@upload\",0,0,null],[\"download-redirect-service\",\"@download\",\"redirect-service\",0,0,0,null,\"header-in\"],[\"upload-session-api\",\"@upload\",\"session-api\",0,0,2,null,\"header-in\"],[\"upload-billing-api\",\"@upload\",\"billing-api\",0,0,2,null,\"header-in\"],[\"redirect-service-links/redirect-service-resolve-and-redirect\",\"redirect-service\",\"links\",0,0,0,\"redirect-service-resolve-and-redirect:out\",null],[\"redirect-service-hot-routes/redirect-service-resolve-and-redirect\",\"redirect-service\",\"hot-routes\",0,0,0,\"redirect-service-resolve-and-redirect:out\",null],[\"redirect-service-click-events/redirect-service-resolve-and-redirect\",\"redirect-service\",\"click-events\",0,0,0,\"redirect-service-resolve-and-redirect:out\",null],[\"click-events-analytics-worker/analytics-worker-click-aggregator\",\"click-events\",\"analytics-worker\",0,0,0,null,\"analytics-worker-click-aggregator:in\"],[\"analytics-worker-analytics/analytics-worker-click-aggregator\",\"analytics-worker\",\"analytics\",0,0,0,\"analytics-worker-click-aggregator:out\",null],[\"session-api-identity/session-api-sign-in-flow\",\"session-api\",\"identity\",0,0,2,\"session-api-sign-in-flow:out\",null],[\"session-api-identity/session-api-api-forwarding\",\"session-api\",\"identity\",0,0,2,\"session-api-api-forwarding:out\",null],[\"session-api-sessions/session-api-sign-in-flow\",\"session-api\",\"sessions\",0,0,2,\"session-api-sign-in-flow:out\",null],[\"session-api-sessions/session-api-api-forwarding\",\"session-api\",\"sessions\",0,0,2,\"session-api-api-forwarding:out\",null],[\"session-api-link-api/session-api-api-forwarding\",\"session-api\",\"link-api\",0,0,2,\"session-api-api-forwarding:out\",\"header-in\"],[\"session-api-account-api/session-api-api-forwarding\",\"session-api\",\"account-api\",0,0,2,\"session-api-api-forwarding:out\",\"header-in\"],[\"session-api-billing-api/session-api-api-forwarding\",\"session-api\",\"billing-api\",0,0,2,\"session-api-api-forwarding:out\",\"header-in\"],[\"billing-api-identity/billing-api-sign-in\",\"billing-api\",\"identity\",0,0,2,\"billing-api-sign-in:out\",null],[\"billing-api-billing/billing-api-customer-billing\",\"billing-api\",\"billing\",0,0,2,\"billing-api-customer-billing:out\",null],[\"billing-api-billing/billing-api-payment-events\",\"billing-api\",\"billing\",0,0,2,\"billing-api-payment-events:out\",null],[\"billing-api-billing/billing-api-entitlements\",\"billing-api\",\"billing\",0,0,2,\"billing-api-entitlements:out\",null],[\"billing-api-stripe-api/billing-api-customer-billing\",\"billing-api\",\"stripe-api\",0,0,2,\"billing-api-customer-billing:out\",null],[\"billing-api-stripe-api/billing-api-payment-events\",\"billing-api\",\"stripe-api\",0,0,2,\"billing-api-payment-events:out\",null],[\"link-api-links/link-api-link-operations\",\"link-api\",\"links\",0,0,2,\"link-api-link-operations:out\",null],[\"link-api-links/link-api-abuse-and-moderation\",\"link-api\",\"links\",0,0,2,\"link-api-abuse-and-moderation:out\",null],[\"link-api-identity/link-api-sign-in\",\"link-api\",\"identity\",0,0,2,\"link-api-sign-in:out\",null],[\"link-api-admission-cache/link-api-link-operations\",\"link-api\",\"admission-cache\",0,0,2,\"link-api-link-operations:out\",null],[\"link-api-admission-cache/link-api-abuse-and-moderation\",\"link-api\",\"admission-cache\",0,0,2,\"link-api-abuse-and-moderation:out\",null],[\"link-api-reputation-api/link-api-link-operations\",\"link-api\",\"reputation-api\",0,0,2,\"link-api-link-operations:out\",null],[\"link-api-billing-api/link-api-link-operations\",\"link-api\",\"billing-api\",0,0,2,\"link-api-link-operations:out\",\"header-in\"],[\"account-api-identity/account-api-sign-in\",\"account-api\",\"identity\",0,0,2,\"account-api-sign-in:out\",null],[\"account-api-links/account-api-my-links\",\"account-api\",\"links\",0,0,2,\"account-api-my-links:out\",null],[\"account-api-links/account-api-link-analytics\",\"account-api\",\"links\",0,0,2,\"account-api-link-analytics:out\",null],[\"account-api-analytics/account-api-link-analytics\",\"account-api\",\"analytics\",0,0,2,\"account-api-link-analytics:out\",null],[\"account-api-billing-api/account-api-link-analytics\",\"account-api\",\"billing-api\",0,0,2,\"account-api-link-analytics:out\",\"header-in\"]]]",
+    "positions": {
+      "@actor": {
+        "x": 32,
+        "y": 464
+      },
+      "@download": {
+        "x": 224,
+        "y": 96
+      },
+      "@upload": {
+        "x": 224,
+        "y": 864
+      },
+      "redirect-service": {
+        "x": 416,
+        "y": 128
+      },
+      "links": {
+        "x": 768,
+        "y": 352
+      },
+      "hot-routes": {
+        "x": 768,
+        "y": 32
+      },
+      "click-events": {
+        "x": 832,
+        "y": 192
+      },
+      "analytics-worker": {
+        "x": 1248,
+        "y": 192
+      },
+      "analytics": {
+        "x": 1728,
+        "y": 352
+      },
+      "session-api": {
+        "x": 416,
+        "y": 608
+      },
+      "billing-api": {
+        "x": 1248,
+        "y": 1120
+      },
+      "identity": {
+        "x": 1728,
+        "y": 672
+      },
+      "sessions": {
+        "x": 768,
+        "y": 576
+      },
+      "link-api": {
+        "x": 768,
+        "y": 768
+      },
+      "account-api": {
+        "x": 768,
+        "y": 1024
+      },
+      "billing": {
+        "x": 1728,
+        "y": 1216
+      },
+      "stripe-api": {
+        "x": 1728,
+        "y": 1056
+      },
+      "admission-cache": {
+        "x": 1248,
+        "y": 832
+      },
+      "reputation-api": {
+        "x": 1248,
+        "y": 672
+      }
+    },
+    "routes": {
+      "@actor-download": [
+        {
+          "x": 160,
+          "y": 544
+        },
+        {
+          "x": 192,
+          "y": 544
+        },
+        {
+          "x": 192,
+          "y": 160
+        },
+        {
+          "x": 224,
+          "y": 160
+        }
+      ],
+      "@actor-upload": [
+        {
+          "x": 160,
+          "y": 544
+        },
+        {
+          "x": 192,
+          "y": 544
+        },
+        {
+          "x": 192,
+          "y": 928
+        },
+        {
+          "x": 224,
+          "y": 928
+        }
+      ],
+      "download-redirect-service": [
+        {
+          "x": 352,
+          "y": 160
+        },
+        {
+          "x": 416,
+          "y": 160
+        }
+      ],
+      "upload-session-api": [
+        {
+          "x": 352,
+          "y": 928
+        },
+        {
+          "x": 384,
+          "y": 928
+        },
+        {
+          "x": 384,
+          "y": 640
+        },
+        {
+          "x": 416,
+          "y": 640
+        }
+      ],
+      "upload-billing-api": [
+        {
+          "x": 352,
+          "y": 928
+        },
+        {
+          "x": 384,
+          "y": 928
+        },
+        {
+          "x": 384,
+          "y": 1226
+        },
+        {
+          "x": 704,
+          "y": 1226
+        },
+        {
+          "x": 704,
+          "y": 1232
+        },
+        {
+          "x": 1184,
+          "y": 1232
+        },
+        {
+          "x": 1184,
+          "y": 1152
+        },
+        {
+          "x": 1248,
+          "y": 1152
+        }
+      ],
+      "redirect-service-links/redirect-service-resolve-and-redirect": [
+        {
+          "x": 672,
+          "y": 192
+        },
+        {
+          "x": 704,
+          "y": 192
+        },
+        {
+          "x": 704,
+          "y": 416
+        },
+        {
+          "x": 768,
+          "y": 416
+        }
+      ],
+      "redirect-service-hot-routes/redirect-service-resolve-and-redirect": [
+        {
+          "x": 672,
+          "y": 192
+        },
+        {
+          "x": 704,
+          "y": 192
+        },
+        {
+          "x": 704,
+          "y": 96
+        },
+        {
+          "x": 768,
+          "y": 96
+        }
+      ],
+      "redirect-service-click-events/redirect-service-resolve-and-redirect": [
+        {
+          "x": 672,
+          "y": 192
+        },
+        {
+          "x": 704,
+          "y": 192
+        },
+        {
+          "x": 704,
+          "y": 256
+        },
+        {
+          "x": 832,
+          "y": 256
+        }
+      ],
+      "click-events-analytics-worker/analytics-worker-click-aggregator": [
+        {
+          "x": 960,
+          "y": 256
+        },
+        {
+          "x": 1248,
+          "y": 256
+        }
+      ],
+      "analytics-worker-analytics/analytics-worker-click-aggregator": [
+        {
+          "x": 1504,
+          "y": 256
+        },
+        {
+          "x": 1696,
+          "y": 256
+        },
+        {
+          "x": 1696,
+          "y": 416
+        },
+        {
+          "x": 1728,
+          "y": 416
+        }
+      ],
+      "session-api-identity/session-api-sign-in-flow": [
+        {
+          "x": 672,
+          "y": 672
+        },
+        {
+          "x": 704,
+          "y": 672
+        },
+        {
+          "x": 704,
+          "y": 544
+        },
+        {
+          "x": 1184,
+          "y": 544
+        },
+        {
+          "x": 1184,
+          "y": 625
+        },
+        {
+          "x": 1696,
+          "y": 625
+        },
+        {
+          "x": 1696,
+          "y": 736
+        },
+        {
+          "x": 1728,
+          "y": 736
+        }
+      ],
+      "session-api-identity/session-api-api-forwarding": [
+        {
+          "x": 672,
+          "y": 704
+        },
+        {
+          "x": 736,
+          "y": 704
+        },
+        {
+          "x": 736,
+          "y": 720
+        },
+        {
+          "x": 1216,
+          "y": 720
+        },
+        {
+          "x": 1216,
+          "y": 631
+        },
+        {
+          "x": 1536,
+          "y": 631
+        },
+        {
+          "x": 1536,
+          "y": 736
+        },
+        {
+          "x": 1728,
+          "y": 736
+        }
+      ],
+      "session-api-sessions/session-api-sign-in-flow": [
+        {
+          "x": 672,
+          "y": 672
+        },
+        {
+          "x": 704,
+          "y": 672
+        },
+        {
+          "x": 704,
+          "y": 640
+        },
+        {
+          "x": 768,
+          "y": 640
+        }
+      ],
+      "session-api-sessions/session-api-api-forwarding": [
+        {
+          "x": 672,
+          "y": 704
+        },
+        {
+          "x": 736,
+          "y": 704
+        },
+        {
+          "x": 736,
+          "y": 640
+        },
+        {
+          "x": 768,
+          "y": 640
+        }
+      ],
+      "session-api-link-api/session-api-api-forwarding": [
+        {
+          "x": 672,
+          "y": 704
+        },
+        {
+          "x": 736,
+          "y": 704
+        },
+        {
+          "x": 736,
+          "y": 800
+        },
+        {
+          "x": 768,
+          "y": 800
+        }
+      ],
+      "session-api-account-api/session-api-api-forwarding": [
+        {
+          "x": 672,
+          "y": 704
+        },
+        {
+          "x": 736,
+          "y": 704
+        },
+        {
+          "x": 736,
+          "y": 1056
+        },
+        {
+          "x": 768,
+          "y": 1056
+        }
+      ],
+      "session-api-billing-api/session-api-api-forwarding": [
+        {
+          "x": 672,
+          "y": 704
+        },
+        {
+          "x": 704,
+          "y": 704
+        },
+        {
+          "x": 704,
+          "y": 1232
+        },
+        {
+          "x": 1216,
+          "y": 1232
+        },
+        {
+          "x": 1216,
+          "y": 1152
+        },
+        {
+          "x": 1248,
+          "y": 1152
+        }
+      ],
+      "billing-api-identity/billing-api-sign-in": [
+        {
+          "x": 1504,
+          "y": 1184
+        },
+        {
+          "x": 1632,
+          "y": 1184
+        },
+        {
+          "x": 1632,
+          "y": 736
+        },
+        {
+          "x": 1728,
+          "y": 736
+        }
+      ],
+      "billing-api-billing/billing-api-customer-billing": [
+        {
+          "x": 1504,
+          "y": 1216
+        },
+        {
+          "x": 1696,
+          "y": 1216
+        },
+        {
+          "x": 1696,
+          "y": 1280
+        },
+        {
+          "x": 1728,
+          "y": 1280
+        }
+      ],
+      "billing-api-billing/billing-api-payment-events": [
+        {
+          "x": 1504,
+          "y": 1248
+        },
+        {
+          "x": 1664,
+          "y": 1248
+        },
+        {
+          "x": 1664,
+          "y": 1280
+        },
+        {
+          "x": 1728,
+          "y": 1280
+        }
+      ],
+      "billing-api-billing/billing-api-entitlements": [
+        {
+          "x": 1504,
+          "y": 1280
+        },
+        {
+          "x": 1728,
+          "y": 1280
+        }
+      ],
+      "billing-api-stripe-api/billing-api-customer-billing": [
+        {
+          "x": 1504,
+          "y": 1216
+        },
+        {
+          "x": 1696,
+          "y": 1216
+        },
+        {
+          "x": 1696,
+          "y": 1120
+        },
+        {
+          "x": 1728,
+          "y": 1120
+        }
+      ],
+      "billing-api-stripe-api/billing-api-payment-events": [
+        {
+          "x": 1504,
+          "y": 1248
+        },
+        {
+          "x": 1664,
+          "y": 1248
+        },
+        {
+          "x": 1664,
+          "y": 1120
+        },
+        {
+          "x": 1728,
+          "y": 1120
+        }
+      ],
+      "link-api-identity/link-api-sign-in": [
+        {
+          "x": 1024,
+          "y": 832
+        },
+        {
+          "x": 1184,
+          "y": 832
+        },
+        {
+          "x": 1184,
+          "y": 628
+        },
+        {
+          "x": 1664,
+          "y": 628
+        },
+        {
+          "x": 1664,
+          "y": 736
+        },
+        {
+          "x": 1728,
+          "y": 736
+        }
+      ],
+      "link-api-admission-cache/link-api-link-operations": [
+        {
+          "x": 1024,
+          "y": 864
+        },
+        {
+          "x": 1216,
+          "y": 864
+        },
+        {
+          "x": 1216,
+          "y": 896
+        },
+        {
+          "x": 1248,
+          "y": 896
+        }
+      ],
+      "link-api-admission-cache/link-api-abuse-and-moderation": [
+        {
+          "x": 1024,
+          "y": 896
+        },
+        {
+          "x": 1248,
+          "y": 896
+        }
+      ],
+      "link-api-reputation-api/link-api-link-operations": [
+        {
+          "x": 1024,
+          "y": 864
+        },
+        {
+          "x": 1216,
+          "y": 864
+        },
+        {
+          "x": 1216,
+          "y": 736
+        },
+        {
+          "x": 1248,
+          "y": 736
+        }
+      ],
+      "link-api-billing-api/link-api-link-operations": [
+        {
+          "x": 1024,
+          "y": 864
+        },
+        {
+          "x": 1216,
+          "y": 864
+        },
+        {
+          "x": 1216,
+          "y": 1152
+        },
+        {
+          "x": 1248,
+          "y": 1152
+        }
+      ],
+      "account-api-identity/account-api-sign-in": [
+        {
+          "x": 1024,
+          "y": 1088
+        },
+        {
+          "x": 1184,
+          "y": 1088
+        },
+        {
+          "x": 1184,
+          "y": 976
+        },
+        {
+          "x": 1568,
+          "y": 976
+        },
+        {
+          "x": 1568,
+          "y": 736
+        },
+        {
+          "x": 1728,
+          "y": 736
+        }
+      ],
+      "account-api-analytics/account-api-link-analytics": [
+        {
+          "x": 1024,
+          "y": 1152
+        },
+        {
+          "x": 1216,
+          "y": 1152
+        },
+        {
+          "x": 1216,
+          "y": 1410
+        },
+        {
+          "x": 1600,
+          "y": 1410
+        },
+        {
+          "x": 1600,
+          "y": 416
+        },
+        {
+          "x": 1728,
+          "y": 416
+        }
+      ],
+      "account-api-billing-api/account-api-link-analytics": [
+        {
+          "x": 1024,
+          "y": 1152
+        },
+        {
+          "x": 1248,
+          "y": 1152
+        }
+      ],
+      "link-api-links/link-api-link-operations": [
+        {
+          "x": 1024,
+          "y": 864
+        },
+        {
+          "x": 1152,
+          "y": 864
+        },
+        {
+          "x": 1152,
+          "y": 512
+        },
+        {
+          "x": 736,
+          "y": 512
+        },
+        {
+          "x": 736,
+          "y": 416
+        },
+        {
+          "x": 768,
+          "y": 416
+        }
+      ],
+      "link-api-links/link-api-abuse-and-moderation": [
+        {
+          "x": 1024,
+          "y": 896
+        },
+        {
+          "x": 1120,
+          "y": 896
+        },
+        {
+          "x": 1120,
+          "y": 560
+        },
+        {
+          "x": 736,
+          "y": 560
+        },
+        {
+          "x": 736,
+          "y": 416
+        },
+        {
+          "x": 768,
+          "y": 416
+        }
+      ],
+      "account-api-links/account-api-my-links": [
+        {
+          "x": 1024,
+          "y": 1120
+        },
+        {
+          "x": 1088,
+          "y": 1120
+        },
+        {
+          "x": 1088,
+          "y": 336
+        },
+        {
+          "x": 736,
+          "y": 336
+        },
+        {
+          "x": 736,
+          "y": 416
+        },
+        {
+          "x": 768,
+          "y": 416
+        }
+      ],
+      "account-api-links/account-api-link-analytics": [
+        {
+          "x": 1024,
+          "y": 1152
+        },
+        {
+          "x": 1056,
+          "y": 1152
+        },
+        {
+          "x": 1056,
+          "y": 176
+        },
+        {
+          "x": 736,
+          "y": 176
+        },
+        {
+          "x": 736,
+          "y": 416
+        },
+        {
+          "x": 768,
+          "y": 416
+        }
+      ]
+    },
+    "chips": {},
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "w": 1888,
+      "h": 1443
+    }
+  },
+  "tiles": [
+    {
+      "id": "@actor",
+      "w": 128,
+      "h": 160,
+      "shape": "rect",
+      "label": "User"
+    },
+    {
+      "id": "@download",
+      "w": 128,
+      "h": 128,
+      "band": 0,
+      "shape": "rect",
+      "label": "Open link"
+    },
+    {
+      "id": "@upload",
+      "w": 128,
+      "h": 128,
+      "band": 2,
+      "shape": "rect",
+      "label": "Create, manage & pay"
+    },
+    {
+      "id": "redirect-service",
+      "w": 256,
+      "h": 128,
+      "band": 0,
+      "shape": "rect",
+      "label": "Redirect service",
+      "ports": [
+        {
+          "id": "header-in",
+          "side": "in",
+          "y": 32
+        },
+        {
+          "id": "redirect-service-resolve-and-redirect:out",
+          "side": "out",
+          "y": 64
+        }
+      ]
+    },
+    {
+      "id": "links",
+      "w": 128,
+      "h": 128,
+      "band": 1,
+      "shape": "pill",
+      "label": "Links"
+    },
+    {
+      "id": "hot-routes",
+      "w": 128,
+      "h": 128,
+      "band": 0,
+      "shape": "pill",
+      "label": "Hot routes"
+    },
+    {
+      "id": "click-events",
+      "w": 128,
+      "h": 128,
+      "band": 0,
+      "shape": "pill",
+      "label": "Click events"
+    },
+    {
+      "id": "analytics-worker",
+      "w": 256,
+      "h": 128,
+      "band": 0,
+      "shape": "rect",
+      "label": "Analytics worker",
+      "ports": [
+        {
+          "id": "analytics-worker-click-aggregator:in",
+          "side": "in",
+          "y": 64
+        },
+        {
+          "id": "analytics-worker-click-aggregator:out",
+          "side": "out",
+          "y": 64
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "w": 128,
+      "h": 128,
+      "band": 1,
+      "shape": "pill",
+      "label": "Analytics"
+    },
+    {
+      "id": "session-api",
+      "w": 256,
+      "h": 160,
+      "band": 2,
+      "shape": "rect",
+      "label": "Session API",
+      "ports": [
+        {
+          "id": "header-in",
+          "side": "in",
+          "y": 32
+        },
+        {
+          "id": "session-api-sign-in-flow:out",
+          "side": "out",
+          "y": 64
+        },
+        {
+          "id": "session-api-api-forwarding:out",
+          "side": "out",
+          "y": 96
+        }
+      ]
+    },
+    {
+      "id": "billing-api",
+      "w": 256,
+      "h": 224,
+      "band": 2,
+      "shape": "rect",
+      "label": "Billing API",
+      "ports": [
+        {
+          "id": "header-in",
+          "side": "in",
+          "y": 32
+        },
+        {
+          "id": "billing-api-sign-in:out",
+          "side": "out",
+          "y": 64
+        },
+        {
+          "id": "billing-api-customer-billing:out",
+          "side": "out",
+          "y": 96
+        },
+        {
+          "id": "billing-api-payment-events:out",
+          "side": "out",
+          "y": 128
+        },
+        {
+          "id": "billing-api-entitlements:out",
+          "side": "out",
+          "y": 160
+        }
+      ]
+    },
+    {
+      "id": "identity",
+      "w": 128,
+      "h": 128,
+      "band": 2,
+      "shape": "rect",
+      "label": "Identity"
+    },
+    {
+      "id": "sessions",
+      "w": 128,
+      "h": 128,
+      "band": 2,
+      "shape": "pill",
+      "label": "Sessions"
+    },
+    {
+      "id": "link-api",
+      "w": 256,
+      "h": 192,
+      "band": 2,
+      "shape": "rect",
+      "label": "Link API",
+      "ports": [
+        {
+          "id": "header-in",
+          "side": "in",
+          "y": 32
+        },
+        {
+          "id": "link-api-sign-in:out",
+          "side": "out",
+          "y": 64
+        },
+        {
+          "id": "link-api-link-operations:out",
+          "side": "out",
+          "y": 96
+        },
+        {
+          "id": "link-api-abuse-and-moderation:out",
+          "side": "out",
+          "y": 128
+        }
+      ]
+    },
+    {
+      "id": "account-api",
+      "w": 256,
+      "h": 192,
+      "band": 2,
+      "shape": "rect",
+      "label": "Account API",
+      "ports": [
+        {
+          "id": "header-in",
+          "side": "in",
+          "y": 32
+        },
+        {
+          "id": "account-api-sign-in:out",
+          "side": "out",
+          "y": 64
+        },
+        {
+          "id": "account-api-my-links:out",
+          "side": "out",
+          "y": 96
+        },
+        {
+          "id": "account-api-link-analytics:out",
+          "side": "out",
+          "y": 128
+        }
+      ]
+    },
+    {
+      "id": "billing",
+      "w": 128,
+      "h": 128,
+      "band": 2,
+      "shape": "pill",
+      "label": "Billing"
+    },
+    {
+      "id": "stripe-api",
+      "w": 128,
+      "h": 128,
+      "band": 2,
+      "shape": "rect",
+      "label": "Stripe API"
+    },
+    {
+      "id": "admission-cache",
+      "w": 128,
+      "h": 128,
+      "band": 2,
+      "shape": "pill",
+      "label": "Admission cache"
+    },
+    {
+      "id": "reputation-api",
+      "w": 128,
+      "h": 128,
+      "band": 2,
+      "shape": "rect",
+      "label": "Reputation API"
+    }
+  ],
+  "lines": [
+    {
+      "id": "@actor-download",
+      "source": "@actor",
+      "target": "@download",
+      "connection": "@actor-download",
+      "dashed": false,
+      "directed": true,
+      "label": "User to Open link",
+      "removable": false,
+      "group": "@actor-download"
+    },
+    {
+      "id": "@actor-upload",
+      "source": "@actor",
+      "target": "@upload",
+      "connection": "@actor-upload",
+      "dashed": false,
+      "directed": true,
+      "label": "User to Create, manage & pay",
+      "removable": false,
+      "group": "@actor-upload"
+    },
+    {
+      "id": "download-redirect-service",
+      "source": "@download",
+      "target": "redirect-service",
+      "connection": "download-redirect-service",
+      "dashed": false,
+      "directed": true,
+      "label": "Open link to Redirect service",
+      "band": 0,
+      "targetPort": "header-in",
+      "group": "download-redirect-service"
+    },
+    {
+      "id": "upload-session-api",
+      "source": "@upload",
+      "target": "session-api",
+      "connection": "upload-session-api",
+      "dashed": false,
+      "directed": true,
+      "label": "Create, manage & pay to Session API",
+      "band": 2,
+      "targetPort": "header-in",
+      "group": "upload-session-api"
+    },
+    {
+      "id": "upload-billing-api",
+      "source": "@upload",
+      "target": "billing-api",
+      "connection": "upload-billing-api",
+      "dashed": false,
+      "directed": true,
+      "label": "Create, manage & pay to Billing API",
+      "band": 2,
+      "targetPort": "header-in",
+      "group": "upload-billing-api"
+    },
+    {
+      "id": "redirect-service-links/redirect-service-resolve-and-redirect",
+      "source": "redirect-service",
+      "target": "links",
+      "connection": "redirect-service-links",
+      "dashed": false,
+      "directed": true,
+      "label": "Resolve and redirect (Redirect service) to Links",
+      "band": 0,
+      "sourcePort": "redirect-service-resolve-and-redirect:out",
+      "sourceModule": "redirect-service-resolve-and-redirect",
+      "disconnect": {
+        "link": "redirect-service-resolve-and-redirect-links",
+        "label": "Disconnect Resolve and redirect from Links"
+      },
+      "group": "redirect-service-links",
+      "detail": "Reads public routes on a cache miss"
+    },
+    {
+      "id": "redirect-service-hot-routes/redirect-service-resolve-and-redirect",
+      "source": "redirect-service",
+      "target": "hot-routes",
+      "connection": "redirect-service-hot-routes",
+      "dashed": false,
+      "directed": true,
+      "label": "Resolve and redirect (Redirect service) to Hot routes",
+      "band": 0,
+      "sourcePort": "redirect-service-resolve-and-redirect:out",
+      "sourceModule": "redirect-service-resolve-and-redirect",
+      "disconnect": {
+        "link": "redirect-service-resolve-and-redirect-hot-routes",
+        "label": "Disconnect Resolve and redirect from Hot routes"
+      },
+      "group": "redirect-service-hot-routes",
+      "detail": "Reads routes, fills on a miss"
+    },
+    {
+      "id": "redirect-service-click-events/redirect-service-resolve-and-redirect",
+      "source": "redirect-service",
+      "target": "click-events",
+      "connection": "redirect-service-click-events",
+      "dashed": true,
+      "directed": true,
+      "label": "Resolve and redirect (Redirect service) to Click events",
+      "band": 0,
+      "sourcePort": "redirect-service-resolve-and-redirect:out",
+      "sourceModule": "redirect-service-resolve-and-redirect",
+      "disconnect": {
+        "link": "redirect-service-resolve-and-redirect-click-events",
+        "label": "Disconnect Resolve and redirect from Click events"
+      },
+      "group": "redirect-service-click-events",
+      "detail": "Publishes clicks and awaits the ACK"
+    },
+    {
+      "id": "click-events-analytics-worker/analytics-worker-click-aggregator",
+      "source": "click-events",
+      "target": "analytics-worker",
+      "connection": "click-events-analytics-worker",
+      "dashed": true,
+      "directed": true,
+      "label": "Click events to Click aggregator (Analytics worker)",
+      "band": 0,
+      "targetPort": "analytics-worker-click-aggregator:in",
+      "targetModule": "analytics-worker-click-aggregator",
+      "disconnect": {
+        "link": "analytics-worker-click-aggregator-click-events",
+        "label": "Disconnect Click aggregator from Click events"
+      },
+      "group": "click-events-analytics-worker",
+      "detail": "Delivers clicks"
+    },
+    {
+      "id": "analytics-worker-analytics/analytics-worker-click-aggregator",
+      "source": "analytics-worker",
+      "target": "analytics",
+      "connection": "analytics-worker-analytics",
+      "dashed": false,
+      "directed": true,
+      "label": "Click aggregator (Analytics worker) to Analytics",
+      "band": 0,
+      "sourcePort": "analytics-worker-click-aggregator:out",
+      "sourceModule": "analytics-worker-click-aggregator",
+      "disconnect": {
+        "link": "analytics-worker-click-aggregator-analytics",
+        "label": "Disconnect Click aggregator from Analytics"
+      },
+      "group": "analytics-worker-analytics",
+      "detail": "Writes aggregates"
+    },
+    {
+      "id": "session-api-identity/session-api-sign-in-flow",
+      "source": "session-api",
+      "target": "identity",
+      "connection": "session-api-identity",
+      "dashed": false,
+      "directed": true,
+      "label": "Sign-in flow (Session API) to Identity",
+      "band": 2,
+      "sourcePort": "session-api-sign-in-flow:out",
+      "sourceModule": "session-api-sign-in-flow",
+      "disconnect": {
+        "link": "session-api-sign-in-flow-identity",
+        "label": "Disconnect Sign-in flow from Identity"
+      },
+      "group": "session-api-identity",
+      "detail": "Calls"
+    },
+    {
+      "id": "session-api-identity/session-api-api-forwarding",
+      "source": "session-api",
+      "target": "identity",
+      "connection": "session-api-identity",
+      "dashed": false,
+      "directed": true,
+      "label": "API forwarding (Session API) to Identity",
+      "band": 2,
+      "sourcePort": "session-api-api-forwarding:out",
+      "sourceModule": "session-api-api-forwarding",
+      "disconnect": {
+        "link": "session-api-api-forwarding-identity",
+        "label": "Disconnect API forwarding from Identity"
+      },
+      "group": "session-api-identity",
+      "detail": "Calls"
+    },
+    {
+      "id": "session-api-sessions/session-api-sign-in-flow",
+      "source": "session-api",
+      "target": "sessions",
+      "connection": "session-api-sessions",
+      "dashed": false,
+      "directed": true,
+      "label": "Sign-in flow (Session API) to Sessions",
+      "band": 2,
+      "sourcePort": "session-api-sign-in-flow:out",
+      "sourceModule": "session-api-sign-in-flow",
+      "disconnect": {
+        "link": "session-api-sign-in-flow-sessions",
+        "label": "Disconnect Sign-in flow from Sessions"
+      },
+      "group": "session-api-sessions",
+      "detail": "Reads and writes sessions"
+    },
+    {
+      "id": "session-api-sessions/session-api-api-forwarding",
+      "source": "session-api",
+      "target": "sessions",
+      "connection": "session-api-sessions",
+      "dashed": false,
+      "directed": true,
+      "label": "API forwarding (Session API) to Sessions",
+      "band": 2,
+      "sourcePort": "session-api-api-forwarding:out",
+      "sourceModule": "session-api-api-forwarding",
+      "disconnect": {
+        "link": "session-api-api-forwarding-sessions",
+        "label": "Disconnect API forwarding from Sessions"
+      },
+      "group": "session-api-sessions",
+      "detail": "Reads and writes sessions"
+    },
+    {
+      "id": "session-api-link-api/session-api-api-forwarding",
+      "source": "session-api",
+      "target": "link-api",
+      "connection": "session-api-link-api",
+      "dashed": false,
+      "directed": true,
+      "label": "API forwarding (Session API) to Link API",
+      "band": 2,
+      "sourcePort": "session-api-api-forwarding:out",
+      "targetPort": "header-in",
+      "sourceModule": "session-api-api-forwarding",
+      "disconnect": {
+        "link": "session-api-api-forwarding-link-api",
+        "label": "Disconnect API forwarding from Link API"
+      },
+      "group": "session-api-link-api",
+      "detail": "Calls"
+    },
+    {
+      "id": "session-api-account-api/session-api-api-forwarding",
+      "source": "session-api",
+      "target": "account-api",
+      "connection": "session-api-account-api",
+      "dashed": false,
+      "directed": true,
+      "label": "API forwarding (Session API) to Account API",
+      "band": 2,
+      "sourcePort": "session-api-api-forwarding:out",
+      "targetPort": "header-in",
+      "sourceModule": "session-api-api-forwarding",
+      "disconnect": {
+        "link": "session-api-api-forwarding-account-api",
+        "label": "Disconnect API forwarding from Account API"
+      },
+      "group": "session-api-account-api",
+      "detail": "Calls"
+    },
+    {
+      "id": "session-api-billing-api/session-api-api-forwarding",
+      "source": "session-api",
+      "target": "billing-api",
+      "connection": "session-api-billing-api",
+      "dashed": false,
+      "directed": true,
+      "label": "API forwarding (Session API) to Billing API",
+      "band": 2,
+      "sourcePort": "session-api-api-forwarding:out",
+      "targetPort": "header-in",
+      "sourceModule": "session-api-api-forwarding",
+      "disconnect": {
+        "link": "session-api-api-forwarding-billing-api",
+        "label": "Disconnect API forwarding from Billing API"
+      },
+      "group": "session-api-billing-api",
+      "detail": "Calls"
+    },
+    {
+      "id": "billing-api-identity/billing-api-sign-in",
+      "source": "billing-api",
+      "target": "identity",
+      "connection": "billing-api-identity",
+      "dashed": false,
+      "directed": true,
+      "label": "Sign-in (Billing API) to Identity",
+      "band": 2,
+      "sourcePort": "billing-api-sign-in:out",
+      "sourceModule": "billing-api-sign-in",
+      "disconnect": {
+        "link": "billing-api-sign-in-identity",
+        "label": "Disconnect Sign-in from Identity"
+      },
+      "group": "billing-api-identity",
+      "detail": "Calls"
+    },
+    {
+      "id": "billing-api-billing/billing-api-customer-billing",
+      "source": "billing-api",
+      "target": "billing",
+      "connection": "billing-api-billing",
+      "dashed": false,
+      "directed": true,
+      "label": "Customer billing (Billing API) to Billing",
+      "band": 2,
+      "sourcePort": "billing-api-customer-billing:out",
+      "sourceModule": "billing-api-customer-billing",
+      "disconnect": {
+        "link": "billing-api-customer-billing-billing",
+        "label": "Disconnect Customer billing from Billing"
+      },
+      "group": "billing-api-billing",
+      "detail": "Reads & writes"
+    },
+    {
+      "id": "billing-api-billing/billing-api-payment-events",
+      "source": "billing-api",
+      "target": "billing",
+      "connection": "billing-api-billing",
+      "dashed": false,
+      "directed": true,
+      "label": "Payment events (Billing API) to Billing",
+      "band": 2,
+      "sourcePort": "billing-api-payment-events:out",
+      "sourceModule": "billing-api-payment-events",
+      "disconnect": {
+        "link": "billing-api-payment-events-billing",
+        "label": "Disconnect Payment events from Billing"
+      },
+      "group": "billing-api-billing",
+      "detail": "Reads & writes"
+    },
+    {
+      "id": "billing-api-billing/billing-api-entitlements",
+      "source": "billing-api",
+      "target": "billing",
+      "connection": "billing-api-billing",
+      "dashed": false,
+      "directed": true,
+      "label": "Entitlements (Billing API) to Billing",
+      "band": 2,
+      "sourcePort": "billing-api-entitlements:out",
+      "sourceModule": "billing-api-entitlements",
+      "disconnect": {
+        "link": "billing-api-entitlements-billing",
+        "label": "Disconnect Entitlements from Billing"
+      },
+      "group": "billing-api-billing",
+      "detail": "Reads & writes"
+    },
+    {
+      "id": "billing-api-stripe-api/billing-api-customer-billing",
+      "source": "billing-api",
+      "target": "stripe-api",
+      "connection": "billing-api-stripe-api",
+      "dashed": false,
+      "directed": true,
+      "label": "Customer billing (Billing API) to Stripe API",
+      "band": 2,
+      "sourcePort": "billing-api-customer-billing:out",
+      "sourceModule": "billing-api-customer-billing",
+      "disconnect": {
+        "link": "billing-api-customer-billing-stripe-api",
+        "label": "Disconnect Customer billing from Stripe API"
+      },
+      "group": "billing-api-stripe-api",
+      "detail": "Calls"
+    },
+    {
+      "id": "billing-api-stripe-api/billing-api-payment-events",
+      "source": "billing-api",
+      "target": "stripe-api",
+      "connection": "billing-api-stripe-api",
+      "dashed": false,
+      "directed": true,
+      "label": "Payment events (Billing API) to Stripe API",
+      "band": 2,
+      "sourcePort": "billing-api-payment-events:out",
+      "sourceModule": "billing-api-payment-events",
+      "disconnect": {
+        "link": "billing-api-payment-events-stripe-api",
+        "label": "Disconnect Payment events from Stripe API"
+      },
+      "group": "billing-api-stripe-api",
+      "detail": "Calls"
+    },
+    {
+      "id": "link-api-links/link-api-link-operations",
+      "source": "link-api",
+      "target": "links",
+      "connection": "link-api-links",
+      "dashed": false,
+      "directed": true,
+      "label": "Link operations (Link API) to Links",
+      "band": 2,
+      "sourcePort": "link-api-link-operations:out",
+      "sourceModule": "link-api-link-operations",
+      "disconnect": {
+        "link": "link-api-link-operations-links",
+        "label": "Disconnect Link operations from Links"
+      },
+      "group": "link-api-links",
+      "detail": "Writes links"
+    },
+    {
+      "id": "link-api-links/link-api-abuse-and-moderation",
+      "source": "link-api",
+      "target": "links",
+      "connection": "link-api-links",
+      "dashed": false,
+      "directed": true,
+      "label": "Abuse and moderation (Link API) to Links",
+      "band": 2,
+      "sourcePort": "link-api-abuse-and-moderation:out",
+      "sourceModule": "link-api-abuse-and-moderation",
+      "disconnect": {
+        "link": "link-api-abuse-and-moderation-links",
+        "label": "Disconnect Abuse and moderation from Links"
+      },
+      "group": "link-api-links",
+      "detail": "Writes links"
+    },
+    {
+      "id": "link-api-identity/link-api-sign-in",
+      "source": "link-api",
+      "target": "identity",
+      "connection": "link-api-identity",
+      "dashed": false,
+      "directed": true,
+      "label": "Sign-in (Link API) to Identity",
+      "band": 2,
+      "sourcePort": "link-api-sign-in:out",
+      "sourceModule": "link-api-sign-in",
+      "disconnect": {
+        "link": "link-api-sign-in-identity",
+        "label": "Disconnect Sign-in from Identity"
+      },
+      "group": "link-api-identity",
+      "detail": "Calls"
+    },
+    {
+      "id": "link-api-admission-cache/link-api-link-operations",
+      "source": "link-api",
+      "target": "admission-cache",
+      "connection": "link-api-admission-cache",
+      "dashed": false,
+      "directed": true,
+      "label": "Link operations (Link API) to Admission cache",
+      "band": 2,
+      "sourcePort": "link-api-link-operations:out",
+      "sourceModule": "link-api-link-operations",
+      "disconnect": {
+        "link": "link-api-link-operations-admission-cache",
+        "label": "Disconnect Link operations from Admission cache"
+      },
+      "group": "link-api-admission-cache",
+      "detail": "Reads & writes"
+    },
+    {
+      "id": "link-api-admission-cache/link-api-abuse-and-moderation",
+      "source": "link-api",
+      "target": "admission-cache",
+      "connection": "link-api-admission-cache",
+      "dashed": false,
+      "directed": true,
+      "label": "Abuse and moderation (Link API) to Admission cache",
+      "band": 2,
+      "sourcePort": "link-api-abuse-and-moderation:out",
+      "sourceModule": "link-api-abuse-and-moderation",
+      "disconnect": {
+        "link": "link-api-abuse-and-moderation-admission-cache",
+        "label": "Disconnect Abuse and moderation from Admission cache"
+      },
+      "group": "link-api-admission-cache",
+      "detail": "Reads & writes"
+    },
+    {
+      "id": "link-api-reputation-api/link-api-link-operations",
+      "source": "link-api",
+      "target": "reputation-api",
+      "connection": "link-api-reputation-api",
+      "dashed": false,
+      "directed": true,
+      "label": "Link operations (Link API) to Reputation API",
+      "band": 2,
+      "sourcePort": "link-api-link-operations:out",
+      "sourceModule": "link-api-link-operations",
+      "disconnect": {
+        "link": "link-api-link-operations-reputation-api",
+        "label": "Disconnect Link operations from Reputation API"
+      },
+      "group": "link-api-reputation-api",
+      "detail": "Calls"
+    },
+    {
+      "id": "link-api-billing-api/link-api-link-operations",
+      "source": "link-api",
+      "target": "billing-api",
+      "connection": "link-api-billing-api",
+      "dashed": false,
+      "directed": true,
+      "label": "Link operations (Link API) to Billing API",
+      "band": 2,
+      "sourcePort": "link-api-link-operations:out",
+      "targetPort": "header-in",
+      "sourceModule": "link-api-link-operations",
+      "disconnect": {
+        "link": "link-api-link-operations-billing-api",
+        "label": "Disconnect Link operations from Billing API"
+      },
+      "group": "link-api-billing-api",
+      "detail": "Calls"
+    },
+    {
+      "id": "account-api-identity/account-api-sign-in",
+      "source": "account-api",
+      "target": "identity",
+      "connection": "account-api-identity",
+      "dashed": false,
+      "directed": true,
+      "label": "Sign-in (Account API) to Identity",
+      "band": 2,
+      "sourcePort": "account-api-sign-in:out",
+      "sourceModule": "account-api-sign-in",
+      "disconnect": {
+        "link": "account-api-sign-in-identity",
+        "label": "Disconnect Sign-in from Identity"
+      },
+      "group": "account-api-identity",
+      "detail": "Calls"
+    },
+    {
+      "id": "account-api-links/account-api-my-links",
+      "source": "account-api",
+      "target": "links",
+      "connection": "account-api-links",
+      "dashed": false,
+      "directed": true,
+      "label": "My links (Account API) to Links",
+      "band": 2,
+      "sourcePort": "account-api-my-links:out",
+      "sourceModule": "account-api-my-links",
+      "disconnect": {
+        "link": "account-api-my-links-links",
+        "label": "Disconnect My links from Links"
+      },
+      "group": "account-api-links",
+      "detail": "Reads the owner view"
+    },
+    {
+      "id": "account-api-links/account-api-link-analytics",
+      "source": "account-api",
+      "target": "links",
+      "connection": "account-api-links",
+      "dashed": false,
+      "directed": true,
+      "label": "Link analytics (Account API) to Links",
+      "band": 2,
+      "sourcePort": "account-api-link-analytics:out",
+      "sourceModule": "account-api-link-analytics",
+      "disconnect": {
+        "link": "account-api-link-analytics-links",
+        "label": "Disconnect Link analytics from Links"
+      },
+      "group": "account-api-links",
+      "detail": "Reads the owner view"
+    },
+    {
+      "id": "account-api-analytics/account-api-link-analytics",
+      "source": "account-api",
+      "target": "analytics",
+      "connection": "account-api-analytics",
+      "dashed": false,
+      "directed": true,
+      "label": "Link analytics (Account API) to Analytics",
+      "band": 2,
+      "sourcePort": "account-api-link-analytics:out",
+      "sourceModule": "account-api-link-analytics",
+      "disconnect": {
+        "link": "account-api-link-analytics-analytics",
+        "label": "Disconnect Link analytics from Analytics"
+      },
+      "group": "account-api-analytics",
+      "detail": "Reads click aggregates"
+    },
+    {
+      "id": "account-api-billing-api/account-api-link-analytics",
+      "source": "account-api",
+      "target": "billing-api",
+      "connection": "account-api-billing-api",
+      "dashed": false,
+      "directed": true,
+      "label": "Link analytics (Account API) to Billing API",
+      "band": 2,
+      "sourcePort": "account-api-link-analytics:out",
+      "targetPort": "header-in",
+      "sourceModule": "account-api-link-analytics",
+      "disconnect": {
+        "link": "account-api-link-analytics-billing-api",
+        "label": "Disconnect Link analytics from Billing API"
+      },
+      "group": "account-api-billing-api",
+      "detail": "Calls"
+    }
+  ]
+}

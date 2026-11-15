@@ -1,0 +1,25 @@
+{"via": "edge", "method": "GET", "path": "/healthz", "status": 200, "body": "{\"service\":\"edge\",\"application\":\"ready\"}"}
+{"via": "edge", "method": "GET", "path": "/api/session-api/healthz", "status": 200, "body": "{\"service\":\"session-api\",\"application\":\"ready\"}"}
+{"via": "edge", "method": "GET", "path": "/api/billing-api/healthz", "status": 200, "body": "{\"service\":\"billing-api\",\"application\":\"ready\"}"}
+{"via": "edge", "method": "GET", "path": "/api/redirect-service/healthz", "status": 200, "body": "{\"service\":\"redirect-service\",\"application\":\"ready\"}"}
+{"via": "edge", "method": "GET", "path": "/api/link-api/healthz", "status": 404, "body": "{\"error\":\"NOT_FOUND\",\"message\":\"Route not found.\"}"}
+{"via": "edge", "method": "GET", "path": "/api/account-api/healthz", "status": 404, "body": "{\"error\":\"NOT_FOUND\",\"message\":\"Route not found.\"}"}
+{"via": "edge", "method": "GET", "path": "/api/redirect-service/modules/redirect-service-resolve-and-redirect/abc123", "status": 501, "body": "{\"error\":\"NOT_IMPLEMENTED\",\"message\":\"Not implemented: Resolve and redirect\"}"}
+{"via": "edge", "method": "HEAD", "path": "/api/redirect-service/modules/redirect-service-resolve-and-redirect/abc123", "status": 501, "body": "HTTP/1.1 501 Not Implemented\nServer: nginx/1.28.3\nDate: Sun, 15 Nov 2026 08:04:46 GMT\nContent-Type: application/json; charset=utf-8\nContent-Length: 77\nConnection: keep-alive\ncache-control: no-store\n\n"}
+{"via": "edge", "method": "GET", "path": "/api/session-api/modules/session-api-sign-in-flow/login", "status": 501, "body": "{\"error\":\"NOT_IMPLEMENTED\",\"message\":\"Not implemented: Sign-in flow\"}"}
+{"via": "edge", "method": "POST", "path": "/api/session-api/modules/session-api-api-forwarding/links", "status": 501, "body": "{\"error\":\"NOT_IMPLEMENTED\",\"message\":\"Not implemented: API forwarding\"}"}
+{"via": "edge", "method": "POST", "path": "/api/billing-api/modules/billing-api-customer-billing/checkout", "status": 501, "body": "{\"error\":\"NOT_IMPLEMENTED\",\"message\":\"Not implemented: Customer billing\"}"}
+{"via": "edge", "method": "POST", "path": "/api/billing-api/modules/billing-api-payment-events", "status": 501, "body": "{\"error\":\"NOT_IMPLEMENTED\",\"message\":\"Not implemented: Payment events\"}"}
+{"via": "edge", "method": "GET", "path": "/api/billing-api/modules/billing-api-entitlements", "status": 501, "body": "{\"error\":\"NOT_IMPLEMENTED\",\"message\":\"Not implemented: Entitlements\"}"}
+{"via": "edge", "method": "GET", "path": "/api/billing-api/modules/billing-api-sign-in/me", "status": 200, "body": "{\"signedIn\":false}"}
+{"via": "edge", "method": "GET", "path": "/api/redirect-service/nothing-here", "status": 404, "body": "{\"error\":\"NOT_FOUND\",\"message\":\"Route not found.\"}"}
+{"via":"inside","method":"GET","path":"http://app-link-api:3000/healthz","status":200,"body":"{\"service\":\"link-api\",\"application\":\"ready\"}"}
+{"via":"inside","method":"GET","path":"http://app-account-api:3000/healthz","status":200,"body":"{\"service\":\"account-api\",\"application\":\"ready\"}"}
+{"via":"inside","method":"GET","path":"http://app-link-api:3000/modules/link-api-sign-in/me","status":200,"body":"{\"signedIn\":false}"}
+{"via":"inside","method":"POST","path":"http://app-link-api:3000/modules/link-api-link-operations/links","status":501,"body":"{\"error\":\"NOT_IMPLEMENTED\",\"message\":\"Not implemented: Link operations\"}"}
+{"via":"inside","method":"POST","path":"http://app-link-api:3000/modules/link-api-abuse-and-moderation/reports","status":501,"body":"{\"error\":\"NOT_IMPLEMENTED\",\"message\":\"Not implemented: Abuse and moderation\"}"}
+{"via":"inside","method":"GET","path":"http://app-account-api:3000/modules/account-api-my-links","status":401,"body":"{\"error\":\"SIGN_IN_REQUIRED\",\"message\":\"Sign in to continue.\"}"}
+{"via":"inside","method":"GET","path":"http://app-account-api:3000/modules/account-api-link-analytics","status":401,"body":"{\"error\":\"SIGN_IN_REQUIRED\",\"message\":\"Sign in to continue.\"}"}
+{"via":"inside","method":"GET","path":"http://app-account-api:3000/modules/account-api-my-links","status":401,"body":"{\"error\":\"SIGN_IN_REQUIRED\",\"message\":\"Sign in to continue.\"}"}
+{"via":"pubsub","published":"click-events","serverId":"1","messageId":"q05-probe-1"}
+{"via":"pubsub","pulled":"click-events--analytics-worker.failed","message":{"attributes":{"messageId":"q05-probe-1","x-terminal-code":"NOT_IMPLEMENTED"},"data":"{\"probe\":\"q05\"}"}}

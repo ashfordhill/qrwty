@@ -1,0 +1,15 @@
+-- API forwarding, a Custom, in Session API writes Sessions: its product tables and published views.
+-- Write them here. Export never overwrites your edits: export afresh and carry them over.
+-- first-run and start run this file every time, after the template migrations and views, as
+-- the setup-only owner o_sessions of d_sessions, in one transaction with search_path m_session_api_api_forwarding:
+-- unqualified names land in schema m_session_api_api_forwarding. Keep it re-runnable (IF NOT EXISTS, CREATE OR
+-- REPLACE), with no BEGIN or COMMIT. A failure rolls the database back, and setup names this file.
+--
+-- Its own tables, in m_session_api_api_forwarding: only r_sessions__session_api (Session API) selects, inserts, updates and deletes.
+-- What others may read goes in views in published (CREATE OR REPLACE VIEW published.<name> AS ...),
+-- which every login on this database may select:
+--   r_sessions__session_api (Session API)
+-- Template tables it may read, by qualified name:
+--   none
+-- Template views:
+--   none

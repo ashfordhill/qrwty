@@ -1,0 +1,20 @@
+{
+  "name": "qrwty",
+  "private": true,
+  "description": "QRWTY arm A: root commands. The backend is the Jeeves export in app/ (its own pnpm project); these scripts wrap it without changing its generated files.",
+  "packageManager": "pnpm@12.16.1",
+  "engines": {
+    "node": "24.21.0"
+  },
+  "scripts": {
+    "app:install": "pnpm --dir app install --frozen-lockfile",
+    "build": "pnpm --dir app run build",
+    "typecheck": "pnpm --dir app exec tsc -p tsconfig.json --noEmit",
+    "verify:generated": "python3 infra/local/verify-generated.py app",
+    "open-work": "node tools/open-work.mjs app",
+    "check": "pnpm run typecheck && pnpm run verify:generated && pnpm run open-work",
+    "loc:setup": "bash tools/loc/setup.sh",
+    "loc": "bash tools/loc/source-loc.sh",
+    "ledger:validate": "python3 docs/benchmarks/runs/qrwty-r1-20261114/ledger.py validate"
+  }
+}

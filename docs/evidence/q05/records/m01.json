@@ -1,0 +1,47 @@
+{
+ "frozenCommit": "4e87f97bdc8ce590edd479e16308c892b9049554",
+ "manifestSha256": "c4c33e264d6b2a63e38ef87de22e441c2ec251e1dff554580e16e45ceb87daff",
+ "registrySha256": {
+  "cli": "46f9cb0b1ea5cfcbcbfdf16dc76573775ef92d13f9e64f1709edeeb6ec00c09c",
+  "studio": "ad98a82585ee82e37f27c2e3a2c39f8e0044c024d216d5396e6c34021b263cff"
+ },
+ "files": {
+  "app": 87,
+  "manifestListed": 86
+ },
+ "ownership": {
+  "generated-extension": 22,
+  "generated-scaffold": 61,
+  "generator-metadata": 3
+ },
+ "checks": {
+  "app/.jeeves/inputs/design.json == canonical GET /design bytes (r84)": true,
+  "manifest input hashes == canonical design SHA-256": true,
+  "every manifest-listed file is present with its recorded SHA-256": true,
+  "every payload file is listed, except the manifest itself": true,
+  "165 generator source files named in the manifest equal their blobs at 4e87f97": true,
+  "a second fresh CLI export is identical (paths and SHA-256)": true,
+  "studio export has the same paths": true,
+  "studio export's input design.json is the same bytes": true,
+  "studio export selects the same templates": true,
+  "studio preview's manifest SHA-256 == its ZIP's manifest": true
+ },
+ "mismatchedSources": [],
+ "studioDiffers": [
+  ".jeeves/manifest.json",
+  ".jeeves/report.json",
+  "README.md",
+  "infra/edge/nginx.conf",
+  "scripts/bootstrap.mjs",
+  "scripts/setup.mjs",
+  "src/processes/account-api.ts",
+  "src/processes/analytics-worker.ts",
+  "src/processes/billing-api.ts",
+  "src/processes/link-api.ts",
+  "src/processes/redirect-service.ts",
+  "src/processes/session-api.ts",
+  "src/runtime/http.ts",
+  "src/runtime/module-clients.ts"
+ ],
+ "studioIdentical": 73
+}

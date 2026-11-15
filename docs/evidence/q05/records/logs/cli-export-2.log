@@ -1,0 +1,8 @@
+$ tsx src/v2/cli.ts /home/ash/github/qrwty/.scratch/Q05/input/design-r84.canonical.json /home/ash/github/qrwty/.scratch/Q05/cli-2
+{
+  directory: '/home/ash/github/qrwty/.scratch/Q05/cli-2',
+  files: 87,
+  applicationComplete: false,
+  findings: 0,
+  requiredGaps: 11
+}

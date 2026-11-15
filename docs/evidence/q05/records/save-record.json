@@ -1,0 +1,274 @@
+{
+  "project": "d1e59607-0616-418d-83d5-4cfe5bcb4b11",
+  "at": "2026-11-15T07:53:01.577Z",
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/projects/d1e59607-0616-418d-83d5-4cfe5bcb4b11/design",
+      "status": 200,
+      "revision": 83
+    },
+    {
+      "method": "POST",
+      "path": "/projects/d1e59607-0616-418d-83d5-4cfe5bcb4b11/operations",
+      "bodySha256": "3a2b79cb196cd5dfc712d3e10dd5db838306694f0aaa191ef7a8094b94939507",
+      "status": 200,
+      "revision": 84,
+      "operationId": 7037,
+      "code": null,
+      "message": null
+    }
+  ],
+  "projectsBefore": [
+    {
+      "id": "d1e59607-0616-418d-83d5-4cfe5bcb4b11",
+      "name": "QRWTY · production candidate v1",
+      "revision": 83,
+      "updatedAt": "2026-11-14T06:17:46.460Z"
+    },
+    {
+      "id": "59549d30-58e6-4c76-b49c-24ce52f71030",
+      "name": "Eval V3-19 · Podcast brief · Sol (gpt-6.1-sol) · run 1 (84.7)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:05.028Z"
+    },
+    {
+      "id": "01a4df91-e7f0-4048-9f76-41247ddd85dc",
+      "name": "Eval V3-19 · Video brief · Sol (gpt-6.1-sol) · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.994Z"
+    },
+    {
+      "id": "b371f9e1-8e14-4dda-8bcb-619fb753b968",
+      "name": "Eval V3-19 · Spec build · Sol (gpt-6.1-sol) · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.960Z"
+    },
+    {
+      "id": "3f0bb9e2-7fe0-4649-9f14-78a744832ab1",
+      "name": "Eval V3-19 · Podcast brief · Luna (gpt-6-luna) · run 1 (92.4)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.899Z"
+    },
+    {
+      "id": "8f3e3e66-3f35-4142-838b-3e149a0380d9",
+      "name": "Eval V3-19 · Video brief · Luna (gpt-6-luna) · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.866Z"
+    },
+    {
+      "id": "0fb479d2-3bf4-4a00-88a7-56432b7aa06a",
+      "name": "Eval V3-19 · Spec build · Luna (gpt-6-luna) · run 1 (99.4)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.836Z"
+    },
+    {
+      "id": "ab25316e-4187-4c1a-b2f4-1b25c336b9f9",
+      "name": "Eval V3-19 · Podcast brief · Sonnet 5.5 · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.792Z"
+    },
+    {
+      "id": "57b9375d-cec8-4718-8be6-8eb629168890",
+      "name": "Eval V3-19 · Video brief · Sonnet 5.5 · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.760Z"
+    },
+    {
+      "id": "f677c75d-c8c9-4915-b928-2e4fa45e1e7a",
+      "name": "Eval V3-19 · Spec build · Sonnet 5.5 · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.729Z"
+    },
+    {
+      "id": "4739f723-9776-4a8d-a660-26fc3b26b0b6",
+      "name": "Eval V3-19 · Podcast brief · Haiku 5.5 · run 1 (94.4)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.685Z"
+    },
+    {
+      "id": "dd9bdbe6-839d-4ea9-9b59-be249c3a3baf",
+      "name": "Eval V3-19 · Spec build · Haiku 5.5 · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.648Z"
+    },
+    {
+      "id": "bcf2c15c-5586-414e-b59b-17ce2e197eeb",
+      "name": "Eval V3-19 · Video brief · Haiku 5.5 · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:03:55.467Z"
+    },
+    {
+      "id": "e56a3800-d0d6-43df-b6d0-01019c4bae8b",
+      "name": "YouTube v3",
+      "revision": 171,
+      "updatedAt": "2026-11-11T20:41:56.908Z"
+    },
+    {
+      "id": "81571ba1-c2da-4896-a79c-c31557f164ca",
+      "name": "Marketplace · studio study",
+      "revision": 3,
+      "updatedAt": "2026-11-10T23:50:00.057Z"
+    },
+    {
+      "id": "2c7c8b08-4633-4a97-8794-672a777f1d3a",
+      "name": "YouTube · field v2 · local Docker",
+      "revision": 8,
+      "updatedAt": "2026-11-10T23:48:28.033Z"
+    },
+    {
+      "id": "9dcb10a3-bb0b-4a5b-b055-b7610ddc1e1a",
+      "name": "YouTube v2 rebuild (MA09)",
+      "revision": 142,
+      "updatedAt": "2026-11-10T09:31:20.739Z"
+    },
+    {
+      "id": "41bbd268-9244-47cc-be63-66c5e61d116c",
+      "name": "TinyURL · studio study",
+      "revision": 55,
+      "updatedAt": "2026-11-10T02:58:35.313Z"
+    },
+    {
+      "id": "293b4a2d-e25b-4a5b-83da-b27de7876f02",
+      "name": "YouTube · field v1 · local Docker",
+      "revision": 6,
+      "updatedAt": "2026-11-08T05:04:55.833Z"
+    },
+    {
+      "id": "0a12f132-b0f4-400d-9b94-51546911bb6b",
+      "name": "YouTube · studio study",
+      "revision": 2,
+      "updatedAt": "2026-11-08T02:53:23.171Z"
+    }
+  ],
+  "projectsAfter": [
+    {
+      "id": "d1e59607-0616-418d-83d5-4cfe5bcb4b11",
+      "name": "QRWTY · production candidate v1",
+      "revision": 84,
+      "updatedAt": "2026-11-15T07:53:01.637Z"
+    },
+    {
+      "id": "59549d30-58e6-4c76-b49c-24ce52f71030",
+      "name": "Eval V3-19 · Podcast brief · Sol (gpt-6.1-sol) · run 1 (84.7)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:05.028Z"
+    },
+    {
+      "id": "01a4df91-e7f0-4048-9f76-41247ddd85dc",
+      "name": "Eval V3-19 · Video brief · Sol (gpt-6.1-sol) · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.994Z"
+    },
+    {
+      "id": "b371f9e1-8e14-4dda-8bcb-619fb753b968",
+      "name": "Eval V3-19 · Spec build · Sol (gpt-6.1-sol) · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.960Z"
+    },
+    {
+      "id": "3f0bb9e2-7fe0-4649-9f14-78a744832ab1",
+      "name": "Eval V3-19 · Podcast brief · Luna (gpt-6-luna) · run 1 (92.4)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.899Z"
+    },
+    {
+      "id": "8f3e3e66-3f35-4142-838b-3e149a0380d9",
+      "name": "Eval V3-19 · Video brief · Luna (gpt-6-luna) · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.866Z"
+    },
+    {
+      "id": "0fb479d2-3bf4-4a00-88a7-56432b7aa06a",
+      "name": "Eval V3-19 · Spec build · Luna (gpt-6-luna) · run 1 (99.4)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.836Z"
+    },
+    {
+      "id": "ab25316e-4187-4c1a-b2f4-1b25c336b9f9",
+      "name": "Eval V3-19 · Podcast brief · Sonnet 5.5 · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.792Z"
+    },
+    {
+      "id": "57b9375d-cec8-4718-8be6-8eb629168890",
+      "name": "Eval V3-19 · Video brief · Sonnet 5.5 · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.760Z"
+    },
+    {
+      "id": "f677c75d-c8c9-4915-b928-2e4fa45e1e7a",
+      "name": "Eval V3-19 · Spec build · Sonnet 5.5 · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.729Z"
+    },
+    {
+      "id": "4739f723-9776-4a8d-a660-26fc3b26b0b6",
+      "name": "Eval V3-19 · Podcast brief · Haiku 5.5 · run 1 (94.4)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.685Z"
+    },
+    {
+      "id": "dd9bdbe6-839d-4ea9-9b59-be249c3a3baf",
+      "name": "Eval V3-19 · Spec build · Haiku 5.5 · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:04:04.648Z"
+    },
+    {
+      "id": "bcf2c15c-5586-414e-b59b-17ce2e197eeb",
+      "name": "Eval V3-19 · Video brief · Haiku 5.5 · run 1 (100)",
+      "revision": 1,
+      "updatedAt": "2026-11-12T16:03:55.467Z"
+    },
+    {
+      "id": "e56a3800-d0d6-43df-b6d0-01019c4bae8b",
+      "name": "YouTube v3",
+      "revision": 171,
+      "updatedAt": "2026-11-11T20:41:56.908Z"
+    },
+    {
+      "id": "81571ba1-c2da-4896-a79c-c31557f164ca",
+      "name": "Marketplace · studio study",
+      "revision": 3,
+      "updatedAt": "2026-11-10T23:50:00.057Z"
+    },
+    {
+      "id": "2c7c8b08-4633-4a97-8794-672a777f1d3a",
+      "name": "YouTube · field v2 · local Docker",
+      "revision": 8,
+      "updatedAt": "2026-11-10T23:48:28.033Z"
+    },
+    {
+      "id": "9dcb10a3-bb0b-4a5b-b055-b7610ddc1e1a",
+      "name": "YouTube v2 rebuild (MA09)",
+      "revision": 142,
+      "updatedAt": "2026-11-10T09:31:20.739Z"
+    },
+    {
+      "id": "41bbd268-9244-47cc-be63-66c5e61d116c",
+      "name": "TinyURL · studio study",
+      "revision": 55,
+      "updatedAt": "2026-11-10T02:58:35.313Z"
+    },
+    {
+      "id": "293b4a2d-e25b-4a5b-83da-b27de7876f02",
+      "name": "YouTube · field v1 · local Docker",
+      "revision": 6,
+      "updatedAt": "2026-11-08T05:04:55.833Z"
+    },
+    {
+      "id": "0a12f132-b0f4-400d-9b94-51546911bb6b",
+      "name": "YouTube · studio study",
+      "revision": 2,
+      "updatedAt": "2026-11-08T02:53:23.171Z"
+    }
+  ],
+  "changedProjects": [
+    {
+      "id": "d1e59607-0616-418d-83d5-4cfe5bcb4b11",
+      "name": "QRWTY · production candidate v1",
+      "revision": 84,
+      "updatedAt": "2026-11-15T07:53:01.637Z"
+    }
+  ]
+}

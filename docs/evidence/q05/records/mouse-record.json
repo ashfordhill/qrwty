@@ -1,0 +1,389 @@
+{
+  "project": "d1e59607-0616-418d-83d5-4cfe5bcb4b11",
+  "steps": [
+    {
+      "at": "2026-11-15T07:53:52.970Z",
+      "step": "opened detailed",
+      "nodes": 19,
+      "edges": 35,
+      "projectMenu": "QRWTY · production candidate v1"
+    },
+    {
+      "at": "2026-11-15T07:53:53.193Z",
+      "step": "click events provider",
+      "value": "google-cloud",
+      "shown": "Google Cloud",
+      "options": [
+        "Unspecified",
+        "Self-hosted",
+        "Google Cloud"
+      ],
+      "disabled": false
+    },
+    {
+      "at": "2026-11-15T07:53:57.067Z",
+      "step": "source json",
+      "file": "QRWTY-production-candidate-v1-r84-source.json",
+      "bytes": 43528,
+      "sha256": "fc667058f5afda93dec50fcb17f09929f7f1c46979c5a6036ce4b9e03e8239ef"
+    },
+    {
+      "at": "2026-11-15T07:53:58.858Z",
+      "step": "detailed png",
+      "png": {
+        "file": "QRWTY-production-candidate-v1-r84-detailed.png",
+        "bytes": 588945,
+        "sha256": "826a9efba1c0beb311b2aa45cd95bcd50e41ae7c3f722584f11ded5c3ed6f965"
+      },
+      "capture": {
+        "file": "QRWTY-production-candidate-v1-r84-detailed-capture.json",
+        "bytes": 47254,
+        "sha256": "5aaa0b2211dc789feb1f1854f6684ccd4ec4b6add99aee5c4782ee689b1aabae"
+      }
+    },
+    {
+      "at": "2026-11-15T07:54:01.215Z",
+      "step": "opened simple",
+      "nodes": 19,
+      "edges": 27
+    },
+    {
+      "at": "2026-11-15T07:54:02.523Z",
+      "step": "simple png",
+      "png": {
+        "file": "QRWTY-production-candidate-v1-r84.png",
+        "bytes": 397653,
+        "sha256": "5384d2182a2aef752178dcc4d739808779dbba4a84c5c89c47e332802696473b"
+      },
+      "capture": {
+        "file": "QRWTY-production-candidate-v1-r84-capture.json",
+        "bytes": 23268,
+        "sha256": "2e77dbf2935eae89c8faecfa828444f06cc09816655d1815e0ac2b8c461adecb"
+      }
+    },
+    {
+      "at": "2026-11-15T07:54:04.496Z",
+      "step": "generate dialog",
+      "runnableProcessesChecked": true
+    },
+    {
+      "at": "2026-11-15T07:54:04.707Z",
+      "step": "preview",
+      "http": 200,
+      "bodySha256": "09d9787f062573afc1dedfd644b28e6939878ecf8e82a71ba0fb5f0970c9f492",
+      "status": "experimental-partial",
+      "archive": {
+        "filename": "jeeves-local-v2-experimental.zip",
+        "format": "zip-store-v1",
+        "bytes": 4024285,
+        "sha256": "a837fdc80aaa12a318f8af0de1fc9c8b5a589727bffb11f9d56a3ee933a1930e",
+        "manifestSha256": "709578ff8a4efdb87582b143109c33a64d4762cca8eae05b6d8b24437e1c30ed",
+        "files": 87,
+        "payloadBytes": 4011475
+      },
+      "readyText": "Ready: 87 files · 3930 KiB ZIP · 14 selected template entries."
+    },
+    {
+      "at": "2026-11-15T07:54:06.048Z",
+      "step": "download",
+      "file": "jeeves-local-v2-experimental.zip",
+      "bytes": 4024285,
+      "sha256": "a837fdc80aaa12a318f8af0de1fc9c8b5a589727bffb11f9d56a3ee933a1930e",
+      "matchesPreview": true
+    }
+  ],
+  "browser": "153.0.8010.12",
+  "projectsBefore": {
+    "projects": [
+      {
+        "id": "d1e59607-0616-418d-83d5-4cfe5bcb4b11",
+        "name": "QRWTY · production candidate v1",
+        "revision": 84,
+        "createdAt": "2026-11-14T06:12:58.462Z",
+        "updatedAt": "2026-11-15T07:53:01.637Z"
+      },
+      {
+        "id": "59549d30-58e6-4c76-b49c-24ce52f71030",
+        "name": "Eval V3-19 · Podcast brief · Sol (gpt-6.1-sol) · run 1 (84.7)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:05.007Z",
+        "updatedAt": "2026-11-12T16:04:05.028Z"
+      },
+      {
+        "id": "01a4df91-e7f0-4048-9f76-41247ddd85dc",
+        "name": "Eval V3-19 · Video brief · Sol (gpt-6.1-sol) · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.974Z",
+        "updatedAt": "2026-11-12T16:04:04.994Z"
+      },
+      {
+        "id": "b371f9e1-8e14-4dda-8bcb-619fb753b968",
+        "name": "Eval V3-19 · Spec build · Sol (gpt-6.1-sol) · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.940Z",
+        "updatedAt": "2026-11-12T16:04:04.960Z"
+      },
+      {
+        "id": "3f0bb9e2-7fe0-4649-9f14-78a744832ab1",
+        "name": "Eval V3-19 · Podcast brief · Luna (gpt-6-luna) · run 1 (92.4)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.879Z",
+        "updatedAt": "2026-11-12T16:04:04.899Z"
+      },
+      {
+        "id": "8f3e3e66-3f35-4142-838b-3e149a0380d9",
+        "name": "Eval V3-19 · Video brief · Luna (gpt-6-luna) · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.848Z",
+        "updatedAt": "2026-11-12T16:04:04.866Z"
+      },
+      {
+        "id": "0fb479d2-3bf4-4a00-88a7-56432b7aa06a",
+        "name": "Eval V3-19 · Spec build · Luna (gpt-6-luna) · run 1 (99.4)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.818Z",
+        "updatedAt": "2026-11-12T16:04:04.836Z"
+      },
+      {
+        "id": "ab25316e-4187-4c1a-b2f4-1b25c336b9f9",
+        "name": "Eval V3-19 · Podcast brief · Sonnet 5.5 · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.772Z",
+        "updatedAt": "2026-11-12T16:04:04.792Z"
+      },
+      {
+        "id": "57b9375d-cec8-4718-8be6-8eb629168890",
+        "name": "Eval V3-19 · Video brief · Sonnet 5.5 · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.742Z",
+        "updatedAt": "2026-11-12T16:04:04.760Z"
+      },
+      {
+        "id": "f677c75d-c8c9-4915-b928-2e4fa45e1e7a",
+        "name": "Eval V3-19 · Spec build · Sonnet 5.5 · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.708Z",
+        "updatedAt": "2026-11-12T16:04:04.729Z"
+      },
+      {
+        "id": "4739f723-9776-4a8d-a660-26fc3b26b0b6",
+        "name": "Eval V3-19 · Podcast brief · Haiku 5.5 · run 1 (94.4)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.665Z",
+        "updatedAt": "2026-11-12T16:04:04.685Z"
+      },
+      {
+        "id": "dd9bdbe6-839d-4ea9-9b59-be249c3a3baf",
+        "name": "Eval V3-19 · Spec build · Haiku 5.5 · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.621Z",
+        "updatedAt": "2026-11-12T16:04:04.648Z"
+      },
+      {
+        "id": "bcf2c15c-5586-414e-b59b-17ce2e197eeb",
+        "name": "Eval V3-19 · Video brief · Haiku 5.5 · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:03:55.413Z",
+        "updatedAt": "2026-11-12T16:03:55.467Z"
+      },
+      {
+        "id": "e56a3800-d0d6-43df-b6d0-01019c4bae8b",
+        "name": "YouTube v3",
+        "revision": 171,
+        "createdAt": "2026-11-11T20:39:34.315Z",
+        "updatedAt": "2026-11-11T20:41:56.908Z"
+      },
+      {
+        "id": "81571ba1-c2da-4896-a79c-c31557f164ca",
+        "name": "Marketplace · studio study",
+        "revision": 3,
+        "createdAt": "2026-11-06T17:29:32.388Z",
+        "updatedAt": "2026-11-10T23:50:00.057Z"
+      },
+      {
+        "id": "2c7c8b08-4633-4a97-8794-672a777f1d3a",
+        "name": "YouTube · field v2 · local Docker",
+        "revision": 8,
+        "createdAt": "2026-11-09T02:13:03.524Z",
+        "updatedAt": "2026-11-10T23:48:28.033Z"
+      },
+      {
+        "id": "9dcb10a3-bb0b-4a5b-b055-b7610ddc1e1a",
+        "name": "YouTube v2 rebuild (MA09)",
+        "revision": 142,
+        "createdAt": "2026-11-10T09:29:46.734Z",
+        "updatedAt": "2026-11-10T09:31:20.739Z"
+      },
+      {
+        "id": "41bbd268-9244-47cc-be63-66c5e61d116c",
+        "name": "TinyURL · studio study",
+        "revision": 55,
+        "createdAt": "2026-11-05T04:09:03.243Z",
+        "updatedAt": "2026-11-10T02:58:35.313Z"
+      },
+      {
+        "id": "293b4a2d-e25b-4a5b-83da-b27de7876f02",
+        "name": "YouTube · field v1 · local Docker",
+        "revision": 6,
+        "createdAt": "2026-11-08T02:55:26.959Z",
+        "updatedAt": "2026-11-08T05:04:55.833Z"
+      },
+      {
+        "id": "0a12f132-b0f4-400d-9b94-51546911bb6b",
+        "name": "YouTube · studio study",
+        "revision": 2,
+        "createdAt": "2026-11-06T20:02:02.427Z",
+        "updatedAt": "2026-11-08T02:53:23.171Z"
+      }
+    ]
+  },
+  "revisionBefore": 84,
+  "revisionAfterDetailed": 84,
+  "revisionAfterSimple": 84,
+  "revisionAfterExport": 84,
+  "projectsAfter": {
+    "projects": [
+      {
+        "id": "d1e59607-0616-418d-83d5-4cfe5bcb4b11",
+        "name": "QRWTY · production candidate v1",
+        "revision": 84,
+        "createdAt": "2026-11-14T06:12:58.462Z",
+        "updatedAt": "2026-11-15T07:53:01.637Z"
+      },
+      {
+        "id": "59549d30-58e6-4c76-b49c-24ce52f71030",
+        "name": "Eval V3-19 · Podcast brief · Sol (gpt-6.1-sol) · run 1 (84.7)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:05.007Z",
+        "updatedAt": "2026-11-12T16:04:05.028Z"
+      },
+      {
+        "id": "01a4df91-e7f0-4048-9f76-41247ddd85dc",
+        "name": "Eval V3-19 · Video brief · Sol (gpt-6.1-sol) · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.974Z",
+        "updatedAt": "2026-11-12T16:04:04.994Z"
+      },
+      {
+        "id": "b371f9e1-8e14-4dda-8bcb-619fb753b968",
+        "name": "Eval V3-19 · Spec build · Sol (gpt-6.1-sol) · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.940Z",
+        "updatedAt": "2026-11-12T16:04:04.960Z"
+      },
+      {
+        "id": "3f0bb9e2-7fe0-4649-9f14-78a744832ab1",
+        "name": "Eval V3-19 · Podcast brief · Luna (gpt-6-luna) · run 1 (92.4)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.879Z",
+        "updatedAt": "2026-11-12T16:04:04.899Z"
+      },
+      {
+        "id": "8f3e3e66-3f35-4142-838b-3e149a0380d9",
+        "name": "Eval V3-19 · Video brief · Luna (gpt-6-luna) · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.848Z",
+        "updatedAt": "2026-11-12T16:04:04.866Z"
+      },
+      {
+        "id": "0fb479d2-3bf4-4a00-88a7-56432b7aa06a",
+        "name": "Eval V3-19 · Spec build · Luna (gpt-6-luna) · run 1 (99.4)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.818Z",
+        "updatedAt": "2026-11-12T16:04:04.836Z"
+      },
+      {
+        "id": "ab25316e-4187-4c1a-b2f4-1b25c336b9f9",
+        "name": "Eval V3-19 · Podcast brief · Sonnet 5.5 · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.772Z",
+        "updatedAt": "2026-11-12T16:04:04.792Z"
+      },
+      {
+        "id": "57b9375d-cec8-4718-8be6-8eb629168890",
+        "name": "Eval V3-19 · Video brief · Sonnet 5.5 · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.742Z",
+        "updatedAt": "2026-11-12T16:04:04.760Z"
+      },
+      {
+        "id": "f677c75d-c8c9-4915-b928-2e4fa45e1e7a",
+        "name": "Eval V3-19 · Spec build · Sonnet 5.5 · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.708Z",
+        "updatedAt": "2026-11-12T16:04:04.729Z"
+      },
+      {
+        "id": "4739f723-9776-4a8d-a660-26fc3b26b0b6",
+        "name": "Eval V3-19 · Podcast brief · Haiku 5.5 · run 1 (94.4)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.665Z",
+        "updatedAt": "2026-11-12T16:04:04.685Z"
+      },
+      {
+        "id": "dd9bdbe6-839d-4ea9-9b59-be249c3a3baf",
+        "name": "Eval V3-19 · Spec build · Haiku 5.5 · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:04:04.621Z",
+        "updatedAt": "2026-11-12T16:04:04.648Z"
+      },
+      {
+        "id": "bcf2c15c-5586-414e-b59b-17ce2e197eeb",
+        "name": "Eval V3-19 · Video brief · Haiku 5.5 · run 1 (100)",
+        "revision": 1,
+        "createdAt": "2026-11-12T16:03:55.413Z",
+        "updatedAt": "2026-11-12T16:03:55.467Z"
+      },
+      {
+        "id": "e56a3800-d0d6-43df-b6d0-01019c4bae8b",
+        "name": "YouTube v3",
+        "revision": 171,
+        "createdAt": "2026-11-11T20:39:34.315Z",
+        "updatedAt": "2026-11-11T20:41:56.908Z"
+      },
+      {
+        "id": "81571ba1-c2da-4896-a79c-c31557f164ca",
+        "name": "Marketplace · studio study",
+        "revision": 3,
+        "createdAt": "2026-11-06T17:29:32.388Z",
+        "updatedAt": "2026-11-10T23:50:00.057Z"
+      },
+      {
+        "id": "2c7c8b08-4633-4a97-8794-672a777f1d3a",
+        "name": "YouTube · field v2 · local Docker",
+        "revision": 8,
+        "createdAt": "2026-11-09T02:13:03.524Z",
+        "updatedAt": "2026-11-10T23:48:28.033Z"
+      },
+      {
+        "id": "9dcb10a3-bb0b-4a5b-b055-b7610ddc1e1a",
+        "name": "YouTube v2 rebuild (MA09)",
+        "revision": 142,
+        "createdAt": "2026-11-10T09:29:46.734Z",
+        "updatedAt": "2026-11-10T09:31:20.739Z"
+      },
+      {
+        "id": "41bbd268-9244-47cc-be63-66c5e61d116c",
+        "name": "TinyURL · studio study",
+        "revision": 55,
+        "createdAt": "2026-11-05T04:09:03.243Z",
+        "updatedAt": "2026-11-10T02:58:35.313Z"
+      },
+      {
+        "id": "293b4a2d-e25b-4a5b-83da-b27de7876f02",
+        "name": "YouTube · field v1 · local Docker",
+        "revision": 6,
+        "createdAt": "2026-11-08T02:55:26.959Z",
+        "updatedAt": "2026-11-08T05:04:55.833Z"
+      },
+      {
+        "id": "0a12f132-b0f4-400d-9b94-51546911bb6b",
+        "name": "YouTube · studio study",
+        "revision": 2,
+        "createdAt": "2026-11-06T20:02:02.427Z",
+        "updatedAt": "2026-11-08T02:53:23.171Z"
+      }
+    ]
+  },
+  "pageErrors": []
+}

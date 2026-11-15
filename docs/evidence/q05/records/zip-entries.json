@@ -1,0 +1,1481 @@
+[
+ {
+  "path": ".dockerignore",
+  "bytes": 32,
+  "sha256": "d66d87fcdbe354c63e4d4e6bd9c8c6809d00ad7828e998314dd29754d11d97d3",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": ".gitignore",
+  "bytes": 41,
+  "sha256": "4f97f2038e8c1b0e1e21fab5f17c40a8d70bd6ca9ce90ed75c8cf158671c0c3e",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": ".jeeves/inputs/design.json",
+  "bytes": 27842,
+  "sha256": "4fbcd311992737c402d22d28415765b598f806c1c01a35ead81eb5ec6d3b024d",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": ".jeeves/manifest.json",
+  "bytes": 2792495,
+  "sha256": "709578ff8a4efdb87582b143109c33a64d4762cca8eae05b6d8b24437e1c30ed",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": ".jeeves/normalized.json",
+  "bytes": 30883,
+  "sha256": "95bacd358c3c81955dd821f454bf9a02becabfc93107cbb52c1dbc374ba52ba0",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": ".jeeves/report.json",
+  "bytes": 829382,
+  "sha256": "30d42598109ed91a7fbfaf7447970dda10a8a10aea857f85ef6a17bfbc8310a1",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "Dockerfile",
+  "bytes": 1628,
+  "sha256": "024d4247ce7dc053b7ed06b5d4f963acf58e445ee456b4347b438b0b0f469d68",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "README.md",
+  "bytes": 12203,
+  "sha256": "a2a61fc085d5ec4e5a47347fbe509f0df816f39c5154c05e17033cfbed1882d4",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "compose.yaml",
+  "bytes": 12106,
+  "sha256": "d61424e08a48ae86f27adf2cd96bc7368ee1c7c942c61f516112967e5594bdbe",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "diagnostics/generation.json",
+  "bytes": 30883,
+  "sha256": "95bacd358c3c81955dd821f454bf9a02becabfc93107cbb52c1dbc374ba52ba0",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "ffmpeg-os.lock",
+  "bytes": 6936,
+  "sha256": "8ec109b1f0d8354d937debaa4f62b387c78d178c6236adc639c8e6183476382d",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/edge/nginx.conf",
+  "bytes": 955,
+  "sha256": "ee0c7d402c5a41d3bca67f2939f5e12033fa072cd6d8d1837efa0362466ce501",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/local.json",
+  "bytes": 6117,
+  "sha256": "648a8805183a7678ac2bd6e67523f997bd3441e5b5cbbeaa72e24c870394329a",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/postgres/analytics/000-foundation.sql",
+  "bytes": 117,
+  "sha256": "aae1cbd63f25d27e2b36ab1c9c892cc4f922bd5a27bb609b4378095ccba8addc",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/postgres/analytics/modules/analytics-worker-click-aggregator.sql",
+  "bytes": 1131,
+  "sha256": "6431d2e4784c98140ffafdb5d1750c5507a7f98dc52c63d3b90772e00b33e95e",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/postgres/billing/000-foundation.sql",
+  "bytes": 117,
+  "sha256": "aae1cbd63f25d27e2b36ab1c9c892cc4f922bd5a27bb609b4378095ccba8addc",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/postgres/billing/modules/billing-api-customer-billing.sql",
+  "bytes": 1037,
+  "sha256": "66ee222ac669fd008e15cf85881a26b36c2becc248325925d397b9c29b30fa16",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/postgres/billing/modules/billing-api-entitlements.sql",
+  "bytes": 1021,
+  "sha256": "010dbeaa7d8ce52b540e429dec9d105b426161984cac84e408665e369ab8c5cb",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/postgres/billing/modules/billing-api-payment-events.sql",
+  "bytes": 1029,
+  "sha256": "e234c91e4d56a111d2b7a0208ebb3a1ac8e22b42ae8cdefbcd2c6f6f0d5d3f5b",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/postgres/identity/000-foundation.sql",
+  "bytes": 117,
+  "sha256": "aae1cbd63f25d27e2b36ab1c9c892cc4f922bd5a27bb609b4378095ccba8addc",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/postgres/links/000-foundation.sql",
+  "bytes": 117,
+  "sha256": "aae1cbd63f25d27e2b36ab1c9c892cc4f922bd5a27bb609b4378095ccba8addc",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/postgres/links/modules/link-api-abuse-and-moderation.sql",
+  "bytes": 1109,
+  "sha256": "1e4f4d123c550a4a795b0d85f83acb5ac70a89807c10263f2245e1965db84154",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/postgres/links/modules/link-api-link-operations.sql",
+  "bytes": 1089,
+  "sha256": "3325efb458b0518df55519cd5d90410dd70f372b5efe2f4ebf48753713a1a4bc",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/postgres/sessions/000-foundation.sql",
+  "bytes": 117,
+  "sha256": "aae1cbd63f25d27e2b36ab1c9c892cc4f922bd5a27bb609b4378095ccba8addc",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/postgres/sessions/modules/session-api-api-forwarding.sql",
+  "bytes": 1034,
+  "sha256": "59494bf9f91a936718d77a6db6eb9dcf5ca4445fd324034e1ce01889157a7f7b",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "infra/postgres/sessions/modules/session-api-sign-in-flow.sql",
+  "bytes": 1026,
+  "sha256": "d74b08cf53e62c520658636e7980e849da32de14d4b34221a6ab00762034f492",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "package.json",
+  "bytes": 848,
+  "sha256": "2d12280d0060dd4a99c3afd52dbf1b835823516365b4410e4dfe6f50b830da96",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "pnpm-lock.yaml",
+  "bytes": 63653,
+  "sha256": "3eee9f4b55ea6f9080b6c9ea8ba8f584bc07e2bfa82f7a3764779fd1ce63d61b",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "pnpm-workspace.yaml",
+  "bytes": 299,
+  "sha256": "94382ae45766edbeab9ee6f732044adc039379b3869fd108427ac96428c18c9b",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "scripts/bootstrap.mjs",
+  "bytes": 2053,
+  "sha256": "bb867d991afb1eba6e212ca0b6d6863e56827390cacfa2f115bc7042a53a7f83",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "scripts/broker-init.mjs",
+  "bytes": 797,
+  "sha256": "1020b0814dbfceecac52a5ca31779075038983ea3140dec5b88ee6352c2a38a1",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "scripts/common.mjs",
+  "bytes": 1010,
+  "sha256": "5f6d9e022b40f2ba03e82614fd0bae1ae466381d48da20e575908fa59e5a7da8",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "scripts/local.mjs",
+  "bytes": 9579,
+  "sha256": "79c011b17ea3d87b543773d517e4b7221286c6469a96f72d9386b49105a7cd35",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "scripts/migrate.mjs",
+  "bytes": 6714,
+  "sha256": "7f2a2b98ace04a4fe6c4f74e7aa499d8e52b58d7ec79a73fe70231e6cd72d392",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "scripts/products.mjs",
+  "bytes": 3031,
+  "sha256": "5a17661ac10f6337fa75d60ff078786f52d5117feb0601e69776f64e28b5d24f",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "scripts/pubsub-init.mjs",
+  "bytes": 3760,
+  "sha256": "cde7d7be6cf04cecba1c8f302839671788146a084afa3c46b766d74e644a0766",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "scripts/setup.mjs",
+  "bytes": 2996,
+  "sha256": "162120094d7c53a03c6b91361a48c60e98652abb07b8525e7c57d89b3589918c",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "scripts/status.mjs",
+  "bytes": 165,
+  "sha256": "75cb3793c37a5f535b1fda7c459a50d1ab71e8bab32474b6ca8adf195f3ef988",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "scripts/storage-config.mjs",
+  "bytes": 1035,
+  "sha256": "8bfa5ef31e1ac6b639b1391541dbf9892b4da1589679e2fcac1c8947f0505801",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/features/application-bindings.ts",
+  "bytes": 768,
+  "sha256": "caa4077c6d229b5a03ea7e792de9c44ba415b3f83770b804f0f3338e23b52253",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/features/local-bindings.ts",
+  "bytes": 1121,
+  "sha256": "676520c4929cab9d1b225c70eee10f8eb699877b3cb0b5de4b05137b531dc436",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/features/service-resources.ts",
+  "bytes": 2137,
+  "sha256": "e31b042dae55ce92d3c74689fe98acd8066059dd75148c67159fa60df7cf21dd",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/account-api/account-api-link-analytics.slots.ts",
+  "bytes": 1268,
+  "sha256": "e880162f3d38aef3fde9180515d85a3aa3dd622a270fd0a0b8e949f953fcd048",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/account-api/account-api-link-analytics.ts",
+  "bytes": 719,
+  "sha256": "c81f20912b50b2730cd72f0ee7ac0b7fbd70374fc8530dfb938a3754a37cff93",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/account-api/account-api-my-links.slots.ts",
+  "bytes": 674,
+  "sha256": "aba2f5e9e6bb8af206d9c031c9062f3946bdf735dfda0370ab3a7d0418cf6516",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/account-api/account-api-my-links.ts",
+  "bytes": 630,
+  "sha256": "961bae3f39d09fb97fe101d6e338e4c90a2b6e79ae6f011d1410b7dacec7aa32",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/analytics-worker/analytics-worker-click-aggregator.slots.ts",
+  "bytes": 1117,
+  "sha256": "acc35b8fff698e326cac1712ce992cc7a1a43668a93b1dc51cf93343654c76eb",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/analytics-worker/analytics-worker-click-aggregator.ts",
+  "bytes": 773,
+  "sha256": "c34af6136fcd84bfddc01dd8bdccd6fe1f43c691b6ae7566321bec0a7f4506e8",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/billing-api/billing-api-customer-billing.slots.ts",
+  "bytes": 1023,
+  "sha256": "7de0b95bd895659d742cd9531e9f3a3886631f9004e59dcdcacb821a9420898f",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/billing-api/billing-api-customer-billing.ts",
+  "bytes": 734,
+  "sha256": "94bed1fbf54f6c10705f9058edee7bc1ca6254b386657c427fd3f7abc984c9d0",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/billing-api/billing-api-entitlements.slots.ts",
+  "bytes": 710,
+  "sha256": "166f77fa33b3fa0a1369ad1df843e5679eae8e85b7b0b892da44b3e0e9148a62",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/billing-api/billing-api-entitlements.ts",
+  "bytes": 696,
+  "sha256": "cb0398ca4a86c85c9d6d7ea9265031592910d0d6dfa28d72a1d782e59b065a8f",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/billing-api/billing-api-payment-events.slots.ts",
+  "bytes": 1015,
+  "sha256": "82a530ecedd97e3e1ee46ee27607572629fddb960fc77c3e7169fa06572c77ac",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/billing-api/billing-api-payment-events.ts",
+  "bytes": 720,
+  "sha256": "eda5669163d34117ef9019a794503db42b59db7674a01c81a88ecbbdabda064f",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/dependencies.ts",
+  "bytes": 2613,
+  "sha256": "c9629db44ce56025ccf32192120e94f45a65955dc60725e020a2908f76a4eb2e",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/entry.ts",
+  "bytes": 1664,
+  "sha256": "7a3efffaf9ef4aec92296eeb81bd40fdbd29b0738c9f01837a480b544b86f96c",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/link-api/link-api-abuse-and-moderation.slots.ts",
+  "bytes": 1049,
+  "sha256": "71b0dbc32750bfb16f6abc7c9c823b4bc39d53eb9c7b74c0eeee6e03d8cf94f6",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/link-api/link-api-abuse-and-moderation.ts",
+  "bytes": 725,
+  "sha256": "548f8b75cd1a239a98c04577e09bab934f9d15027a4cb50dd07e417062224af9",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/link-api/link-api-link-operations.slots.ts",
+  "bytes": 1629,
+  "sha256": "99165be9cfda87bc2f9f2b81f533d17c027d1767f44bfed02649cfa3efa76f64",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/link-api/link-api-link-operations.ts",
+  "bytes": 730,
+  "sha256": "e8e00cd1cdf084e86c33b1235f80ba0b78ef6c483a16fcb42d3b96eae08240c8",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/redirect-service/redirect-service-resolve-and-redirect.slots.ts",
+  "bytes": 1393,
+  "sha256": "5765b1dab407fcead45b6b04fd75f4d50be68b0d90be841edded6cf30db24747",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/redirect-service/redirect-service-resolve-and-redirect.ts",
+  "bytes": 795,
+  "sha256": "0a51a85e917e87018befc4e6478cd7b535b7c7d46993081c8a5e5f7b49cff6f2",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/session-api/session-api-api-forwarding.slots.ts",
+  "bytes": 1848,
+  "sha256": "816c7c5d8888a8f95b4e936a6521888e7d27cd726e9fcf5c1cbb889b0df558cc",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/session-api/session-api-api-forwarding.ts",
+  "bytes": 724,
+  "sha256": "a930be5b701d152b97a1c51f5a99864c690684bb388be761a5afca37fef4fdab",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/session-api/session-api-sign-in-flow.slots.ts",
+  "bytes": 994,
+  "sha256": "45e29e5dfe1d4ed8d4a7101547b99cb4f0156e60142ed9bf358cb9c815f7ab1f",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/modules/session-api/session-api-sign-in-flow.ts",
+  "bytes": 712,
+  "sha256": "189d2ca103c121470082218159e68370b0d01289d145c7d01c55d527db3dcadb",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/processes/account-api.ts",
+  "bytes": 6062,
+  "sha256": "96799e04a8b765a98be54ea76dc0892b7fa9d8308c34ba103c70c21fb1c86dbd",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/processes/analytics-worker.ts",
+  "bytes": 2684,
+  "sha256": "a63931ddcbd3483e7a3b45aed95254ed89cde65efbea548ef9888574431506c2",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/processes/billing-api.ts",
+  "bytes": 6810,
+  "sha256": "026ce10261fff6a0eefd083ccd40e16b9fcbf362e2320f5f0f4a355226cf3719",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/processes/link-api.ts",
+  "bytes": 6305,
+  "sha256": "4cdeca5c68e8e1bb8864402331bdc33aa27759caa5da5140e318493508c296ca",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/processes/redirect-service.ts",
+  "bytes": 3142,
+  "sha256": "707ee7d6b0919c8e81af7df0af3051e5b41966a5aec796cd07c05146e58c24f9",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/processes/session-api.ts",
+  "bytes": 3805,
+  "sha256": "bcb5f2fe4d8c3e4b8f8b77b44d25bd2430d81cfc8e7c71343a3f44d1fcd4c904",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/runtime/admission.ts",
+  "bytes": 2440,
+  "sha256": "17de7157d83777e7281d8fe9b3069fed58597e35df6d37eacf959cca641b9f06",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/runtime/amqp.ts",
+  "bytes": 13005,
+  "sha256": "b0251aab519c9b1ac5bac5d6bd1f6d011b3498eae002644d99c6af362064d0b3",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/runtime/delivery.ts",
+  "bytes": 8907,
+  "sha256": "8f4eb7ac0327338913b89714550b1a3b78c214534f1ffef8e2404da53734a5c4",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/runtime/http.ts",
+  "bytes": 5334,
+  "sha256": "05f7e80200e6d322ea557fd04462a62c8249ac4b760df0ae18a043415345fb20",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/runtime/identity.ts",
+  "bytes": 1847,
+  "sha256": "ce012fad6b404d7482048886c640f9b4c24e6b3b68e8bac96b869a44599a4db7",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/runtime/local.ts",
+  "bytes": 733,
+  "sha256": "53429e097013bbf7dad6e581bf523f3035ec358652b9738d62f0b5a6ac310165",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/runtime/module-clients.ts",
+  "bytes": 27654,
+  "sha256": "0836482325a030a198b063aad39fdc463504ca250510d3d1987742564fc878c5",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/runtime/postgres.ts",
+  "bytes": 2387,
+  "sha256": "76c7bd47367780fa3908bfd7ca4f8343b93419ca2a36a8de7df2ff9a7e31fa32",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/runtime/process.ts",
+  "bytes": 3309,
+  "sha256": "505827525af0ed1f57a3c85ab3b9d1a8e0fd56638116c23f2e0b0a30734ef54b",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/runtime/tile-guard.ts",
+  "bytes": 3602,
+  "sha256": "e983a9b57dff0b898242770016009b54dad4c0af724e85f3393e29f0dc7e98c1",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/runtime/tile-http.ts",
+  "bytes": 2750,
+  "sha256": "e65c51616a40cda495ee6329d5e35c6cd032bd6c70a0c7b07ab32829d4f549e7",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/runtime/tile-loop.ts",
+  "bytes": 12279,
+  "sha256": "43d760eee82d3104b572a27c04eb1f79094d261328ff27678b1b367adad848da",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/runtime/tile-process.ts",
+  "bytes": 3487,
+  "sha256": "80a485b77c8c29fbb1568181163b4ffb57bc101989962371451c88b666d1cfd7",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "src/runtime/valkey.ts",
+  "bytes": 9106,
+  "sha256": "c9688d1c291f0f59f8a6923bfc75d5c44504a5fd97a5086711699b4ae0e8ee00",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ },
+ {
+  "path": "tsconfig.json",
+  "bytes": 342,
+  "sha256": "cb75a166099ee7fd34729d9a132a1858486436054003bd5ac936fa5378d0268d",
+  "method": 0,
+  "date": [
+   1980,
+   1,
+   1,
+   0,
+   0,
+   0
+  ],
+  "mode": "0o0",
+  "extra": 0,
+  "comment": 0
+ }
+]

@@ -1,0 +1,17 @@
+-- Abuse and moderation, a Custom, in Link API writes Links: its product tables and published views.
+-- Write them here. Export never overwrites your edits: export afresh and carry them over.
+-- first-run and start run this file every time, after the template migrations and views, as
+-- the setup-only owner o_links of d_links, in one transaction with search_path m_link_api_abuse_and_moderation:
+-- unqualified names land in schema m_link_api_abuse_and_moderation. Keep it re-runnable (IF NOT EXISTS, CREATE OR
+-- REPLACE), with no BEGIN or COMMIT. A failure rolls the database back, and setup names this file.
+--
+-- Its own tables, in m_link_api_abuse_and_moderation: only r_links__link_api (Link API) selects, inserts, updates and deletes.
+-- What others may read goes in views in published (CREATE OR REPLACE VIEW published.<name> AS ...),
+-- which every login on this database may select:
+--   r_links__account_api (Account API)
+--   r_links__link_api (Link API)
+--   r_links__redirect_service (Redirect service)
+-- Template tables it may read, by qualified name:
+--   none
+-- Template views:
+--   none

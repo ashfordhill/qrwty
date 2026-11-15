@@ -1,0 +1,16 @@
+-- Click aggregator, a Custom, in Analytics worker writes Analytics: its product tables and published views.
+-- Write them here. Export never overwrites your edits: export afresh and carry them over.
+-- first-run and start run this file every time, after the template migrations and views, as
+-- the setup-only owner o_analytics of d_analytics, in one transaction with search_path m_analytics_worker_click_aggregator:
+-- unqualified names land in schema m_analytics_worker_click_aggregator. Keep it re-runnable (IF NOT EXISTS, CREATE OR
+-- REPLACE), with no BEGIN or COMMIT. A failure rolls the database back, and setup names this file.
+--
+-- Its own tables, in m_analytics_worker_click_aggregator: only r_analytics__analytics_worker (Analytics worker) selects, inserts, updates and deletes.
+-- What others may read goes in views in published (CREATE OR REPLACE VIEW published.<name> AS ...),
+-- which every login on this database may select:
+--   r_analytics__account_api (Account API)
+--   r_analytics__analytics_worker (Analytics worker)
+-- Template tables it may read, by qualified name:
+--   none
+-- Template views:
+--   none
