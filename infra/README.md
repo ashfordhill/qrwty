@@ -49,7 +49,7 @@ project's one budget (USD 50 a month, alerts at USD 10, 25 and 50) is reused.
 | Where | What |
 | --- | --- |
 | `https://qrwty.io/healthz` | Session API's readiness, through the `qrwty-edge` Worker ([deploy/cloudflare](../deploy/cloudflare/README.md)). Cloud Run's front end keeps `run.app/healthz`, and no other spelling reaches the route (AG-15), so the Worker asks `GET /modules/session-api-sign-in-flow`: the process admits a stub request only once it is ready, so any answer below 500, or the stub's 501, is `ready` |
-| `https://qrwty.io/api/*`, `/auth/*` | Session API's API forwarding and sign-in stubs, any method (`501 NOT_IMPLEMENTED` until A3) |
+| `https://qrwty.io/api/*`, `/auth/*` | Session API's API forwarding and sign-in stubs, any method: since A3 the browser's sessions, sign-in, links and account routes ([A3 handoff](../docs/handoff.md)) |
 | `https://qrwty.io/`, `/versions/` | The Worker's own placeholder and static pages (A5 replaces the home page with the app) |
 | Cloud Run services | `qrwtya-session-api` (public, unauthenticated invocation allowed: the Worker can't send a Google ID token, AG-14), `qrwtya-redirect-service` (public ingress, IAM-protected until A4), `qrwtya-link-api`, `qrwtya-account-api`, `qrwtya-billing-api` (internal ingress, reached over the VPC). All minimum 0 instances, maximum 3, 1 vCPU / 512 MiB, CPU only while serving |
 | Cloud Run worker pool | `qrwtya-analytics-worker` at 0 instances (`analytics_workers` in `qrwtya.tfvars`; A4 sets 1) |
@@ -57,7 +57,7 @@ project's one budget (USD 50 a month, alerts at USD 10, 25 and 50) is reused.
 | Stores | Cloud SQL `qrwtya-pg` (PostgreSQL 17, db-f1-micro, 10 GiB, private address, no backups), Memorystore for Valkey `qrwtya-hot-routes` and `qrwtya-admission-cache` (shared-core-nano, TLS, `AUTH_DISABLED`; each process's `JEEVES_SECRET_CACHE_<ID>_FILE` is `/dev/null`, an empty credential, which works on Cloud Run: both caches answer PING over verify-full TLS at startup), Pub/Sub `click-events` with its subscription, dead letters and Avro archive in `gs://qrwtya-click-archive-<project>` |
 | Images | Artifact Registry `qrwtya-images/app`, tagged `app-<first 12 of app/'s git tree hash>`; every Cloud Run resource runs one digest |
 | State | `gs://qrwtya-tfstate-523800841789/infra/gcp` (versioned, created by hand in A2) |
-| Auth0 | API `qrwtya-api`, identifier `https://api.qrwtya.qrwty.io` (RS256, 300 s tokens, offline access allowed); A3 adds the web application and users |
+| Auth0 | API `qrwtya-api`, identifier `https://api.qrwtya.qrwty.io` (RS256, 300 s tokens, offline access allowed); A3's Regular Web Application `qrwtya-web` (code flow, callback `https://qrwty.io/auth/callback`, logout `https://qrwty.io/`, rotating refresh tokens, a user grant to `qrwtya-api`), with the tenant's `Username-Password-Authentication` (sign-ups allowed) and `google-oauth2` enabled for it, and one `qrwtya-test-…@qrwty.io` user |
 
 ### Redeploy
 
@@ -97,6 +97,18 @@ read it, then `QRWTY_TF_WORK=<dir> infra/gcp/scripts/tf.sh apply x.tfplan`.
    `postgres` admin's password through the SQL Admin API.
 5. `infra/gcp/scripts/redeploy.sh HEAD`.
 
+### Sign-in (A3, once)
+
+1. `tf.sh` plan and apply of the three new secrets (`qrwtya-signin-client`, `qrwtya-session-keys`,
+   `qrwtya-auth0-test-user`) and Session API's two reader bindings, targeted.
+2. `bootstrap-secrets.py <project> qrwtya-pg qrwtya-session-keys`: the ring (generated `keyRing()`
+   JSON) that seals tokens and signs cookies.
+3. With `auth0.env` loaded (`set -a; . ~/.config/qrwty/auth0.env; set +a`, same command):
+   `python3 -I infra/gcp/scripts/auth0.py create`, then `store-client` (qrwtya-web's
+   `{client_id, client_secret}` straight into `qrwtya-signin-client`) and `test-user` (a password
+   generated there, kept only in `qrwtya-auth0-test-user`). `check` lists what exists.
+4. `redeploy.sh HEAD`.
+
 ### Cost (trial credit, no charge)
 
 At the Q13 list prices ([cost-quote.json](../docs/evidence/q13/cost-quote.json)), idle, about
@@ -118,7 +130,8 @@ infra/gcp/scripts/tf.sh plan -var=deletion_protection=false -out=off.tfplan   # 
 infra/gcp/scripts/tf.sh apply off.tfplan
 QRWTY_TF_TEARDOWN=1 infra/gcp/scripts/tf.sh plan -destroy -var=deletion_protection=false -out=destroy.tfplan
 QRWTY_TF_TEARDOWN=1 infra/gcp/scripts/tf.sh apply destroy.tfplan
-(set -a; . ~/.config/qrwty/auth0.env; set +a; python3 -I docs/evidence/q13/commands/auth0.py delete)
+(set -a; . ~/.config/qrwty/auth0.env; set +a; python3 -I infra/gcp/scripts/auth0.py delete)          # A3: users, grant, qrwtya-web
+(set -a; . ~/.config/qrwty/auth0.env; set +a; python3 -I docs/evidence/q13/commands/auth0.py delete)  # qrwtya-api
 gcloud storage rm -r gs://qrwtya-tfstate-523800841789   # last: the state
 docs/evidence/q13/commands/inventory.sh                 # must list nothing
 ```

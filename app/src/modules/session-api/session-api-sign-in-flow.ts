@@ -3,13 +3,17 @@
 import type { ModuleRequest, ModuleResponse } from "../entry.ts";
 import type { Dependencies } from "./session-api-sign-in-flow.slots.ts";
 import { declareSettings } from "../../runtime/settings.ts";
+import { sessionContext } from "./session/context.ts";
+import { productShape } from "./session/forward.ts";
+import { sessionSettings } from "./session/settings.ts";
+import { signInRoutes } from "./session/signin.ts";
 
 /** The settings this module reads, by name: text(), integer(), url(), secret() or keyRing();
  * optional(kind) for an optional one. Values come from the process environment, secrets from
  * SECRET_DIR files. */
-export const settings = declareSettings({});
+export const settings = declareSettings({ ...sessionSettings });
 
 /** Answers any method on /modules/session-api-sign-in-flow and every path below it. */
 export async function sessionApiSignInFlow(dependencies: Dependencies, request: ModuleRequest): Promise<ModuleResponse> {
-  throw new Error("Not implemented: Sign-in flow");
+  return productShape(await signInRoutes(request, sessionContext(dependencies)));
 }

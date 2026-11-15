@@ -65,8 +65,15 @@ locals {
         JEEVES_TILE_ACCOUNT_API_URL  = "https://${local.p}account-api-${data.google_project.this.number}.${var.region}.run.app"
         JEEVES_TILE_BILLING_API_URL  = "https://${local.p}billing-api-${data.google_project.this.number}.${var.region}.run.app"
         JEEVES_TILE_LINK_API_URL     = "https://${local.p}link-api-${data.google_project.this.number}.${var.region}.run.app"
+        # Session API's declared settings (A3): the issuer the browser signs in at, the API the
+        # access token is for, and the origin of the callback and cookies.
+        SIGNIN_ISSUER_URL       = local.issuer
+        SIGNIN_AUDIENCE         = var.auth0_api_audience
+        QRWTY_PUBLIC_ORIGIN_URL = var.public_origin
       })
-      secrets = ["sql-sessions--session-api"]
+      # signin-client: the qrwtya-web application's {client_id, client_secret} (A3's auth0.py puts
+      # it in Secret Manager); session-keys: the ring that seals tokens and signs cookies (A3).
+      secrets = ["sql-sessions--session-api", "signin-client", "session-keys"]
       ca      = null
       ingress = "INGRESS_TRAFFIC_ALL"
       sa      = "session"
@@ -88,6 +95,7 @@ locals {
     "account-api" = {
       env = merge(local.db.links, local.db.analytics, local.oidc, {
         JEEVES_TILE_BILLING_API_URL = "https://${local.p}billing-api-${data.google_project.this.number}.${var.region}.run.app"
+        QRWTY_PUBLIC_ORIGIN_URL     = var.public_origin # My links' short URLs (A3)
       })
       secrets = ["sql-analytics--account-api", "sql-links--account-api"]
       ca      = null
@@ -124,7 +132,9 @@ locals {
   # Every credential: a Secret Manager secret per generated name. The caches have none: Memorystore
   # runs AUTH_DISABLED (AG-04), and their file variables name /dev/null (secret_files). Each
   # instance has its own managed CA, so each has its own public CA secret.
-  secrets = toset(concat(local.migrate_secrets, [for c in local.caches : "memorystore-ca-${c}"], ["link-replay-keys"]))
+  # auth0-test-user: the A3 smoke's test user, {username, password}, mounted by no process.
+  secrets = toset(concat(local.migrate_secrets, [for c in local.caches : "memorystore-ca-${c}"],
+  ["link-replay-keys", "signin-client", "session-keys", "auth0-test-user"]))
 
   service_accounts = {
     redirect  = "Redirect service"

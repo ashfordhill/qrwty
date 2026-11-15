@@ -289,13 +289,18 @@ describe("reputation, storage and allocation failures", () => {
 });
 
 describe("routes and the signed-in caller", () => {
-	it("answers 405 with Allow on /links and 404 elsewhere", async () => {
+	it("answers 405 with Allow on /links, 401 on owner routes for a guest and 404 elsewhere", async () => {
 		const { call } = setup();
 		const get = await call({ method: "GET" });
 		expect(get.status).toBe(405);
 		expect(get.headers?.Allow).toBe("POST");
+		expect(code(get)).toBe("method_not_allowed");
 		expect((await call({ path: "/" })).status).toBe(404);
-		expect((await call({ path: "/links/x/claim" })).status).toBe(404);
+		expect(code(await call({ path: "/nope" }))).toBe("not_found");
+		const claim = await call({ path: "/links/x/claim" });
+		expect(claim.status).toBe(401);
+		expect(code(claim)).toBe("unauthenticated");
+		expect((await call({ path: "/links/x", method: "GET" })).status).toBe(401);
 	});
 	it("keeps the test hooks closed unless the test profile turns them on", async () => {
 		const closed = setup();
@@ -303,15 +308,17 @@ describe("routes and the signed-in caller", () => {
 		expect(r.status).toBe(404);
 		expect(() => testHooks("yes")).toThrow(/QRWTY_TEST_HOOKS/);
 	});
-	it("fails an account's create closed until entitlements exist", async () => {
-		const { call, db } = setup();
+	it("creates an account's link through the owned path, not the guest one", async () => {
+		const { call, db, reputationCalls } = setup();
 		const r = await call({
 			headers: { "idempotency-key": "k" },
 			caller: { signedIn: true, principal: { subject: "alice", claims: {} } },
 		});
+		// The offline fake has no `idempotent`: the owned path fails closed, never a guest create.
 		expect(r.status).toBe(503);
-		expect(code(r)).toBe("entitlement_unavailable");
-		expect(r.headers?.["Retry-After"]).toBe("30");
+		expect(code(r)).toBe("storage_unavailable");
+		expect(reputationCalls).toEqual(["https://example.com/a"]);
 		expect(db.state.calls.create).toBe(0);
+		expect(db.state.calls.find).toBe(0);
 	});
 });

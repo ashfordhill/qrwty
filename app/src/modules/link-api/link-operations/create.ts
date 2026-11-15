@@ -18,6 +18,7 @@ import {
 	validGuestHandle,
 	validKey,
 } from "./idempotency.ts";
+import { createOwnedLink } from "./owned.ts";
 import { type KeyRing, seal, unseal } from "./replay-seal.ts";
 import type { ReputationCheck } from "./reputation.ts";
 import { slugCandidates } from "./slug.ts";
@@ -146,14 +147,27 @@ export async function createLink(
 		expiresAt = parsed;
 	}
 
-	// Owned creation spends an account's allowance, which only Billing API's entitlement grant
-	// decides (billing contract); until that grant exists it fails closed, retryably.
-	if (scope.kind === "account")
-		return unavailable(
-			"entitlement_unavailable",
-			"Creating a link in an account is not available yet; create it as a guest or try again later.",
-			30,
+	// Owned creation (A3) spends one of the account's creations under the test policy
+	// (owned.ts); its replay is the generated client's `idempotent`, inside createOwnedLink.
+	if (scope.kind === "account") {
+		const verdict = await context.reputation(dependencies)(destination.destination);
+		if (verdict === "threat")
+			return problem(422, "reputation_rejected", "The destination is reported as unsafe.", false);
+		if (verdict === "unavailable")
+			return unavailable(
+				"reputation_unavailable",
+				"The safety check is unavailable; try again shortly.",
+				5,
+			);
+		return createOwnedLink(
+			context,
+			dependencies,
+			{ subject: scope.subject, key: scopeHash(scope) },
+			key,
+			{ destination: destination.destination, expiresAt },
+			context.random ?? randomBytes,
 		);
+	}
 
 	const scopeKey = scopeHash(scope);
 	const idempotencyKey = keyHash(key);

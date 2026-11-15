@@ -3,13 +3,17 @@
 import type { ModuleRequest, ModuleResponse } from "../entry.ts";
 import type { Dependencies } from "./account-api-my-links.slots.ts";
 import { declareSettings } from "../../runtime/settings.ts";
+import { publicOriginSetting } from "../link-api/link-operations/settings.ts";
+import { myLinks } from "./my-links/routes.ts";
 
 /** The settings this module reads, by name: text(), integer(), url(), secret() or keyRing();
  * optional(kind) for an optional one. Values come from the process environment, secrets from
  * SECRET_DIR files. */
-export const settings = declareSettings({});
+export const settings = declareSettings({
+  QRWTY_PUBLIC_ORIGIN_URL: publicOriginSetting,
+});
 
 /** Answers any method on /modules/account-api-my-links and every path below it. */
 export async function accountApiMyLinks(dependencies: Dependencies, request: ModuleRequest): Promise<ModuleResponse> {
-  throw new Error("Not implemented: My links");
+  return myLinks(request, dependencies);
 }

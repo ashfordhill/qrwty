@@ -1543,3 +1543,158 @@ the owner decided. Status: **done. Everything below keeps running on the trial c
 - **Elapsed.** 18:30:33Z to about 19:15Z on the host clock (about 45 minutes).
 - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
   memory index); it was ignored.
+
+## A3: sign-in, sessions and my links on qrwty.io, 2026-11-15
+
+Arm A, A3 attempt 1 (role implementer), from QRWTY `0994ede`. Q07 of `units.md`, written in the
+application-owned stub bodies and product SQL of Session API, Link API and Account API, against pack
+v1.6's `decisions.md`, `http-contract.md` and `product-contract.md`. Light checks, as the owner
+decided: no oracle, no review, no records. Status: **done**: sign-in, sessions, my links and
+account deletion work live; two small follow-ups are named as **A3b** below.
+
+- **Live on `https://qrwty.io`** (smoke, headless Chromium through Auth0 Universal Login, 18/18):
+  1. guest create: `GET /api/v1/session` issues a guest cookie and CSRF token; `POST /api/v1/links`
+     answers 201 with a claim proof (Web Risk checked the destination);
+  2. sign-in as the test user: `/auth/login?returnTo=…` → Universal Login → `/auth/callback` →
+     back to `returnTo`; the cookie is `__Host-qrwty`, `Secure`, `HttpOnly`, `SameSite=Lax`, and
+     `/api/v1/session` says `authenticated: true` with the account's email; the guest's CSRF token
+     is refused (403);
+  3. claim: 200, version 2, `owned: true`; the same key replays (`Idempotent-Replayed`);
+  4. my links: `GET /api/v1/me/links` lists it; `GET /api/v1/me` counts it;
+  5. edit: `PATCH` with a stale `If-Match` is 412; with `"2"` it is 200 and `ETag: "3"`; a read
+     gives version 3;
+  6. sign-out: `POST /auth/logout` 204;
+  7. the old cookie is refused: 401 `session_expired` on my links, and 401 (not a guest 201) on
+     create; the browser is a guest again; a never-issued cookie is 401.
+
+  A second smoke (8/8) deleted the test account: `DELETE /api/v1/me` without `Idempotency-Key` is
+  400; with one it is 202 `{deletionScheduled: true}`; the old cookie is 401; signing in again
+  (silently, through the issuer's own session) gives an empty list, the links no longer owned. A
+  signed-in create is 201 `owned: true` with no claim proof. A third smoke (5/5) signed in, waited
+  250 s (the 300 s access token then has under 60 s left, so the next request refreshes it with the
+  rotating refresh token): my links 200, then three parallel requests 200, then sign-out 204.
+- **How the owner signs in.** Open `https://qrwty.io/auth/login` (optionally `?returnTo=/path`),
+  then sign up or sign in with an email and password, or "Continue with Google" (Auth0's
+  development keys). It returns to `/`, still the Worker's placeholder page until A5's UI.
+  `https://qrwty.io/api/v1/session` and `/api/v1/me/links` show the session and the links in the
+  address bar; mutations need the UI (the Worker's CSP blocks console `fetch`). Sign-out is
+  `POST /auth/logout` with the CSRF token; `GET /auth/logout` ends the issuer's own session too.
+- **Auth0** (`infra/gcp/scripts/auth0.py`, Management API from `auth0.env`; qrwtya- only, plus the
+  two connections enabled for qrwtya-web):
+  - Regular Web Application `qrwtya-web`: code and refresh-token grants, callback
+    `https://qrwty.io/auth/callback` and logout `https://qrwty.io/` only, rotating refresh tokens
+    (7 days, 24 hours idle, 30 s reuse leeway), ID tokens 300 s, `client_secret_post`;
+  - its user grant to `qrwtya-api`;
+  - `Username-Password-Authentication` (sign-ups allowed) and `google-oauth2` enabled for it;
+  - one test user, `qrwtya-test-<6 hex>@qrwty.io`, password generated in the script.
+
+  Its `{client_id, client_secret}` and the test user's `{username, password}` went straight to
+  Secret Manager (`qrwtya-signin-client`, `qrwtya-auth0-test-user`, stdin only). The test user
+  deleted its own account in the second smoke; the Auth0 user still exists (below).
+- **Session API** (`src/modules/session-api/session/`, both stubs, and the Sessions SQL in the
+  sign-in flow's module file, which API forwarding calls by its schema):
+  - code + PKCE S256, `state` and `nonce`: each attempt is a row for 10 minutes (state, nonce and
+    browser-binding hashes; the verifier sealed), taken once by the callback, which also checks a
+    `__Host-qrwty-signin` binding cookie; cancel and failure return with `signin=cancelled|failed`;
+    `returnTo` must be a same-origin relative path;
+  - ID token and access token verified with the generated `createPrincipalVerifier` (issuer,
+    audience, expiry, RS256, the tenant's key set, one shared `createRemoteJWKSet`), nonce by hash,
+    the same subject in both;
+  - sessions: a guest is a stateless MAC'd cookie (never an identity); an account session is a row
+    named by the SHA-256 of its cookie token, with the access and refresh tokens and the profile
+    sealed (AES-256-GCM, `SESSION_KEYS`); 7 days absolute, 24 hours idle, revocation empties the
+    sealed tokens; a sign-in never continues an earlier cookie;
+  - CSRF: `X-CSRF-Token` must be the MAC of the session cookie, on every mutation and on
+    `POST /auth/logout`;
+  - the access token (300 s) is refreshed 60 s before it expires; a lost refresh race uses the
+    winner's stored tokens; an issuer refusal revokes the session (401);
+  - forwarding: only `Idempotency-Key`, `If-Match`, the JSON body and the session's bearer (or, for
+    a guest, an opaque `QRWTY-Guest-Scope`) go downstream; a browser-sent `Authorization` is 401;
+    runtime-shaped downstream errors are mapped to the product shape;
+  - routes: `/api/v1/session`, `/api/v1/links` (create), `/api/v1/links/:id` (GET, PATCH, DELETE),
+    `/api/v1/links/:id/claim`, `/api/v1/me/links`, `/api/v1/me` (GET, DELETE) and `/auth/login`,
+    `/auth/callback`, `/auth/logout` (POST, and GET for the issuer's sign-out).
+- **Link API** (`link-operations/owned.ts`, `view.ts`, `service.ts` now a `defineRoutes` table):
+  read, edit (destination, state, expiry; `If-Match`, 428/412, 409 `blocked_by_operator`, Web Risk
+  on a new destination), disable, enable, delete (repeat-safe tombstone), claim and account erasure,
+  each scoped by the owner key of the verified subject; another account's link and an unknown ID are
+  404. Claim runs `claim_link` inside the generated `idempotent` (the answer holds no secret);
+  edit and delete use the generated `transaction`; owned create (signed in) uses `idempotent` and
+  spends the month's allowance. Product SQL step 2: `owner_key`, `account_usage` (owned-link
+  creations per account and UTC month, `free-test-v1`'s 5 until A7's entitlements), and
+  `account_erasures`; `claim_link`, `spend_owned_create`, `erase_account` and the owner view
+  `published.owned_links`. `links_guard` now lets an erasure clear a tombstone's owner and refuses
+  a change of owner.
+- **Account API** (`my-links/routes.ts`): `GET /links` (newest first by `(created_at, id)`, limit
+  1–50, default 20; the cursor carries the owner's tag, so another account's is 400
+  `invalid_cursor`) and `GET /me`, from `published.owned_links` by owner key.
+- **Account deletion** (decisions §3): Link API's `erase_account` disables every active owned link
+  (410 once A4 serves redirects), removes its owner (and from tombstones), forgets the claim proofs
+  it consumed, removes its create replays and usage, and logs the erasure by key; then every session
+  of the account is revoked and its refresh tokens revoked at the issuer. Not yet: the Auth0 user
+  itself (A3b), the subscription's cancellation (A7), and `link_versions`' destination history.
+- **Infrastructure.**
+  - `infra/gcp/locals.tf`: Session API's `SIGNIN_ISSUER_URL`, `SIGNIN_AUDIENCE`,
+    `QRWTY_PUBLIC_ORIGIN_URL` and its secrets `signin-client` and `session-keys`; Account API's
+    `QRWTY_PUBLIC_ORIGIN_URL`; the secret `auth0-test-user` (mounted by nothing).
+  - The new secrets and readers were applied with a targeted plan (5 added) before the redeploy;
+    `bootstrap-secrets.py` generates `session-keys` (the generated `keyRing()` JSON) and leaves the
+    two Auth0 secrets to `auth0.py`.
+  - The production profile (overlay, installed into `app/`) lists the new settings and secrets.
+  - `infra/README.md`: the sign-in setup and its teardown (`auth0.py delete`).
+- **Deploy.** `QRWTY_REDEPLOY_DIR=.scratch/A3/redeploy infra/gcp/scripts/redeploy.sh HEAD` at
+  `23c8be6` (this unit's code, committed before the deploy, as `redeploy.sh` builds a commit):
+  image `app-2ebc21736f83` (`sha256:39c54dfb…0864663`), the migration job changed and executed
+  (step 2 and the Sessions SQL applied), 6 stack changes, the Worker redeployed, its smoke 4/4
+  (cookieless create 401, `/auth/login` 302); the three smokes above ran on it. After a one-line
+  test lint fix and these docs were folded into the commit, it ran again at `d145e32`: image
+  `app-18b2fca2fafa` (`sha256:3be2cb4c…b993ad`), 1 + 6 changes, smoke 4/4, and the main smoke again
+  18/18. The unit commit itself (docs only beyond `d145e32`) is redeployed last, so `/build.json`
+  names it.
+- **Checks.**
+  - `app/`: build, `typecheck:test` and Biome pass; **141 unit tests** (12 new in
+    `test/unit/session.test.ts`, the create tests updated).
+  - **Integration on PostgreSQL 17.11** (`infra/local/test-postgres.sh`, removed afterwards):
+    **27 passed**, 7 new in `test/integration/owned.test.ts`: two accounts and the proof holder;
+    six parallel claims by two accounts, one winner; an expired proof 410 then claimable; list,
+    cursor pages, another account's cursor 400, limit 51 400; 404 for another account on read, edit
+    and delete; 428 and 412; five parallel edits with one `If-Match`, one 200 and four 412; delete
+    twice 204; five owned creates then 403 `quota_exceeded`, and the claim over the limit 403;
+    erasure; the Sessions SQL applied twice, one-time attempts, the refresh race and revocations.
+  - Root `pnpm check`: exit 0, 71 generated files unchanged.
+  - `infra/gcp/validate.sh` (pinned OpenTofu and mirror): lint ok, fmt, init and validate 0.
+  - Secret scan of the staged diff: no `auth0.env` value, no credential shape.
+- **Template gaps** ([details](evidence/a3/a-found-gaps.md)): AG-22 (medium) no browser-session
+  template, so the whole BFF is application code; AG-23 (low) `defineRoutes`'s own 404/405/400 have
+  a fixed shape; AG-24 (low) a `published` view is readable by every login on the database; AG-25
+  (low) settings are per stub, so Session API declares them twice.
+- **Known limits.**
+  - Session API's request timeout is the diagram's 1,000 ms. It bounds the token exchange, a
+    refresh and the downstream call. A downstream service at minimum 0 that starts cold could take
+    longer, and the browser would get 503; the smoke saw none (each call took one attempt).
+  - The local Compose profile doesn't set Session API's new settings, and the issuer paths are
+    Auth0's (`/authorize`, `/oauth/token`, `/oauth/revoke`, `/v2/logout`), not Keycloak's, so
+    `pnpm first-run` won't start Session API locally. The live stack is the test bed now.
+  - The allowance is the test fixture `free-test-v1` (5 a month) for every account until A7.
+- **A3b** (small, not blocking A4):
+  1. Account deletion also deletes the Auth0 user: an M2M application `qrwtya-account-erasure`
+     with only `delete:users` on the Management API, its credential in Secret Manager, called after
+     the Links erasure (today the user stays at the issuer, so signing in again starts an empty
+     account with the same subject).
+  2. The local Compose profile for Session API: its settings and secrets in
+     `infra/app-overlay/compose.override.yaml` and `infra/local/app-secrets.sh`, and the issuer's
+     endpoint paths from its discovery document, so Keycloak works locally as Auth0 does live.
+- **Next: A4** (redirect and analytics). Redirects can read `published.link_routes`; a disabled or
+  erased link is already `disabled` there.
+- **Read.** The packet, `AGENTS.md`, this file (Q06, A1, A2), the owner decisions of 2026-11-15,
+  `units.md` (Q06, Q07), pack v1.6's `decisions.md`, `http-contract.md`, `product-contract.md` and
+  the acceptance rows A04–A08, A14 and A15; `architecture.md`; the generated README, runtime,
+  process files and stubs; Q06's Link operations; Q13's `auth0.py`; `infra/` and the Worker's
+  router. `~/.config/qrwty/`: `auth0.env` only (for `tf.sh` and `auth0.py`, loaded with `set -a`,
+  never printed); `cloudflare.env` only through `deploy.sh`.
+- **Running.** Nothing locally: the test PostgreSQL was removed by name. Live: everything A2 left,
+  plus the Auth0 objects and three secrets above.
+- **Elapsed.** 19:10:44Z to about 20:00Z on the host clock (about 50 minutes), a clock earlier
+  units found to jump.
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
+  memory index); it was ignored.

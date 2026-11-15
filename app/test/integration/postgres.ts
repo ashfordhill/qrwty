@@ -7,7 +7,8 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import pg from "pg";
-import type { DatabaseReadWriter } from "../../src/modules/dependencies.ts";
+import type { DatabaseReadWriter, Tx } from "../../src/modules/dependencies.ts";
+import { storedStatus, storeResult, takeKey } from "../../src/runtime/idempotency.ts";
 import { createPostgres } from "../../src/runtime/postgres.ts";
 
 const MODULES = [
@@ -49,6 +50,8 @@ export type TestDatabase = {
 	logins: Record<"owner" | "link" | "redirect" | "account", { user: string; password: string }>;
 	/** A pool as a Link API replica has it: the generated client's settings, the link login. */
 	replica(): { db: DatabaseReadWriter; end(): Promise<void> };
+	/** A pool of `login` with a real `transaction` and the generated `idempotent` steps (A3). */
+	pool(login: "link" | "account"): { db: DatabaseReadWriter; end(): Promise<void> };
 	client(login: "owner" | "link" | "redirect" | "account"): Promise<pg.Client>;
 	migrate(): Promise<void>;
 	drop(): Promise<void>;
@@ -103,6 +106,11 @@ export async function createTestDatabase(): Promise<TestDatabase> {
 			try {
 				await owner.query("BEGIN");
 				await owner.query(readFileSync("infra/postgres/links/000-foundation.sql", "utf8"));
+				await owner.query(readFileSync("infra/postgres/links/050-jeeves-idempotency.sql", "utf8"));
+				// As migrate.mjs grants the template table (infra/local.json `grants`).
+				await owner.query(
+					`GRANT USAGE ON SCHEMA jeeves TO ${quote(logins.link.user)}; GRANT SELECT, INSERT, UPDATE, DELETE ON jeeves.idempotency_records TO ${quote(logins.link.user)}`,
+				);
 				await products.applyProductSql(owner, plan, quote);
 				await products.grantProductSql(owner, plan, runtime, quote);
 				await owner.query("COMMIT");
@@ -142,6 +150,72 @@ export async function createTestDatabase(): Promise<TestDatabase> {
 				},
 				end: () => pool.end(),
 			};
+		},
+		pool(role) {
+			const pool = createPostgres({
+				hostname: server.host,
+				port: server.port,
+				tls: { mode: "disable" },
+				login: { database, user: logins[role].user, secret: "unused" },
+				credential: () => logins[role].password,
+				poolSize: 10,
+				statementTimeoutMs: 2000,
+				connectionTimeoutMs: 2000,
+			});
+			pool.on("error", () => {});
+			const rows = async <Row>(run: Promise<pg.QueryResult>) => (await run).rows as Row[];
+			const transaction = async <T>(fn: (tx: Tx) => Promise<T>): Promise<T> => {
+				const client = await pool.connect();
+				try {
+					await client.query("BEGIN");
+					const tx: Tx = {
+						query: (sql, values) => rows(client.query(sql, values ? [...values] : undefined)),
+						execute: async (sql, values) => ({
+							rowCount: (await client.query(sql, values ? [...values] : undefined)).rowCount ?? 0,
+						}),
+					};
+					const value = await fn(tx);
+					await client.query("COMMIT");
+					return value;
+				} catch (error) {
+					await client.query("ROLLBACK").catch(() => {});
+					throw error;
+				} finally {
+					client.release();
+				}
+			};
+			const unstored = new Error("unstored");
+			const db: DatabaseReadWriter = {
+				query: (sql, values) => rows(pool.query(sql, values ? [...values] : undefined)),
+				execute: async (sql, values) => ({
+					rowCount: (await pool.query(sql, values ? [...values] : undefined)).rowCount ?? 0,
+				}),
+				transaction,
+				// The generated client's idempotentCall, from its exported steps (module-clients.ts).
+				async idempotent(request, fn) {
+					const record = { tile: "link-api", ...request };
+					let held: { status: number; body: unknown } | undefined;
+					try {
+						return await transaction(async (tx) => {
+							const taken = await takeKey(tx as never, record);
+							if (!taken.taken)
+								return { status: taken.status, body: taken.body as never, replayed: true };
+							const result = await fn(tx);
+							if (!storedStatus(result.status)) {
+								held = result;
+								throw unstored;
+							}
+							await storeResult(tx as never, record, result);
+							return { ...result, replayed: false };
+						});
+					} catch (error) {
+						if (error === unstored && held)
+							return { status: held.status, body: held.body as never, replayed: false };
+						throw error;
+					}
+				},
+			};
+			return { db, end: () => pool.end() };
 		},
 		async drop() {
 			const admin = new pg.Client({ ...server, user: "postgres", database: "postgres" });

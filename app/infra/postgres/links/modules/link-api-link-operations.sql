@@ -124,6 +124,42 @@ BEGIN
 END
 $step$;
 
+-- Step 2 (A3): owner keys, monthly owned-link usage and the account erasure log.
+--   owner_key: SHA-256 of "account" NUL <verified subject>, written with owner_subject (the
+--   writer computes it, as for an idempotency scope). Account API's view exposes the key, never
+--   the subject. A link's owner is set once, by a claim or an owned create, and only an account
+--   erasure clears it.
+--   account_usage: owned-link creations (creates and claims) per account and UTC month, spent in
+--   the same transaction as the link they create (decisions §4); a delete never refunds one.
+--   account_erasures: the keys of erased accounts, so an erasure can be reapplied after a restore.
+DO $step$
+BEGIN
+  IF EXISTS (SELECT 1 FROM product_migrations WHERE version = 2) THEN
+    RETURN;
+  END IF;
+
+  ALTER TABLE links ADD COLUMN owner_key bytea CHECK (owner_key IS NULL OR octet_length(owner_key) = 32);
+  ALTER TABLE links ADD CONSTRAINT links_owner_pair CHECK ((owner_subject IS NULL) = (owner_key IS NULL));
+  CREATE INDEX links_owner_key_created ON links (owner_key, created_at DESC, id DESC)
+    WHERE owner_key IS NOT NULL;
+
+  CREATE TABLE account_usage (
+    owner_key bytea NOT NULL CHECK (octet_length(owner_key) = 32),
+    period_start date NOT NULL,
+    owned_link_creates integer NOT NULL CHECK (owned_link_creates >= 0),
+    PRIMARY KEY (owner_key, period_start)
+  );
+
+  CREATE TABLE account_erasures (
+    owner_key bytea PRIMARY KEY CHECK (octet_length(owner_key) = 32),
+    erased_at timestamptz NOT NULL
+  );
+
+  INSERT INTO product_migrations (version, name)
+  VALUES (2, 'A3: owner keys, account usage, account erasures');
+END
+$step$;
+
 -- Code (replaced every run). Every function sets its search path, so a caller's path is ignored.
 
 -- The database clock, moved by the test profile's clock offset only (production passes 0).
@@ -158,8 +194,14 @@ BEGIN
      OR NEW.created_at <> OLD.created_at THEN
     RAISE EXCEPTION 'a link''s id, domain, slug and creation time never change' USING ERRCODE = 'QRW12';
   END IF;
-  IF OLD.state = 'deleted' THEN
+  -- A deleted link never changes again, except that an account erasure removes its owner.
+  IF OLD.state = 'deleted' AND (NEW.state <> 'deleted' OR NEW.destination <> OLD.destination
+     OR NEW.expires_at IS DISTINCT FROM OLD.expires_at OR NEW.owner_key IS NOT NULL) THEN
     RAISE EXCEPTION 'a deleted link is a permanent tombstone' USING ERRCODE = 'QRW13';
+  END IF;
+  -- An owner is set once; it never passes to another account.
+  IF OLD.owner_key IS NOT NULL AND NEW.owner_key IS NOT NULL AND NEW.owner_key <> OLD.owner_key THEN
+    RAISE EXCEPTION 'a link never changes owner' USING ERRCODE = 'QRW16';
   END IF;
   IF NEW.version <> OLD.version + 1 THEN
     RAISE EXCEPTION 'every change raises the version by one' USING ERRCODE = 'QRW14';
@@ -325,3 +367,133 @@ CREATE OR REPLACE VIEW published.link_routes AS
 SELECT l.domain_id, l.slug, l.id AS link_id, l.state, l.version, l.expires_at,
        CASE WHEN l.state = 'active' THEN l.destination END AS destination
 FROM links l;
+
+-- A3: account operations. Each is one call, so one statement is one transaction, or a statement
+-- inside the caller's transaction (the generated client's `transaction` and `idempotent`).
+
+-- Spends one of the account's owned-link creations for the UTC month of p_now, when fewer than
+-- p_limit are spent: `allowed`, and the count after it. The row is locked until the caller's
+-- transaction ends, so two creates of one account never both take the last one.
+CREATE OR REPLACE FUNCTION spend_owned_create(p_owner_key bytea, p_limit integer, p_now timestamptz)
+RETURNS TABLE (allowed boolean, used integer, period_end timestamptz)
+LANGUAGE plpgsql VOLATILE
+SET search_path = m_link_api_link_operations, pg_temp
+AS $$
+DECLARE
+  v_period date := date_trunc('month', p_now AT TIME ZONE 'UTC')::date;
+BEGIN
+  period_end := (v_period + interval '1 month')::timestamp AT TIME ZONE 'UTC';
+  INSERT INTO account_usage (owner_key, period_start, owned_link_creates)
+  VALUES (p_owner_key, v_period, 0)
+  ON CONFLICT (owner_key, period_start) DO NOTHING;
+  UPDATE account_usage u SET owned_link_creates = u.owned_link_creates + 1
+  WHERE u.owner_key = p_owner_key AND u.period_start = v_period AND u.owned_link_creates < p_limit
+  RETURNING u.owned_link_creates INTO used;
+  allowed := FOUND;
+  IF NOT allowed THEN
+    SELECT u.owned_link_creates INTO used FROM account_usage u
+    WHERE u.owner_key = p_owner_key AND u.period_start = v_period;
+  END IF;
+  RETURN NEXT;
+END
+$$;
+
+-- Claims a guest link with its proof (product contract, step 5), in the caller's transaction:
+-- the proof's hash, its expiry and the unowned state are compared under row locks, so of two
+-- concurrent claims one wins and the other sees the proof consumed. Outcomes: `claimed` and
+-- `owned` (this account's repeat) return the link; `invalid` (no such link or another proof),
+-- `consumed`, `expired` and `quota` (with used and period_end) return none.
+CREATE OR REPLACE FUNCTION claim_link(
+  p_link_id uuid, p_proof_sha256 bytea, p_subject text, p_owner_key bytea, p_limit integer,
+  p_clock_offset_ms bigint)
+RETURNS TABLE (outcome text, id uuid, slug text, destination text, version integer, state text,
+               created_at timestamptz, updated_at timestamptz, expires_at timestamptz,
+               used integer, period_end timestamptz)
+LANGUAGE plpgsql VOLATILE
+SET search_path = m_link_api_link_operations, pg_temp
+AS $$
+DECLARE
+  v_now timestamptz := clock_now(p_clock_offset_ms);
+  v_claim link_claims%ROWTYPE;
+  v_link links%ROWTYPE;
+  v_spend record;
+  v_me text := encode(p_owner_key, 'hex');
+BEGIN
+  SELECT c.* INTO v_claim FROM link_claims c WHERE c.link_id = p_link_id FOR UPDATE;
+  IF NOT FOUND OR v_claim.proof_sha256 <> p_proof_sha256 THEN
+    outcome := 'invalid';
+    RETURN NEXT;
+    RETURN;
+  END IF;
+  SELECT l.* INTO v_link FROM links l WHERE l.id = p_link_id FOR UPDATE;
+  IF v_claim.consumed_at IS NOT NULL THEN
+    outcome := CASE WHEN v_claim.consumed_by = v_me AND v_link.owner_key = p_owner_key
+                     AND v_link.state <> 'deleted' THEN 'owned' ELSE 'consumed' END;
+  ELSIF v_claim.expires_at <= v_now THEN
+    outcome := 'expired';
+  ELSIF v_link.owner_key IS NOT NULL OR v_link.state = 'deleted' THEN
+    outcome := 'consumed';
+  ELSE
+    SELECT * INTO v_spend FROM spend_owned_create(p_owner_key, p_limit, v_now);
+    IF NOT v_spend.allowed THEN
+      outcome := 'quota';
+      used := v_spend.used;
+      period_end := v_spend.period_end;
+      RETURN NEXT;
+      RETURN;
+    END IF;
+    PERFORM set_config('qrwty.link_change', 'claim', true);
+    PERFORM set_config('qrwty.link_actor', 'owner', true);
+    UPDATE links l SET owner_subject = p_subject, owner_key = p_owner_key,
+      version = l.version + 1, updated_at = greatest(v_now, l.created_at)
+    WHERE l.id = p_link_id RETURNING l.* INTO v_link;
+    UPDATE link_claims c SET consumed_at = v_now, consumed_by = v_me WHERE c.link_id = p_link_id;
+    outcome := 'claimed';
+  END IF;
+  IF outcome IN ('claimed', 'owned') THEN
+    id := v_link.id; slug := v_link.slug; destination := v_link.destination;
+    version := v_link.version; state := v_link.state; created_at := v_link.created_at;
+    updated_at := v_link.updated_at; expires_at := v_link.expires_at;
+  END IF;
+  RETURN NEXT;
+END
+$$;
+
+-- Erases an account's ownership (decisions §3, account deletion): every link it owns loses its
+-- owner and, when active, becomes disabled (410), with a version row each; claim proofs it
+-- consumed forget it; its create replays and usage are removed; the erasure is logged by key, so
+-- it can be reapplied after a restore. Repeatable: a second call changes nothing more.
+CREATE OR REPLACE FUNCTION erase_account(p_owner_key bytea, p_clock_offset_ms bigint)
+RETURNS integer
+LANGUAGE plpgsql VOLATILE
+SET search_path = m_link_api_link_operations, pg_temp
+AS $$
+DECLARE
+  v_now timestamptz := clock_now(p_clock_offset_ms);
+  v_count integer;
+BEGIN
+  PERFORM set_config('qrwty.link_change', 'owner-removed', true);
+  PERFORM set_config('qrwty.link_actor', 'system', true);
+  UPDATE links l SET
+    state = CASE WHEN l.state = 'active' THEN 'disabled' ELSE l.state END,
+    owner_subject = NULL, owner_key = NULL,
+    version = l.version + 1, updated_at = greatest(v_now, l.updated_at)
+  WHERE l.owner_key = p_owner_key;
+  GET DIAGNOSTICS v_count = ROW_COUNT;
+  UPDATE link_claims c SET consumed_by = 'erased' WHERE c.consumed_by = encode(p_owner_key, 'hex');
+  DELETE FROM idempotency_records r WHERE r.scope_sha256 = p_owner_key;
+  DELETE FROM account_usage u WHERE u.owner_key = p_owner_key;
+  INSERT INTO account_erasures (owner_key, erased_at) VALUES (p_owner_key, v_now)
+  ON CONFLICT (owner_key) DO UPDATE SET erased_at = excluded.erased_at;
+  RETURN v_count;
+END
+$$;
+
+-- The account-facing view (Account API's My links): an owned link's fields by owner key, never
+-- the subject, a claim or an idempotency record; deleted links are not listed. Every login on the
+-- database may read `published` (A3 gap AG-22), so the owner appears only as its key.
+CREATE OR REPLACE VIEW published.owned_links AS
+SELECT l.owner_key, l.id, l.slug, l.destination, l.version, l.state, l.created_at, l.updated_at,
+       l.expires_at
+FROM links l
+WHERE l.owner_key IS NOT NULL AND l.state <> 'deleted';

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "about": "QRWTY arm A production profile (application-owned, not generated). scripts/qrwty-production-profile.mjs reads it before a generated process or the migration job starts and refuses any emulator, fake, insecure, development, test-only or missing setting with a named reason. Process lists follow the Jeeves 0aea8e7 export of revision 84 (.jeeves/report.json processes.tiles[].environment, each Compose secret, and Link operations' declared settings).",
+  "about": "QRWTY arm A production profile (application-owned, not generated). scripts/qrwty-production-profile.mjs reads it before a generated process or the migration job starts and refuses any emulator, fake, insecure, development, test-only or missing setting with a named reason. Process lists follow the Jeeves 0aea8e7 export of revision 84 (.jeeves/report.json processes.tiles[].environment, each Compose secret, and Link operations' declared settings; A3 adds Session API's and My links' declared settings).",
   "secretMount": {
     "variable": "QRWTY_SECRET_MOUNT_DIR",
     "layout": "<QRWTY_SECRET_MOUNT_DIR>/<secret name>/value (one Cloud Run secret volume per secret), named to the process by JEEVES_SECRET_<NAME>_FILE (Jeeves QG34; <NAME> the secret's name upper-cased, - and . as _)"
@@ -99,7 +99,8 @@
         "JEEVES_TILE_BILLING_API_URL",
         "OIDC_AUDIENCE",
         "OIDC_ISSUER",
-        "OIDC_JWKS_URL"
+        "OIDC_JWKS_URL",
+        "QRWTY_PUBLIC_ORIGIN_URL"
       ],
       "secrets": [
         "sql-analytics--account-api",
@@ -150,10 +151,15 @@
         "JEEVES_IDENTITY_IDENTITY_URL",
         "JEEVES_TILE_ACCOUNT_API_URL",
         "JEEVES_TILE_BILLING_API_URL",
-        "JEEVES_TILE_LINK_API_URL"
+        "JEEVES_TILE_LINK_API_URL",
+        "QRWTY_PUBLIC_ORIGIN_URL",
+        "SIGNIN_AUDIENCE",
+        "SIGNIN_ISSUER_URL"
       ],
       "secrets": [
-        "sql-sessions--session-api"
+        "sql-sessions--session-api",
+        "signin-client",
+        "session-keys"
       ]
     },
     "migrate": {

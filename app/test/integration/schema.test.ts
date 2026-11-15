@@ -64,10 +64,13 @@ describe("migration sequence", () => {
 		await t.migrate();
 		await t.migrate();
 		const owner = await t.client("owner");
-		const rows = (await owner.query(`SELECT version, name FROM ${S}.product_migrations`)).rows;
+		const rows = (
+			await owner.query(`SELECT version, name FROM ${S}.product_migrations ORDER BY version`)
+		).rows;
 		await owner.end();
 		expect(rows).toEqual([
 			{ version: 1, name: "Q06: links, versions, claim proofs, idempotency records" },
+			{ version: 2, name: "A3: owner keys, account usage, account erasures" },
 		]);
 		expect((await link.query(`SELECT id, name FROM ${S}.domains`)).rows).toEqual([
 			{ id: 1, name: "primary" },

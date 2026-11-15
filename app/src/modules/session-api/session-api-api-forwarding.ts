@@ -3,13 +3,19 @@
 import type { ModuleRequest, ModuleResponse } from "../entry.ts";
 import type { Dependencies } from "./session-api-api-forwarding.slots.ts";
 import { declareSettings } from "../../runtime/settings.ts";
+import { sessionContext } from "./session/context.ts";
+import { forwardRoutes, productShape } from "./session/forward.ts";
+import { sessionSettings } from "./session/settings.ts";
 
 /** The settings this module reads, by name: text(), integer(), url(), secret() or keyRing();
  * optional(kind) for an optional one. Values come from the process environment, secrets from
  * SECRET_DIR files. */
-export const settings = declareSettings({});
+export const settings = declareSettings({ ...sessionSettings });
+
+const routes = forwardRoutes();
 
 /** Answers any method on /modules/session-api-api-forwarding and every path below it. */
 export async function sessionApiApiForwarding(dependencies: Dependencies, request: ModuleRequest): Promise<ModuleResponse> {
-  throw new Error("Not implemented: API forwarding");
+  const context = { ...sessionContext(dependencies), linkApi: dependencies.linkApi, accountApi: dependencies.accountApi };
+  return productShape(await routes(request, context));
 }

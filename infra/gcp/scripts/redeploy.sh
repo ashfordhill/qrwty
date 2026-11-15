@@ -18,7 +18,8 @@
 #    probe passes.
 # 4. Worker: deploy/cloudflare/deploy.sh (the qrwty-edge Worker; it checks /build.json).
 # 5. Smoke: https://qrwty.io/healthz is a ready Session API, /versions/ answers 200, and /api/* and
-#    /auth/* are answered by Session API (501 until its stubs are written), not by the Worker.
+#    /auth/* are answered by Session API (since A3: 401 for a cookieless create, 302 to the issuer
+#    for /auth/login), not by the Worker.
 #
 # Idempotent: the same release reuses its image, both plans then have no changes, the
 # migrations find nothing to do and the Worker uploads the same code.

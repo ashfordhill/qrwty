@@ -3,7 +3,8 @@
 secrets, generated here and piped to gcloud, and set the Cloud SQL `postgres` admin's password to
 the qrwtya-postgres-admin value through the SQL Admin API (request body, over TLS). No value is
 printed, written to a file or passed as an argument. A secret that already has an enabled version
-is left as it is (no silent rotation), so a rerun changes nothing.
+is left as it is (no silent rotation), so a rerun changes nothing. Auth0's two secrets (A3) are
+left to infra/gcp/scripts/auth0.py.
 
   infra/gcp/scripts/bootstrap-secrets.py <project> <instance> <secret id> [<secret id> ...]
 
@@ -20,7 +21,15 @@ for sid in ids:
     if existing:
         out.append({"secret": sid, "added": False, "reason": "already has an enabled version"})
         continue
-    if sid == "qrwtya-link-replay-keys":
+    if sid in ("qrwtya-signin-client", "qrwtya-auth0-test-user"):
+        # A3: from Auth0 (infra/gcp/scripts/auth0.py), never generated here.
+        out.append({"secret": sid, "added": False, "reason": "set by auth0.py"})
+        continue
+    if sid == "qrwtya-session-keys":
+        # A3: the generated keyRing() format, one current key.
+        key = base64.urlsafe_b64encode(secrets.token_bytes(32)).decode().rstrip("=")
+        value = json.dumps([{"id": f"s{time.strftime('%Y%m%d', time.gmtime())}", "key": key}]) + "\n"
+    elif sid == "qrwtya-link-replay-keys":
         # Q06's ring: one line "<kid> <32 bytes base64url>"; the kid must not look like a development one.
         value = f"ka{time.strftime('%Y%m%d', time.gmtime())} {base64.urlsafe_b64encode(secrets.token_bytes(32)).decode().rstrip('=')}\n"
     else:

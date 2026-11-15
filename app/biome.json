@@ -3,6 +3,8 @@
 	"files": {
 		"includes": [
 			"src/modules/link-api/link-operations/**",
+			"src/modules/session-api/session/**",
+			"src/modules/account-api/my-links/**",
 			"test/**",
 			"vitest.config.ts",
 			"biome.json",
