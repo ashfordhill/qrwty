@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<title>QRWTY versions</title>
+<style>
+:root{color-scheme:light dark;--bg:#f6f6f3;--fg:#16181d;--muted:#575d69;--rule:#d9dad5;--card:#ffffff;--accent:#1d5fa8;--chip:#e9eef5}
+@media (prefers-color-scheme:dark){:root{--bg:#111318;--fg:#eceef2;--muted:#a3aab6;--rule:#2c3039;--card:#181b22;--accent:#8db8ef;--chip:#222a36}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+main{max-width:58rem;margin:0 auto;padding:24px 16px 48px}
+a{color:var(--accent)}
+h1{font-size:clamp(1.7rem,5vw,2.4rem);line-height:1.2;margin:.25rem 0 .75rem}
+h2{font-size:1.25rem;margin:2.5rem 0 .75rem;padding-bottom:.35rem;border-bottom:2px solid var(--fg)}
+.kicker{margin:0;color:var(--muted);font-size:.9rem;letter-spacing:.04em;text-transform:uppercase}
+.lede{font-size:1.08rem;max-width:44rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px;margin:1.25rem 0 0;padding:0;list-style:none}
+.cards li{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:14px 16px}
+.cards a{font-weight:650;font-size:1.05rem}
+.cards p{margin:.35rem 0 0;color:var(--muted);font-size:.93rem}
+ol.timeline{list-style:none;margin:0;padding:0;border-left:2px solid var(--rule)}
+ol.timeline li{position:relative;margin:0 0 1.1rem;padding-left:18px}
+ol.timeline li::before{content:"";position:absolute;left:-7px;top:.45rem;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.when{display:block;font:600 .85rem/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
+.what{font-weight:650}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--rule);border-radius:10px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:44rem;font-size:.92rem}
+th,td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--rule)}
+thead th{background:var(--chip)}
+tbody th{font-weight:650;width:11rem}
+tr:last-child td,tr:last-child th{border-bottom:0}
+.no{color:var(--muted)}
+code{font:.88em ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--chip);padding:.05em .3em;border-radius:4px;overflow-wrap:anywhere}
+footer{margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--rule);color:var(--muted);font-size:.88rem}
+</style>
+</head>
+<body>
+<main>
+<p class="kicker">qrwty.io · versions</p>
+<h1>What happened to QRWTY</h1>
+<p class="lede">QRWTY, a short-link and QR code service, became a test bed for Jeeves, a tool that
+generates backend code from a diagram. For two days in November 2026 two builds of the same service
+ran side by side: <strong>arm A</strong> with Jeeves, <strong>arm B</strong> without it. On
+2026-11-15 the owner wound both down. These pages keep what each one produced.</p>
+
+<ul class="cards">
+<li><a href="original/">The original landing page</a><p>The earlier qrwty.io page, before any of
+this. A static copy.</p></li>
+<li><a href="design/">The design prototype</a><p>Every screen and state of the planned interface,
+clickable. No backend behind it.</p></li>
+<li><a href="a/">Arm A, with Jeeves</a><p>The diagram, what Jeeves generated, the one slice written by
+hand, the gaps it found, and its one live deploy.</p></li>
+<li><a href="b/">Arm B, without Jeeves</a><p>B's staging at b.qrwty.io, recorded request by request
+before it was torn down.</p></li>
+</ul>
+
+<h2>Timeline</h2>
+<p>Times are UTC.</p>
+<ol class="timeline">
+<li><span class="when">2026-11-13</span><span class="what">The plan.</span> A public link and QR
+service: guest links that never expire, free and paid accounts, and a click recorded durably before
+every redirect. Two builds of it against the same frozen inputs, one with Jeeves and one without,
+each with a ledger of every model request. Cloud work stays within the Google Cloud trial credit
+and the Cloudflare free plan.</li>
+<li><span class="when">2026-11-14 05:20</span><span class="what">The shared inputs are frozen.</span>
+The contract, the product rules and an acceptance test suite both arms run (the neutral pack, later
+revised up to v1.6).</li>
+<li><span class="when">2026-11-14 06:00–09:15</span><span class="what">Arm A draws the backend in
+Jeeves</span> (revision 83: 16 tiles, 27 links, 14 modules) and exports it. An audit of what Jeeves
+can generate for it finds gaps, written up as Jeeves units QG01–QG20.</li>
+<li><span class="when">2026-11-14 09:18</span><span class="what">Arm B starts</span> from an empty
+repository: its own architecture, runtime, guest links, sessions and accounts, a redirect that
+publishes each click before answering, and abuse controls (B00–B06, done 2026-11-15 00:10).</li>
+<li><span class="when">2026-11-14 09:33 → 2026-11-15 06:07</span><span class="what">Jeeves's QG
+fixes.</span> 17 units change Jeeves's templates so generated code holds up in production: exact
+request bytes, a non-root image, database calls that settle while PostgreSQL stalls, Pub/Sub
+channels and loops, verified TLS, endpoints from the environment and more. Two reviews (QGR1, QGR2)
+check them.</li>
+<li><span class="when">2026-11-14 23:07</span><span class="what">qrwty.io changes hands.</span> The
+original landing page gives way to a placeholder on a new Cloudflare Worker.</li>
+<li><span class="when">2026-11-15 01:32</span><span class="what">One visual direction</span> is
+chosen in the owner's style, with a clickable prototype of every screen.</li>
+<li><span class="when">2026-11-15 04:22</span><span class="what">B goes live at b.qrwty.io</span>:
+Cloudflare in front of a Google load balancer, Cloud Run, Cloud SQL, Memorystore and Pub/Sub. Auth0
+sign-in follows at 05:57, click analytics at 10:56.</li>
+<li><span class="when">2026-11-15 06:10</span><span class="what">The freeze.</span> A's generator is
+fixed at Jeeves <code>4e87f97</code>. At 08:12 revision 84 is exported into A's repository: 2,926
+generated backend lines that build and start, with every product route answering 501.</li>
+<li><span class="when">2026-11-15 08:38–11:42</span><span class="what">A writes its first slice by
+hand</span>: durable guest link creation, 720 lines on top of the 2,925 generated lines it kept.</li>
+<li><span class="when">2026-11-15 11:34</span><span class="what">The wind-down.</span> The owner
+decides the run has taught Jeeves enough. B stops after analytics; A stops after the guest-link
+slice and one live deploy.</li>
+<li><span class="when">2026-11-15 11:42–12:12</span><span class="what">B is recorded, then torn
+down</span>, b.qrwty.io's records included.</li>
+<li><span class="when">2026-11-15 11:46–13:27</span><span class="what">A's one live deploy.</span>
+The generated app runs on Cloud Run, Cloud SQL, Memorystore and Pub/Sub for about an hour and a
+half, is probed, recorded and torn down (about USD 0.23). It finds five more Jeeves gaps.</li>
+<li><span class="when">2026-11-15 11:10–13:37</span><span class="what">Jeeves batch 3</span> fixes
+gaps A found (QG28–QG34), and its review finds no defect. The next Jeeves plan, drawn from both
+arms, can start.</li>
+<li><span class="when">2026-11-15</span><span class="what">This site.</span> The records go up on
+qrwty.io, and the results go in the repository's README.</li>
+</ol>
+
+<h2>What each version could do</h2>
+<div class="scroll">
+<table>
+<thead><tr><th></th><th>Original page</th><th>Design prototype</th><th>Arm A (Jeeves)</th><th>Arm B (no Jeeves)</th></tr></thead>
+<tbody>
+<tr><th>Make a short link</th><td>A PoC form on its own Worker API (not examined here)</td><td>Clicks through, simulated</td><td>Yes, through Link API's internal route only: guest links, replay-safe, checked with Web Risk. No public API yet</td><td>Yes, public API: guest links with a claim token</td></tr>
+<tr><th>Open a short link</th><td class="no">Not examined</td><td class="no">—</td><td class="no">No: the redirect stub answers 501</td><td>Yes: 302 once the click is durably published</td></tr>
+<tr><th>Sign in, claim, list my links</th><td class="no">No</td><td>Simulated</td><td class="no">No: Session API not written</td><td>Yes, with Auth0</td></tr>
+<tr><th>Click analytics</th><td>Scan counts in a PoC dashboard</td><td>Simulated, with CSV export</td><td class="no">No</td><td>Yes: aggregates and CSV</td></tr>
+<tr><th>Abuse checks</th><td class="no">No</td><td>Simulated states</td><td>Web Risk on create (Google's test URLs refused live)</td><td>Web Risk, abuse reports, operator blocks</td></tr>
+<tr><th>Billing and plans</th><td>Prices on the page</td><td>Simulated checkout</td><td class="no">No</td><td class="no">No: billing images built, never deployed</td></tr>
+<tr><th>User interface</th><td>Landing page and PoC dashboard</td><td>Every screen and state</td><td class="no">None</td><td class="no">None: the API and the edge's own pages</td></tr>
+<tr><th>Ran live</th><td>At qrwty.io until 2026-11-14</td><td class="no">No</td><td>Once, about 1.5 hours on Google Cloud, reached only from inside</td><td>About 8 hours at b.qrwty.io</td></tr>
+</tbody>
+</table>
+</div>
+
+<footer>
+<p>Static pages; nothing here calls out to another site. The numbers, with how each was counted,
+are in the repository's README and in its S02 evidence.</p>
+<p><a href="/">qrwty.io</a></p>
+</footer>
+</main>
+</body>
+</html>

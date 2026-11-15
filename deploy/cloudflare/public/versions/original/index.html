@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qrwty | Beautiful, Ownable QR Infrastructure</title>
+    <!-- S02 static copy: the Google Fonts links are left out (no external requests) and the
+         stylesheet is served beside this page. Without the icon font the icons are hidden. -->
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .material-symbols-outlined{display:none}
+      .s02-note{margin:0;padding:10px 16px;font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;background:#fff6d6;color:#3b2f00;border-bottom:1px solid #e0c96b}
+      .s02-note a{color:inherit}
+    </style>
+  </head>
+  <body data-theme="midnightBlue">
+    <p class="s02-note" role="note">
+      A static copy of the earlier qrwty.io landing page, served by the Worker
+      <code>qrwty-platform</code> until 2026-11-14. Fetched once on 2026-11-15 from that Worker's own
+      workers.dev address. Its scripts, its API and the Google icon font are left out, so the forms,
+      the dashboard and the QR studio do nothing here. <a href="../">Back to the versions</a>
+    </p>
+    <header class="topbar">
+      <div class="brand">qrwty</div>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#qr-studio">QR Studio</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#dashboard">Dashboard</a>
+      </nav>
+      <select id="themeSelect" aria-label="Theme selector">
+        <option value="midnightBlue">Midnight Blue</option>
+        <option value="cobaltWave">Cobalt Wave</option>
+        <option value="auroraInk">Aurora Ink</option>
+      </select>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="eyebrow">Dual mode from day one: SaaS + self-hosted license</p>
+        <h1>Design better QR experiences. Own your redirects and analytics.</h1>
+        <p>
+          Qrwty gives creators and teams beautiful QR styling, dynamic redirect control, and
+          scan analytics without locking everyone into one pricing model.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#dashboard">Launch MVP Dashboard</a>
+          <a class="button ghost" href="#waitlist">Join Waitlist</a>
+        </div>
+      </section>
+
+      <section id="features" class="cards">
+        <article>
+          <h2>QR Studio</h2>
+          <p>
+            Theme-driven dark UI inspired by terminal aesthetics. Build stylish, scannable
+            QR assets and prepare advanced art controls for v2.
+          </p>
+        </article>
+        <article>
+          <h2>Dynamic Redirect Engine</h2>
+          <p>
+            Print once, update destinations anytime. Redirect through your domain while
+            preserving campaign tracking.
+          </p>
+        </article>
+        <article>
+          <h2>AI Scanability Advisor</h2>
+          <p>
+            Get instant guidance on contrast and logo coverage so cool designs still scan in
+            real-world lighting.
+          </p>
+        </article>
+      </section>
+
+      <section id="pricing" class="pricing">
+        <h2>Pricing model built for ownership</h2>
+        <div class="grid">
+          <article>
+            <h3>Free</h3>
+            <p class="price">$0</p>
+            <ul>
+              <li>Static QR generation</li>
+              <li>Limited dynamic trials</li>
+              <li>Community support</li>
+            </ul>
+          </article>
+          <article>
+            <h3>Pro SaaS</h3>
+            <p class="price">$12/mo</p>
+            <ul>
+              <li>Dynamic redirects + analytics</li>
+              <li>Theme packs + templates</li>
+              <li>Custom short domain (higher tiers)</li>
+            </ul>
+          </article>
+          <article>
+            <h3>Self-host License</h3>
+            <p class="price">$149/yr or $499 lifetime</p>
+            <ul>
+              <li>Deploy on your own infra</li>
+              <li>Bring your own domain + data</li>
+              <li>Optional support add-on</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="dashboard" class="dashboard">
+        <h2>MVP Dashboard (PoC)</h2>
+        <div class="panel">
+          <form id="createLinkForm">
+            <label>Link title <input name="title" placeholder="Album gift for a friend" /></label>
+            <label>Destination URL <input required name="targetUrl" placeholder="https://example.com" /></label>
+            <button type="submit" class="button primary">Create Dynamic QR Link</button>
+          </form>
+          <div class="kpis">
+            <div><span id="kpiLinks">0</span><small>Links</small></div>
+            <div><span id="kpiScans">0</span><small>Scans</small></div>
+            <div><span id="kpiUnique">0</span><small>Unique</small></div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Short URL</th>
+                <th>Destination</th>
+                <th>Scans</th>
+                <th>Studio &amp; export</th>
+              </tr>
+            </thead>
+            <tbody id="linksTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="qr-studio" class="qr-studio">
+        <h2 class="qr-studio__title">
+          <span class="material-symbols-outlined" aria-hidden="true">palette</span>
+          QR Studio
+        </h2>
+        <p class="qr-studio__lead">
+          Ultra-configurable, styled QR codes that always encode your <strong>qrwty short link</strong> — change Spotify,
+          pages, or campaigns later without reprinting.
+        </p>
+        <p id="studioDataHint" class="qr-studio__hint"></p>
+
+        <div class="studio-toolbar">
+          <label class="studio-field studio-field--grow">
+            <span>Choose dynamic link</span>
+            <select id="studioLinkSelect" aria-label="Short link for QR encoding"></select>
+          </label>
+        </div>
+
+        <div class="studio-preview-row">
+          <div id="qrPreviewMount" class="qr-preview-mount"></div>
+          <div class="studio-side-controls">
+            <label class="studio-field">
+              <span>Export size (square)</span>
+              <input type="range" id="studioExportSize" min="256" max="4096" step="64" value="512" />
+              <span id="studioExportLabel" class="studio-range-value">512×512</span>
+            </label>
+            <label class="studio-field">
+              <span>Quiet zone (margin)</span>
+              <input type="range" id="studioMargin" min="4" max="28" step="2" value="12" />
+              <span id="studioMarginLabel" class="studio-range-value">12</span>
+            </label>
+            <div class="studio-dl-buttons">
+              <button type="button" class="button primary" id="studioDownloadPng">
+                <span class="material-symbols-outlined" aria-hidden="true">download</span>
+                PNG
+              </button>
+              <button type="button" class="button" id="studioDownloadSvg">
+                <span class="material-symbols-outlined" aria-hidden="true">image</span>
+                SVG
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <p class="studio-subhead">Templates</p>
+        <div id="studioCategoryBar" class="studio-chips" role="tablist" aria-label="Template categories"></div>
+        <div id="studioTemplateGrid" class="template-grid"></div>
+
+        <button
+          type="button"
+          class="button ghost studio-advanced-btn"
+          id="studioAdvancedToggle"
+          aria-expanded="false"
+          aria-controls="studioAdvancedPanel"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">tune</span>
+          Advanced: shapes, error correction, flat colors
+        </button>
+        <div id="studioAdvancedPanel" class="studio-advanced" hidden>
+          <div class="studio-advanced-grid">
+            <label class="studio-field">
+              <span>Error correction (override)</span>
+              <select id="studioEcOverride">
+                <option value="">Template default</option>
+                <option value="L">L — lowest (~7%)</option>
+                <option value="M">M — ~15%</option>
+                <option value="Q">Q — ~25%</option>
+                <option value="H">H — highest (~30%, best for logos)</option>
+              </select>
+            </label>
+            <label class="studio-field studio-field--check">
+              <input type="checkbox" id="studioFlatColors" />
+              <span>Flat foreground / background (override gradients)</span>
+            </label>
+            <label class="studio-field">
+              <span>Foreground</span>
+              <input type="color" id="studioFg" value="#4a7bff" />
+            </label>
+            <label class="studio-field">
+              <span>Background</span>
+              <input type="color" id="studioBg" value="#081026" />
+            </label>
+            <label class="studio-field">
+              <span>Dot style</span>
+              <select id="studioDotsType">
+                <option value="">Template default</option>
+                <option value="square">Square</option>
+                <option value="dots">Dots</option>
+                <option value="rounded">Rounded</option>
+                <option value="extra-rounded">Extra rounded</option>
+                <option value="classy">Classy</option>
+                <option value="classy-rounded">Classy rounded</option>
+              </select>
+            </label>
+            <label class="studio-field">
+              <span>Corner frame</span>
+              <select id="studioCornersSquare">
+                <option value="">Template default</option>
+                <option value="square">Square</option>
+                <option value="dot">Dot</option>
+                <option value="rounded">Rounded</option>
+                <option value="extra-rounded">Extra rounded</option>
+                <option value="classy">Classy</option>
+                <option value="classy-rounded">Classy rounded</option>
+              </select>
+            </label>
+            <label class="studio-field">
+              <span>Corner dot</span>
+              <select id="studioCornersDot">
+                <option value="">Template default</option>
+                <option value="square">Square</option>
+                <option value="dot">Dot</option>
+                <option value="rounded">Rounded</option>
+                <option value="extra-rounded">Extra rounded</option>
+                <option value="classy">Classy</option>
+                <option value="classy-rounded">Classy rounded</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section id="ai" class="panel">
+        <h2>AI Scanability Advisor</h2>
+        <form id="advisorForm">
+          <label>Foreground <input name="foreground" value="#12224f" /></label>
+          <label>Background <input name="background" value="#d6e4ff" /></label>
+          <label>Logo coverage (0..1) <input name="logoCoverage" value="0.18" /></label>
+          <label>Error correction
+            <select name="errorCorrection">
+              <option>M</option>
+              <option>Q</option>
+              <option>H</option>
+            </select>
+          </label>
+          <button type="submit" class="button primary">Analyze</button>
+        </form>
+        <pre id="advisorResult"></pre>
+      </section>
+
+      <section id="waitlist" class="panel">
+        <h2>Join waitlist / printing partner pilot</h2>
+        <form id="waitlistForm">
+          <label>Email <input type="email" required name="email" placeholder="you@example.com" /></label>
+          <label>Use case <input name="useCase" placeholder="Music gift cards, event handouts, product labels" /></label>
+          <button type="submit" class="button primary">Join</button>
+        </form>
+        <p id="waitlistStatus"></p>
+      </section>
+    </main>
+
+    <footer>
+      <p>Qrwty PoC. Inspired by terminal-like theme systems and ownership-first licensing.</p>
+    </footer>
+
+  </body>
+</html>

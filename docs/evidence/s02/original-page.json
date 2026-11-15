@@ -1,0 +1,31 @@
+{
+ "source": "Worker qrwty-platform, fetched once 2026-11-15 ~13:38Z from its own workers.dev address (https://qrwty-platform.<account subdomain>.workers.dev; the subdomain is left out)",
+ "fetched": {
+  "/": {
+   "status": 200,
+   "bytes": 11694,
+   "sha256": "b146e8545b730924b5f6a5b32d3c39fdeb465b37ab254bf0b4f4bcbe7eb86bd6",
+   "note": "the same bytes S01 recorded at qrwty.io on 2026-11-14"
+  },
+  "/styles.css": {
+   "status": 200,
+   "bytes": 8850,
+   "sha256": "e54ddf5d996092324cf7576a6c35c05cb399d8aaa1182152f53c231e96e57ea7",
+   "publishedAs": "versions/original/styles.css, unchanged"
+  },
+  "/app.js": {
+   "status": 200,
+   "bytes": 6769,
+   "sha256": "c8ea75aede575d60632c9c783d5e4211ddc97de5d4a33088cf230f7b41e5347f",
+   "publishedAs": "not published: it calls the Worker's live API (/api/links, /api/waitlist, ...) and imports qr-studio.js"
+  }
+ },
+ "editsToIndexHtml": [
+  "removed the two preconnect links and the Google Fonts stylesheet link (external requests)",
+  "the stylesheet link /styles.css became styles.css (served beside the page)",
+  "added a <style> that hides the icon-font spans and styles a note",
+  "added the note at the top of <body> saying what this copy is and leaves out",
+  "removed <script src=\"/app.js\" type=\"module\">"
+ ],
+ "serviceBinding": "not used: the static copy needs no binding and no change to qrwty-platform"
+}

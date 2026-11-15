@@ -1,0 +1,22 @@
+{
+	"release": "b07-3",
+	"builtAt": "2026-11-15T08:00:23.164Z",
+	"source": {
+		"commit": "945092e1d3b6",
+		"dirty": true
+	},
+	"registry": "us-central1-docker.pkg.dev/<project>/qrwtyb",
+	"images": {
+		"session-api": "sha256:d39101bd48f83f7e5f4f2c7f2a461669e58dccd9e65e6c238dd4f946c1ac6775",
+		"link-api": "sha256:2eac54002f4a70afc017c1760d0233f8ce39c679cbfde78056981740fe8571f6",
+		"redirect": "sha256:2a9bc27dbfeaa7106792c29334e5dd85365a8f6d3ff51199cb227c68fca1590e",
+		"account-api": "sha256:97821b56fe352bc7e2f7d8f5f43b10a3dba9c7d5ed3b47605b21f8bb8c46599b",
+		"billing-api": "sha256:34b501e398b8348a0627fc12520dbc61031ac0bdd454e29a17824de1e35d8672",
+		"billing-worker": "sha256:89e755c007f0c36e337f8eca851924226ce0a2142338b3fe4bac25bfe7697e5b",
+		"analytics-worker": "sha256:84599f6669b827a22efa48780a627419bbc61bd4ab86240b80496bf0eaa7d1af",
+		"pipeline-guard": "sha256:9f5b6cb1fbd231b54ad5cf272cc5d1128426fa28da91b90493fd2b8b5f2af0e6",
+		"migrate": "sha256:9b3f4ead50be83e8b19a57cf7d4464e62d08afa2f00fbf798e9abc2c237df453",
+		"db-bootstrap": "sha256:dd8838099d71b286931031adb8a75ee45e81c99735fb6fe97d129c863dc0de69",
+		"edge": "sha256:6eb562694bd6de2fe1cb0eb78f2c26c6e3324ab22242cc7af390c9e4a8413bc9"
+	}
+}

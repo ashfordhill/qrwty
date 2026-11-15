@@ -1,0 +1,219 @@
+{
+ "method": "count-tree.mts: Git objects only; JS/TS by source-loc-v2's pinned parser (codeLines) and eligibility (exclusionReason) from the frozen runner copy of Jeeves 4e87f97; other files nonblank physical lines, comments kept",
+ "b": {
+  "commit": "f2fb3ce605357dde2b696781edb262bf2753437a",
+  "backendSource": {
+   "files": 77,
+   "lines": 9361,
+   "byArea": {
+    "abuse": {
+     "files": 4,
+     "lines": 476
+    },
+    "analytics": {
+     "files": 9,
+     "lines": 1893
+    },
+    "edge": {
+     "files": 4,
+     "lines": 513
+    },
+    "links": {
+     "files": 12,
+     "lines": 1181
+    },
+    "platform": {
+     "files": 18,
+     "lines": 1821
+    },
+    "process-entry-points": {
+     "files": 13,
+     "lines": 985
+    },
+    "redirect": {
+     "files": 6,
+     "lines": 719
+    },
+    "sessions-and-accounts": {
+     "files": 11,
+     "lines": 1773
+    }
+   }
+  },
+  "configurationSourceExcludedBySourceLocV2": {
+   "files": 3,
+   "lines": 1752,
+   "paths": [
+    "app/src/platform/config/keyring.ts",
+    "app/src/platform/config/registry.ts",
+    "app/src/platform/config/validate.ts"
+   ],
+   "why": "source-loc-v2 excludes any path with a directory named config (exclusionReason: configuration-or-build)"
+  },
+  "tests": {
+   "files": 49,
+   "lines": 11058,
+   "appTest": {
+    "files": 44,
+    "lines": 10719
+   },
+   "srcTestFiles": {
+    "files": 5,
+    "lines": 339
+   }
+  },
+  "sql": {
+   "files": 13,
+   "lines": 476
+  },
+  "infrastructure": {
+   "files": 78,
+   "lines": 13193,
+   "byFolder": {
+    "infra/gcp": {
+     "files": 59,
+     "lines": 5636
+    },
+    "infra/inventory": {
+     "files": 6,
+     "lines": 3812
+    },
+    "infra/local": {
+     "files": 13,
+     "lines": 3745
+    }
+   },
+   "byExtension": {
+    ".conf": {
+     "files": 2,
+     "lines": 88
+    },
+    ".example": {
+     "files": 1,
+     "lines": 45
+    },
+    ".hcl": {
+     "files": 3,
+     "lines": 124
+    },
+    ".json": {
+     "files": 20,
+     "lines": 4895
+    },
+    ".mjs": {
+     "files": 14,
+     "lines": 2894
+    },
+    ".sh": {
+     "files": 14,
+     "lines": 517
+    },
+    ".tf": {
+     "files": 15,
+     "lines": 1757
+    },
+    ".ts": {
+     "files": 6,
+     "lines": 2177
+    },
+    ".yaml": {
+     "files": 2,
+     "lines": 686
+    },
+    "Dockerfile": {
+     "files": 1,
+     "lines": 10
+    }
+   },
+   "withoutJson": {
+    "files": 58,
+    "lines": 8298
+   }
+  },
+  "appBuildAndContainer": {
+   "files": 5,
+   "lines": 130
+  },
+  "ui": {
+   "files": 1,
+   "lines": 0
+  }
+ },
+ "likeForLike": {
+  "B (B03, 4961ac2)": {
+   "createCode": {
+    "app/src/links/create.ts": 170,
+    "app/src/links/destination.ts": 168,
+    "app/src/links/idempotency.ts": 31,
+    "app/src/links/link-errors.ts": 28,
+    "app/src/links/model.ts": 34,
+    "app/src/links/routes.ts": 80,
+    "app/src/links/tokens.ts": 97
+   },
+   "createCodeLines": 608,
+   "sql": {
+    "app/migrations/links/0002_guest_links.sql": 59
+   },
+   "guestSessionAndEdgeFacade": {
+    "app/src/session/guest.ts": 67,
+    "app/src/session/forward.ts": 65,
+    "app/src/session/routes.ts": 104,
+    "app/src/edge/routing.ts": 106,
+    "app/src/platform/http/edge-auth.ts": 56
+   },
+   "guestSessionAndEdgeFacadeLines": 398,
+   "laterWebRiskAdapter (B06, f2fb3ce)": {
+    "app/src/links/reputation.ts": 139
+   }
+  },
+  "A (Q06; C from the committed runner, docs/evidence/q06/loc/summary.json)": {
+   "C": 720,
+   "sqlWritten": 286,
+   "sqlNote": "link-api-link-operations.sql: 303 nonblank lines at a6f982b (unchanged since Q06) minus its 17-line generated header",
+   "webRiskAdapter": 53
+  },
+  "mapping": "A's C is Link API's guest create (the stub body and link-operations/, 10 files). B's counterpart is the seven app/src/links/ files B03 added, counted at B03's commit. B03's guest session and edge forwarding have no counterpart in A, which never wrote Session API (Q07). A's slice includes a Web Risk check that B added later, in B06."
+ },
+ "a": {
+  "commit": "a6f982bf7dc7f017efbb0187e76580dd8b42d571",
+  "rootInfra": {
+   "files": 30,
+   "lines": 2558,
+   "byFolder": {
+    "infra/README.md": {
+     "files": 1,
+     "lines": 35
+    },
+    "infra/app-overlay": {
+     "files": 3,
+     "lines": 499
+    },
+    "infra/gcp": {
+     "files": 15,
+     "lines": 1134
+    },
+    "infra/local": {
+     "files": 8,
+     "lines": 499
+    },
+    "infra/q12a": {
+     "files": 3,
+     "lines": 391
+    }
+   },
+   "withoutAppOverlay": {
+    "files": 27,
+    "lines": 2059
+   },
+   "withoutAppOverlayOrJson": {
+    "files": 25,
+    "lines": 1719
+   },
+   "note": "infra/app-overlay/ is installed into app/ (install-overlay.py), so app/'s own counts already hold it"
+  },
+  "tests": {
+   "files": 11,
+   "lines": 1867
+  }
+ }
+}

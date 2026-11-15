@@ -1,0 +1,1449 @@
+{
+ "run": "qrwty-r1-20261114",
+ "title": "Arm A's one live deploy",
+ "lede": "The Jeeves-generated QRWTY backend (baseline 33d50e9 plus Q06 ee186c1) on real Cloud Run, Cloud SQL, Memorystore for Valkey and Pub/Sub in us-central1, with Auth0 as the issuer: what ran, what each probe sent and got back, and the gaps only the cloud showed. Everything here was torn down afterwards.",
+ "facts": {
+  "Generator": "Jeeves 4e87f97 (frozen)",
+  "App": "33d50e9 + Q06 ee186c1 + Q13 AG-13 fix",
+  "Region": "us-central1",
+  "Processes": "5 Cloud Run services, 1 worker pool, 1 migration job",
+  "Stores": "Cloud SQL PG 17 db-f1-micro; 2 \u00d7 Valkey shared-core-nano",
+  "Issuer": "Auth0 (qrwtya-api audience)",
+  "Estimated rate": "USD 0.1805/h (USD 131.74/month)",
+  "Probes": "P01\u2013P12 (see results)"
+ },
+ "timeline": [
+  {
+   "t": "11:44",
+   "what": "Start (host clock); foreign Jeeves context noted and ignored. Q04b: validate.sh exits 0 after tofu fmt; IaC additions (I-5, I-9, I-10)"
+  },
+  {
+   "t": "11:45\u201312:00",
+   "what": "Budget read, inventory empty, prices requoted; Auth0 qrwtya-api and qrwtya-web created; images built and pushed"
+  },
+  {
+   "t": "12:00\u201312:11",
+   "what": "Foundation plan applied: Memorystore created 12:00:31, Cloud SQL 12:01:07 to 12:11:50; the apply ends in errors on Memorystore's empty discovery endpoints (I-2)"
+  },
+  {
+   "t": "12:12\u201312:20",
+   "what": "Fixes I-2 and I-3; 15 credentials bootstrapped; migration job; the first two executions time out (I-4); fixed; three executions pass (12:18:53\u201312:20:34)"
+  },
+  {
+   "t": "12:21",
+   "what": "Services and worker pool applied; every revision ready with every probe ok by 12:21:54"
+  },
+  {
+   "t": "12:27\u201312:47",
+   "what": "Probes: ingress and TLS, guest create 503 without a Web Risk credential, Pub/Sub ACK, dead letters and archive, NAT egress timing, Auth0 guard"
+  },
+  {
+   "t": "12:48\u201312:55",
+   "what": "P11 refused revision; image 2 rolled out at 12:50 under 1,501 requests with no failure; guest create 201 in Cloud SQL; Web Risk test URLs 422"
+  },
+  {
+   "t": "12:56\u201313:02",
+   "what": "Worker pool 1 \u2192 2 \u2192 1; findings I-7 and I-8 fixed; final plan reports no changes; inventory captured"
+  },
+  {
+   "t": "13:06",
+   "what": "Record captured; teardown starts (below)"
+  }
+ ],
+ "services": [
+  {
+   "name": "qrwtya-redirect-service",
+   "kind": "Cloud Run service, min 1",
+   "ingress": "all; IAM required",
+   "revisions": [
+    "redirect-service-00001-4qz (image 1)",
+    "redirect-service-00002-k6c (image 2)"
+   ],
+   "image": "@sha256:fa158f69\u2026 (index)",
+   "health": "ready; probes ok; 403 to unauthenticated callers"
+  },
+  {
+   "name": "qrwtya-session-api",
+   "kind": "Cloud Run service",
+   "ingress": "all; IAM required",
+   "revisions": [
+    "session-api-00001-sg5",
+    "session-api-00002-rpx (P11, refused, deleted)",
+    "session-api-00003-hnt"
+   ],
+   "image": "@sha256:fa158f69\u2026",
+   "health": "ready; probes ok"
+  },
+  {
+   "name": "qrwtya-link-api",
+   "kind": "Cloud Run service",
+   "ingress": "internal; IAM off",
+   "revisions": [
+    "link-api-00001-mvf",
+    "link-api-00002-fq6"
+   ],
+   "image": "@sha256:fa158f69\u2026",
+   "health": "ready; guest create 201"
+  },
+  {
+   "name": "qrwtya-account-api",
+   "kind": "Cloud Run service",
+   "ingress": "internal; IAM off",
+   "revisions": [
+    "account-api-00001-ddg",
+    "account-api-00002-5ch"
+   ],
+   "image": "@sha256:fa158f69\u2026",
+   "health": "ready; sign-in Required (401 without a token)"
+  },
+  {
+   "name": "qrwtya-billing-api",
+   "kind": "Cloud Run service",
+   "ingress": "internal; IAM off",
+   "revisions": [
+    "billing-api-00001-4jd",
+    "billing-api-00002-5sm"
+   ],
+   "image": "@sha256:fa158f69\u2026",
+   "health": "ready"
+  },
+  {
+   "name": "qrwtya-analytics-worker",
+   "kind": "Cloud Run worker pool",
+   "ingress": "none (no port)",
+   "revisions": [
+    "analytics-worker-00001-x2p",
+    "analytics-worker-00002-6ds"
+   ],
+   "image": "@sha256:fa158f69\u2026",
+   "health": "consuming; 1 \u2192 2 \u2192 1 instances"
+  },
+  {
+   "name": "qrwtya-migrate",
+   "kind": "Cloud Run job",
+   "ingress": "none",
+   "revisions": [
+    "executions 8g4gt, hxs7p (together), m7k7g"
+   ],
+   "image": "@sha256:a99d60c7\u2026 then fa158f69\u2026",
+   "health": "exit 0 \u00d7 3 after I-4"
+  }
+ ],
+ "probes": [
+  {
+   "id": "P01",
+   "title": "Budget and inventory before anything is created",
+   "result": "passed",
+   "summary": "The project's one budget (USD 50 a month, alerts at 20 %, 50 % and 100 %: USD 10, 25 and 50, credits excluded, this project only) was read and reused; none was created. No qrwtya- resource and no click-events name existed. Prices were requoted from the Cloud Billing Catalog before the first apply (records/p01-inventory-before.txt, cost-quote.json)."
+  },
+  {
+   "id": "P02",
+   "title": "Push the image and pin it by digest",
+   "result": "passed",
+   "summary": "Two images were pushed to qrwtya-images: the committed baseline plus Q06 (sha256:a99d60c7\u202687a99, built from git archive of 1d79868) and the same app with Q13's AG-13 fix (sha256:fa158f69\u2026fe989). Each release ran one digest in every service, the worker pool and the migration job. Cloud Run records the platform manifest the index resolves to (\u2026e3e6d3f9ced0 and \u2026cbcc295c049f)."
+  },
+  {
+   "id": "P03",
+   "title": "Apply network, stores, Pub/Sub, secrets and IAM",
+   "result": "passed after fixes",
+   "summary": "The saved plan's 93 resources were created in 11 min (Cloud SQL 10 min 43 s, each Memorystore instance about 5.5 min), but the apply ended in errors: CLUSTER_DISABLED Memorystore reports no discovery endpoints, so 24 IAM bindings and the outputs could not be evaluated (finding I-2). After the fixes the configuration converged: a final plan reports no changes. Cloud SQL has only a private address and requires trusted client certificates; both caches are CLUSTER_DISABLED, SERVER_AUTHENTICATION, AUTH_DISABLED; the analytics subscription reads back ack 60 s, retry 1\u201310 s, dead letter after 100, retention 31 days, no expiry."
+  },
+  {
+   "id": "P04",
+   "title": "Bootstrap credentials without printing them",
+   "result": "passed",
+   "summary": "15 credentials (14 database credentials and the link-replay-keys ring) were generated locally and piped to Secret Manager; the postgres admin's password was set through the SQL Admin API from the same value. No value is in the plan, the state, a log or this record. The two Memorystore CA versions are public certificates in state."
+  },
+  {
+   "id": "P05",
+   "title": "Migrations as a release job with a non-superuser admin",
+   "result": "passed after fixes",
+   "summary": "The first two executions timed out connecting (the job had no VPC egress to the private-IP instance: finding I-4). After the fix, two executions started together: one applied every template migration, the other waited on the advisory lock and applied only the module SQL; a third applied no template migration. All exit 0. The admin (postgres) is CREATEDB CREATEROLE, not superuser, and has no CONNECT on the four application databases; PUBLIC has none; Link API's login can CREATE in no schema; the never-delete trigger refuses a DELETE (QRW10).",
+   "steps": [
+    {
+     "at": "12:53:41.323",
+     "step": "server",
+     "request": "SELECT version() AS version, current_user, (SELECT ssl FROM pg_stat_ssl WHERE pid = pg_backend_pid()) AS backend_ssl, inet_server_addr() IS NULL AS unix_socket",
+     "response": "[{\"backend_ssl\": false, \"current_user\": \"postgres\", \"unix_socket\": true, \"version\": \"PostgreSQL 17.11 on x86_64-pc-linux-gnu, compiled by Debian clang version 12.0.1, 64-bit\"}]",
+     "ms": 14.7
+    },
+    {
+     "at": "12:53:41.327",
+     "step": "admin role",
+     "request": "SELECT rolname, rolsuper, rolcreatedb, rolcreaterole FROM pg_roles WHERE rolname = 'postgres'",
+     "response": "[{\"rolcreatedb\": true, \"rolcreaterole\": true, \"rolname\": \"postgres\", \"rolsuper\": false}]",
+     "ms": 4.7
+    },
+    {
+     "at": "12:53:41.335",
+     "step": "databases",
+     "request": "SELECT datname, pg_get_userbyid(datdba) AS owner, datacl::text AS acl, has_database_privilege('postgres', datname, 'CONNECT') AS admin_connect, has_database_privilege('public', datname, 'CONNECT') AS public_connect FROM pg_database WHERE NOT datistemplate ORDER BY datname",
+     "response": "[{\"acl\": null, \"admin_connect\": true, \"datname\": \"cloudsqladmin\", \"owner\": \"cloudsqladmin\", \"public_connect\": true}, {\"acl\": \"{o_analytics=CTc/o_analytics,r_analytics__account_api=c/o_analytics,r_analytics__analytics_worker=c/o_analytics}\", \"admin_connect\": false, \"datname\": \"d_analytics\", \"owner\": \"o_analytics\", \"public_connect\": false}, {\"acl\": \"{o_billing=CTc/o_billing,r_billing__billing_api=c/o_billing}\", \"admin_connect\": false, \"datname\": \"d_billing\", \"owner\": \"o_billing\", \"public_connect\": false}, {\"acl\": \"{o_links=CTc/o_links,r_links__account_api=c/o_links,r_links__link_api=c/o_links,r_links__redirect_service=c/o_links}\", \"admin_connect\": false, \"datname\": \"d_links\", \"owner\": \"o_links\", \"public_connect\": false}, {\"acl\": \"{o_sessions=CTc/o_sessions,r_sessions__session_api=c/o_sessions}\", \"admin_connect\": false, \"datname\": \"d_sessions\", \"owner\": \"o_sessions\", \"public_connect\": false",
+     "ms": 8.1
+    },
+    {
+     "at": "12:53:41.344",
+     "step": "application roles",
+     "request": "SELECT rolname, rolsuper, rolcreatedb, rolcreaterole, rolinherit FROM pg_roles WHERE rolname ~ '^(o|r|i[ok]?)_' ORDER BY rolname",
+     "response": "[{\"rolcreatedb\": false, \"rolcreaterole\": false, \"rolinherit\": true, \"rolname\": \"ik_identity\", \"rolsuper\": false}, {\"rolcreatedb\": false, \"rolcreaterole\": false, \"rolinherit\": true, \"rolname\": \"io_identity\", \"rolsuper\": false}, {\"rolcreatedb\": false, \"rolcreaterole\": false, \"rolinherit\": true, \"rolname\": \"o_analytics\", \"rolsuper\": false}, {\"rolcreatedb\": false, \"rolcreaterole\": false, \"rolinherit\": true, \"rolname\": \"o_billing\", \"rolsuper\": false}, {\"rolcreatedb\": false, \"rolcreaterole\": false, \"rolinherit\": true, \"rolname\": \"o_links\", \"rolsuper\": false}, {\"rolcreatedb\": false, \"rolcreaterole\": false, \"rolinherit\": true, \"rolname\": \"o_sessions\", \"rolsuper\": false}, {\"rolcreatedb\": false, \"rolcreaterole\": false, \"rolinherit\": true, \"rolname\": \"r_analytics__account_api\", \"rolsuper\": false}, {\"rolcreatedb\": false, \"rolcreaterole\": false, \"rolinherit\": true, \"rolname\": \"r_analytics__analytics_",
+     "ms": 8.8
+    },
+    {
+     "at": "12:53:41.435",
+     "step": "link-api login: CREATE on any schema",
+     "request": "SELECT n.nspname, has_schema_privilege(current_user, n.nspname, 'CREATE') AS can_create FROM pg_namespace n WHERE n.nspname !~ '^pg_' AND n.nspname <> 'information_schema' ORDER BY 1",
+     "response": "[{\"can_create\": false, \"nspname\": \"m_link_api_abuse_and_moderation\"}, {\"can_create\": false, \"nspname\": \"m_link_api_link_operations\"}, {\"can_create\": false, \"nspname\": \"public\"}, {\"can_create\": false, \"nspname\": \"published\"}]",
+     "ms": 4
+    },
+    {
+     "at": "12:53:41.440",
+     "step": "link-api login: product migrations",
+     "request": "SELECT version, name FROM m_link_api_link_operations.product_migrations ORDER BY version",
+     "response": "[{\"name\": \"Q06: links, versions, claim proofs, idempotency records\", \"version\": 1}]",
+     "ms": 5.4
+    },
+    {
+     "at": "12:53:41.476",
+     "step": "links in Cloud SQL",
+     "request": "SELECT slug, destination, state, version, owner_subject IS NULL AS guest, created_at, (SELECT count(*)::int FROM m_link_api_link_operations.link_claims c WHERE c.link_id = l.id) AS claims FROM m_link_api_link_operations.links l ORDER BY created_at",
+     "response": "[{\"claims\": 1, \"created_at\": \"2026-11-15T12:52:04.457Z\", \"destination\": \"https://example.com/qrwty-q13\", \"guest\": true, \"slug\": \"6eC1JE3lwq\", \"state\": \"active\", \"version\": 1}]",
+     "ms": 5.8
+    },
+    {
+     "at": "12:53:41.479",
+     "step": "idempotency records",
+     "request": "SELECT count(*)::int AS records FROM m_link_api_link_operations.idempotency_records",
+     "response": "[{\"records\": 1}]",
+     "ms": 1.6
+    },
+    {
+     "at": "12:53:41.490",
+     "step": "link-api login: DELETE a link (trigger refuses)",
+     "request": "DELETE FROM m_link_api_link_operations.links WHERE false OR slug = (SELECT slug FROM m_link_api_link_operations.links LIMIT 1)",
+     "response": "{\"error\": \"QRW10 a link is a permanent tombstone: set its state to deleted\"}",
+     "ms": 11.9
+    },
+    {
+     "at": "12:18:53.398",
+     "step": "migrate",
+     "request": "",
+     "response": "{\"event\": \"profile-ok\", \"level\": \"info\", \"process\": \"migrate\", \"secrets\": 14}",
+     "ms": null
+    },
+    {
+     "at": "12:18:54.503",
+     "step": "migrate",
+     "request": "",
+     "response": "Applied infra/postgres/analytics/000-foundation.sql",
+     "ms": null
+    },
+    {
+     "at": "12:18:54.690",
+     "step": "migrate",
+     "request": "",
+     "response": "Applied infra/postgres/billing/000-foundation.sql",
+     "ms": null
+    },
+    {
+     "at": "12:18:54.981",
+     "step": "migrate",
+     "request": "",
+     "response": "Applied infra/postgres/links/000-foundation.sql",
+     "ms": null
+    },
+    {
+     "at": "12:18:53.407",
+     "step": "migrate",
+     "request": "",
+     "response": "{\"event\": \"profile-ok\", \"level\": \"info\", \"process\": \"migrate\", \"secrets\": 14}",
+     "ms": null
+    },
+    {
+     "at": "12:18:56.044",
+     "step": "migrate",
+     "request": "",
+     "response": "Migrations current; setup-only owners and exact runtime credentials preserved.",
+     "ms": null
+    }
+   ]
+  },
+  {
+   "id": "P06",
+   "title": "Five services and the worker pool start on managed stores",
+   "result": "passed",
+   "summary": "Every revision became ready within 12 s of the apply. Each process logged profile-ok, then every probe ok: SELECT 1 over the Cloud SQL socket, PING over verify-full TLS to its Memorystore instance (no TLS servername needed: the certificate carries IP SANs), the Pub/Sub topic or subscription exists.",
+   "steps": [
+    {
+     "at": "12:21:44.616",
+     "step": "analytics-worker",
+     "request": "analytics-worker-00001-x2p",
+     "response": "{\"event\": \"profile-ok\", \"level\": \"info\", \"process\": \"analytics-worker\", \"secrets\": 1}",
+     "ms": null
+    },
+    {
+     "at": "12:21:44.674",
+     "step": "redirect-service",
+     "request": "redirect-service-00001-4qz",
+     "response": "{\"event\": \"profile-ok\", \"level\": \"info\", \"process\": \"redirect-service\", \"secrets\": 2}",
+     "ms": null
+    },
+    {
+     "at": "12:21:45.431",
+     "step": "billing-api",
+     "request": "billing-api-00001-4jd",
+     "response": "{\"event\": \"profile-ok\", \"level\": \"info\", \"process\": \"billing-api\", \"secrets\": 1}",
+     "ms": null
+    },
+    {
+     "at": "12:21:45.501",
+     "step": "session-api",
+     "request": "session-api-00001-sg5",
+     "response": "{\"event\": \"profile-ok\", \"level\": \"info\", \"process\": \"session-api\", \"secrets\": 1}",
+     "ms": null
+    },
+    {
+     "at": "12:21:45.647",
+     "step": "link-api",
+     "request": "link-api-00001-mvf",
+     "response": "{\"event\": \"profile-ok\", \"level\": \"info\", \"process\": \"link-api\", \"secrets\": 3}",
+     "ms": null
+    },
+    {
+     "at": "12:21:46.224",
+     "step": "analytics-worker",
+     "request": "analytics-worker-00001-x2p",
+     "response": "{\"check\": \"SELECT 1\", \"client\": \"analytics\", \"event\": \"probe\", \"kind\": \"database\", \"level\": \"info\", \"result\": \"ok\", \"tile\": \"analytics-worker\"}",
+     "ms": null
+    },
+    {
+     "at": "12:21:46.605",
+     "step": "analytics-worker",
+     "request": "analytics-worker-00001-x2p",
+     "response": "{\"check\": \"the Pub/Sub subscription exists\", \"client\": \"click-events--analytics-worker\", \"event\": \"probe\", \"kind\": \"queue\", \"level\": \"info\", \"result\": \"ok\", \"tile\": \"analytics-worker\"}",
+     "ms": null
+    },
+    {
+     "at": "12:21:46.607",
+     "step": "analytics-worker",
+     "request": "analytics-worker-00001-x2p",
+     "response": "Application ready",
+     "ms": null
+    },
+    {
+     "at": "12:21:46.671",
+     "step": "redirect-service",
+     "request": "redirect-service-00001-4qz",
+     "response": "{\"check\": \"the Pub/Sub topic exists\", \"client\": \"click-events\", \"event\": \"probe\", \"kind\": \"queue\", \"level\": \"info\", \"result\": \"ok\", \"tile\": \"redirect-service\"}",
+     "ms": null
+    },
+    {
+     "at": "12:21:46.853",
+     "step": "redirect-service",
+     "request": "redirect-service-00001-4qz",
+     "response": "{\"check\": \"PING\", \"client\": \"hot-routes\", \"event\": \"probe\", \"kind\": \"cache\", \"level\": \"info\", \"result\": \"ok\", \"tile\": \"redirect-service\"}",
+     "ms": null
+    },
+    {
+     "at": "12:21:47.031",
+     "step": "redirect-service",
+     "request": "redirect-service-00001-4qz",
+     "response": "{\"check\": \"SELECT 1\", \"client\": \"links\", \"event\": \"probe\", \"kind\": \"database\", \"level\": \"info\", \"result\": \"ok\", \"tile\": \"redirect-service\"}",
+     "ms": null
+    },
+    {
+     "at": "12:21:47.151",
+     "step": "session-api",
+     "request": "session-api-00001-sg5",
+     "response": "{\"check\": \"SELECT 1\", \"client\": \"sessions\", \"event\": \"probe\", \"kind\": \"database\", \"level\": \"info\", \"result\": \"ok\", \"tile\": \"session-api\"}",
+     "ms": null
+    },
+    {
+     "at": "12:21:47.163",
+     "step": "billing-api",
+     "request": "billing-api-00001-4jd",
+     "response": "{\"check\": \"SELECT 1\", \"client\": \"billing\", \"event\": \"probe\", \"kind\": \"database\", \"level\": \"info\", \"result\": \"ok\", \"tile\": \"billing-api\"}",
+     "ms": null
+    },
+    {
+     "at": "12:21:47.167",
+     "step": "redirect-service",
+     "request": "redirect-service-00001-4qz",
+     "response": "Application ready",
+     "ms": null
+    },
+    {
+     "at": "12:21:47.291",
+     "step": "session-api",
+     "request": "session-api-00001-sg5",
+     "response": "Application ready",
+     "ms": null
+    },
+    {
+     "at": "12:21:47.333",
+     "step": "billing-api",
+     "request": "billing-api-00001-4jd",
+     "response": "Application ready",
+     "ms": null
+    },
+    {
+     "at": "12:21:48.257",
+     "step": "link-api",
+     "request": "link-api-00001-mvf",
+     "response": "{\"check\": \"PING\", \"client\": \"admission-cache\", \"event\": \"probe\", \"kind\": \"cache\", \"level\": \"info\", \"result\": \"ok\", \"tile\": \"link-api\"}",
+     "ms": null
+    },
+    {
+     "at": "12:21:48.481",
+     "step": "link-api",
+     "request": "link-api-00001-mvf",
+     "response": "{\"check\": \"SELECT 1\", \"client\": \"links\", \"event\": \"probe\", \"kind\": \"database\", \"level\": \"info\", \"result\": \"ok\", \"tile\": \"link-api\"}",
+     "ms": null
+    },
+    {
+     "at": "12:21:48.690",
+     "step": "link-api",
+     "request": "link-api-00001-mvf",
+     "response": "Application ready",
+     "ms": null
+    },
+    {
+     "at": "12:21:51.318",
+     "step": "account-api",
+     "request": "account-api-00001-ddg",
+     "response": "{\"event\": \"profile-ok\", \"level\": \"info\", \"process\": \"account-api\", \"secrets\": 2}",
+     "ms": null
+    },
+    {
+     "at": "12:21:53.147",
+     "step": "account-api",
+     "request": "account-api-00001-ddg",
+     "response": "{\"check\": \"SELECT 1\", \"client\": \"analytics\", \"event\": \"probe\", \"kind\": \"database\", \"level\": \"info\", \"result\": \"ok\", \"tile\": \"account-api\"}",
+     "ms": null
+    },
+    {
+     "at": "12:21:53.167",
+     "step": "account-api",
+     "request": "account-api-00001-ddg",
+     "response": "{\"check\": \"SELECT 1\", \"client\": \"links\", \"event\": \"probe\", \"kind\": \"database\", \"level\": \"info\", \"result\": \"ok\", \"tile\": \"account-api\"}",
+     "ms": null
+    },
+    {
+     "at": "12:21:53.339",
+     "step": "account-api",
+     "request": "account-api-00001-ddg",
+     "response": "Application ready",
+     "ms": null
+    }
+   ]
+  },
+  {
+   "id": "P07",
+   "title": "Managed Pub/Sub ACK, IAM, dead letter and archive",
+   "result": "passed",
+   "summary": "20 events published as the Redirect service's account were each acknowledged by Pub/Sub (p50 44.6 ms, p99 494.6 ms, the first one cold). The worker received all 20 and, its click aggregator being a stub, sent each to click-events--analytics-worker.failed with x-terminal-code NOT_IMPLEMENTED (20 pulled, every seq 0\u201319). The Cloud Storage archive wrote 11 Avro objects carrying all 20 messageIds within 5 minutes. Publishing as another account was refused PERMISSION_DENIED.",
+   "steps": [
+    {
+     "at": "12:32:10.277",
+     "step": "publish",
+     "request": "",
+     "response": "{\"acknowledged\": 20, \"count\": 20, \"maxMs\": 494.6, \"p50Ms\": 44.6, \"p99Ms\": 494.6, \"results\": [{\"ackMs\": 494.6, \"messageId\": \"23385224137875017\", \"seq\": 0}, {\"ackMs\": 44.6, \"messageId\": \"23385412139293197\", \"seq\": 1}, {\"ackMs\": 49.1, \"messageId\": \"23385861336706226\", \"seq\": 2}, {\"ackMs\": 48.2, \"messageId\": \"23385369426157548\", \"seq\": 3}, {\"ackMs\": 42.6, \"messageId\": \"23385255818574238\", \"seq\": 4}, {\"ackMs\": 43.8, \"messageId\": \"23385861075440136\", \"seq\": 5}, {\"ackMs\": 52.8, \"messageId\": \"23385357228424623\", \"seq\": 6}, {\"ackMs\": 48, \"messageId\": \"23385304249139759\", \"seq\": 7}, {\"ackMs\": 41.3, \"messageId\": \"23385428267378435\", \"seq\": 8}, {\"ackMs\": 43.6, \"messageId\": \"23385471634687758\", \"seq\": 9}, {\"ackMs\": 41.1, \"messageId\": \"23384928454557555\", \"seq\": 10}, {\"ackMs\": 42, \"messageId\": \"23385319664620272\", \"seq\": 11}, {\"ackMs\": 45.2, \"messageId\": \"23385807439581858\", \"seq\": 12}, {\"ackMs\": 47.3",
+     "ms": null
+    },
+    {
+     "at": "12:37:06.027",
+     "step": "publish",
+     "request": "",
+     "response": "{\"acknowledged\": 0, \"count\": 1, \"maxMs\": null, \"p50Ms\": null, \"p99Ms\": null, \"results\": [{\"error\": \"7 7 PERMISSION_DENIED: User not authorized to perform this action.\", \"ms\": 394.4, \"seq\": 0}]}",
+     "ms": null
+    },
+    {
+     "at": "12:32:12.192",
+     "step": "dead letter pulled (regional endpoint)",
+     "request": "click-events--analytics-worker.failed",
+     "response": "{\"qrwty-probe\": \"q13\", \"seq\": \"2\", \"x-terminal-code\": \"NOT_IMPLEMENTED\"}",
+     "ms": null
+    },
+    {
+     "at": "12:32:13.599",
+     "step": "dead letter pulled (regional endpoint)",
+     "request": "click-events--analytics-worker.failed",
+     "response": "{\"qrwty-probe\": \"q13\", \"seq\": \"4\", \"x-terminal-code\": \"NOT_IMPLEMENTED\"}",
+     "ms": null
+    },
+    {
+     "at": "12:32:17.892",
+     "step": "dead letter pulled (regional endpoint)",
+     "request": "click-events--analytics-worker.failed",
+     "response": "{\"qrwty-probe\": \"q13\", \"seq\": \"8\", \"x-terminal-code\": \"NOT_IMPLEMENTED\"}",
+     "ms": null
+    }
+   ]
+  },
+  {
+   "id": "P06b",
+   "title": "Valkey TLS and Cloud SQL TLS from the VPC",
+   "result": "passed",
+   "summary": "Each Memorystore instance refused plain text (connection reset), answered +PONG over TLSv1.3 verified with its own managed CA, and refused verification with system roots or with the other instance's CA (each instance has its own CA: finding I-3). Cloud SQL's private address refused plain text (pg_hba: no encryption) and TLS without a client certificate.",
+   "steps": [
+    {
+     "at": "12:28:51.489",
+     "step": "cache hot-routes managed CA",
+     "request": "",
+     "response": "{\"certificates\": 2}",
+     "ms": null
+    },
+    {
+     "at": "12:28:51.498",
+     "step": "cache hot-routes plain text PING",
+     "request": "",
+     "response": "{\"firstBytes\": \"\\\"\\\"\", \"how\": \"error ECONNRESET\"}",
+     "ms": 7.8
+    },
+    {
+     "at": "12:28:51.507",
+     "step": "cache hot-routes TLS with the managed CA",
+     "request": "",
+     "response": "{\"authorized\": true, \"how\": \"tls\", \"issuer\": \"CAS-Managed CA-us-central1-6b31\", \"protocol\": \"TLSv1.3\", \"reply\": \"+PONG\", \"subject\": null, \"subjectaltname\": \"DNS:10.42.0.3, DNS:10.42.0.2, IP Address:10.42.0.3, IP Address:10.42.0.2\"}",
+     "ms": 8.6
+    },
+    {
+     "at": "12:28:51.512",
+     "step": "cache hot-routes TLS with system roots only",
+     "request": "",
+     "response": "{\"error\": \"SELF_SIGNED_CERT_IN_CHAIN\", \"how\": \"error\"}",
+     "ms": 5.6
+    },
+    {
+     "at": "12:28:51.587",
+     "step": "cache hot-routes TLS with the other instance's CA",
+     "request": "",
+     "response": "{\"error\": \"SELF_SIGNED_CERT_IN_CHAIN\", \"how\": \"error\"}",
+     "ms": 5.8
+    },
+    {
+     "at": "12:28:51.587",
+     "step": "cache admission-cache managed CA",
+     "request": "",
+     "response": "{\"certificates\": 2}",
+     "ms": null
+    },
+    {
+     "at": "12:28:51.589",
+     "step": "cache admission-cache plain text PING",
+     "request": "",
+     "response": "{\"firstBytes\": \"\\\"\\\"\", \"how\": \"error ECONNRESET\"}",
+     "ms": 1.8
+    },
+    {
+     "at": "12:28:51.594",
+     "step": "cache admission-cache TLS with the managed CA",
+     "request": "",
+     "response": "{\"authorized\": true, \"how\": \"tls\", \"issuer\": \"CAS-Managed CA-us-central1-6b02\", \"protocol\": \"TLSv1.3\", \"reply\": \"+PONG\", \"subject\": null, \"subjectaltname\": \"DNS:10.42.0.5, DNS:10.42.0.4, IP Address:10.42.0.5, IP Address:10.42.0.4\"}",
+     "ms": 4.6
+    },
+    {
+     "at": "12:28:51.597",
+     "step": "cache admission-cache TLS with system roots only",
+     "request": "",
+     "response": "{\"error\": \"SELF_SIGNED_CERT_IN_CHAIN\", \"how\": \"error\"}",
+     "ms": 2.9
+    },
+    {
+     "at": "12:28:51.601",
+     "step": "cache admission-cache TLS with the other instance's CA",
+     "request": "",
+     "response": "{\"error\": \"SELF_SIGNED_CERT_IN_CHAIN\", \"how\": \"error\"}",
+     "ms": 3.4
+    },
+    {
+     "at": "12:28:51.672",
+     "step": "cloud sql private IP, plain text",
+     "request": "",
+     "response": "{\"connected\": false, \"error\": \"28000 pg_hba.conf rejects connection for host \\\"10.42.0.17\\\", user \\\"q13probe\\\", database \\\"postgres\\\", no encryption\"}",
+     "ms": 13.6
+    },
+    {
+     "at": "12:28:51.685",
+     "step": "cloud sql private IP, TLS without a client certificate",
+     "request": "",
+     "response": "{\"connected\": false, \"error\": \"28000 connection requires a valid client certificate\"}",
+     "ms": 12.3
+    }
+   ]
+  },
+  {
+   "id": "P08",
+   "title": "Auth0 issuer and A's audience on the generated guard",
+   "result": "passed",
+   "summary": "From the VPC (the probe job on Session API's subnet and NAT), the tenant's discovery document names exactly OIDC_ISSUER, with its trailing slash, and its key set URL. A client-credentials token for https://api.qrwtya.qrwty.io was accepted by Link API's guard (signedIn true); the same token with its audience changed, a foreign issuer's self-signed token, A's issuer signed by a key outside the key set, a malformed bearer and A's token after its 60 s lifetime were each refused 401. Not run: a validly signed token for another audience (the tenant's only other audiences are arm B's and the Management API, which this unit may not use; Q04 proved the audience check locally).",
+   "steps": [
+    {
+     "at": "12:46:14.918",
+     "step": "TCP 443 <tenant>.auth0.com until it connects (NAT warm-up)",
+     "request": "",
+     "response": "{\"connected\": true, \"remote\": \"172.64.144.74\", \"sinceFirstTryMs\": 48242.1, \"tries\": 13}",
+     "ms": 13.9
+    },
+    {
+     "at": "12:46:15.147",
+     "step": "identity URL discovery",
+     "request": "GET https://<tenant>.auth0.com/.well-known/openid-configuration",
+     "response": "200 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"issuer\":\"https://<tenant>.auth0.com/\", ...} (discovery document, cut)",
+     "ms": 228.6
+    },
+    {
+     "at": "12:46:15.147",
+     "step": "issuer comparison",
+     "request": "",
+     "response": "{\"issuerEndsWithSlash\": true, \"issuerMatchesOidcIssuer\": true, \"jwksMatches\": true}",
+     "ms": null
+    },
+    {
+     "at": "12:46:15.245",
+     "step": "Auth0 client-credentials token",
+     "request": "",
+     "response": "200 {}",
+     "ms": 97.5
+    },
+    {
+     "at": "12:46:19.417",
+     "step": "me, no token (Optional sign-in)",
+     "request": "GET https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-sign-in/me",
+     "response": "200 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"signedIn\":false}",
+     "ms": 4172.1
+    },
+    {
+     "at": "12:46:19.641",
+     "step": "me, A's Auth0 token",
+     "request": "GET https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-sign-in/me",
+     "response": "200 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"signedIn\":true,\"subject\":\"<qrwtya-web client>@clients\",\"username\":null}",
+     "ms": 223.8
+    },
+    {
+     "at": "12:46:19.656",
+     "step": "me, A's token with its audience changed (signature no longer matches)",
+     "request": "GET https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-sign-in/me",
+     "response": "401 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"error\":\"SIGN_IN_REQUIRED\",\"message\":\"Sign in to continue.\"}",
+     "ms": 14.7
+    },
+    {
+     "at": "12:46:19.713",
+     "step": "me, a foreign issuer's self-signed token",
+     "request": "GET https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-sign-in/me",
+     "response": "401 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"error\":\"SIGN_IN_REQUIRED\",\"message\":\"Sign in to continue.\"}",
+     "ms": 11.8
+    },
+    {
+     "at": "12:46:19.777",
+     "step": "me, A's issuer and audience signed by a key not in the key set",
+     "request": "GET https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-sign-in/me",
+     "response": "401 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"error\":\"SIGN_IN_REQUIRED\",\"message\":\"Sign in to continue.\"}",
+     "ms": 15.1
+    },
+    {
+     "at": "12:46:19.790",
+     "step": "me, a malformed bearer",
+     "request": "GET https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-sign-in/me",
+     "response": "401 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"error\":\"SIGN_IN_REQUIRED\",\"message\":\"Sign in to continue.\"}",
+     "ms": 12.8
+    },
+    {
+     "at": "12:46:19.790",
+     "step": "waiting for A's token to expire",
+     "request": "",
+     "response": "{\"waitMs\": 60211}",
+     "ms": null
+    },
+    {
+     "at": "12:47:20.029",
+     "step": "me, A's token after it expired",
+     "request": "GET https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-sign-in/me",
+     "response": "401 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"error\":\"SIGN_IN_REQUIRED\",\"message\":\"Sign in to continue.\"}",
+     "ms": 19
+    }
+   ]
+  },
+  {
+   "id": "P09",
+   "title": "Ingress, internal calls and workload identity",
+   "result": "passed",
+   "summary": "Link, Account and Billing API (internal ingress) answered the VPC and refused the Internet (404). Redirect and Session (public ingress, Cloud Run IAM) refused unauthenticated requests from outside and from the VPC (403) and served the owner's identity token, so run.app is protected. Each service's URL list includes the deterministic URL the tiles are configured with. /healthz is unreachable through run.app (AG-15).",
+   "steps": [
+    {
+     "at": "12:28:51.153",
+     "step": "tile link-api /healthz (a path Cloud Run's front end reserves)",
+     "request": "GET https://qrwtya-link-api-<project-number>.us-central1.run.app/healthz",
+     "response": "404 {\"content-type\": \"text/html; charset=UTF-8\"}\n<Google front end's HTML 404 page>",
+     "ms": 111.7
+    },
+    {
+     "at": "12:28:51.176",
+     "step": "tile link-api sign-in me, no token",
+     "request": "GET https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-sign-in/me",
+     "response": "200 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"signedIn\":false}",
+     "ms": 23.3
+    },
+    {
+     "at": "12:28:51.191",
+     "step": "tile account-api /healthz (a path Cloud Run's front end reserves)",
+     "request": "GET https://qrwtya-account-api-<project-number>.us-central1.run.app/healthz",
+     "response": "404 {\"content-type\": \"text/html; charset=UTF-8\"}\n<Google front end's HTML 404 page>",
+     "ms": 14
+    },
+    {
+     "at": "12:28:51.215",
+     "step": "tile account-api sign-in me, no token",
+     "request": "GET https://qrwtya-account-api-<project-number>.us-central1.run.app/modules/account-api-sign-in/me",
+     "response": "401 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"error\":\"SIGN_IN_REQUIRED\",\"message\":\"Sign in to continue.\"}",
+     "ms": 24.4
+    },
+    {
+     "at": "12:28:51.233",
+     "step": "tile billing-api /healthz (a path Cloud Run's front end reserves)",
+     "request": "GET https://qrwtya-billing-api-<project-number>.us-central1.run.app/healthz",
+     "response": "404 {\"content-type\": \"text/html; charset=UTF-8\"}\n<Google front end's HTML 404 page>",
+     "ms": 17.9
+    },
+    {
+     "at": "12:28:51.260",
+     "step": "tile billing-api sign-in me, no token",
+     "request": "GET https://qrwtya-billing-api-<project-number>.us-central1.run.app/modules/billing-api-sign-in/me",
+     "response": "200 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"signedIn\":false}",
+     "ms": 26.4
+    },
+    {
+     "at": "12:28:51.315",
+     "step": "public session-api from the VPC, no token",
+     "request": "GET https://qrwtya-session-api-<project-number>.us-central1.run.app/",
+     "response": "403 {\"content-type\": \"text/html; charset=UTF-8\"}\n<Google front end's HTML 403 Forbidden page>",
+     "ms": 55.1
+    },
+    {
+     "at": "12:28:51.417",
+     "step": "public redirect-service from the VPC, no token",
+     "request": "GET https://qrwtya-redirect-service-<project-number>.us-central1.run.app/",
+     "response": "403 {\"content-type\": \"text/html; charset=UTF-8\"}\n<Google front end's HTML 403 Forbidden page>",
+     "ms": 101.4
+    }
+   ]
+  },
+  {
+   "id": "P10",
+   "title": "Startup, drain and replicas on Cloud Run",
+   "result": "partial",
+   "summary": "Image 2 was rolled out to every service and the worker pool from a saved plan while 1501 requests over 150 s (10 a second, owner token) hit the Redirect service: 0 failed; latency p50 24.4 ms, p99 47.8 ms, max 247.0 ms. The worker pool went from 1 to 2 instances and back with saved plans; the old worker instance was shut down 8 s after its replacement was ready. Not shown: each old service instance's exit code and time after SIGTERM (neither Cloud Run nor the generated process logs a service instance's drain or exit: AG-17).",
+   "steps": [
+    {
+     "at": "12:50:04.208",
+     "step": "redirect-service",
+     "request": "redirect-service-00002-k6c",
+     "response": "Starting new instance. Reason: MANUAL_OR_CUSTOMER_MIN_INSTANCE - Instance started because of customer-configured min-instances or manual scaling.",
+     "ms": null
+    },
+    {
+     "at": "12:50:08.138",
+     "step": "redirect-service",
+     "request": "redirect-service-00002-k6c",
+     "response": "Application ready",
+     "ms": null
+    },
+    {
+     "at": "12:56:56.586",
+     "step": "analytics-worker",
+     "request": "analytics-worker-00002-6ds",
+     "response": "Application ready",
+     "ms": null
+    }
+   ]
+  },
+  {
+   "id": "P11",
+   "title": "The production profile refuses a forbidden setting",
+   "result": "passed",
+   "summary": "A Session API revision with PUBSUB_EMULATOR_HOST, at 0 % traffic, never became ready: both starts logged profile-refused naming PUBSUB_EMULATOR_HOST and exited 1; traffic stayed on the ready revision. A 0 %-traffic revision is not started at all until something routes to it: a tag change started its health check. The revision was deleted; the manual traffic pin it left behind was found and removed by finding I-7.",
+   "steps": [
+    {
+     "at": "12:48:40.901",
+     "step": "session-api",
+     "request": "session-api-00002-rpx",
+     "response": "Starting new instance. Reason: DEPLOYMENT_ROLLOUT - Instance started due to traffic shifting between revisions due to deployment, traffic split adjustment, or deployment health check.",
+     "ms": null
+    },
+    {
+     "at": "12:48:43.211",
+     "step": "session-api",
+     "request": "session-api-00002-rpx",
+     "response": "{\"event\": \"profile-refused\", \"level\": \"error\", \"process\": \"session-api\", \"reasons\": [{\"category\": \"emulator-endpoint\", \"reason\": \"PUBSUB_EMULATOR_HOST: Pub/Sub emulator endpoint\", \"variable\": \"PUBSUB_EMULATOR_HOST\"}]}",
+     "ms": null
+    },
+    {
+     "at": "12:48:43.262",
+     "step": "session-api",
+     "request": "session-api-00002-rpx",
+     "response": "Container called exit(1).",
+     "ms": null
+    },
+    {
+     "at": "12:48:49.305",
+     "step": "session-api",
+     "request": "session-api-00002-rpx",
+     "response": "{\"event\": \"profile-refused\", \"level\": \"error\", \"process\": \"session-api\", \"reasons\": [{\"category\": \"emulator-endpoint\", \"reason\": \"PUBSUB_EMULATOR_HOST: Pub/Sub emulator endpoint\", \"variable\": \"PUBSUB_EMULATOR_HOST\"}]}",
+     "ms": null
+    },
+    {
+     "at": "12:48:49.326",
+     "step": "session-api",
+     "request": "session-api-00002-rpx",
+     "response": "Container called exit(1).",
+     "ms": null
+    }
+   ]
+  },
+  {
+   "id": "P12",
+   "title": "Providers from Cloud Run: Web Risk and Stripe",
+   "result": "partial",
+   "summary": "Web Risk was priced before the first call (first 100,000 lookups a month free, then USD 0.0005). With the Q06 image Link API sent no credential, Web Risk answered 403 and the guest create failed closed: 503 reputation_unavailable with Retry-After 5. With the AG-13 fix (Link API's own service account token from the metadata server) the guest create answered 201 and its replay returned the same body; Web Risk's malware and phishing test URLs were refused 422 reputation_rejected; the link, its claim-proof hash and its idempotency record are in Cloud SQL. Not run: Stripe test mode (Billing API's stub is Q10a, which won't run); api.stripe.com is reachable through the NAT.",
+   "steps": [
+    {
+     "at": "12:30:32.529",
+     "step": "guest create",
+     "request": "POST https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-link-operations/links",
+     "response": "503 {\"content-type\": \"application/json; charset=utf-8\", \"retry-after\": \"5\"}\n{\"error\":{\"code\":\"reputation_unavailable\",\"message\":\"The safety check is unavailable; try again shortly.\",\"retryable\":true}}",
+     "ms": 221.1
+    },
+    {
+     "at": "12:52:04.532",
+     "step": "guest create",
+     "request": "POST https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-link-operations/links",
+     "response": "201 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"id\":\"8f4fe5fb-93a9-4902-8efa-e58ebec3b78d\",\"claim\":{\"token\":\"<claim proof>\",\"expiresAt\":\"2026-11-16T12:52:04.457Z\"},\"owned\":false,\"state\":\"active\",\"version\":1,\"shortUrl\":\"https://qrwty.io/6eC1JE3lwq\",\"createdAt\":\"2026-11-15T12:52:04.457Z\",\"expiresAt\":null,\"updatedAt\":\"2026-11-15T12:52:04.457Z\",\"destination\":\"https://example.com/qrwty-q13\"}",
+     "ms": 329.9
+    },
+    {
+     "at": "12:52:04.557",
+     "step": "guest create replayed with the same key",
+     "request": "POST https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-link-operations/links",
+     "response": "201 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"id\":\"8f4fe5fb-93a9-4902-8efa-e58ebec3b78d\",\"claim\":{\"token\":\"<claim proof>\",\"expiresAt\":\"2026-11-16T12:52:04.457Z\"},\"owned\":false,\"state\":\"active\",\"version\":1,\"shortUrl\":\"https://qrwty.io/6eC1JE3lwq\",\"createdAt\":\"2026-11-15T12:52:04.457Z\",\"expiresAt\":null,\"updatedAt\":\"2026-11-15T12:52:04.457Z\",\"destination\":\"https://example.com/qrwty-q13\"}",
+     "ms": 24.6
+    },
+    {
+     "at": "12:52:04.570",
+     "step": "same key, another destination",
+     "request": "POST https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-link-operations/links",
+     "response": "409 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"error\":{\"code\":\"idempotency_conflict\",\"message\":\"This Idempotency-Key was used for another request.\",\"retryable\":false}}",
+     "ms": 13.4
+    },
+    {
+     "at": "12:52:04.581",
+     "step": "no Idempotency-Key",
+     "request": "POST https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-link-operations/links",
+     "response": "400 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"error\":{\"code\":\"idempotency_key_required\",\"message\":\"Send an Idempotency-Key header of 1 to 255 visible ASCII characters.\",\"retryable\":false}}",
+     "ms": 10
+    },
+    {
+     "at": "12:52:04.592",
+     "step": "a destination with credentials",
+     "request": "POST https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-link-operations/links",
+     "response": "400 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"error\":{\"code\":\"invalid_destination\",\"message\":\"The destination is not allowed: credentials are not allowed in a destination.\",\"retryable\":false,\"reason\":\"credentials are not allowed in a destination\"}}",
+     "ms": 11.3
+    },
+    {
+     "at": "12:52:04.604",
+     "step": "GET on the create route",
+     "request": "GET https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-link-operations/links",
+     "response": "405 {\"allow\": \"POST\", \"content-type\": \"application/json; charset=utf-8\"}\n{\"error\":{\"code\":\"method_not_allowed\",\"message\":\"Use POST to create a link.\",\"retryable\":false}}",
+     "ms": 11.7
+    },
+    {
+     "at": "12:52:04.604",
+     "step": "created slug",
+     "request": "",
+     "response": "{\"slug\": null}",
+     "ms": null
+    },
+    {
+     "at": "12:55:18.193",
+     "step": "guest create, https://testsafebrowsing.appspot.com/s/malware.html",
+     "request": "POST https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-link-operations/links",
+     "response": "422 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"error\":{\"code\":\"reputation_rejected\",\"message\":\"The destination is reported as unsafe.\",\"retryable\":false}}",
+     "ms": 229.7
+    },
+    {
+     "at": "12:55:18.243",
+     "step": "guest create, https://testsafebrowsing.appspot.com/s/phishing.html",
+     "request": "POST https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-link-operations/links",
+     "response": "422 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"error\":{\"code\":\"reputation_rejected\",\"message\":\"The destination is reported as unsafe.\",\"retryable\":false}}",
+     "ms": 50.4
+    },
+    {
+     "at": "12:55:18.308",
+     "step": "guest create, https://example.org/qrwty-q13-clean",
+     "request": "POST https://qrwtya-link-api-<project-number>.us-central1.run.app/modules/link-api-link-operations/links",
+     "response": "201 {\"content-type\": \"application/json; charset=utf-8\"}\n{\"id\":\"51a33732-efb6-4f5d-9764-7e24f0941e48\",\"claim\":{\"token\":\"<claim proof>\",\"expiresAt\":\"2026-11-16T12:55:18.285Z\"},\"owned\":false,\"state\":\"active\",\"version\":1,\"shortUrl\":\"https://qrwty.io/RdlqYnl7IZ\",\"createdAt\":\"2026-11-15T12:55:18.285Z\",\"expiresAt\":null,\"updatedAt\":\"2026-11-15T12:55:18.285Z\",\"destination\":\"https://example.org/qrwty-q13-clean\"}",
+     "ms": 64.4
+    }
+   ]
+  }
+ ],
+ "gaps": [
+  {
+   "id": "AG-13",
+   "severity": "Medium",
+   "where": "module-clients.ts.template (externalTarget: 'the client reads no credential'); jeeves-generator README",
+   "gap": "An External API client has no workload-identity credential. A stub that calls a Google API (Web Risk) can only add a header itself; the documented way is a credential from a SECRET_DIR file, i.e. a long-lived API key. On Cloud Run, Link API's Q06 code got 403 from Web Risk and every guest create failed closed (503).",
+   "workaround": "Application files: link-operations/google-credentials.ts fetches Link API's service-account token from the metadata server (cached, monotonic, one deadline with the lookup) when QRWTY_REPUTATION_CREDENTIALS=metadata; the production profile requires that value. 9 unit tests."
+  },
+  {
+   "id": "AG-14",
+   "severity": "Medium",
+   "where": "module-clients.ts.template (httpTarget)",
+   "gap": "Tile-to-tile calls carry no ID token, so Cloud Run's invoker IAM can't protect a service another tile calls: such a service must be internal-only with IAM off, and any VPC caller can reach it. A public origin can be IAM-protected only if no tile calls it (Billing API had to become internal; Stripe webhooks would need it public).",
+   "workaround": "IaC: internal ingress with IAM off for Link, Account and Billing API; IAM required for the public Redirect and Session origins (no allUsers)."
+  },
+  {
+   "id": "AG-15",
+   "severity": "Medium",
+   "where": "http.ts.template (the reserved /healthz route); probe wiring",
+   "gap": "The generated health route /healthz is a path Cloud Run's front end reserves: <service>.run.app/healthz answers Google's 404 page before the container. Only Cloud Run's own startup and liveness probes reach it, so no edge, uptime check or tile can read a process's health over HTTP.",
+   "workaround": "None needed for this deploy (Cloud Run's probes work); P09 used the sign-in me routes to show reachability."
+  },
+  {
+   "id": "AG-16",
+   "severity": "Medium",
+   "where": "module-clients.ts.template (pubsubPublisher, pubsubLoop: new PubSub without apiEndpoint)",
+   "gap": "The Pub/Sub clients always use the global endpoint and have no regional-endpoint binding. The durable-clicks contract pins storage to us-central1 with in-transit enforcement; Pub/Sub then refuses any request the global endpoint routes to another region (FAILED_PRECONDITION, seen from outside the region). The generated publisher and worker work only because Google routes them to us-central1.",
+   "workaround": "None in the app; operators pull dead letters through https://us-central1-pubsub.googleapis.com/. Remedy: JEEVES_PUBSUB_ENDPOINT, required when the topic enforces in transit."
+  },
+  {
+   "id": "AG-17",
+   "severity": "Low",
+   "where": "process.ts.template (runProcess)",
+   "gap": "A process logs 'Application ready' but nothing when SIGTERM arrives, when its drain starts or ends, or with what code it exits; Cloud Run logs no exit for a service instance either. A rollout's drain can't be shown from logs (P10).",
+   "workaround": "P10 shows the drain by traffic instead: 1,501 requests during the rollout, none failed."
+  }
+ ],
+ "findings": [
+  {
+   "id": "I-1",
+   "finding": "Q04b: tofu validate passed at once; only tofu fmt failed (locals.tf alignment).",
+   "fix": "tofu fmt; validate.sh exits 0 (fmt 0, init 0, validate 0); lint self-test 8/8."
+  },
+  {
+   "id": "I-2",
+   "finding": "A CLUSTER_DISABLED Memorystore instance reports no discovery_endpoints (deprecated, empty). The first apply created all 93 resources' worth of stores but failed evaluating the cache variables, so 24 secret IAM bindings and the outputs were never applied.",
+   "fix": "locals.cache_primary: the PSC auto connection of type CONNECTION_TYPE_PRIMARY (address and port); outputs use it."
+  },
+  {
+   "id": "I-3",
+   "finding": "Each Memorystore instance has its own managed CA (GOOGLE_MANAGED_PER_INSTANCE_CA); the IaC had one CA secret from hot-routes, which Link API's admission-cache would have refused.",
+   "fix": "One public CA secret per cache (qrwtya-memorystore-ca-<cache>), mounted for the one process that uses it; the probe shows the other instance's CA is refused."
+  },
+  {
+   "id": "I-4",
+   "finding": "The migration job had no VPC egress: the Cloud SQL connector couldn't reach the private-only instance and both first executions timed out (pg 'timeout expired' after 5 s, uncaught).",
+   "fix": "vpc_access (Direct VPC egress, ALL_TRAFFIC) on the job, as on the services."
+  },
+  {
+   "id": "I-5",
+   "finding": "Cloud Run's Direct VPC egress with ALL_TRAFFIC leaves no Internet route: Auth0's key set, the tenant origin and Stripe need a NAT. Added before the first apply. Measured: a fresh task's first connection through the NAT failed for 12 s and 48 s in two runs, a second destination for about 4 s; Google APIs over Private Google Access worked at once.",
+   "fix": "qrwtya-router and qrwtya-nat (AUTO_ONLY, the run subnet only)."
+  },
+  {
+   "id": "I-6",
+   "finding": "Pub/Sub reads the archive (Cloud Storage) subscription's ack deadline back as 300 s; the IaC said 60, a perpetual diff.",
+   "fix": "ack_deadline_seconds = 300 on the archive subscription."
+  },
+  {
+   "id": "I-7",
+   "finding": "Cloud Run returns secret volumes before the Cloud SQL volume; the IaC's order made every plan show a reorder of all six resources.",
+   "fix": "Secret volumes and mounts first; the final plan reports no changes."
+  },
+  {
+   "id": "I-8",
+   "finding": "The services declared no traffic block, so P11's manual pin (gcloud --no-traffic) survived the image-2 apply: Session API kept serving image 1 with a dangling tag.",
+   "fix": "traffic { LATEST 100 } on every service; the next apply moved Session API to its latest revision and dropped the tag."
+  },
+  {
+   "id": "I-9",
+   "finding": "Billing API was public (for Stripe webhooks through the edge), but tile clients can't authenticate to an IAM-protected origin (AG-14) and no edge exists in this release.",
+   "fix": "Billing API internal; public origins (Redirect, Session) require Cloud Run IAM. The qrwty.io Worker route was not added: it would need proxy code, not only a route, and an edge credential the origin can verify."
+  },
+  {
+   "id": "I-10",
+   "finding": "Additions the Q06 handoff asked for and the cloud needs.",
+   "fix": "Secret link-replay-keys (mounted for Link API), QRWTY_PUBLIC_ORIGIN_URL = https://qrwty.io, webrisk.googleapis.com in the API list, QRWTY_REPUTATION_CREDENTIALS = metadata with image 2."
+  }
+ ],
+ "inventory": [
+  {
+   "name": "qrwtya-account-api",
+   "type": "Cloud Run service",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-billing-api",
+   "type": "Cloud Run service",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-link-api",
+   "type": "Cloud Run service",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-redirect-service",
+   "type": "Cloud Run service",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-session-api",
+   "type": "Cloud Run service",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-migrate",
+   "type": "Cloud Run job",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-probe",
+   "type": "Cloud Run job",
+   "notes": "Q13 probe (gcloud, temporary)"
+  },
+  {
+   "name": "qrwtya-probe-redirect",
+   "type": "Cloud Run job",
+   "notes": "Q13 probe as the Redirect account"
+  },
+  {
+   "name": "qrwtya-probe-sql",
+   "type": "Cloud Run job",
+   "notes": "Q13 read-only SQL probe"
+  },
+  {
+   "name": "qrwtya-analytics-worker",
+   "type": "Cloud Run worker pool",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-pg",
+   "type": "Cloud SQL instance",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-admission-cache",
+   "type": "Memorystore for Valkey instance",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-hot-routes",
+   "type": "Memorystore for Valkey instance",
+   "notes": ""
+  },
+  {
+   "name": "click-events--analytics-worker.failed",
+   "type": "Pub/Sub topic",
+   "notes": ""
+  },
+  {
+   "name": "click-events",
+   "type": "Pub/Sub topic",
+   "notes": ""
+  },
+  {
+   "name": "click-events--analytics-worker.failed",
+   "type": "Pub/Sub subscription",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-click-events-archive",
+   "type": "Pub/Sub subscription",
+   "notes": ""
+  },
+  {
+   "name": "click-events--analytics-worker",
+   "type": "Pub/Sub subscription",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-click-archive-<project>",
+   "type": "Cloud Storage bucket",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-identity-identity",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-identity-owner-identity",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-link-replay-keys",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-memorystore-ca-admission-cache",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-memorystore-ca-hot-routes",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-owner-analytics",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-owner-billing",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-owner-links",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-owner-sessions",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-postgres-admin",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-probe-auth0-web",
+   "type": "Secret Manager secret",
+   "notes": "Q13 probe's Auth0 client credentials"
+  },
+  {
+   "name": "qrwtya-sql-analytics--account-api",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-sql-analytics--analytics-worker",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-sql-billing--billing-api",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-sql-links--account-api",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-sql-links--link-api",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-sql-links--redirect-service",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-sql-sessions--session-api",
+   "type": "Secret Manager secret",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-migrate",
+   "type": "Service account",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-redirect",
+   "type": "Service account",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-analytics",
+   "type": "Service account",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-billing",
+   "type": "Service account",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-session",
+   "type": "Service account",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-account",
+   "type": "Service account",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-probe",
+   "type": "Service account",
+   "notes": "Q13 probe (gcloud, temporary)"
+  },
+  {
+   "name": "qrwtya-link",
+   "type": "Service account",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-vpc",
+   "type": "VPC network",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-run",
+   "type": "Subnet",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-psa",
+   "type": "PSA range",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-router",
+   "type": "Cloud Router (NAT)",
+   "notes": "with qrwtya-nat"
+  },
+  {
+   "name": "sca-auto-fr-22c5b997-7001-43b7-9752-3eacebf254bd",
+   "type": "PSC endpoint (Memorystore, auto)",
+   "notes": ""
+  },
+  {
+   "name": "sca-auto-fr-390733b6-a295-4cee-a509-a93b49a75f38",
+   "type": "PSC endpoint (Memorystore, auto)",
+   "notes": ""
+  },
+  {
+   "name": "sca-auto-fr-76db9979-cc48-4d2b-98bd-cafb80fd33ef",
+   "type": "PSC endpoint (Memorystore, auto)",
+   "notes": ""
+  },
+  {
+   "name": "sca-auto-fr-c5d7a81e-ed1a-44f5-8d40-10130f43cc44",
+   "type": "PSC endpoint (Memorystore, auto)",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-memorystore",
+   "type": "Service connection policy",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-images",
+   "type": "Artifact Registry repository",
+   "notes": ""
+  },
+  {
+   "name": "servicenetworking-googleapis-com",
+   "type": "VPC peering (private services access)",
+   "notes": ""
+  },
+  {
+   "name": "roles/cloudsql.client qrwtya-account",
+   "type": "Project IAM binding",
+   "notes": ""
+  },
+  {
+   "name": "roles/cloudsql.client qrwtya-analytics",
+   "type": "Project IAM binding",
+   "notes": ""
+  },
+  {
+   "name": "roles/cloudsql.client qrwtya-billing",
+   "type": "Project IAM binding",
+   "notes": ""
+  },
+  {
+   "name": "roles/cloudsql.client qrwtya-link",
+   "type": "Project IAM binding",
+   "notes": ""
+  },
+  {
+   "name": "roles/cloudsql.client qrwtya-migrate",
+   "type": "Project IAM binding",
+   "notes": ""
+  },
+  {
+   "name": "roles/cloudsql.client qrwtya-redirect",
+   "type": "Project IAM binding",
+   "notes": ""
+  },
+  {
+   "name": "roles/cloudsql.client qrwtya-session",
+   "type": "Project IAM binding",
+   "notes": ""
+  },
+  {
+   "name": "qrwtya-api",
+   "type": "Auth0 API (audience https://api.qrwtya.qrwty.io)",
+   "notes": "RS256, 60 s tokens"
+  },
+  {
+   "name": "qrwtya-web",
+   "type": "Auth0 application (machine to machine) and its grant",
+   "notes": "probe client only"
+  }
+ ],
+ "cost": {
+  "summary": "Requoted 2026-11-15T11:52:38Z from the Cloud Billing Catalog (list prices before credits). Fixed rate while everything ran: about USD 0.1805 an hour, USD 131.74 for a 730-hour month. The existing budget was reused.",
+  "rows": [
+   {
+    "resource": "Cloud SQL for PostgreSQL zonal db-f1-micro (Enterprise, qrwtya-pg)",
+    "sku": "9662-B51E-5089/C2D4-F7DF-B8D0",
+    "unitPriceUsd": 0.0105,
+    "unit": "hour",
+    "quantity": 1,
+    "usdPerHour": 0.0105
+   },
+   {
+    "resource": "Cloud SQL zonal standard storage, 10 GiB",
+    "sku": "9662-B51E-5089/C18F-7FE0-0717",
+    "unitPriceUsd": 0.17,
+    "unit": "GiB-month",
+    "quantity": 10,
+    "usdPerHour": 0.002329
+   },
+   {
+    "resource": "Memorystore for Valkey shared-core-nano node (hot-routes, admission-cache)",
+    "sku": "A2B5-E0F1-B0F3/1E97-7EC7-226D",
+    "unitPriceUsd": 0.0318,
+    "unit": "node-hour",
+    "quantity": 2,
+    "usdPerHour": 0.0636
+   },
+   {
+    "resource": "Private Service Connect consumer endpoints (Memorystore; count confirmed after apply)",
+    "sku": "E505-1604-58F8/9E4E-F9A7-5EAE",
+    "unitPriceUsd": 0.01,
+    "unit": "endpoint-hour",
+    "quantity": 4,
+    "usdPerHour": 0.04
+   },
+   {
+    "resource": "Cloud NAT gateway uptime",
+    "sku": "E505-1604-58F8/32E2-4EFC-EF9F",
+    "unitPriceUsd": 0.0014,
+    "unit": "hour",
+    "quantity": 1,
+    "usdPerHour": 0.0014
+   },
+   {
+    "resource": "Cloud NAT IP (AUTO_ONLY, one address)",
+    "sku": "E505-1604-58F8/8515-9425-D2CE",
+    "unitPriceUsd": 0.005,
+    "unit": "IP-hour",
+    "quantity": 1,
+    "usdPerHour": 0.005
+   },
+   {
+    "resource": "Cloud Run min instance, redirect-service (1 vCPU idle, request-based)",
+    "sku": "152E-C115-5142/7EBB-8579-2C98",
+    "unitPriceUsd": 2.5e-06,
+    "unit": "vCPU-second",
+    "quantity": 3600,
+    "usdPerHour": 0.009
+   },
+   {
+    "resource": "Cloud Run min instance memory, redirect-service (0.5 GiB idle)",
+    "sku": "152E-C115-5142/740D-08F2-7A11",
+    "unitPriceUsd": 2.5e-06,
+    "unit": "GiB-second",
+    "quantity": 1800.0,
+    "usdPerHour": 0.0045
+   },
+   {
+    "resource": "Cloud Run worker pool CPU, analytics-worker (1 vCPU always on)",
+    "sku": "152E-C115-5142/BF8A-6421-7754",
+    "unitPriceUsd": 1.1244e-05,
+    "unit": "vCPU-second",
+    "quantity": 3600,
+    "usdPerHour": 0.040478
+   },
+   {
+    "resource": "Cloud Run worker pool memory, analytics-worker (0.5 GiB)",
+    "sku": "152E-C115-5142/7199-FFC2-0D21",
+    "unitPriceUsd": 1.235e-06,
+    "unit": "GiB-second",
+    "quantity": 1800.0,
+    "usdPerHour": 0.002223
+   },
+   {
+    "resource": "Secret Manager active secret versions (17; the first 6 per account are free, counted as paid)",
+    "sku": "EE82-7A5E-871C/7756-ADEF-84F4",
+    "unitPriceUsd": 0.06,
+    "unit": "version-month",
+    "quantity": 17,
+    "usdPerHour": 0.001397
+   },
+   {
+    "resource": "Artifact Registry storage (about 0.25 GB; the first 0.5 GB per account is free, counted as paid)",
+    "sku": "149C-F9EC-3994/8502-299A-ABAF",
+    "unitPriceUsd": 0.1,
+    "unit": "GiB-month",
+    "quantity": 0.25,
+    "usdPerHour": 3.4e-05
+   }
+  ],
+  "actual": "Spend computed from each billable resource's cloud lifetime at the requoted list prices: about USD 0.23 (Memorystore nodes and their PSC endpoints USD 0.14, the worker pool USD 0.04, Cloud SQL USD 0.01, the rest under USD 0.03), paid from the trial credit. Not a billing figure: Cloud Billing reports lag and the project has no billing export (records/spend.json). Nothing billable is left."
+ },
+ "teardown": [
+  {
+   "step": "Probe resources (gcloud, not in OpenTofu): jobs qrwtya-probe, qrwtya-probe-redirect, qrwtya-probe-sql; secret qrwtya-probe-auth0-web; service account qrwtya-probe",
+   "result": "deleted 13:06Z"
+  },
+  {
+   "step": "Archive objects (11 Avro files) in qrwtya-click-archive-<project>",
+   "result": "deleted (the bucket keeps force_destroy = false)"
+  },
+  {
+   "step": "Saved plan plan-10: deletion protection off (5 services, worker pool, job, 2 Memorystore instances, Cloud SQL)",
+   "result": "applied: 10 changed"
+  },
+  {
+   "step": "Saved plan plan-11-destroy: every OpenTofu resource, prevent_destroy removed only in a scratch copy of pubsub.tf",
+   "result": "86 of 102 destroyed in 10 min 51 s (Cloud SQL 1 min 28 s, Memorystore 10\u201311 min); two errors: the subnet is held by two Cloud Run serverless-ipv4 reservations, and the private services access connection by its producer (Cloud SQL)"
+  },
+  {
+   "step": "Saved plans plan-12, plan-13 and plan-14 (13:20\u201313:24Z): retry the private services access connection and range",
+   "result": "refused each time (the producer still uses the connection); left for Q13b with the subnet"
+  },
+  {
+   "step": "Auth0: the qrwtya-web grant, qrwtya-web and qrwtya-api (Management API)",
+   "result": "204, 204, 204; no qrwtya- object left"
+  },
+  {
+   "step": "qrwty.io Worker route",
+   "result": "none added, so none reverted; no Cloudflare call"
+  },
+  {
+   "step": "Local Docker: qrwtya-q13-app:build-1, :build-2 and the two registry tags",
+   "result": "removed by exact name; no qrwtya image or arm-A container left; no prune"
+  },
+  {
+   "step": "Inventory after (records/inventory-after.txt)",
+   "result": "No Cloud Run service, job or worker pool; no Cloud SQL, Memorystore, Pub/Sub topic or subscription, bucket, secret, service account, router, NAT, PSC endpoint, connection policy, Artifact Registry repository or project IAM binding of arm A; no external address. Left, all free: VPC qrwtya-vpc, subnet qrwtya-run, PSA range qrwtya-psa, its peering, and two Cloud Run-managed internal reservations on the subnet (Q13b)"
+  },
+  {
+   "step": "Kept",
+   "result": "The project budget (not arm A's), the enabled APIs (shared with arm B; disable_on_destroy = false). No image was kept"
+  }
+ ],
+ "footer": "Sanitized: the project ID and number, the billing account, the owner's account, the Auth0 tenant and client IDs are labels; no token, claim proof, password or key is shown. Sources: docs/evidence/q13/records/. No external request is made by this page."
+}

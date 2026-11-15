@@ -1,28 +1,42 @@
 # qrwty.io edge Worker (Cloudflare)
 
-A Cloudflare Worker named `qrwty-edge` serves `https://qrwty.io/` on the **Free plan**. It is the
-production front door: later units put the application behind it and redeploy it as the build
-grows. For now it serves a placeholder.
+A Cloudflare Worker named `qrwty-edge` serves `https://qrwty.io/` on the **Free plan**. It serves
+a placeholder and, since S02, the static `/versions/` pages: what happened in run
+`qrwty-r1-20261114`, with both arms' records. Neither arm's application ever ran behind it.
 
 | Request | Answer |
 | --- | --- |
-| `GET /` | `200`, the `QRWTY` placeholder page with the deployed short commit and UTC build time. Inline CSS only, light and dark from `prefers-color-scheme`, no external requests |
+| `GET /` | `200`, the `QRWTY` placeholder page with a link to `/versions/`, the deployed short commit and UTC build time. Inline CSS only, light and dark from `prefers-color-scheme`, no external requests |
 | `GET /healthz` | `200` `{"ok":true,"commit":"<sha>","builtAt":"<iso>"}` |
 | `GET /build.json` | `200` `{"commit":"<sha>","builtAt":"<iso>"}`, the build object `deploy.sh` wrote |
+| `GET /versions/…` | A file from `public/versions/` (Workers static assets, through the `ASSETS` binding): the timeline (`/versions/`), the design prototype (`design/`), arm A's page and deploy record (`a/`, `a/deploy/`), arm B's record (`b/`) and a static copy of the earlier landing page (`original/`). HTML `no-cache`, other files cached for an hour. `/versions` and a folder without its trailing slash answer `301` to the slash; a missing file gets the HTML 404 |
 | Any other path | `404`, a small HTML page |
 | `HEAD` | Same as `GET`, without a body. Other methods get `405` |
 | `www.qrwty.io/<path>` | `301` to `https://qrwty.io/<path>` (query kept) |
+| `b.qrwty.io/<anything>` | `301` to `https://qrwty.io/versions/b/` (arm B's old staging host), any method |
 
 Every response carries `Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline';
 img-src 'self'; base-uri 'none'; frame-ancestors 'none'`, `X-Content-Type-Options: nosniff`,
-`Referrer-Policy: no-referrer` and `X-Robots-Tag: noindex`. There is **no HSTS** yet: Q13
+`Referrer-Policy: no-referrer` and `X-Robots-Tag: noindex`. Two copies under `/versions/` need
+more from their own origin, and nothing from any other: `/versions/design/` adds `script-src 'self'`,
+`style-src 'self'` and `data:`/`blob:` images (the prototype's scripts, stylesheets and QR export),
+and `/versions/original/` adds `style-src 'self'` and `form-action 'none'` (its stylesheet; its
+forms stay inert). There is **no HSTS** yet: Q13
 decides it, because preload is hard to undo. Every `Cache-Control` includes `no-transform`; without
 it Cloudflare's automatic Web Analytics injects an external beacon script into HTML that
 browsers receive.
 
-`qrwty.io` and `www.qrwty.io` are Workers **Custom Domains** (`wrangler.toml`). Cloudflare manages
-their DNS records (read-only proxied `AAAA 100::`) and certificates. `workers.dev` and preview URLs
-are off.
+`qrwty.io`, `www.qrwty.io` and `b.qrwty.io` are Workers **Custom Domains** (`wrangler.toml`).
+Cloudflare manages their DNS records (read-only proxied `AAAA 100::`) and certificates. `workers.dev`
+and preview URLs are off. Static assets run behind the Worker (`run_worker_first = true`), so the
+redirects, the method check and the headers apply to them too.
+
+`public/` holds byte copies, listed with their sources and hashes in
+[S02's published files](../../docs/evidence/s02/published-files.json): `versions/design/` from
+`docs/design/prototype/`, `versions/a/deploy/` from `docs/evidence/q13/demo/`, `versions/b/` from
+arm B's `docs/evidence/b-final/demo/` (qrwty-baseline `f2fb3ce`), and `versions/original/` from the
+`qrwty-platform` Worker with the edits that page states. Refresh a copy from its source, never by
+hand.
 
 ## Deploy
 
@@ -50,7 +64,7 @@ Scripts edit, Workers custom domains and DNS edit for the zone; the token in use
 2026-11-14.
 
 Without a terminal, `wrangler deploy` takes over a hostname from another Worker or an existing
-DNS record without asking. Only the two hostnames in `wrangler.toml` are affected.
+DNS record without asking. Only the three hostnames in `wrangler.toml` are affected.
 
 ## Develop
 

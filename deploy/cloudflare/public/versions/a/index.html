@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<title>QRWTY arm A</title>
+<style>
+:root{color-scheme:light dark;--bg:#f6f6f3;--fg:#16181d;--muted:#575d69;--rule:#d9dad5;--card:#ffffff;--accent:#1d5fa8;--chip:#e9eef5;--ok:#1f7a45;--open:#8a5a00}
+@media (prefers-color-scheme:dark){:root{--bg:#111318;--fg:#eceef2;--muted:#a3aab6;--rule:#2c3039;--card:#181b22;--accent:#8db8ef;--chip:#222a36;--ok:#6fd39a;--open:#f0c060}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+main{max-width:62rem;margin:0 auto;padding:24px 16px 48px}
+a{color:var(--accent)}
+h1{font-size:clamp(1.7rem,5vw,2.4rem);line-height:1.2;margin:.25rem 0 .75rem}
+h2{font-size:1.25rem;margin:2.5rem 0 .75rem;padding-bottom:.35rem;border-bottom:2px solid var(--fg)}
+.kicker{margin:0;color:var(--muted);font-size:.9rem;letter-spacing:.04em;text-transform:uppercase}
+.lede{font-size:1.08rem;max-width:46rem}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:10px;margin:1.25rem 0;padding:0}
+.facts div{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:10px 12px}
+.facts dt{color:var(--muted);font-size:.82rem}
+.facts dd{margin:.1rem 0 0;font-weight:650;font-size:1.1rem}
+figure{margin:1rem 0;background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:10px}
+figure img{display:block;width:100%;height:auto;border-radius:6px;background:#fff}
+figcaption{color:var(--muted);font-size:.9rem;margin-top:.5rem}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:12px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--rule);border-radius:10px;background:var(--card);margin:1rem 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+table.wide{min-width:46rem}
+th,td{text-align:left;vertical-align:top;padding:7px 10px;border-bottom:1px solid var(--rule)}
+thead th{background:var(--chip)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tfoot td,tfoot th{font-weight:650;border-top:2px solid var(--rule);border-bottom:0}
+.fixed{color:var(--ok);font-weight:600}
+.open{color:var(--open);font-weight:600}
+code{font:.88em ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--chip);padding:.05em .3em;border-radius:4px;overflow-wrap:anywhere}
+.button{display:inline-block;margin:.25rem 0;padding:.55rem .9rem;border:2px solid var(--accent);border-radius:8px;font-weight:650;text-decoration:none}
+footer{margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--rule);color:var(--muted);font-size:.88rem}
+</style>
+</head>
+<body>
+<main>
+<p class="kicker"><a href="../">Versions</a> · arm A</p>
+<h1>Arm A: QRWTY with Jeeves</h1>
+<p class="lede">A drew QRWTY's backend as a Jeeves diagram, let Jeeves's frozen generator export it,
+and wrote product code only in the stub files the export leaves for it. A never edited a
+generated file: each thing the templates couldn't do became a recorded gap for Jeeves. A stopped
+after one hand-written slice, guest link creation, and one live deploy.</p>
+<p><a class="button" href="deploy/">The live deploy record (Q13)</a></p>
+
+<dl class="facts">
+<div><dt>Generated backend lines (G0)</dt><dd>2,926</dd></div>
+<div><dt>Kept after the slice (R)</dt><dd>2,925</dd></div>
+<div><dt>Written by hand (C)</dt><dd>720, then 770</dd></div>
+<div><dt>Template share</dt><dd>80.25%, then 79.16%</dd></div>
+<div><dt>Stubs written</dt><dd>1 of 11</dd></div>
+<div><dt>Gaps found for Jeeves</dt><dd>17 (AG-01 to AG-17)</dd></div>
+</dl>
+<p>Backend source only, counted by the committed source-loc-v2 runner (comments, blank lines,
+tests and configuration left out). "Then" is the count after the live deploy, which added a Web
+Risk credential (AG-13's workaround). The share covers only the guest-link slice: the other ten
+stubs were never written, and each would lower it.</p>
+
+<h2>The diagram: revision 83, then 84</h2>
+<p>Revision 83 (Q01, 2026-11-14) saved the backend as 16 tiles, 27 links and 14 modules: three
+come from the Sign-in template and eleven are stubs to write. Revision 84 (Q05, 2026-11-15)
+changed one setting: the Click events queue runs on Google Cloud Pub/Sub instead of the default
+broker. The canvas draws no tile's provider, so the two Detailed pictures are byte-identical
+(gap AG-08).</p>
+<div class="pair">
+<figure><a href="jeeves/QRWTY-production-candidate-v1-r83-detailed.png"><img src="jeeves/QRWTY-production-candidate-v1-r83-detailed.png" alt="Revision 83, Detailed view: Session API, Link API, Redirect service, Account API, Billing API and Analytics worker with their databases, caches, click queue, identity and external APIs" loading="lazy"></a>
+<figcaption>Revision 83, Detailed view (each tile's modules shown). Click events on the default broker.</figcaption></figure>
+<figure><a href="jeeves/QRWTY-production-candidate-v1-r84-detailed.png"><img src="jeeves/QRWTY-production-candidate-v1-r84-detailed.png" alt="Revision 84, Detailed view: the same picture as revision 83" loading="lazy"></a>
+<figcaption>Revision 84, Detailed view, the frozen design. Click events on Pub/Sub, which the picture doesn't show.</figcaption></figure>
+</div>
+
+<h2>What Jeeves generated</h2>
+<p>Jeeves at <code>4e87f97</code> exported revision 84 untouched: 64 generated files that build
+and start healthy, with every product route answering 501 until its stub is written. Its backend
+source, by part:</p>
+<div class="scroll"><table>
+<thead><tr><th>Part</th><th class="n">Files</th><th class="n">Lines</th></tr></thead>
+<tbody>
+<tr><td>Runtime (<code>src/runtime/</code>): HTTP server and admission, process lifecycle, PostgreSQL, Valkey, Pub/Sub publishing and loops, clients for other tiles, External APIs and the identity provider, token checks</td><td class="n">14</td><td class="n">2,104</td></tr>
+<tr><td>Six processes (<code>src/processes/</code>): Session API, Link API, Redirect service, Account API, Billing API, Analytics worker</td><td class="n">6</td><td class="n">546</td></tr>
+<tr><td>Module wiring (<code>src/modules/</code>): one slots file per stub, the entry and its dependencies</td><td class="n">13</td><td class="n">171</td></tr>
+<tr><td>Service resources (<code>src/features/</code>; no process imports it)</td><td class="n">1</td><td class="n">50</td></tr>
+<tr><td>Stub bodies, one per module to write</td><td class="n">11</td><td class="n">55</td></tr>
+</tbody>
+<tfoot><tr><td>Generated backend (G0) = 2,871 scaffolding + 55 stub bodies</td><td class="n">45</td><td class="n">2,926</td></tr></tfoot>
+</table></div>
+<p>Also generated, and not counted as backend source: Compose files and the Dockerfile, the
+setup scripts (migrations, roles and grants, Pub/Sub setup; 868 lines), and one SQL file per
+module for its product schema.</p>
+
+<h2>The one slice written by hand (Q06)</h2>
+<p>Guest link creation in Link API: <code>POST /modules/link-api-link-operations/links</code>,
+the internal route Session API was to forward <code>POST /api/v1/links</code> to. It validates and
+normalizes the destination, replays a repeated request or answers 409 before any other work,
+checks Google Web Risk (422 for a bad link, 503 with <code>Retry-After</code> when Web Risk can't
+answer), allocates a random slug with bounded retries, and never reports a database error as a
+success. A guest gets a claim proof whose hash alone is stored, for 24 hours.</p>
+<div class="scroll"><table>
+<thead><tr><th>File (<code>app/src/modules/link-api/</code>)</th><th class="n">Lines</th></tr></thead>
+<tbody>
+<tr><td><code>link-operations/create.ts</code>: the create flow</td><td class="n">223</td></tr>
+<tr><td><code>link-operations/destination.ts</code>: destination rules and normalization</td><td class="n">126</td></tr>
+<tr><td><code>link-operations/store.ts</code>: calls into the product SQL</td><td class="n">84</td></tr>
+<tr><td><code>link-operations/service.ts</code>: settings and wiring</td><td class="n">65</td></tr>
+<tr><td><code>link-operations/slug.ts</code>: random slugs</td><td class="n">54</td></tr>
+<tr><td><code>link-operations/reputation.ts</code>: the Web Risk client</td><td class="n">53</td></tr>
+<tr><td><code>link-operations/replay-seal.ts</code>: the sealed replay copy (AES-256-GCM)</td><td class="n">52</td></tr>
+<tr><td><code>link-operations/contract.ts</code>: request and answer shapes</td><td class="n">36</td></tr>
+<tr><td><code>link-operations/idempotency.ts</code>: idempotency keys</td><td class="n">24</td></tr>
+<tr><td><code>link-api-link-operations.ts</code>: the stub body (3 lines added, its <code>throw</code> removed)</td><td class="n">3</td></tr>
+</tbody>
+<tfoot><tr><td>Written TypeScript (C)</td><td class="n">720</td></tr></tfoot>
+</table></div>
+<p>Beside it: 286 lines of product SQL (tables, triggers and one function per multi-row change,
+because the generated client has no transaction API) and, at A's last commit, 1,867 lines of
+tests. The live deploy later added 50 lines for a Web Risk credential from the service account. Never written: sign-in
+and API forwarding (Session API), the redirect, my links and link analytics (Account API), the
+click aggregator, three billing modules and abuse moderation.</p>
+
+<h2>The live deploy (Q13)</h2>
+<p>On 2026-11-15, for about an hour and a half, the generated app ran on Cloud Run (five services,
+a worker pool and a migration job) with Cloud SQL, two Memorystore Valkey instances and Pub/Sub,
+all reached over verified TLS. Probes checked migrations, TLS, Pub/Sub publishing and dead
+letters, Auth0 token checks, ingress, and a rollout under 1,501 requests with none failed. Guest
+creation from inside the deployment answered 201, and Web Risk's test URLs 422. It was then torn
+down; the spend, computed from resource lifetimes at list prices, was about USD 0.23. qrwty.io
+never routed to it.</p>
+<p><a href="deploy/">Open the deploy record</a>, every probe with its request and answer.</p>
+
+<h2>Gaps A found, and Jeeves's fixes</h2>
+<p>A's frozen export predates every fix below, so none of them is in A's code.</p>
+<div class="scroll"><table class="wide">
+<thead><tr><th>Gap</th><th>Found</th><th>Severity</th><th>What was missing</th><th>Jeeves</th></tr></thead>
+<tbody>
+<tr><td>AG-01</td><td>Q04</td><td>Low</td><td>Configuration was checked one client at a time, between probes</td><td class="fixed">QG31 <code>4b568a7</code></td></tr>
+<tr><td>AG-02</td><td>Q04</td><td>Medium</td><td>The require-TLS switch accepted Node's verification override</td><td class="fixed">QG30 <code>ba520b5</code></td></tr>
+<tr><td>AG-03</td><td>Q04</td><td>Medium</td><td>Credentials read from one directory only</td><td class="fixed">QG34 <code>fa78baf</code></td></tr>
+<tr><td>AG-04</td><td>Q04</td><td>Medium</td><td>The cache client can't use a managed cache's token authentication</td><td>Known limit, recorded by QG33 <code>7ce10f5</code></td></tr>
+<tr><td>AG-05</td><td>Q04</td><td>Low</td><td>Pub/Sub names compiled from the design</td><td>Known limit, recorded by QG33 <code>7ce10f5</code></td></tr>
+<tr><td>AG-06</td><td>Q04</td><td>Low</td><td>Migrations set up the local identity provider's database even with a managed one</td><td>Known limit, recorded by QG33 <code>7ce10f5</code></td></tr>
+<tr><td>AG-07</td><td>Q04</td><td>Low (docs)</td><td>A README row named the wrong variable</td><td class="fixed">QG26 <code>51f6639</code></td></tr>
+<tr><td>AG-08</td><td>Q05</td><td>Low</td><td>A queue's provider isn't drawn</td><td>No unit: the canvas draws no tile's provider</td></tr>
+<tr><td>AG-09</td><td>Q05</td><td>Low</td><td>Two generated files ended with a blank line</td><td class="fixed">QG32 <code>00122f3</code></td></tr>
+<tr><td>AG-10</td><td>Q06</td><td>Medium</td><td>A stub has no startup step or declared settings</td><td class="open">Not yet</td></tr>
+<tr><td>AG-11</td><td>Q06</td><td>Low</td><td>Product SQL has no versioned steps</td><td class="open">Not yet</td></tr>
+<tr><td>AG-12</td><td>Q06</td><td>Low</td><td>A module schema can't grant less than full table access</td><td class="open">Not yet</td></tr>
+<tr><td>AG-13</td><td>Q13</td><td>Medium</td><td>No workload identity for an External API</td><td class="open">Not yet</td></tr>
+<tr><td>AG-14</td><td>Q13</td><td>Medium</td><td>Calls between tiles carry no ID token, so Cloud Run IAM can't protect a called service</td><td class="open">Not yet</td></tr>
+<tr><td>AG-15</td><td>Q13</td><td>Medium</td><td><code>/healthz</code> is reserved by Cloud Run's front end</td><td class="open">Not yet</td></tr>
+<tr><td>AG-16</td><td>Q13</td><td>Medium</td><td>No regional Pub/Sub endpoint</td><td class="open">Not yet</td></tr>
+<tr><td>AG-17</td><td>Q13</td><td>Low</td><td>No log line on shutdown, drain or exit</td><td class="open">Not yet</td></tr>
+</tbody>
+</table></div>
+<p>"Not yet" gaps wait for a briefs unit, now that Jeeves's batch-3 review (QGR3) is done. Before A's freeze,
+Jeeves had already landed 17 QG units, from A's first audit (Q03) and the reviews of it and of
+batch 1. After the freeze came QG21–QG23 and QG25–QG27 (review findings), then batch 3, QG28–QG34
+(the gaps above and the batch-2 review).</p>
+
+<footer>
+<p>Source: the QRWTY repository's evidence for Q01, Q05, Q06 and Q13, and Jeeves's QG plan.
+<a href="../">All versions</a></p>
+</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,1886 @@
+{
+ "repo": "/home/ash/github/qrwty-baseline",
+ "commit": "f2fb3ce605357dde2b696781edb262bf2753437a",
+ "rows": [
+  {
+   "path": ".dockerignore",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".dockerignore",
+   "lines": 9
+  },
+  {
+   "path": ".gitignore",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".gitignore",
+   "lines": 22
+  },
+  {
+   "path": ".nvmrc",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".nvmrc",
+   "lines": 1
+  },
+  {
+   "path": "AGENTS.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 121
+  },
+  {
+   "path": "app/Dockerfile",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": "Dockerfile",
+   "lines": 33
+  },
+  {
+   "path": "app/migrations/analytics/0001_baseline.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 13
+  },
+  {
+   "path": "app/migrations/analytics/0002_pipeline.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 164
+  },
+  {
+   "path": "app/migrations/billing/0001_baseline.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 15
+  },
+  {
+   "path": "app/migrations/links/0001_baseline.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 14
+  },
+  {
+   "path": "app/migrations/links/0002_guest_links.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 59
+  },
+  {
+   "path": "app/migrations/links/0003_ownership.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 47
+  },
+  {
+   "path": "app/migrations/links/0004_restore_gate.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 12
+  },
+  {
+   "path": "app/migrations/links/0005_route_view.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 15
+  },
+  {
+   "path": "app/migrations/links/0006_abuse.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 31
+  },
+  {
+   "path": "app/migrations/sessions/0001_baseline.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 12
+  },
+  {
+   "path": "app/migrations/sessions/0002_sessions.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 77
+  },
+  {
+   "path": "app/migrations/sessions/0003_restore_gate.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 10
+  },
+  {
+   "path": "app/migrations/sessions/0004_sessions_by_subject.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 7
+  },
+  {
+   "path": "app/package.json",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".json",
+   "lines": 31
+  },
+  {
+   "path": "app/src/account/cursor.ts",
+   "category": "backend-source",
+   "area": "sessions-and-accounts",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 47
+  },
+  {
+   "path": "app/src/account/routes.ts",
+   "category": "backend-source",
+   "area": "sessions-and-accounts",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 149
+  },
+  {
+   "path": "app/src/analytics/aggregate.ts",
+   "category": "backend-source",
+   "area": "analytics",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 88
+  },
+  {
+   "path": "app/src/analytics/archive.ts",
+   "category": "backend-source",
+   "area": "analytics",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 121
+  },
+  {
+   "path": "app/src/analytics/consumer.ts",
+   "category": "backend-source",
+   "area": "analytics",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 273
+  },
+  {
+   "path": "app/src/analytics/event.ts",
+   "category": "backend-source",
+   "area": "analytics",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 124
+  },
+  {
+   "path": "app/src/analytics/guard.ts",
+   "category": "backend-source",
+   "area": "analytics",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 303
+  },
+  {
+   "path": "app/src/analytics/query.ts",
+   "category": "backend-source",
+   "area": "analytics",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 163
+  },
+  {
+   "path": "app/src/analytics/store.ts",
+   "category": "backend-source",
+   "area": "analytics",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 312
+  },
+  {
+   "path": "app/src/analytics/subscription-check.ts",
+   "category": "backend-source",
+   "area": "analytics",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 95
+  },
+  {
+   "path": "app/src/analytics/tools.ts",
+   "category": "backend-source",
+   "area": "analytics",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 414
+  },
+  {
+   "path": "app/src/edge/node-forward.ts",
+   "category": "backend-source",
+   "area": "edge",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 107
+  },
+  {
+   "path": "app/src/edge/routing.ts",
+   "category": "backend-source",
+   "area": "edge",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 140
+  },
+  {
+   "path": "app/src/edge/server.ts",
+   "category": "backend-source",
+   "area": "edge",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 200
+  },
+  {
+   "path": "app/src/edge/trust.ts",
+   "category": "backend-source",
+   "area": "edge",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 66
+  },
+  {
+   "path": "app/src/links/admission.ts",
+   "category": "backend-source",
+   "area": "abuse",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 124
+  },
+  {
+   "path": "app/src/links/claim.ts",
+   "category": "backend-source",
+   "area": "links",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 74
+  },
+  {
+   "path": "app/src/links/create.ts",
+   "category": "backend-source",
+   "area": "links",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 183
+  },
+  {
+   "path": "app/src/links/destination.ts",
+   "category": "backend-source",
+   "area": "links",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 168
+  },
+  {
+   "path": "app/src/links/erasure.ts",
+   "category": "backend-source",
+   "area": "links",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 54
+  },
+  {
+   "path": "app/src/links/idempotency.ts",
+   "category": "backend-source",
+   "area": "links",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 31
+  },
+  {
+   "path": "app/src/links/idempotent.ts",
+   "category": "backend-source",
+   "area": "links",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 77
+  },
+  {
+   "path": "app/src/links/link-errors.ts",
+   "category": "backend-source",
+   "area": "links",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 48
+  },
+  {
+   "path": "app/src/links/manage.ts",
+   "category": "backend-source",
+   "area": "links",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 127
+  },
+  {
+   "path": "app/src/links/model.ts",
+   "category": "backend-source",
+   "area": "links",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 34
+  },
+  {
+   "path": "app/src/links/moderation.ts",
+   "category": "backend-source",
+   "area": "abuse",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 109
+  },
+  {
+   "path": "app/src/links/reapply.ts",
+   "category": "backend-source",
+   "area": "links",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 45
+  },
+  {
+   "path": "app/src/links/reports.ts",
+   "category": "backend-source",
+   "area": "abuse",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 104
+  },
+  {
+   "path": "app/src/links/reputation.ts",
+   "category": "backend-source",
+   "area": "abuse",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 139
+  },
+  {
+   "path": "app/src/links/routes.ts",
+   "category": "backend-source",
+   "area": "links",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 280
+  },
+  {
+   "path": "app/src/links/tokens.ts",
+   "category": "backend-source",
+   "area": "links",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 60
+  },
+  {
+   "path": "app/src/platform/auth/guard.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 63
+  },
+  {
+   "path": "app/src/platform/auth/tokens.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 145
+  },
+  {
+   "path": "app/src/platform/cache/valkey.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 90
+  },
+  {
+   "path": "app/src/platform/clock.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 41
+  },
+  {
+   "path": "app/src/platform/config/keyring.ts",
+   "category": "configuration-source-excluded",
+   "area": null,
+   "reason": "configuration-or-build",
+   "ext": ".ts",
+   "lines": 47
+  },
+  {
+   "path": "app/src/platform/config/registry.ts",
+   "category": "configuration-source-excluded",
+   "area": null,
+   "reason": "configuration-or-build",
+   "ext": ".ts",
+   "lines": 1163
+  },
+  {
+   "path": "app/src/platform/config/validate.ts",
+   "category": "configuration-source-excluded",
+   "area": null,
+   "reason": "configuration-or-build",
+   "ext": ".ts",
+   "lines": 542
+  },
+  {
+   "path": "app/src/platform/crypto/aead.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 40
+  },
+  {
+   "path": "app/src/platform/db/migrate.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 113
+  },
+  {
+   "path": "app/src/platform/db/pool.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 123
+  },
+  {
+   "path": "app/src/platform/db/restore-gate.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 40
+  },
+  {
+   "path": "app/src/platform/db/roles.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 77
+  },
+  {
+   "path": "app/src/platform/db/transaction.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 118
+  },
+  {
+   "path": "app/src/platform/errors.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 68
+  },
+  {
+   "path": "app/src/platform/http/edge-auth.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 80
+  },
+  {
+   "path": "app/src/platform/http/server.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 265
+  },
+  {
+   "path": "app/src/platform/lifecycle.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 163
+  },
+  {
+   "path": "app/src/platform/log.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 70
+  },
+  {
+   "path": "app/src/platform/pubsub/client.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 195
+  },
+  {
+   "path": "app/src/platform/storage/erasure-journal.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 111
+  },
+  {
+   "path": "app/src/platform/test-control.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "test-or-fixture",
+   "ext": ".ts",
+   "lines": 31
+  },
+  {
+   "path": "app/src/platform/tls.ts",
+   "category": "backend-source",
+   "area": "platform",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 19
+  },
+  {
+   "path": "app/src/processes/account-api.ts",
+   "category": "backend-source",
+   "area": "process-entry-points",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 35
+  },
+  {
+   "path": "app/src/processes/analytics-worker.ts",
+   "category": "backend-source",
+   "area": "process-entry-points",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 241
+  },
+  {
+   "path": "app/src/processes/billing-api.ts",
+   "category": "backend-source",
+   "area": "process-entry-points",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 3
+  },
+  {
+   "path": "app/src/processes/billing-worker.ts",
+   "category": "backend-source",
+   "area": "process-entry-points",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 3
+  },
+  {
+   "path": "app/src/processes/db-bootstrap.ts",
+   "category": "backend-source",
+   "area": "process-entry-points",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 53
+  },
+  {
+   "path": "app/src/processes/edge.ts",
+   "category": "backend-source",
+   "area": "process-entry-points",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 96
+  },
+  {
+   "path": "app/src/processes/jobs.ts",
+   "category": "backend-source",
+   "area": "process-entry-points",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 17
+  },
+  {
+   "path": "app/src/processes/link-api.ts",
+   "category": "backend-source",
+   "area": "process-entry-points",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 67
+  },
+  {
+   "path": "app/src/processes/migrate.ts",
+   "category": "backend-source",
+   "area": "process-entry-points",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 30
+  },
+  {
+   "path": "app/src/processes/pipeline-guard.ts",
+   "category": "backend-source",
+   "area": "process-entry-points",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 28
+  },
+  {
+   "path": "app/src/processes/redirect.ts",
+   "category": "backend-source",
+   "area": "process-entry-points",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 80
+  },
+  {
+   "path": "app/src/processes/runtime.ts",
+   "category": "backend-source",
+   "area": "process-entry-points",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 259
+  },
+  {
+   "path": "app/src/processes/session-api.ts",
+   "category": "backend-source",
+   "area": "process-entry-points",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 73
+  },
+  {
+   "path": "app/src/processes/test-edge.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "test-or-fixture",
+   "ext": ".ts",
+   "lines": 89
+  },
+  {
+   "path": "app/src/processes/test-relay.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "test-or-fixture",
+   "ext": ".ts",
+   "lines": 49
+  },
+  {
+   "path": "app/src/processes/test-routes.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "test-or-fixture",
+   "ext": ".ts",
+   "lines": 45
+  },
+  {
+   "path": "app/src/processes/test-scheduler.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "test-or-fixture",
+   "ext": ".ts",
+   "lines": 125
+  },
+  {
+   "path": "app/src/redirect/click-event.ts",
+   "category": "backend-source",
+   "area": "redirect",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 80
+  },
+  {
+   "path": "app/src/redirect/entry.ts",
+   "category": "backend-source",
+   "area": "redirect",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 88
+  },
+  {
+   "path": "app/src/redirect/pages.ts",
+   "category": "backend-source",
+   "area": "redirect",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 45
+  },
+  {
+   "path": "app/src/redirect/route-cache.ts",
+   "category": "backend-source",
+   "area": "redirect",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 322
+  },
+  {
+   "path": "app/src/redirect/routes.ts",
+   "category": "backend-source",
+   "area": "redirect",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 122
+  },
+  {
+   "path": "app/src/redirect/safety-gate.ts",
+   "category": "backend-source",
+   "area": "redirect",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 62
+  },
+  {
+   "path": "app/src/session/auth-routes.ts",
+   "category": "backend-source",
+   "area": "sessions-and-accounts",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 157
+  },
+  {
+   "path": "app/src/session/deletion.ts",
+   "category": "backend-source",
+   "area": "sessions-and-accounts",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 268
+  },
+  {
+   "path": "app/src/session/forward.ts",
+   "category": "backend-source",
+   "area": "sessions-and-accounts",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 75
+  },
+  {
+   "path": "app/src/session/guest.ts",
+   "category": "backend-source",
+   "area": "sessions-and-accounts",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 74
+  },
+  {
+   "path": "app/src/session/jobs.ts",
+   "category": "backend-source",
+   "area": "sessions-and-accounts",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 55
+  },
+  {
+   "path": "app/src/session/oidc.ts",
+   "category": "backend-source",
+   "area": "sessions-and-accounts",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 200
+  },
+  {
+   "path": "app/src/session/reapply.ts",
+   "category": "backend-source",
+   "area": "sessions-and-accounts",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 58
+  },
+  {
+   "path": "app/src/session/routes.ts",
+   "category": "backend-source",
+   "area": "sessions-and-accounts",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 387
+  },
+  {
+   "path": "app/src/session/store.ts",
+   "category": "backend-source",
+   "area": "sessions-and-accounts",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 303
+  },
+  {
+   "path": "app/test/container/abuse.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 225
+  },
+  {
+   "path": "app/test/container/accounts.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 212
+  },
+  {
+   "path": "app/test/container/analytics.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 263
+  },
+  {
+   "path": "app/test/container/guest-links.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 367
+  },
+  {
+   "path": "app/test/container/lifecycle.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 235
+  },
+  {
+   "path": "app/test/container/redirect.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 632
+  },
+  {
+   "path": "app/test/container/restore.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 260
+  },
+  {
+   "path": "app/test/integration/abuse.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 359
+  },
+  {
+   "path": "app/test/integration/analytics.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 345
+  },
+  {
+   "path": "app/test/integration/deletion.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 352
+  },
+  {
+   "path": "app/test/integration/identity.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 162
+  },
+  {
+   "path": "app/test/integration/links.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 337
+  },
+  {
+   "path": "app/test/integration/ownership.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 493
+  },
+  {
+   "path": "app/test/integration/postgres.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 310
+  },
+  {
+   "path": "app/test/integration/reapply.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 274
+  },
+  {
+   "path": "app/test/integration/redirect-cache.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 334
+  },
+  {
+   "path": "app/test/integration/sessions.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 234
+  },
+  {
+   "path": "app/test/integration/valkey-pubsub.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 213
+  },
+  {
+   "path": "app/test/support/abuse.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 22
+  },
+  {
+   "path": "app/test/support/browser.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 129
+  },
+  {
+   "path": "app/test/support/container-setup.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 5
+  },
+  {
+   "path": "app/test/support/local.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 124
+  },
+  {
+   "path": "app/test/support/web-risk.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 71
+  },
+  {
+   "path": "app/test/unit/abuse-parts.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 429
+  },
+  {
+   "path": "app/test/unit/analytics-parts.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 518
+  },
+  {
+   "path": "app/test/unit/b09c.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 83
+  },
+  {
+   "path": "app/test/unit/config.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 276
+  },
+  {
+   "path": "app/test/unit/destination.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 188
+  },
+  {
+   "path": "app/test/unit/edge-forward.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 140
+  },
+  {
+   "path": "app/test/unit/edge-routing.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 134
+  },
+  {
+   "path": "app/test/unit/edge-trust.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 61
+  },
+  {
+   "path": "app/test/unit/guard.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 76
+  },
+  {
+   "path": "app/test/unit/guest-routes.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 311
+  },
+  {
+   "path": "app/test/unit/http-server.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 315
+  },
+  {
+   "path": "app/test/unit/link-tokens.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 211
+  },
+  {
+   "path": "app/test/unit/oidc-rp.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 176
+  },
+  {
+   "path": "app/test/unit/ownership-parts.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 199
+  },
+  {
+   "path": "app/test/unit/redirect-parts.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 425
+  },
+  {
+   "path": "app/test/unit/redirect-routes.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 309
+  },
+  {
+   "path": "app/test/unit/restore-parts.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 45
+  },
+  {
+   "path": "app/test/unit/runtime-parts.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 226
+  },
+  {
+   "path": "app/test/unit/session-routes.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 415
+  },
+  {
+   "path": "app/test/unit/tokens.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 149
+  },
+  {
+   "path": "app/test/unit/valkey-iam.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 75
+  },
+  {
+   "path": "app/tsconfig.json",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".json",
+   "lines": 22
+  },
+  {
+   "path": "app/tsconfig.test.json",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".json",
+   "lines": 9
+  },
+  {
+   "path": "app/vitest.config.ts",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 35
+  },
+  {
+   "path": "biome.json",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".json",
+   "lines": 30
+  },
+  {
+   "path": "infra/gcp/auth0/resources.json",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".json",
+   "lines": 3
+  },
+  {
+   "path": "infra/gcp/budget/.terraform.lock.hcl",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".hcl",
+   "lines": 38
+  },
+  {
+   "path": "infra/gcp/budget/main.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 47
+  },
+  {
+   "path": "infra/gcp/dns/.terraform.lock.hcl",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".hcl",
+   "lines": 25
+  },
+  {
+   "path": "infra/gcp/dns/main.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 65
+  },
+  {
+   "path": "infra/gcp/oracle/render-adapter.mjs",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 19
+  },
+  {
+   "path": "infra/gcp/oracle/staging-adapter.json",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".json",
+   "lines": 70
+  },
+  {
+   "path": "infra/gcp/probes/Dockerfile",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": "Dockerfile",
+   "lines": 10
+  },
+  {
+   "path": "infra/gcp/probes/archive-trust.mjs",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 35
+  },
+  {
+   "path": "infra/gcp/probes/auth0-rp.mjs",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 121
+  },
+  {
+   "path": "infra/gcp/probes/auth0-tokens.mjs",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 124
+  },
+  {
+   "path": "infra/gcp/probes/cloud-probe.mjs",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 894
+  },
+  {
+   "path": "infra/gcp/probes/dlq-forwarding.mjs",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 123
+  },
+  {
+   "path": "infra/gcp/probes/echo-server.mjs",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 16
+  },
+  {
+   "path": "infra/gcp/probes/live-probes.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 61
+  },
+  {
+   "path": "infra/gcp/probes/staging-anonymous.mjs",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 98
+  },
+  {
+   "path": "infra/gcp/probes/steady-traffic.mjs",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 81
+  },
+  {
+   "path": "infra/gcp/probes/verify-idp.ts",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 51
+  },
+  {
+   "path": "infra/gcp/releases/b07-1.json",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".json",
+   "lines": 22
+  },
+  {
+   "path": "infra/gcp/releases/b07-2.json",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".json",
+   "lines": 22
+  },
+  {
+   "path": "infra/gcp/releases/b07-3.json",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".json",
+   "lines": 22
+  },
+  {
+   "path": "infra/gcp/releases/b09-1.json",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".json",
+   "lines": 22
+  },
+  {
+   "path": "infra/gcp/releases/b09-2.json",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".json",
+   "lines": 22
+  },
+  {
+   "path": "infra/gcp/releases/b09-3.json",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".json",
+   "lines": 22
+  },
+  {
+   "path": "infra/gcp/releases/b09b-1.json",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".json",
+   "lines": 22
+  },
+  {
+   "path": "infra/gcp/releases/b09b-2.json",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".json",
+   "lines": 22
+  },
+  {
+   "path": "infra/gcp/scripts/auth0.mjs",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 459
+  },
+  {
+   "path": "infra/gcp/scripts/dns.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 35
+  },
+  {
+   "path": "infra/gcp/scripts/guard.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 16
+  },
+  {
+   "path": "infra/gcp/scripts/identity-platform.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 42
+  },
+  {
+   "path": "infra/gcp/scripts/install-tofu.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 22
+  },
+  {
+   "path": "infra/gcp/scripts/inventory.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 34
+  },
+  {
+   "path": "infra/gcp/scripts/mirror-providers.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 9
+  },
+  {
+   "path": "infra/gcp/scripts/put-secrets.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 60
+  },
+  {
+   "path": "infra/gcp/scripts/redeploy.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 98
+  },
+  {
+   "path": "infra/gcp/scripts/release.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 21
+  },
+  {
+   "path": "infra/gcp/scripts/rollback.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 8
+  },
+  {
+   "path": "infra/gcp/scripts/secret-scan.mjs",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 47
+  },
+  {
+   "path": "infra/gcp/scripts/smoke-signin.mjs",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 639
+  },
+  {
+   "path": "infra/gcp/scripts/smoke.mjs",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 192
+  },
+  {
+   "path": "infra/gcp/scripts/state-vs-inventory.mjs",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 46
+  },
+  {
+   "path": "infra/gcp/scripts/teardown.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 65
+  },
+  {
+   "path": "infra/gcp/stack/.terraform.lock.hcl",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".hcl",
+   "lines": 61
+  },
+  {
+   "path": "infra/gcp/stack/core.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 167
+  },
+  {
+   "path": "infra/gcp/stack/edge.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 147
+  },
+  {
+   "path": "infra/gcp/stack/iam.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 132
+  },
+  {
+   "path": "infra/gcp/stack/identity.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 14
+  },
+  {
+   "path": "infra/gcp/stack/ingress.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 125
+  },
+  {
+   "path": "infra/gcp/stack/locals.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 145
+  },
+  {
+   "path": "infra/gcp/stack/messaging.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 122
+  },
+  {
+   "path": "infra/gcp/stack/operations.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 58
+  },
+  {
+   "path": "infra/gcp/stack/outputs.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 24
+  },
+  {
+   "path": "infra/gcp/stack/probe.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 159
+  },
+  {
+   "path": "infra/gcp/stack/release.auto.tfvars.json",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".json",
+   "lines": 16
+  },
+  {
+   "path": "infra/gcp/stack/run.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 335
+  },
+  {
+   "path": "infra/gcp/stack/staging.tfvars.example",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".example",
+   "lines": 45
+  },
+  {
+   "path": "infra/gcp/stack/variables.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 188
+  },
+  {
+   "path": "infra/gcp/stack/versions.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 29
+  },
+  {
+   "path": "infra/gcp/validate.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 19
+  },
+  {
+   "path": "infra/inventory/activation-backlog.json",
+   "category": "infrastructure",
+   "area": "infra/inventory",
+   "reason": null,
+   "ext": ".json",
+   "lines": 141
+  },
+  {
+   "path": "infra/inventory/bindings.json",
+   "category": "infrastructure",
+   "area": "infra/inventory",
+   "reason": null,
+   "ext": ".json",
+   "lines": 2534
+  },
+  {
+   "path": "infra/inventory/generate.ts",
+   "category": "infrastructure",
+   "area": "infra/inventory",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 178
+  },
+  {
+   "path": "infra/inventory/limitations.json",
+   "category": "infrastructure",
+   "area": "infra/inventory",
+   "reason": null,
+   "ext": ".json",
+   "lines": 40
+  },
+  {
+   "path": "infra/inventory/secret-bindings.json",
+   "category": "infrastructure",
+   "area": "infra/inventory",
+   "reason": null,
+   "ext": ".json",
+   "lines": 99
+  },
+  {
+   "path": "infra/inventory/secret-inventory.json",
+   "category": "infrastructure",
+   "area": "infra/inventory",
+   "reason": null,
+   "ext": ".json",
+   "lines": 820
+  },
+  {
+   "path": "infra/local/compose.restore.yaml",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".yaml",
+   "lines": 248
+  },
+  {
+   "path": "infra/local/compose.yaml",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".yaml",
+   "lines": 438
+  },
+  {
+   "path": "infra/local/control/adapter.ts",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 125
+  },
+  {
+   "path": "infra/local/control/envgen.ts",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 174
+  },
+  {
+   "path": "infra/local/control/qrwtyb.ts",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 1594
+  },
+  {
+   "path": "infra/local/control/topology.ts",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 55
+  },
+  {
+   "path": "infra/local/env/restore.conf",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".conf",
+   "lines": 21
+  },
+  {
+   "path": "infra/local/env/test-public.conf",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".conf",
+   "lines": 67
+  },
+  {
+   "path": "infra/local/keycloak/qrwtyb-realm.json",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".json",
+   "lines": 313
+  },
+  {
+   "path": "infra/local/oracle-adapter.json",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".json",
+   "lines": 512
+  },
+  {
+   "path": "infra/local/oracle-adapter.provenance.json",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".json",
+   "lines": 125
+  },
+  {
+   "path": "infra/local/postgres/start-postgres.sh",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 27
+  },
+  {
+   "path": "infra/local/toxiproxy.json",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".json",
+   "lines": 46
+  },
+  {
+   "path": "package.json",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".json",
+   "lines": 40
+  },
+  {
+   "path": "pnpm-lock.yaml",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".yaml",
+   "lines": 1814
+  },
+  {
+   "path": "pnpm-workspace.yaml",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".yaml",
+   "lines": 10
+  },
+  {
+   "path": "source-scope.json",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".json",
+   "lines": 11
+  },
+  {
+   "path": "web/.gitkeep",
+   "category": "ui",
+   "area": null,
+   "reason": null,
+   "ext": ".gitkeep",
+   "lines": 0
+  }
+ ]
+}

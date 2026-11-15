@@ -1,0 +1,55 @@
+deploy.sh: warning: deploying a dirty tree as 364f28316aff78407f3847a003bc89a9912870d3-dirty
+build: {"commit":"364f28316aff78407f3847a003bc89a9912870d3-dirty","builtAt":"2026-11-15T15:56:31Z"}
+4.156.0
+
+ ⛅️ wrangler 4.156.0 (update available 4.162.0)
+───────────────────────────────────────────────
+🌀 Building list of assets...
+✨ Read 34 files from the assets directory /home/ash/github/qrwty/deploy/cloudflare/public
+🌀 Starting asset upload...
+🌀 Found 25 new or modified static assets to upload. Proceeding with upload...
++ /versions/b/release-b07-3.json
++ /versions/original/styles.css
++ /versions/design/qr.js
++ /versions/b/walkthrough-run1.json
++ /versions/a/deploy/demo-data.json
++ /versions/a/deploy/index.html
++ /versions/b/diagrams/billing-entitlements.png
++ /versions/b/diagrams/request-paths.png
++ /versions/b/diagrams/store-ownership.png
++ /versions/design/index.html
++ /versions/b/inventory.jsonl
++ /versions/original/index.html
++ /versions/b/walkthrough.json
++ /versions/b/index.html
++ /versions/b/diagrams/click-pipeline.png
++ /versions/b/diagrams/redirect-sequence.png
++ /versions/b/diagrams/gcp-placement.png
++ /versions/design/tokens.css
++ /versions/index.html
++ /versions/a/index.html
++ /versions/design/app.css
++ /versions/design/app.js
++ /versions/b/diagrams/session-identity.png
++ /versions/a/jeeves/QRWTY-production-candidate-v1-r83-detailed.png
++ /versions/b/diagrams/link-states.png
+Uploaded 8 of 25 assets
+Uploaded 17 of 25 assets
+Uploaded 25 of 25 assets
+✨ Success! Uploaded 25 files (1 already uploaded) (1.72 sec)
+
+Total Upload: 7.91 KiB / gzip: 2.87 KiB
+Worker Startup Time: 1 ms
+Your Worker has access to the following bindings:
+Binding                            Resource
+env.ASSETS                         Assets
+env.BUILD_COMMIT ("(hidden)")      Environment Variable
+env.BUILT_AT ("(hidden)")          Environment Variable
+
+Uploaded qrwty-edge (7.84 sec)
+Deployed qrwty-edge triggers (1.55 sec)
+  qrwty.io (custom domain)
+  www.qrwty.io (custom domain)
+  b.qrwty.io (custom domain)
+Current Version ID: 69e267f5-41e9-4bc7-ba8c-d0a6a28daa98
+healthz ok: https://qrwty.io/healthz -> {"ok":true,"commit":"364f28316aff78407f3847a003bc89a9912870d3-dirty","builtAt":"2026-11-15T15:56:31Z"}

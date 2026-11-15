@@ -1244,3 +1244,71 @@ account: [Q13 checks](evidence/q13/checks.md).
   about 13:30Z (it runs ahead of uptime on this host).
 - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
   memory index); it was ignored.
+
+## S02: versions on qrwty.io and the results in the README, 2026-11-15
+
+Shared unit, attempt 1 (ledger `shared-1025`, role implementer, phase `cloud`, since the schema
+has no `report`), from QRWTY `814f6f9`. During the unit the coordinator committed `dd594d0` (QGR3)
+and `364f283` (cloud leftovers removed). Arm B was read at `f2fb3ce` and never written. Full record:
+[S02 checks](evidence/s02/checks.md).
+
+- **Changed.**
+  - `deploy/cloudflare/` serves `public/` as Workers static assets through the Worker (`ASSETS`,
+    `run_worker_first`):
+    - `/versions/`: the timeline and a "what each version could do" table;
+    - `/versions/design/`: Q11's prototype;
+    - `/versions/a/`: a new page with r83/r84 Detailed PNGs, the generated parts, Q06's slice and
+      AG-01 to AG-17 with their fixes;
+    - `/versions/a/deploy/`: Q13's record;
+    - `/versions/b/`: B-final's record;
+    - `/versions/original/`: a static copy of `qrwty-platform`'s page, fetched once from its
+      workers.dev address. The Google Fonts links and the live-API script are left out.
+  - The home page links to `/versions/`. A new Custom Domain, `b.qrwty.io`, answers `301` to
+    `/versions/b/`.
+  - CSP: S01's everywhere. Only `/versions/design/` (own scripts and styles, `data:`/`blob:`
+    images) and `/versions/original/` (own stylesheet, `form-action 'none'`) widen it, and only to
+    their own origin.
+  - Root `README.md`: a Results section near the top (one table and short notes, then the
+    limitations and the links), the status and live-sites lines, and the measurement tables' stale
+    cells.
+- **Checks.**
+  - `pnpm check` in `deploy/cloudflare`: Biome, TypeScript, vitest 26/26.
+  - The dirty deploy (`364f283…-dirty`): `check-live.sh` passed; every new path answered with the
+    expected headers; `b.qrwty.io` gave `301` and its TLS verified.
+  - Headless Chromium on the live site: 8 pages × 390/1440 px × light/dark, 32 loads, **0 external
+    requests**, 0 broken images. The prototype's scripts ran. The only overflow is the original
+    page's own 30 px.
+  - A shape secret scan of all published files and the evidence found no credential. The
+    workers.dev subdomain appears nowhere. Byte copies match their sources.
+  - Cloudflare before/after: the only change is the `b.qrwty.io` Custom Domain and its managed
+    record.
+- **Numbers.**
+  - A, from the committed runner: Q06 (G0 2,926 = 2,871 + 55; R 2,925, C 720, B 3,645, 80.25%) and
+    A's last commit `a6f982b` (C 770, B 3,695, 79.16%).
+  - B, with S02's counter on the runner's own parser and eligibility: 9,361 backend lines (77
+    files), tests 11,058, SQL 476, infrastructure 13,193. source-loc-v2 drops B's
+    `src/platform/config/` (1,752 lines).
+  - Like for like: A 720 + 286 SQL = 1,006; B03 608 + 59 SQL = 667, plus 398 lines of facade.
+  - Effort from the ledgers: A 5,203 requests (3,822 of them Jeeves template work), 29.5
+    agent-hours, est. $453–513; B 3,064 requests, 21.7 h, est. $336–371; list prices, not a bill.
+- **Findings.**
+  - Through the binding, a folder path without its slash was served as is, which breaks relative
+    links, so the Worker now answers `301`.
+  - JSON Lines files carry no type, so they are served as text.
+  - The packet's "F3" is QG09's fold F3 (QL01's reconnect bound, from B's B05 review F1).
+  - `docs/benchmarks/status.json` is stale and outside this unit's writes.
+- **Next.** After this commit, the worker redeploys from the clean tree and runs `check-live.sh
+  <sha>`; the result is in the unit's report. The coordinator pushes.
+  - `qrwty-platform` keeps workers.dev on; turning it off or deleting the Worker is the owner's
+    call (S01's open choice).
+  - Refresh a `/versions/` copy from its source, never by hand.
+- **Read.** The packet, `AGENTS.md`, this file (S01, Q06, Q13), owner decisions 2026-11-15,
+  run-status, the ledgers and their README, and the evidence of Q01, Q05, Q06 and Q13. Also B's
+  B-final README and record, B's commit history and B05 review F3/F1, and Jeeves's committed QG
+  plan, review-batch3 and QL README/owner summary/QL01. `~/.config/qrwty/`: only `cloudflare.env`,
+  loaded with `set -a` and never printed.
+- **Elapsed.** Started 13:28:44Z. A usage limit paused the session from about 13:45Z to 15:51Z, and
+  it resumed with nothing running. The commit came about 16:10Z (host clock).
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
+  memory index); it was ignored. One `git log` and `ls` were run, read-only, in the Jeeves checkout
+  at the start (see the checks, §6).

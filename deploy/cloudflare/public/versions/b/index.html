@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; style-src 'unsafe-inline'">
+<title>QRWTY arm B staging record</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1f22;--muted:#5d6470;--line:#e2ded6;--card:#ffffff;--code:#f3f1ec;--accent:#2f5d8a;--s2:#1f7a45;--s3:#2f5d8a;--s4:#9a5b00;--s5:#b3261e}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15171a;--fg:#e7e5e0;--muted:#9aa1ab;--line:#2c3036;--card:#1c1f23;--code:#23272c;--accent:#8ab4e0;--s2:#5fcf8e;--s3:#8ab4e0;--s4:#e6b45a;--s5:#ff8a80}}
+:root[data-theme="dark"]{--bg:#15171a;--fg:#e7e5e0;--muted:#9aa1ab;--line:#2c3036;--card:#1c1f23;--code:#23272c;--accent:#8ab4e0;--s2:#5fcf8e;--s3:#8ab4e0;--s4:#e6b45a;--s5:#ff8a80}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em}
+h2{font-size:1.35rem;margin:2.2em 0 .4em;padding-top:.6em;border-top:1px solid var(--line)}
+h3{font-size:1rem;margin:0;flex:1}
+h4{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:.2em 0}
+p{margin:.5em 0}
+a{color:var(--accent)}
+.lede{color:var(--muted);max-width:75ch}
+nav ul{display:flex;flex-wrap:wrap;gap:.4em 1.2em;padding:0;list-style:none;margin:1em 0}
+table{border-collapse:collapse;width:100%;margin:.6em 0;font-size:.92rem}
+th,td{text-align:left;padding:.35em .5em;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+code,pre{font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+code.digest{word-break:break-all}
+pre{background:var(--code);padding:.6em .75em;border-radius:6px;overflow-x:auto;margin:.3em 0;white-space:pre-wrap;word-break:break-word}
+pre.body{max-height:26em;overflow:auto}
+.step{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.8em 1em;margin:1em 0}
+.step header{display:flex;flex-wrap:wrap;align-items:center;gap:.5em .8em}
+.step .n{font-weight:700;color:var(--muted);min-width:1.6em}
+.step .time{color:var(--muted);font-size:.85rem;font-variant-numeric:tabular-nums}
+.note{color:var(--muted);font-size:.92rem}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:1em}
+.pair>section{min-width:0}
+@media (max-width:760px){.pair{grid-template-columns:1fr}}
+.status{display:inline-block;font:600 .8rem/1.6 ui-monospace,Menlo,monospace;padding:0 .5em;border-radius:4px;border:1px solid currentColor}
+.s2{color:var(--s2)}.s3{color:var(--s3)}.s4{color:var(--s4)}.s5{color:var(--s5)}
+.ok{color:var(--s2)}.bad{color:var(--s5)}.muted,.small{color:var(--muted)}.small{font-size:.85rem}
+figure{margin:1.2em 0}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:6px;background:#fff}
+figcaption{font-size:.92rem;color:var(--muted);margin-top:.3em}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.6em;margin:1em 0}
+.facts div{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.6em .8em}
+.facts b{display:block;font-size:1.15rem}
+.facts span{color:var(--muted);font-size:.85rem}
+details{margin:.6em 0}
+summary{cursor:pointer;color:var(--accent)}
+</style>
+</head>
+<body>
+<main>
+<p class="small">QRWTY run qrwty-r1-20261114 · arm B (built without Jeeves) · unit B-final</p>
+<h1>QRWTY arm B staging: a recorded walk-through</h1>
+<p class="lede">A live walk-through of B's staging deployment at <code>https://b.qrwty.io</code>, recorded on 2026-11-15 at 11:43:38.400Z just before the staging was torn down by owner decision. Every request and response is shown as it happened (status, key headers, body, start time and duration), through Cloudflare, the load balancer and B's edge. Tokens, cookies, one-time values, the password, account ids, the tenant domain and project identifiers are replaced by labels (<a href="#labels">list</a>). This page loads nothing from the network.</p>
+<div class="facts">
+<div><b>b07-3</b><span>release in service (11 images)</span></div>
+<div><b>25 requests</b><span>every answer as expected</span></div>
+<div><b>89 resources</b><span>B's cloud inventory before teardown</span></div>
+<div><b>≈ $142 a month</b><span>staging at list prices</span></div>
+</div>
+<nav><ul>
+<li><a href="#walkthrough">Walk-through</a></li>
+<li><a href="#part-health">Health</a></li><li><a href="#part-guest">A guest link</a></li><li><a href="#part-redirect">Following the link</a></li><li><a href="#part-abuse">The abuse refusal</a></li><li><a href="#part-signin">Signing in as the test user</a></li><li><a href="#part-owned">Claiming and listing owned links</a></li><li><a href="#part-analytics">The click in the owner's aggregates</a></li><li><a href="#part-signout">Signing out</a></li><li><a href="#part-edge">The edge's own answers</a></li>
+<li><a href="#release">Release</a></li><li><a href="#inventory">Inventory</a></li><li><a href="#cost">Cost</a></li><li><a href="#architecture">Architecture</a></li><li><a href="#labels">Labels</a></li><li><a href="#files">Files</a></li>
+</ul></nav>
+
+<section class="part" id="walkthrough"><h2>Walk-through at a glance</h2>
+<p>One browser (a cookie jar) as a guest, then signed in as <code>qrwtyb-test-alice@qrwtyb.invalid</code>. Times are the client's: wall clock at the start, monotonic duration. The machine's wall clock (WSL2) stepped forward by about 4 s while the script polled the aggregates: the gap before step 16 is 8.0 s by the wall clock and about 4 s by the monotonic clock, which the step's note uses.</p>
+<div class="tablewrap"><table><thead><tr><th>#</th><th>Step</th><th>Request</th><th>Status</th><th class="num">ms</th></tr></thead><tbody>
+<tr><td><a href="#step-1">1</a></td><td>GET /healthz (the edge's own probe)</td><td><code>GET /healthz</code></td><td><span class="status s2">200</span></td><td class="num">125</td></tr>
+<tr><td><a href="#step-2">2</a></td><td>Guest session</td><td><code>GET /api/v1/session</code></td><td><span class="status s2">200</span></td><td class="num">223</td></tr>
+<tr><td><a href="#step-3">3</a></td><td>Create a guest link</td><td><code>POST /api/v1/links</code></td><td><span class="status s2">201</span></td><td class="num">198</td></tr>
+<tr><td><a href="#step-4">4</a></td><td>Follow the short link</td><td><code>GET /aBzFvVr7T3</code></td><td><span class="status s3">302</span></td><td class="num">176</td></tr>
+<tr><td><a href="#step-5">5</a></td><td>HEAD of the short link</td><td><code>HEAD /aBzFvVr7T3</code></td><td><span class="status s3">302</span></td><td class="num">62</td></tr>
+<tr><td><a href="#step-6">6</a></td><td>Create a link to a Web Risk test URL</td><td><code>POST /api/v1/links</code></td><td><span class="status s4">422</span></td><td class="num">152</td></tr>
+<tr><td><a href="#step-7">7</a></td><td>Start sign-in</td><td><code>GET /auth/login?returnTo=%2Fwalkthrough</code></td><td><span class="status s3">302</span></td><td class="num">197</td></tr>
+<tr><td><a href="#step-8">8</a></td><td>Issuer GET /authorize</td><td><code>GET https://&lt;AUTH0_DOMAIN&gt;/authorize?…</code></td><td><span class="status s3">302</span></td><td class="num">170</td></tr>
+<tr><td><a href="#step-9">9</a></td><td>Issuer GET /u/login</td><td><code>GET https://&lt;AUTH0_DOMAIN&gt;/u/login?…</code></td><td><span class="status s2">200</span></td><td class="num">149</td></tr>
+<tr><td><a href="#step-10">10</a></td><td>Issuer POST /u/login</td><td><code>POST https://&lt;AUTH0_DOMAIN&gt;/u/login?…</code></td><td><span class="status s3">302</span></td><td class="num">200</td></tr>
+<tr><td><a href="#step-11">11</a></td><td>Issuer GET /authorize/resume</td><td><code>GET https://&lt;AUTH0_DOMAIN&gt;/authorize/resume?…</code></td><td><span class="status s3">302</span></td><td class="num">139</td></tr>
+<tr><td><a href="#step-12">12</a></td><td>Back to B: the callback</td><td><code>GET /auth/callback?code=&lt;code&gt;&amp;state=&lt;state&gt;&amp;iss=https%3A%2F%2F&lt;AUTH0_DOMAIN&gt;%2F</code></td><td><span class="status s3">302</span></td><td class="num">295</td></tr>
+<tr><td><a href="#step-13">13</a></td><td>Session after sign-in</td><td><code>GET /api/v1/session</code></td><td><span class="status s2">200</span></td><td class="num">89</td></tr>
+<tr><td><a href="#step-14">14</a></td><td>Claim the guest link</td><td><code>POST /api/v1/links/e31916f0-8611-4668-b1d1-f04d3a935922/claim</code></td><td><span class="status s2">200</span></td><td class="num">175</td></tr>
+<tr><td><a href="#step-15">15</a></td><td>List owned links (first page of 5)</td><td><code>GET /api/v1/me/links?limit=5</code></td><td><span class="status s2">200</span></td><td class="num">209</td></tr>
+<tr><td><a href="#step-16">16</a></td><td>The owner's aggregates for the claimed link</td><td><code>GET /api/v1/links/e31916f0-8611-4668-b1d1-f04d3a935922/analytics</code></td><td><span class="status s2">200</span></td><td class="num">102</td></tr>
+<tr><td><a href="#step-17">17</a></td><td>The same aggregates as CSV</td><td><code>GET /api/v1/links/e31916f0-8611-4668-b1d1-f04d3a935922/analytics.csv</code></td><td><span class="status s2">200</span></td><td class="num">115</td></tr>
+<tr><td><a href="#step-18">18</a></td><td>Sign out (revokes the issuer's refresh token)</td><td><code>POST /auth/logout</code></td><td><span class="status s2">204</span></td><td class="num">266</td></tr>
+<tr><td><a href="#step-19">19</a></td><td>The old session cookie after sign-out</td><td><code>GET /api/v1/me/links</code></td><td><span class="status s4">401</span></td><td class="num">83</td></tr>
+<tr><td><a href="#step-20">20</a></td><td>The home page (no UI in B: the edge's not-found page)</td><td><code>GET /</code></td><td><span class="status s4">404</span></td><td class="num">65</td></tr>
+<tr><td><a href="#step-21">21</a></td><td>An unknown path</td><td><code>GET /no/such/page</code></td><td><span class="status s4">404</span></td><td class="num">64</td></tr>
+<tr><td><a href="#step-22">22</a></td><td>An unknown short link (answered by Redirect)</td><td><code>GET /zzBfinal00</code></td><td><span class="status s4">404</span></td><td class="num">91</td></tr>
+<tr><td><a href="#step-23">23</a></td><td>A method the path does not answer (page)</td><td><code>POST /healthz</code></td><td><span class="status s4">405</span></td><td class="num">61</td></tr>
+<tr><td><a href="#step-24">24</a></td><td>A method the path does not answer (API)</td><td><code>GET /api/v1/billing/webhook</code></td><td><span class="status s4">405</span></td><td class="num">53</td></tr>
+<tr><td><a href="#step-25">25</a></td><td>Another host on B's load balancer</td><td><code>GET https://&lt;load-balancer-address&gt;/</code></td><td><span class="status s4">421</span></td><td class="num">128</td></tr>
+</tbody></table></div>
+<p class="small">An earlier run a minute before (<a href="walkthrough-run1.json">walkthrough-run1.json</a>) met the known cold start of Account API (B07 review finding F6): its first owned list waited 7431 ms and was answered <code>503 unavailable</code> (retryable, nothing done) at 11:42:21.526Z; its click was counted the same way. The run shown here retries a 503 after its Retry-After and needed no retry.</p>
+</section>
+<section class="part" id="part-health"><h2>Health</h2><p>The edge answers its own probe; nothing behind it is asked.</p>
+<article class="step" id="step-1">
+<header><span class="n">1</span><h3>GET /healthz (the edge's own probe)</h3><span class="status s2">200</span><span class="time">11:43:38.400Z · 125 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://b.qrwty.io/healthz
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 200
+content-type: text/plain; charset=utf-8
+content-length: 3
+cache-control: no-store
+server: cloudflare
+cf-cache-status: DYNAMIC</pre><pre class="body">ok
+</pre></section>
+</div>
+</article></section>
+<section class="part" id="part-guest"><h2>A guest link</h2><p>A browser gets a guest session (a signed, stateless guest cookie and a CSRF token), then creates a link. The answer carries a claim token that lets the same browser claim the link after signing in.</p>
+<article class="step" id="step-2">
+<header><span class="n">2</span><h3>Guest session</h3><span class="status s2">200</span><span class="time">11:43:38.526Z · 223 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://b.qrwty.io/api/v1/session
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 200
+content-type: application/json; charset=utf-8
+cache-control: no-store
+set-cookie: __Host-qrwtyb-guest=&lt;__Host-qrwtyb-guest value&gt;; Max-Age=2592000; Path=/; Secure; HttpOnly; SameSite=Lax
+server: cloudflare
+cf-cache-status: DYNAMIC</pre><pre class="body">{
+  &quot;authenticated&quot;: false,
+  &quot;csrfToken&quot;: &quot;&lt;csrf token (guest)&gt;&quot;,
+  &quot;account&quot;: null
+}</pre></section>
+</div>
+</article>
+<article class="step" id="step-3">
+<header><span class="n">3</span><h3>Create a guest link</h3><span class="status s2">201</span><span class="time">11:43:38.749Z · 198 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>POST https://b.qrwty.io/api/v1/links
+cookie: __Host-qrwtyb-guest=&lt;__Host-qrwtyb-guest value&gt;
+x-csrf-token: &lt;csrf token (guest)&gt;
+idempotency-key: 38bfbbcb-fa03-4239-9243-cccaa6218b58
+origin: https://b.qrwty.io
+content-type: application/json
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre><pre class="body">{
+  &quot;destination&quot;: &quot;https://example.com/qrwtyb-b-final/walkthrough?run=4261c74e&quot;
+}</pre></section>
+<section><h4>Response</h4><pre>HTTP 201
+content-type: application/json; charset=utf-8
+content-length: 405
+cache-control: no-store, no-transform
+etag: &quot;1&quot;
+server: cloudflare
+cf-cache-status: DYNAMIC</pre><pre class="body">{
+  &quot;claim&quot;: {
+    &quot;expiresAt&quot;: &quot;2026-11-16T11:43:41.979Z&quot;,
+    &quot;token&quot;: &quot;&lt;claim token&gt;&quot;
+  },
+  &quot;createdAt&quot;: &quot;2026-11-15T11:43:41.979Z&quot;,
+  &quot;destination&quot;: &quot;https://example.com/qrwtyb-b-final/walkthrough?run=4261c74e&quot;,
+  &quot;expiresAt&quot;: null,
+  &quot;id&quot;: &quot;e31916f0-8611-4668-b1d1-f04d3a935922&quot;,
+  &quot;owned&quot;: false,
+  &quot;shortUrl&quot;: &quot;https://b.qrwty.io/aBzFvVr7T3&quot;,
+  &quot;state&quot;: &quot;active&quot;,
+  &quot;updatedAt&quot;: &quot;2026-11-15T11:43:41.979Z&quot;,
+  &quot;version&quot;: 1
+}</pre></section>
+</div>
+</article></section>
+<section class="part" id="part-redirect"><h2>Following the link</h2><p>Redirect answers 302 only after Pub/Sub has acknowledged the click event (ADR-004); the event id comes back in QRWTY-Click-Event. HEAD answers the same 302 without an event.</p>
+<article class="step" id="step-4">
+<header><span class="n">4</span><h3>Follow the short link</h3><span class="status s3">302</span><span class="time">11:43:38.947Z · 176 ms</span></header>
+<p class="note">No probe token: this click counts as real traffic. The click event is durable before the 302 is sent.</p>
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://b.qrwty.io/aBzFvVr7T3
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 302
+content-type: text/html
+cache-control: no-store
+location: https://example.com/qrwtyb-b-final/walkthrough?run=4261c74e
+qrwty-click-event: 331816a3-a5d8-406a-ad5c-d63856a032af
+server: cloudflare
+cf-cache-status: DYNAMIC</pre></section>
+</div>
+</article>
+<article class="step" id="step-5">
+<header><span class="n">5</span><h3>HEAD of the short link</h3><span class="status s3">302</span><span class="time">11:43:39.123Z · 62 ms</span></header>
+<p class="note">HEAD answers the same 302 but records no click event.</p>
+<div class="pair">
+<section><h4>Request</h4><pre>HEAD https://b.qrwty.io/aBzFvVr7T3
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 302
+content-type: text/html
+cache-control: no-store
+location: https://example.com/qrwtyb-b-final/walkthrough?run=4261c74e
+server: cloudflare
+cf-cache-status: DYNAMIC</pre></section>
+</div>
+</article></section>
+<section class="part" id="part-abuse"><h2>The abuse refusal</h2><p>Every new destination is checked with the Web Risk Lookup API before anything is stored. Google's Safe Browsing test page for malware is refused with 422 reputation_rejected; nothing was created.</p>
+<article class="step" id="step-6">
+<header><span class="n">6</span><h3>Create a link to a Web Risk test URL</h3><span class="status s4">422</span><span class="time">11:43:39.185Z · 152 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>POST https://b.qrwty.io/api/v1/links
+cookie: __Host-qrwtyb-guest=&lt;__Host-qrwtyb-guest value&gt;
+x-csrf-token: &lt;csrf token (guest)&gt;
+idempotency-key: 49023d75-b3c6-4678-b242-92f5effcc754
+origin: https://b.qrwty.io
+content-type: application/json
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre><pre class="body">{
+  &quot;destination&quot;: &quot;http://testsafebrowsing.appspot.com/s/malware.html&quot;
+}</pre></section>
+<section><h4>Response</h4><pre>HTTP 422
+content-type: application/json; charset=utf-8
+content-length: 133
+cache-control: no-store
+server: cloudflare
+cf-cache-status: DYNAMIC</pre><pre class="body">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;reputation_rejected&quot;,
+    &quot;message&quot;: &quot;this destination is listed as unsafe by the reputation service&quot;,
+    &quot;retryable&quot;: false
+  }
+}</pre></section>
+</div>
+</article></section>
+<section class="part" id="part-signin"><h2>Signing in as the test user</h2><p>Session API is the browser's only party (a backend for frontend): it starts an authorization-code flow with PKCE at Auth0, the managed issuer for staging, and keeps the tokens server-side. The issuer's hops are recorded by path and status only.</p>
+<article class="step" id="step-7">
+<header><span class="n">7</span><h3>Start sign-in</h3><span class="status s3">302</span><span class="time">11:43:39.337Z · 197 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://b.qrwty.io/auth/login?returnTo=%2Fwalkthrough
+cookie: __Host-qrwtyb-guest=&lt;__Host-qrwtyb-guest value&gt;
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 302
+content-type: text/html
+cache-control: no-store
+location: https://&lt;AUTH0_DOMAIN&gt;/authorize?redirect_uri=https%3A%2F%2Fb.qrwty.io%2Fauth%2Fcallback&amp;scope=openid+email+profile+offline_access&amp;audience=qrwtyb-api&amp;code_challenge=&lt;code_challenge&gt;&amp;code_challenge_method=S256&amp;state=&lt;state&gt;&amp;nonce=&lt;nonce&gt;&amp;client_id=&lt;client_id&gt;&amp;response_type=code
+set-cookie: __Host-qrwtyb-login=&lt;__Host-qrwtyb-login value&gt;; Max-Age=600; Path=/; Secure; HttpOnly; SameSite=Lax
+server: cloudflare
+cf-cache-status: DYNAMIC</pre></section>
+</div>
+</article>
+<article class="step" id="step-8">
+<header><span class="n">8</span><h3>Issuer GET /authorize</h3><span class="status s3">302</span><span class="time">11:43:39.534Z · 170 ms</span></header>
+<p class="note">Auth0 Universal Login (the managed issuer). Recorded by path and status only; the issuer's page body and cookies are not B's.</p>
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://&lt;AUTH0_DOMAIN&gt;/authorize?…</pre></section>
+<section><h4>Response</h4><pre>HTTP 302
+location: https://&lt;AUTH0_DOMAIN&gt;/u/login?state=&lt;state&gt;</pre></section>
+</div>
+</article>
+<article class="step" id="step-9">
+<header><span class="n">9</span><h3>Issuer GET /u/login</h3><span class="status s2">200</span><span class="time">11:43:39.705Z · 149 ms</span></header>
+<p class="note">Auth0 Universal Login (the managed issuer). Recorded by path and status only; the issuer's page body and cookies are not B's.</p>
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://&lt;AUTH0_DOMAIN&gt;/u/login?…</pre></section>
+<section><h4>Response</h4><pre>HTTP 200</pre><pre class="body">(HTML sign-in page, 58046 bytes, not recorded)</pre></section>
+</div>
+</article>
+<article class="step" id="step-10">
+<header><span class="n">10</span><h3>Issuer POST /u/login</h3><span class="status s3">302</span><span class="time">11:43:39.854Z · 200 ms</span></header>
+<p class="note">Auth0 Universal Login (the managed issuer). Recorded by path and status only; the issuer's page body and cookies are not B's.</p>
+<div class="pair">
+<section><h4>Request</h4><pre>POST https://&lt;AUTH0_DOMAIN&gt;/u/login?…</pre><pre class="body">{
+  &quot;state&quot;: &quot;&lt;state&gt;&quot;,
+  &quot;username&quot;: &quot;qrwtyb-test-alice@qrwtyb.invalid&quot;,
+  &quot;password&quot;: &quot;&lt;test-user password&gt;&quot;,
+  &quot;action&quot;: &quot;default&quot;
+}</pre></section>
+<section><h4>Response</h4><pre>HTTP 302
+location: https://&lt;AUTH0_DOMAIN&gt;/authorize/resume?state=&lt;state&gt;</pre></section>
+</div>
+</article>
+<article class="step" id="step-11">
+<header><span class="n">11</span><h3>Issuer GET /authorize/resume</h3><span class="status s3">302</span><span class="time">11:43:40.054Z · 139 ms</span></header>
+<p class="note">Auth0 Universal Login (the managed issuer). Recorded by path and status only; the issuer's page body and cookies are not B's.</p>
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://&lt;AUTH0_DOMAIN&gt;/authorize/resume?…</pre></section>
+<section><h4>Response</h4><pre>HTTP 302
+location: https://b.qrwty.io/auth/callback?code=&lt;code&gt;&amp;state=&lt;state&gt;&amp;iss=https%3A%2F%2F&lt;AUTH0_DOMAIN&gt;%2F</pre></section>
+</div>
+</article>
+<article class="step" id="step-12">
+<header><span class="n">12</span><h3>Back to B: the callback</h3><span class="status s3">302</span><span class="time">11:43:40.194Z · 295 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://b.qrwty.io/auth/callback?code=&lt;code&gt;&amp;state=&lt;state&gt;&amp;iss=https%3A%2F%2F&lt;AUTH0_DOMAIN&gt;%2F
+cookie: __Host-qrwtyb-guest=&lt;__Host-qrwtyb-guest value&gt;; __Host-qrwtyb-login=&lt;__Host-qrwtyb-login value&gt;
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 302
+content-type: text/html
+cache-control: no-store
+location: /walkthrough
+set-cookie: __Host-qrwtyb-login=; Max-Age=0; Path=/; Secure; HttpOnly; SameSite=Lax
+set-cookie: __Host-qrwtyb-sid=&lt;__Host-qrwtyb-sid value&gt;; Max-Age=604800; Path=/; Secure; HttpOnly; SameSite=Lax
+server: cloudflare
+cf-cache-status: DYNAMIC</pre></section>
+</div>
+</article>
+<article class="step" id="step-13">
+<header><span class="n">13</span><h3>Session after sign-in</h3><span class="status s2">200</span><span class="time">11:43:40.489Z · 89 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://b.qrwty.io/api/v1/session
+cookie: __Host-qrwtyb-guest=&lt;__Host-qrwtyb-guest value&gt;; __Host-qrwtyb-sid=&lt;__Host-qrwtyb-sid value&gt;
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 200
+content-type: application/json; charset=utf-8
+cache-control: no-store
+server: cloudflare
+cf-cache-status: DYNAMIC</pre><pre class="body">{
+  &quot;authenticated&quot;: true,
+  &quot;csrfToken&quot;: &quot;&lt;csrf token (signed in)&gt;&quot;,
+  &quot;account&quot;: {
+    &quot;subject&quot;: &quot;&lt;alice account subject&gt;&quot;,
+    &quot;email&quot;: &quot;qrwtyb-test-alice@qrwtyb.invalid&quot;,
+    &quot;displayName&quot;: &quot;qrwtyb-test-alice&quot;
+  }
+}</pre></section>
+</div>
+</article></section>
+<section class="part" id="part-owned"><h2>Claiming and listing owned links</h2><p>The claim moves the guest link to the signed-in account (the claim token proves the same browser made it); the owned list shows it first.</p>
+<article class="step" id="step-14">
+<header><span class="n">14</span><h3>Claim the guest link</h3><span class="status s2">200</span><span class="time">11:43:40.578Z · 175 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>POST https://b.qrwty.io/api/v1/links/e31916f0-8611-4668-b1d1-f04d3a935922/claim
+cookie: __Host-qrwtyb-guest=&lt;__Host-qrwtyb-guest value&gt;; __Host-qrwtyb-sid=&lt;__Host-qrwtyb-sid value&gt;
+x-csrf-token: &lt;csrf token (signed in)&gt;
+idempotency-key: e8f49112-c01c-42a5-a7a9-82900dbfafc5
+origin: https://b.qrwty.io
+content-type: application/json
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre><pre class="body">{
+  &quot;claimToken&quot;: &quot;&lt;claim token&gt;&quot;
+}</pre></section>
+<section><h4>Response</h4><pre>HTTP 200
+content-type: application/json; charset=utf-8
+content-length: 301
+cache-control: no-store, no-transform
+etag: &quot;2&quot;
+server: cloudflare
+cf-cache-status: DYNAMIC</pre><pre class="body">{
+  &quot;createdAt&quot;: &quot;2026-11-15T11:43:41.979Z&quot;,
+  &quot;destination&quot;: &quot;https://example.com/qrwtyb-b-final/walkthrough?run=4261c74e&quot;,
+  &quot;expiresAt&quot;: null,
+  &quot;id&quot;: &quot;e31916f0-8611-4668-b1d1-f04d3a935922&quot;,
+  &quot;owned&quot;: true,
+  &quot;shortUrl&quot;: &quot;https://b.qrwty.io/aBzFvVr7T3&quot;,
+  &quot;state&quot;: &quot;active&quot;,
+  &quot;updatedAt&quot;: &quot;2026-11-15T11:43:43.969Z&quot;,
+  &quot;version&quot;: 2
+}</pre></section>
+</div>
+</article>
+<article class="step" id="step-15">
+<header><span class="n">15</span><h3>List owned links (first page of 5)</h3><span class="status s2">200</span><span class="time">11:43:40.753Z · 209 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://b.qrwty.io/api/v1/me/links?limit=5
+cookie: __Host-qrwtyb-guest=&lt;__Host-qrwtyb-guest value&gt;; __Host-qrwtyb-sid=&lt;__Host-qrwtyb-sid value&gt;
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 200
+content-type: application/json; charset=utf-8
+cache-control: no-store
+server: cloudflare
+cf-cache-status: DYNAMIC</pre><pre class="body">{
+  &quot;items&quot;: [
+    {
+      &quot;id&quot;: &quot;e31916f0-8611-4668-b1d1-f04d3a935922&quot;,
+      &quot;shortUrl&quot;: &quot;https://b.qrwty.io/aBzFvVr7T3&quot;,
+      &quot;destination&quot;: &quot;https://example.com/qrwtyb-b-final/walkthrough?run=4261c74e&quot;,
+      &quot;version&quot;: 2,
+      &quot;state&quot;: &quot;active&quot;,
+      &quot;createdAt&quot;: &quot;2026-11-15T11:43:41.979Z&quot;,
+      &quot;updatedAt&quot;: &quot;2026-11-15T11:43:43.969Z&quot;,
+      &quot;expiresAt&quot;: null
+    },
+    {
+      &quot;id&quot;: &quot;1c906510-4ecb-409d-b13a-30714cb93c9b&quot;,
+      &quot;shortUrl&quot;: &quot;https://b.qrwty.io/4RpjhuIMUb&quot;,
+      &quot;destination&quot;: &quot;https://example.com/qrwtyb-b-final/walkthrough?run=e4aa7cbe&quot;,
+      &quot;version&quot;: 2,
+      &quot;state&quot;: &quot;active&quot;,
+      &quot;createdAt&quot;: &quot;2026-11-15T11:42:21.050Z&quot;,
+      &quot;updatedAt&quot;: &quot;2026-11-15T11:42:23.921Z&quot;,
+      &quot;expiresAt&quot;: null
+    },
+    {
+      &quot;id&quot;: &quot;76bd3ffd-bbe4-4d27-a8c3-00bd1449eac3&quot;,
+      &quot;shortUrl&quot;: &quot;https://b.qrwty.io/VbOBCGdO0D&quot;,
+      &quot;destination&quot;: &quot;https://example.com/qrwtyb-signin-b07-3/core-owned/e96eff52-8fc2-41eb-8d11-b8daf1822122?q=1&quot;,
+      &quot;version&quot;: 1,
+      &quot;state&quot;: &quot;active&quot;,
+      &quot;createdAt&quot;: &quot;2026-11-15T08:03:50.988Z&quot;,
+      &quot;updatedAt&quot;: &quot;2026-11-15T08:03:50.988Z&quot;,
+      &quot;expiresAt&quot;: null
+    },
+    {
+      &quot;id&quot;: &quot;18532c14-72eb-4fee-8b1b-14fdbb1da593&quot;,
+      &quot;shortUrl&quot;: &quot;https://b.qrwty.io/xrBARmTZ9I&quot;,
+      &quot;destination&quot;: &quot;https://example.com/qrwtyb-signin-b07-3/core/fa114110-45cd-4860-bf19-05505d9a721c?q=1&quot;,
+      &quot;version&quot;: 2,
+      &quot;state&quot;: &quot;active&quot;,
+      &quot;createdAt&quot;: &quot;2026-11-15T08:03:48.729Z&quot;,
+      &quot;updatedAt&quot;: &quot;2026-11-15T08:03:50.567Z&quot;,
+      &quot;expiresAt&quot;: null
+    },
+    {
+      &quot;id&quot;: &quot;20ba229c-a61a-4163-986c-1751f9c979b7&quot;,
+      &quot;shortUrl&quot;: &quot;https://b.qrwty.io/XMGPbfS7o2&quot;,
+      &quot;destination&quot;: &quot;https://example.com/qrwtyb-signin-b07-2/core-owned/0272cb81-e923-4478-b732-725f6a5c425f?q=1&quot;,
+      &quot;version&quot;: 1,
+      &quot;state&quot;: &quot;active&quot;,
+      &quot;createdAt&quot;: &quot;2026-11-15T07:36:54.444Z&quot;,
+      &quot;updatedAt&quot;: &quot;2026-11-15T07:36:54.444Z&quot;,
+      &quot;expiresAt&quot;: null
+    }
+  ],
+  &quot;nextCursor&quot;: &quot;eyJ2IjoxLCJjIjoiMjAyNi0xMS0xNVQwNzozNjo1NC40NDQwMDBaIiwiaSI6IjIwYmEyMjljLWE2MWEtNDE2My05ODZjLTE3NTFmOWM5NzliNyJ9.1ZR-8QxPJtlb-nKou7r9zRkVtuDLB_0VpFZQqny2xFE&quot;
+}</pre></section>
+</div>
+</article></section>
+<section class="part" id="part-analytics"><h2>The click in the owner's aggregates</h2><p>The analytics worker consumed the click from Pub/Sub, deduplicated it and added it to the link's daily aggregates in one transaction before acknowledging. The owner sees it, with the CSV export of the same numbers.</p>
+<article class="step" id="step-16">
+<header><span class="n">16</span><h3>The owner's aggregates for the claimed link</h3><span class="status s2">200</span><span class="time">11:43:48.935Z · 102 ms</span></header>
+<p class="note">Counted at poll 3 (every 2 s from the claim): 6 s after the click, which was made before sign-in, while the link was a guest's.</p>
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://b.qrwty.io/api/v1/links/e31916f0-8611-4668-b1d1-f04d3a935922/analytics
+cookie: __Host-qrwtyb-guest=&lt;__Host-qrwtyb-guest value&gt;; __Host-qrwtyb-sid=&lt;__Host-qrwtyb-sid value&gt;
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 200
+content-type: application/json; charset=utf-8
+cache-control: no-store
+server: cloudflare
+cf-cache-status: DYNAMIC</pre><pre class="body">{
+  &quot;linkId&quot;: &quot;e31916f0-8611-4668-b1d1-f04d3a935922&quot;,
+  &quot;range&quot;: {
+    &quot;from&quot;: &quot;2026-11-09&quot;,
+    &quot;to&quot;: &quot;2026-11-15&quot;
+  },
+  &quot;totals&quot;: {
+    &quot;recordedAttempts&quot;: 1,
+    &quot;filteredClicks&quot;: 1
+  },
+  &quot;series&quot;: [
+    {
+      &quot;date&quot;: &quot;2026-11-09&quot;,
+      &quot;recordedAttempts&quot;: 0,
+      &quot;filteredClicks&quot;: 0
+    },
+    {
+      &quot;date&quot;: &quot;2026-11-10&quot;,
+      &quot;recordedAttempts&quot;: 0,
+      &quot;filteredClicks&quot;: 0
+    },
+    {
+      &quot;date&quot;: &quot;2026-11-11&quot;,
+      &quot;recordedAttempts&quot;: 0,
+      &quot;filteredClicks&quot;: 0
+    },
+    {
+      &quot;date&quot;: &quot;2026-11-12&quot;,
+      &quot;recordedAttempts&quot;: 0,
+      &quot;filteredClicks&quot;: 0
+    },
+    {
+      &quot;date&quot;: &quot;2026-11-13&quot;,
+      &quot;recordedAttempts&quot;: 0,
+      &quot;filteredClicks&quot;: 0
+    },
+    {
+      &quot;date&quot;: &quot;2026-11-14&quot;,
+      &quot;recordedAttempts&quot;: 0,
+      &quot;filteredClicks&quot;: 0
+    },
+    {
+      &quot;date&quot;: &quot;2026-11-15&quot;,
+      &quot;recordedAttempts&quot;: 1,
+      &quot;filteredClicks&quot;: 1
+    }
+  ],
+  &quot;breakdowns&quot;: null,
+  &quot;freshness&quot;: {
+    &quot;asOf&quot;: &quot;2026-11-15T11:43:42.170Z&quot;,
+    &quot;delayed&quot;: false
+  },
+  &quot;reconciliation&quot;: {
+    &quot;status&quot;: &quot;ok&quot;
+  },
+  &quot;filter&quot;: {
+    &quot;version&quot;: &quot;filter-v1&quot;,
+    &quot;definition&quot;: &quot;A recorded attempt is a bot when its device class is bot: an empty user agent, or one matching bot|crawl|spider|slurp|preview|facebookexternalhit|curl|wget|python-requests|httpclient (case-insensitive). filteredClicks excludes bots; recordedAttempts includes them. Synthetic probes are excluded from both.&quot;
+  },
+  &quot;lookback&quot;: {
+    &quot;maxDays&quot;: 7,
+    &quot;limitedByTier&quot;: false
+  }
+}</pre></section>
+</div>
+</article>
+<article class="step" id="step-17">
+<header><span class="n">17</span><h3>The same aggregates as CSV</h3><span class="status s2">200</span><span class="time">11:43:49.037Z · 115 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://b.qrwty.io/api/v1/links/e31916f0-8611-4668-b1d1-f04d3a935922/analytics.csv
+cookie: __Host-qrwtyb-guest=&lt;__Host-qrwtyb-guest value&gt;; __Host-qrwtyb-sid=&lt;__Host-qrwtyb-sid value&gt;
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 200
+content-type: text/csv; charset=utf-8
+content-length: 152
+cache-control: no-store
+content-disposition: attachment; filename=&quot;qrwty-aBzFvVr7T3-2026-11-09-2026-11-15.csv&quot;
+server: cloudflare
+cf-cache-status: BYPASS</pre><pre class="body">date,recorded_attempts,filtered_clicks
+2026-11-09,0,0
+2026-11-10,0,0
+2026-11-11,0,0
+2026-11-12,0,0
+2026-11-13,0,0
+2026-11-14,0,0
+2026-11-15,1,1
+</pre></section>
+</div>
+</article></section>
+<section class="part" id="part-signout"><h2>Signing out</h2><p>Sign-out deletes the session and revokes the issuer's refresh token; the old cookie is refused with 401, never treated as a guest.</p>
+<article class="step" id="step-18">
+<header><span class="n">18</span><h3>Sign out (revokes the issuer's refresh token)</h3><span class="status s2">204</span><span class="time">11:43:49.152Z · 266 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>POST https://b.qrwty.io/auth/logout
+cookie: __Host-qrwtyb-guest=&lt;__Host-qrwtyb-guest value&gt;; __Host-qrwtyb-sid=&lt;__Host-qrwtyb-sid value&gt;
+x-csrf-token: &lt;csrf token (signed in)&gt;
+origin: https://b.qrwty.io
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 204
+content-type: text/html
+cache-control: no-store
+set-cookie: __Host-qrwtyb-sid=; Max-Age=0; Path=/; Secure; HttpOnly; SameSite=Lax
+server: cloudflare
+cf-cache-status: DYNAMIC</pre></section>
+</div>
+</article>
+<article class="step" id="step-19">
+<header><span class="n">19</span><h3>The old session cookie after sign-out</h3><span class="status s4">401</span><span class="time">11:43:49.418Z · 83 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://b.qrwty.io/api/v1/me/links
+cookie: __Host-qrwtyb-guest=&lt;__Host-qrwtyb-guest value&gt;; __Host-qrwtyb-sid=&lt;__Host-qrwtyb-sid value&gt;
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 401
+content-type: application/json; charset=utf-8
+content-length: 112
+cache-control: no-store
+set-cookie: __Host-qrwtyb-sid=; Max-Age=0; Path=/; Secure; HttpOnly; SameSite=Lax
+server: cloudflare
+cf-cache-status: DYNAMIC</pre><pre class="body">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;session_expired&quot;,
+    &quot;message&quot;: &quot;the session is no longer valid; sign in again&quot;,
+    &quot;retryable&quot;: false
+  }
+}</pre></section>
+</div>
+</article></section>
+<section class="part" id="part-edge"><h2>The edge's own answers</h2><p>Pages and errors the edge answers itself: HTML on page paths, the contract's JSON error on API paths, Cache-Control: no-store, never a Location. B built no UI (B08 was not run), so / is the not-found page.</p>
+<article class="step" id="step-20">
+<header><span class="n">20</span><h3>The home page (no UI in B: the edge's not-found page)</h3><span class="status s4">404</span><span class="time">11:43:49.501Z · 65 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://b.qrwty.io/
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 404
+content-type: text/html; charset=utf-8
+cache-control: no-store
+server: cloudflare
+cf-cache-status: DYNAMIC</pre><pre class="body">&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Not found&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Not found&lt;/h1&gt;&lt;p&gt;There is no page or short link at this address.&lt;/p&gt;&lt;!-- Cloudflare Web Analytics beacon script injected here by the zone (omitted) --&gt;
+&lt;/body&gt;&lt;/html&gt;
+</pre></section>
+</div>
+</article>
+<article class="step" id="step-21">
+<header><span class="n">21</span><h3>An unknown path</h3><span class="status s4">404</span><span class="time">11:43:49.566Z · 64 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://b.qrwty.io/no/such/page
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 404
+content-type: text/html; charset=utf-8
+cache-control: no-store
+server: cloudflare
+cf-cache-status: DYNAMIC</pre><pre class="body">&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Not found&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Not found&lt;/h1&gt;&lt;p&gt;There is no page or short link at this address.&lt;/p&gt;&lt;!-- Cloudflare Web Analytics beacon script injected here by the zone (omitted) --&gt;
+&lt;/body&gt;&lt;/html&gt;
+</pre></section>
+</div>
+</article>
+<article class="step" id="step-22">
+<header><span class="n">22</span><h3>An unknown short link (answered by Redirect)</h3><span class="status s4">404</span><span class="time">11:43:49.630Z · 91 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://b.qrwty.io/zzBfinal00
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 404
+content-type: text/html; charset=utf-8
+cache-control: no-store
+server: cloudflare
+cf-cache-status: DYNAMIC</pre><pre class="body">&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;title&gt;Not found&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Not found&lt;/h1&gt;&lt;p&gt;There is no page or short link at this address.&lt;/p&gt;&lt;!-- Cloudflare Web Analytics beacon script injected here by the zone (omitted) --&gt;
+&lt;/body&gt;&lt;/html&gt;
+</pre></section>
+</div>
+</article>
+<article class="step" id="step-23">
+<header><span class="n">23</span><h3>A method the path does not answer (page)</h3><span class="status s4">405</span><span class="time">11:43:49.721Z · 61 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>POST https://b.qrwty.io/healthz
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: text/html,application/json;q=0.9,*/*;q=0.8</pre></section>
+<section><h4>Response</h4><pre>HTTP 405
+content-type: text/html; charset=utf-8
+cache-control: no-store
+allow: GET, HEAD
+server: cloudflare
+cf-cache-status: DYNAMIC</pre><pre class="body">&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Method not allowed&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Method not allowed&lt;/h1&gt;&lt;p&gt;This address answers only GET and HEAD requests.&lt;/p&gt;&lt;!-- Cloudflare Web Analytics beacon script injected here by the zone (omitted) --&gt;
+&lt;/body&gt;&lt;/html&gt;
+</pre></section>
+</div>
+</article>
+<article class="step" id="step-24">
+<header><span class="n">24</span><h3>A method the path does not answer (API)</h3><span class="status s4">405</span><span class="time">11:43:49.782Z · 53 ms</span></header>
+
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://b.qrwty.io/api/v1/billing/webhook
+user-agent: Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough
+accept: application/json</pre></section>
+<section><h4>Response</h4><pre>HTTP 405
+content-type: application/json; charset=utf-8
+content-length: 88
+cache-control: no-store
+allow: POST
+server: cloudflare
+cf-cache-status: DYNAMIC</pre><pre class="body">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;method_not_allowed&quot;,
+    &quot;message&quot;: &quot;method not allowed&quot;,
+    &quot;retryable&quot;: false
+  }
+}</pre></section>
+</div>
+</article>
+<article class="step" id="step-25">
+<header><span class="n">25</span><h3>Another host on B's load balancer</h3><span class="status s4">421</span><span class="time">11:43:49.835Z · 128 ms</span></header>
+<p class="note">Sent straight to the load balancer (Cloudflare skipped) with Host qrwty.io: the edge refuses hosts other than b.qrwty.io, without a Location.</p>
+<div class="pair">
+<section><h4>Request</h4><pre>GET https://&lt;load-balancer-address&gt;/
+host: qrwty.io
+tls-sni: b.qrwty.io</pre></section>
+<section><h4>Response</h4><pre>HTTP 421
+content-type: text/html; charset=utf-8
+content-length: 194
+cache-control: no-store
+server: Google Frontend</pre><pre class="body">&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;Misdirected request&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Misdirected request&lt;/h1&gt;&lt;p&gt;This server does not serve that host.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+</pre></section>
+</div>
+</article></section>
+
+<section class="part" id="release"><h2>The release in service: b07-3</h2>
+<p>Built 2026-11-15T08:00:23.164Z from B07's final working tree (on top of <code>945092e1d3b6</code>, <code>dirty: true</code>; B07 committed that tree as <code>0143ec0</code>), deployed by digest from Artifact Registry <code>us-central1-docker.pkg.dev/&lt;project&gt;/qrwtyb</code>. Before the teardown every service, worker pool and job read back with these digests (the probe job runs B's separate probe image).</p>
+<div class="tablewrap"><table><thead><tr><th>Image</th><th>Digest</th><th>Live before teardown</th></tr></thead><tbody>
+<tr><td>session-api</td><td><code class="digest">sha256:d39101bd48f83f7e5f4f2c7f2a461669e58dccd9e65e6c238dd4f946c1ac6775</code></td><td>qrwtyb-session-api <span class="ok">same digest</span></td></tr>
+<tr><td>link-api</td><td><code class="digest">sha256:2eac54002f4a70afc017c1760d0233f8ce39c679cbfde78056981740fe8571f6</code></td><td>qrwtyb-link-api <span class="ok">same digest</span></td></tr>
+<tr><td>redirect</td><td><code class="digest">sha256:2a9bc27dbfeaa7106792c29334e5dd85365a8f6d3ff51199cb227c68fca1590e</code></td><td>qrwtyb-redirect <span class="ok">same digest</span></td></tr>
+<tr><td>account-api</td><td><code class="digest">sha256:97821b56fe352bc7e2f7d8f5f43b10a3dba9c7d5ed3b47605b21f8bb8c46599b</code></td><td>qrwtyb-account-api <span class="ok">same digest</span></td></tr>
+<tr><td>billing-api</td><td><code class="digest">sha256:34b501e398b8348a0627fc12520dbc61031ac0bdd454e29a17824de1e35d8672</code></td><td><span class="muted">built, not deployed (billing is B07a)</span></td></tr>
+<tr><td>billing-worker</td><td><code class="digest">sha256:89e755c007f0c36e337f8eca851924226ce0a2142338b3fe4bac25bfe7697e5b</code></td><td><span class="muted">built, not deployed (billing is B07a)</span></td></tr>
+<tr><td>analytics-worker</td><td><code class="digest">sha256:84599f6669b827a22efa48780a627419bbc61bd4ab86240b80496bf0eaa7d1af</code></td><td>qrwtyb-analytics-worker <span class="ok">same digest</span><br>qrwtyb-analytics-tools <span class="ok">same digest</span></td></tr>
+<tr><td>pipeline-guard</td><td><code class="digest">sha256:9f5b6cb1fbd231b54ad5cf272cc5d1128426fa28da91b90493fd2b8b5f2af0e6</code></td><td>qrwtyb-pipeline-guard <span class="ok">same digest</span></td></tr>
+<tr><td>migrate</td><td><code class="digest">sha256:9b3f4ead50be83e8b19a57cf7d4464e62d08afa2f00fbf798e9abc2c237df453</code></td><td>qrwtyb-migrate-links <span class="ok">same digest</span><br>qrwtyb-migrate-sessions <span class="ok">same digest</span><br>qrwtyb-migrate-billing <span class="ok">same digest</span><br>qrwtyb-migrate-analytics <span class="ok">same digest</span></td></tr>
+<tr><td>db-bootstrap</td><td><code class="digest">sha256:dd8838099d71b286931031adb8a75ee45e81c99735fb6fe97d129c863dc0de69</code></td><td>qrwtyb-db-bootstrap <span class="ok">same digest</span></td></tr>
+<tr><td>edge</td><td><code class="digest">sha256:6eb562694bd6de2fe1cb0eb78f2c26c6e3324ab22242cc7af390c9e4a8413bc9</code></td><td>qrwtyb-edge <span class="ok">same digest</span></td></tr>
+</tbody></table></div>
+<p class="small">Record: <a href="release-b07-3.json">release-b07-3.json</a>.</p>
+</section>
+
+<section class="part" id="inventory"><h2>Inventory before teardown</h2>
+<p>89 live <code>qrwtyb-</code> resources in the shared project, from B's read-only <code>inventory.sh</code>, plus two Cloudflare records (<code>b.qrwty.io</code>, proxied A record, and <code>_acme-challenge.b.qrwty.io</code>, the certificate's DNS authorization) Auth0's API <code>qrwtyb-api</code>, web client <code>qrwtyb-web</code>, its client grant and two test users, and B08a's Identity Platform tenant (display name <code>qrwtyb</code>, one probe user). 219 resources in OpenTofu state; every inventoried resource is in it except <code>qrwtyb-tfstate-&lt;project-number&gt;</code> (state bucket (created by the operator before the stack)), <code>qrwtyb-probe-idp-password</code> (B08a identity probe secret (identity-platform.sh)), <code>sca-auto-fr-1dfcfc2b-e5d3-4932-947c-4d5aec163ea7</code> (created by Memorystore through the OpenTofu service connection policy), <code>sca-auto-fr-5154ed90-d459-4b9b-a860-70114861358e</code> (created by Memorystore through the OpenTofu service connection policy). Unmanaged: 0.</p>
+<div class="tablewrap"><table><thead><tr><th>Kind</th><th class="num">Count</th></tr></thead><tbody>
+<tr><td>sql-instance</td><td class="num">1</td></tr>
+<tr><td>valkey-instance</td><td class="num">1</td></tr>
+<tr><td>run-service</td><td class="num">5</td></tr>
+<tr><td>run-job</td><td class="num">7</td></tr>
+<tr><td>run-worker-pool</td><td class="num">2</td></tr>
+<tr><td>pubsub-topic</td><td class="num">2</td></tr>
+<tr><td>pubsub-subscription</td><td class="num">3</td></tr>
+<tr><td>bucket</td><td class="num">3</td></tr>
+<tr><td>secret</td><td class="num">29</td></tr>
+<tr><td>service-account</td><td class="num">13</td></tr>
+<tr><td>artifact-repository</td><td class="num">1</td></tr>
+<tr><td>vpc</td><td class="num">1</td></tr>
+<tr><td>subnet</td><td class="num">1</td></tr>
+<tr><td>address</td><td class="num">2</td></tr>
+<tr><td>psc-endpoint</td><td class="num">2</td></tr>
+<tr><td>service-connection-policy</td><td class="num">1</td></tr>
+<tr><td>scheduler-job</td><td class="num">3</td></tr>
+<tr><td>lb-forwarding-rule</td><td class="num">1</td></tr>
+<tr><td>lb-https-proxy</td><td class="num">1</td></tr>
+<tr><td>lb-url-map</td><td class="num">1</td></tr>
+<tr><td>lb-backend-service</td><td class="num">3</td></tr>
+<tr><td>serverless-neg</td><td class="num">3</td></tr>
+<tr><td>certificate</td><td class="num">1</td></tr>
+<tr><td>certificate-map</td><td class="num">1</td></tr>
+<tr><td>certificate-dns-authorization</td><td class="num">1</td></tr>
+</tbody></table></div>
+<details><summary>Every resource (89)</summary><div class="tablewrap"><table><thead><tr><th>Kind</th><th>Name</th><th>Attributes</th></tr></thead><tbody>
+<tr><td>sql-instance</td><td><code>qrwtyb-pg</code></td><td class="small">tier=db-g1-small · edition=ENTERPRISE · version=POSTGRES_17 · availability=ZONAL · disk=10GB PD_SSD · ipv4=false · sslMode=ENCRYPTED_ONLY · backups=false · state=RUNNABLE</td></tr>
+<tr><td>valkey-instance</td><td><code>qrwtyb-valkey</code></td><td class="small">nodeType=SHARED_CORE_NANO · shards=1 · replicas=0 · engine=VALKEY_8_0 · mode=CLUSTER_DISABLED · tls=SERVER_AUTHENTICATION · auth=IAM_AUTH · state=ACTIVE</td></tr>
+<tr><td>run-service</td><td><code>qrwtyb-account-api</code></td><td class="small">ingress=internal · minScale=0 · maxScale=1 · egress=all-traffic · image=sha256:97821b56fe35 · sa=qrwtyb-account-api</td></tr>
+<tr><td>run-service</td><td><code>qrwtyb-edge</code></td><td class="small">ingress=internal-and-cloud-load-balancing · minScale=0 · maxScale=2 · image=sha256:6eb562694bd6 · sa=qrwtyb-edge</td></tr>
+<tr><td>run-service</td><td><code>qrwtyb-link-api</code></td><td class="small">ingress=internal · minScale=0 · maxScale=2 · egress=all-traffic · image=sha256:2eac54002f4a · sa=qrwtyb-link-api</td></tr>
+<tr><td>run-service</td><td><code>qrwtyb-redirect</code></td><td class="small">ingress=internal-and-cloud-load-balancing · minScale=1 · maxScale=2 · egress=private-ranges-only · image=sha256:2a9bc27dbfea · sa=qrwtyb-redirect</td></tr>
+<tr><td>run-service</td><td><code>qrwtyb-session-api</code></td><td class="small">ingress=internal-and-cloud-load-balancing · minScale=0 · maxScale=2 · egress=all-traffic · image=sha256:d39101bd48f8 · sa=qrwtyb-session-api</td></tr>
+<tr><td>run-job</td><td><code>qrwtyb-analytics-tools</code></td><td class="small">sa=qrwtyb-analytics-worker</td></tr>
+<tr><td>run-job</td><td><code>qrwtyb-db-bootstrap</code></td><td class="small">sa=qrwtyb-db-bootstrap</td></tr>
+<tr><td>run-job</td><td><code>qrwtyb-migrate-analytics</code></td><td class="small">sa=qrwtyb-migrate</td></tr>
+<tr><td>run-job</td><td><code>qrwtyb-migrate-billing</code></td><td class="small">sa=qrwtyb-migrate</td></tr>
+<tr><td>run-job</td><td><code>qrwtyb-migrate-links</code></td><td class="small">sa=qrwtyb-migrate</td></tr>
+<tr><td>run-job</td><td><code>qrwtyb-migrate-sessions</code></td><td class="small">sa=qrwtyb-migrate</td></tr>
+<tr><td>run-job</td><td><code>qrwtyb-probe</code></td><td class="small">sa=qrwtyb-probe</td></tr>
+<tr><td>run-worker-pool</td><td><code>qrwtyb-analytics-worker</code></td><td class="small"></td></tr>
+<tr><td>run-worker-pool</td><td><code>qrwtyb-pipeline-guard</code></td><td class="small"></td></tr>
+<tr><td>pubsub-topic</td><td><code>qrwtyb-clicks-dead-letter</code></td><td class="small">retention=2678400s · regions=[&quot;us-central1&quot;]</td></tr>
+<tr><td>pubsub-topic</td><td><code>qrwtyb-clicks</code></td><td class="small">retention=2678400s · regions=[&quot;us-central1&quot;]</td></tr>
+<tr><td>pubsub-subscription</td><td><code>qrwtyb-clicks-archive</code></td><td class="small">topic=qrwtyb-clicks · ackDeadline=300 · retention=2678400s · expiry={} · cloudStorage=true</td></tr>
+<tr><td>pubsub-subscription</td><td><code>qrwtyb-clicks-analytics</code></td><td class="small">topic=qrwtyb-clicks · ackDeadline=60 · retention=2678400s · expiry={} · deadLetter={&quot;topic&quot;:&quot;qrwtyb-clicks-dead-letter&quot;,&quot;maxDeliveryAttempts&quot;:20} · cloudStorage=false</td></tr>
+<tr><td>pubsub-subscription</td><td><code>qrwtyb-clicks-dead-letter-hold</code></td><td class="small">topic=qrwtyb-clicks-dead-letter · ackDeadline=60 · retention=2678400s · expiry={} · cloudStorage=false</td></tr>
+<tr><td>bucket</td><td><code>qrwtyb-click-archive-&lt;project-number&gt;</code></td><td class="small">location=US-CENTRAL1 · ubla=true · publicAccessPrevention=enforced</td></tr>
+<tr><td>bucket</td><td><code>qrwtyb-erasure-journal-&lt;project-number&gt;</code></td><td class="small">location=US-CENTRAL1 · ubla=true · versioning=true · publicAccessPrevention=enforced</td></tr>
+<tr><td>bucket</td><td><code>qrwtyb-tfstate-&lt;project-number&gt;</code></td><td class="small">location=US-CENTRAL1 · ubla=true · versioning=true · publicAccessPrevention=enforced</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-admission-key</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-cloudsql-server-ca</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-csrf-keys</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-cursor-keys</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-db-admin-password</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-db-role-account-reader</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-db-role-analytics-migrator</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-db-role-analytics-reader</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-db-role-analytics-worker</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-db-role-billing-api</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-db-role-billing-migrator</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-db-role-billing-worker</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-db-role-link-api</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-db-role-links-migrator</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-db-role-pipeline-guard</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-db-role-redirect-reader</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-db-role-session-api</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-db-role-sessions-migrator</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-edge-auth</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-edge-probe-token</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-guest-keys</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-idempotency-seal-keys</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-memorystore-server-ca</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-oidc-client-secret</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-probe-idp-password</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-session-token-keys</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-stripe-secret-key</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-stripe-webhook-secret</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>secret</td><td><code>qrwtyb-test-user-password</code></td><td class="small">replication=userManaged</td></tr>
+<tr><td>service-account</td><td><code>qrwtyb-migrate</code></td><td class="small">disabled=false</td></tr>
+<tr><td>service-account</td><td><code>qrwtyb-billing-api</code></td><td class="small">disabled=false</td></tr>
+<tr><td>service-account</td><td><code>qrwtyb-link-api</code></td><td class="small">disabled=false</td></tr>
+<tr><td>service-account</td><td><code>qrwtyb-analytics-worker</code></td><td class="small">disabled=false</td></tr>
+<tr><td>service-account</td><td><code>qrwtyb-pipeline-guard</code></td><td class="small">disabled=false</td></tr>
+<tr><td>service-account</td><td><code>qrwtyb-session-api</code></td><td class="small">disabled=false</td></tr>
+<tr><td>service-account</td><td><code>qrwtyb-edge</code></td><td class="small">disabled=false</td></tr>
+<tr><td>service-account</td><td><code>qrwtyb-db-bootstrap</code></td><td class="small">disabled=false</td></tr>
+<tr><td>service-account</td><td><code>qrwtyb-billing-worker</code></td><td class="small">disabled=false</td></tr>
+<tr><td>service-account</td><td><code>qrwtyb-redirect</code></td><td class="small">disabled=false</td></tr>
+<tr><td>service-account</td><td><code>qrwtyb-scheduler</code></td><td class="small">disabled=false</td></tr>
+<tr><td>service-account</td><td><code>qrwtyb-probe</code></td><td class="small">disabled=false</td></tr>
+<tr><td>service-account</td><td><code>qrwtyb-account-api</code></td><td class="small">disabled=false</td></tr>
+<tr><td>artifact-repository</td><td><code>qrwtyb</code></td><td class="small">format=DOCKER · sizeBytes=994109302</td></tr>
+<tr><td>vpc</td><td><code>qrwtyb-vpc</code></td><td class="small"></td></tr>
+<tr><td>subnet</td><td><code>qrwtyb-run</code></td><td class="small">range=10.20.0.0/24 · privateGoogleAccess=true</td></tr>
+<tr><td>address</td><td><code>qrwtyb-lb</code></td><td class="small">type=EXTERNAL</td></tr>
+<tr><td>address</td><td><code>qrwtyb-sql-peering</code></td><td class="small">purpose=VPC_PEERING · type=INTERNAL</td></tr>
+<tr><td>psc-endpoint</td><td><code>sca-auto-fr-1dfcfc2b-e5d3-4932-947c-4d5aec163ea7</code></td><td class="small">target=us-central1/serviceAttachments/gcp-memorystore-auto-e6fea328f18197d6-psc-sa-2</td></tr>
+<tr><td>psc-endpoint</td><td><code>sca-auto-fr-5154ed90-d459-4b9b-a860-70114861358e</code></td><td class="small">target=us-central1/serviceAttachments/gcp-memorystore-auto-e6fea328f18197d6-psc-sa</td></tr>
+<tr><td>service-connection-policy</td><td><code>qrwtyb-memorystore</code></td><td class="small">serviceClass=gcp-memorystore</td></tr>
+<tr><td>scheduler-job</td><td><code>qrwtyb-session-deletions</code></td><td class="small">schedule=*/5 * * * * · state=ENABLED</td></tr>
+<tr><td>scheduler-job</td><td><code>qrwtyb-session-cleanup</code></td><td class="small">schedule=17 * * * * · state=ENABLED</td></tr>
+<tr><td>scheduler-job</td><td><code>qrwtyb-link-cleanup</code></td><td class="small">schedule=23 * * * * · state=ENABLED</td></tr>
+<tr><td>lb-forwarding-rule</td><td><code>qrwtyb-https</code></td><td class="small">scheme=EXTERNAL_MANAGED · ports=443-443 · target=qrwtyb-public</td></tr>
+<tr><td>lb-https-proxy</td><td><code>qrwtyb-public</code></td><td class="small">urlMap=qrwtyb-public · certificateMap=qrwtyb-public</td></tr>
+<tr><td>lb-url-map</td><td><code>qrwtyb-public</code></td><td class="small">defaultService=qrwtyb-edge · routeRules=2</td></tr>
+<tr><td>lb-backend-service</td><td><code>qrwtyb-edge</code></td><td class="small">scheme=EXTERNAL_MANAGED · protocol=HTTPS · logSampleRate=0.1</td></tr>
+<tr><td>lb-backend-service</td><td><code>qrwtyb-redirect</code></td><td class="small">scheme=EXTERNAL_MANAGED · protocol=HTTPS · logSampleRate=0.1</td></tr>
+<tr><td>lb-backend-service</td><td><code>qrwtyb-session-api</code></td><td class="small">scheme=EXTERNAL_MANAGED · protocol=HTTPS · logSampleRate=0.1</td></tr>
+<tr><td>serverless-neg</td><td><code>qrwtyb-edge-neg</code></td><td class="small">type=SERVERLESS · service=qrwtyb-edge</td></tr>
+<tr><td>serverless-neg</td><td><code>qrwtyb-redirect-neg</code></td><td class="small">type=SERVERLESS · service=qrwtyb-redirect</td></tr>
+<tr><td>serverless-neg</td><td><code>qrwtyb-session-api-neg</code></td><td class="small">type=SERVERLESS · service=qrwtyb-session-api</td></tr>
+<tr><td>certificate</td><td><code>qrwtyb-public</code></td><td class="small">domains=[&quot;b.qrwty.io&quot;] · state=ACTIVE · expireTime=2027-02-13T03:45:32Z</td></tr>
+<tr><td>certificate-map</td><td><code>qrwtyb-public</code></td><td class="small"></td></tr>
+<tr><td>certificate-dns-authorization</td><td><code>qrwtyb-public</code></td><td class="small">domain=b.qrwty.io</td></tr>
+</tbody></table></div></details>
+<p class="small">Record: <a href="inventory.jsonl">inventory.jsonl</a>.</p>
+</section>
+
+<section class="part" id="cost"><h2>Cost of the staging</h2>
+<p>Estimated monthly list prices in USD (Cloud Billing Catalog, read by B08a, B09 and B07), before the trial credit and before free tiers shared with arm A. Nothing here is a bill.</p>
+<div class="tablewrap"><table><thead><tr><th>Item</th><th class="num">Monthly</th></tr></thead><tbody>
+<tr><td>Cloud SQL for PostgreSQL 17, db-g1-small, zonal, 10 GB SSD</td><td class="num">$27.25</td></tr>
+<tr><td>Memorystore for Valkey 8.0, one shared-core nano node</td><td class="num">$23.21</td></tr>
+<tr><td>Redirect kept warm (Cloud Run, min 1 instance)</td><td class="num">$9.86</td></tr>
+<tr><td>Secret Manager (29 secrets and their versions)</td><td class="num">$1.38</td></tr>
+<tr><td>Global forwarding rule of the external Application Load Balancer</td><td class="num">$18.25</td></tr>
+<tr><td>Cloud Run worker pools: analytics worker and pipeline guard, 1 instance each</td><td class="num">$62.34</td></tr>
+<tr><td>Everything else at staging traffic: edge and scale-to-zero services, jobs, Scheduler, Pub/Sub, Cloud Storage, load balancer data, Artifact Registry, Certificate Manager, Cloudflare Free</td><td class="num">&lt; $1</td></tr>
+<tr><th>Total</th><th class="num">≈ $142</th></tr>
+</tbody></table></div>
+<p class="small">About $157 if Memorystore's two Private Service Connect endpoints are billed (unconfirmed). A highly available staging would have added about $60. The staging ran from 2026-11-15 03:13Z (B09) to its teardown in B-final.</p>
+</section>
+
+
+<section class="part" id="architecture"><h2>Architecture</h2>
+<p>B's design (B01, with B03's link states). The drawings show planned design; what was deployed is the subset above: Session API, Link API, Redirect, Account API, the edge, the analytics worker and pipeline guard, the release, migration and tools jobs, with Cloud SQL, Memorystore, Pub/Sub and Cloud Storage. Billing (drawing 6) was designed and built as images but never deployed. In Git: <code>docs/architecture/</code> (components, 13 ADRs, specs) and <code>docs/architecture/diagrams/</code> (editable Excalidraw sources).</p>
+<figure><a href="diagrams/request-paths.png"><img src="diagrams/request-paths.png" alt="1 · Request paths" loading="lazy"></a><figcaption><strong>1 · Request paths</strong>. Which component serves each public request; what the redirect path never depends on</figcaption></figure>
+<figure><a href="diagrams/store-ownership.png"><img src="diagrams/store-ownership.png" alt="2 · Store ownership" loading="lazy"></a><figcaption><strong>2 · Store ownership</strong>. The single writer of every store and how others read it</figcaption></figure>
+<figure><a href="diagrams/session-identity.png"><img src="diagrams/session-identity.png" alt="3 · Session and identity boundary" loading="lazy"></a><figcaption><strong>3 · Session and identity boundary</strong>. Where tokens live, what crosses the boundary, how guarded routes verify</figcaption></figure>
+<figure><a href="diagrams/redirect-sequence.png"><img src="diagrams/redirect-sequence.png" alt="4 · Durable publication before 302" loading="lazy"></a><figcaption><strong>4 · Durable publication before 302</strong>. The ordered redirect path and its failure outcomes</figcaption></figure>
+<figure><a href="diagrams/click-pipeline.png"><img src="diagrams/click-pipeline.png" alt="5 · Click pipeline" loading="lazy"></a><figcaption><strong>5 · Click pipeline</strong>. Independent consumers, archive, quarantine, replay and the safety gate</figcaption></figure>
+<figure><a href="diagrams/billing-entitlements.png"><img src="diagrams/billing-entitlements.png" alt="6 · Billing and entitlements" loading="lazy"></a><figcaption><strong>6 · Billing and entitlements</strong>. Checkout, signed webhook inbox, fenced reconciliation, grants and grace (designed; not built: B07a)</figcaption></figure>
+<figure><a href="diagrams/gcp-placement.png"><img src="diagrams/gcp-placement.png" alt="7 · Placement" loading="lazy"></a><figcaption><strong>7 · Placement</strong>. Cloudflare and GCP us-central1 placement, and the local equivalent</figcaption></figure>
+<figure><a href="diagrams/link-states.png"><img src="diagrams/link-states.png" alt="8 · Link states and guest creation" loading="lazy"></a><figcaption><strong>8 · Link states and guest creation</strong>. Lifecycle, blocked flag and ownership; the guest create transaction and its errors</figcaption></figure>
+</section>
+
+<section class="part" id="labels"><h2>Labels</h2>
+<p>Values replaced before this record was written. The walk-through script refused to write if any raw value it had seen remained, and the folder was scanned for every enabled version of B's secrets and the Auth0 and Cloudflare credentials before commit.</p>
+<div class="tablewrap"><table><thead><tr><th>Label</th><th>Stands for</th></tr></thead><tbody>
+<tr><td><code>&lt;__Host-qrwtyb-guest value&gt;</code></td><td>the signed guest cookie</td></tr>
+<tr><td><code>&lt;__Host-qrwtyb-sid value&gt;</code></td><td>the signed-in session cookie</td></tr>
+<tr><td><code>&lt;__Host-qrwtyb-login value&gt;</code></td><td>the short-lived sign-in cookie (PKCE verifier binding)</td></tr>
+<tr><td><code>&lt;csrf token (guest)&gt;, &lt;csrf token (signed in)&gt;</code></td><td>the CSRF tokens of each session</td></tr>
+<tr><td><code>&lt;claim token&gt;</code></td><td>the guest link's claim token</td></tr>
+<tr><td><code>&lt;AUTH0_DOMAIN&gt;</code></td><td>the Auth0 tenant's domain</td></tr>
+<tr><td><code>&lt;client_id&gt;</code></td><td>the Auth0 client of B's web sign-in</td></tr>
+<tr><td><code>&lt;state&gt;, &lt;nonce&gt;, &lt;code_challenge&gt;, &lt;code&gt;</code></td><td>the authorization request's one-time values and the authorization code</td></tr>
+<tr><td><code>&lt;test-user password&gt;</code></td><td>the test users' password (Secret Manager)</td></tr>
+<tr><td><code>&lt;alice account subject&gt;</code></td><td>the test user's account id at the issuer</td></tr>
+<tr><td><code>&lt;load-balancer-address&gt;</code></td><td>the load balancer's public address</td></tr>
+<tr><td><code>&lt;project&gt;, &lt;project-number&gt;</code></td><td>the shared Google Cloud project's id and number</td></tr>
+</tbody></table></div>
+<p class="small">The earlier run's file also labels a few non-secret authorize parameters (<code>&lt;iss&gt;</code>, <code>&lt;redirect_uri&gt;</code>, <code>&lt;scope&gt;</code>, <code>&lt;audience&gt;</code>). Cloudflare's zone injects its Web Analytics beacon into HTML it proxies; the record keeps a marker comment in its place.</p>
+</section>
+
+<section class="part" id="files"><h2>Files</h2>
+<ul>
+<li><a href="walkthrough.json">walkthrough.json</a>: the walk-through above, sanitized, as data</li>
+<li><a href="walkthrough-run1.json">walkthrough-run1.json</a>: the earlier run with the cold-start 503</li>
+<li><a href="release-b07-3.json">release-b07-3.json</a>: the release record</li>
+<li><a href="inventory.jsonl">inventory.jsonl</a>: the inventory before teardown</li>
+<li><code>diagrams/</code>: the eight architecture drawings as PNG</li>
+</ul>
+<p class="small">The teardown record, what B built and how to redeploy are in <code>docs/evidence/b-final/README.md</code> of the qrwty-baseline repository.</p>
+</section>
+</main>
+</body>
+</html>

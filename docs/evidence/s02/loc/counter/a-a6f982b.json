@@ -1,0 +1,2054 @@
+{
+ "repo": "/home/ash/github/qrwty",
+ "commit": "a6f982bf7dc7f017efbb0187e76580dd8b42d571",
+ "rows": [
+  {
+   "path": ".gitignore",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".gitignore",
+   "lines": 1
+  },
+  {
+   "path": "AGENTS.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 48
+  },
+  {
+   "path": "README.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 123
+  },
+  {
+   "path": "app/.dockerignore",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".dockerignore",
+   "lines": 4
+  },
+  {
+   "path": "app/.gitignore",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".gitignore",
+   "lines": 5
+  },
+  {
+   "path": "app/.jeeves/inputs/design.json",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".json",
+   "lines": 1
+  },
+  {
+   "path": "app/.jeeves/manifest.json",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".json",
+   "lines": 1
+  },
+  {
+   "path": "app/.jeeves/normalized.json",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".json",
+   "lines": 1
+  },
+  {
+   "path": "app/.jeeves/report.json",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".json",
+   "lines": 1
+  },
+  {
+   "path": "app/Dockerfile",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": "Dockerfile",
+   "lines": 31
+  },
+  {
+   "path": "app/README.md",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".md",
+   "lines": 15
+  },
+  {
+   "path": "app/biome.json",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".json",
+   "lines": 15
+  },
+  {
+   "path": "app/compose.override.yaml",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".yaml",
+   "lines": 157
+  },
+  {
+   "path": "app/compose.yaml",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".yaml",
+   "lines": 1
+  },
+  {
+   "path": "app/diagnostics/generation.json",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".json",
+   "lines": 1
+  },
+  {
+   "path": "app/ffmpeg-os.lock",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".lock",
+   "lines": 288
+  },
+  {
+   "path": "app/infra/edge/nginx.conf",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".conf",
+   "lines": 18
+  },
+  {
+   "path": "app/infra/local.json",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".json",
+   "lines": 1
+  },
+  {
+   "path": "app/infra/postgres/analytics/000-foundation.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 2
+  },
+  {
+   "path": "app/infra/postgres/analytics/modules/analytics-worker-click-aggregator.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 16
+  },
+  {
+   "path": "app/infra/postgres/billing/000-foundation.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 2
+  },
+  {
+   "path": "app/infra/postgres/billing/modules/billing-api-customer-billing.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 15
+  },
+  {
+   "path": "app/infra/postgres/billing/modules/billing-api-entitlements.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 15
+  },
+  {
+   "path": "app/infra/postgres/billing/modules/billing-api-payment-events.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 15
+  },
+  {
+   "path": "app/infra/postgres/identity/000-foundation.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 2
+  },
+  {
+   "path": "app/infra/postgres/links/000-foundation.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 2
+  },
+  {
+   "path": "app/infra/postgres/links/modules/link-api-abuse-and-moderation.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 17
+  },
+  {
+   "path": "app/infra/postgres/links/modules/link-api-link-operations.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 303
+  },
+  {
+   "path": "app/infra/postgres/sessions/000-foundation.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 2
+  },
+  {
+   "path": "app/infra/postgres/sessions/modules/session-api-api-forwarding.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 15
+  },
+  {
+   "path": "app/infra/postgres/sessions/modules/session-api-sign-in-flow.sql",
+   "category": "sql",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".sql",
+   "lines": 15
+  },
+  {
+   "path": "app/infra/qrwty/production-profile.json",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".json",
+   "lines": 190
+  },
+  {
+   "path": "app/package.json",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".json",
+   "lines": 41
+  },
+  {
+   "path": "app/pnpm-lock.yaml",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".yaml",
+   "lines": 2092
+  },
+  {
+   "path": "app/pnpm-workspace.yaml",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".yaml",
+   "lines": 5
+  },
+  {
+   "path": "app/scripts/bootstrap.mjs",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".mjs",
+   "lines": 45
+  },
+  {
+   "path": "app/scripts/broker-init.mjs",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".mjs",
+   "lines": 22
+  },
+  {
+   "path": "app/scripts/common.mjs",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".mjs",
+   "lines": 24
+  },
+  {
+   "path": "app/scripts/local.mjs",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".mjs",
+   "lines": 245
+  },
+  {
+   "path": "app/scripts/migrate.mjs",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".mjs",
+   "lines": 132
+  },
+  {
+   "path": "app/scripts/products.mjs",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".mjs",
+   "lines": 45
+  },
+  {
+   "path": "app/scripts/pubsub-init.mjs",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".mjs",
+   "lines": 81
+  },
+  {
+   "path": "app/scripts/qrwty-production-profile.mjs",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".mjs",
+   "lines": 152
+  },
+  {
+   "path": "app/scripts/setup.mjs",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".mjs",
+   "lines": 86
+  },
+  {
+   "path": "app/scripts/status.mjs",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".mjs",
+   "lines": 3
+  },
+  {
+   "path": "app/scripts/storage-config.mjs",
+   "category": "app-deployment-and-scripts",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".mjs",
+   "lines": 33
+  },
+  {
+   "path": "app/src/features/application-bindings.ts",
+   "category": "backend-source",
+   "area": "src/features",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 1
+  },
+  {
+   "path": "app/src/features/local-bindings.ts",
+   "category": "backend-source",
+   "area": "src/features",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 1
+  },
+  {
+   "path": "app/src/features/service-resources.ts",
+   "category": "backend-source",
+   "area": "src/features",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 50
+  },
+  {
+   "path": "app/src/modules/account-api/account-api-link-analytics.slots.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 11
+  },
+  {
+   "path": "app/src/modules/account-api/account-api-link-analytics.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 5
+  },
+  {
+   "path": "app/src/modules/account-api/account-api-my-links.slots.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 7
+  },
+  {
+   "path": "app/src/modules/account-api/account-api-my-links.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 5
+  },
+  {
+   "path": "app/src/modules/analytics-worker/analytics-worker-click-aggregator.slots.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 8
+  },
+  {
+   "path": "app/src/modules/analytics-worker/analytics-worker-click-aggregator.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 5
+  },
+  {
+   "path": "app/src/modules/billing-api/billing-api-customer-billing.slots.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 9
+  },
+  {
+   "path": "app/src/modules/billing-api/billing-api-customer-billing.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 5
+  },
+  {
+   "path": "app/src/modules/billing-api/billing-api-entitlements.slots.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 7
+  },
+  {
+   "path": "app/src/modules/billing-api/billing-api-entitlements.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 5
+  },
+  {
+   "path": "app/src/modules/billing-api/billing-api-payment-events.slots.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 9
+  },
+  {
+   "path": "app/src/modules/billing-api/billing-api-payment-events.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 5
+  },
+  {
+   "path": "app/src/modules/dependencies.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 39
+  },
+  {
+   "path": "app/src/modules/entry.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 24
+  },
+  {
+   "path": "app/src/modules/link-api/link-api-abuse-and-moderation.slots.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 9
+  },
+  {
+   "path": "app/src/modules/link-api/link-api-abuse-and-moderation.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 5
+  },
+  {
+   "path": "app/src/modules/link-api/link-api-link-operations.slots.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 13
+  },
+  {
+   "path": "app/src/modules/link-api/link-api-link-operations.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 7
+  },
+  {
+   "path": "app/src/modules/link-api/link-operations/contract.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 36
+  },
+  {
+   "path": "app/src/modules/link-api/link-operations/create.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 223
+  },
+  {
+   "path": "app/src/modules/link-api/link-operations/destination.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 126
+  },
+  {
+   "path": "app/src/modules/link-api/link-operations/google-credentials.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 41
+  },
+  {
+   "path": "app/src/modules/link-api/link-operations/idempotency.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 24
+  },
+  {
+   "path": "app/src/modules/link-api/link-operations/replay-seal.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 52
+  },
+  {
+   "path": "app/src/modules/link-api/link-operations/reputation.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 56
+  },
+  {
+   "path": "app/src/modules/link-api/link-operations/service.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 71
+  },
+  {
+   "path": "app/src/modules/link-api/link-operations/slug.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 54
+  },
+  {
+   "path": "app/src/modules/link-api/link-operations/store.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 84
+  },
+  {
+   "path": "app/src/modules/link-api/link-operations/test-hooks.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "test-or-fixture",
+   "ext": ".ts",
+   "lines": 63
+  },
+  {
+   "path": "app/src/modules/redirect-service/redirect-service-resolve-and-redirect.slots.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 11
+  },
+  {
+   "path": "app/src/modules/redirect-service/redirect-service-resolve-and-redirect.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 5
+  },
+  {
+   "path": "app/src/modules/session-api/session-api-api-forwarding.slots.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 15
+  },
+  {
+   "path": "app/src/modules/session-api/session-api-api-forwarding.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 5
+  },
+  {
+   "path": "app/src/modules/session-api/session-api-sign-in-flow.slots.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 9
+  },
+  {
+   "path": "app/src/modules/session-api/session-api-sign-in-flow.ts",
+   "category": "backend-source",
+   "area": "src/modules",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 5
+  },
+  {
+   "path": "app/src/processes/account-api.ts",
+   "category": "backend-source",
+   "area": "src/processes",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 117
+  },
+  {
+   "path": "app/src/processes/analytics-worker.ts",
+   "category": "backend-source",
+   "area": "src/processes",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 40
+  },
+  {
+   "path": "app/src/processes/billing-api.ts",
+   "category": "backend-source",
+   "area": "src/processes",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 133
+  },
+  {
+   "path": "app/src/processes/link-api.ts",
+   "category": "backend-source",
+   "area": "src/processes",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 120
+  },
+  {
+   "path": "app/src/processes/redirect-service.ts",
+   "category": "backend-source",
+   "area": "src/processes",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 59
+  },
+  {
+   "path": "app/src/processes/session-api.ts",
+   "category": "backend-source",
+   "area": "src/processes",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 77
+  },
+  {
+   "path": "app/src/runtime/admission.ts",
+   "category": "backend-source",
+   "area": "src/runtime",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 74
+  },
+  {
+   "path": "app/src/runtime/amqp.ts",
+   "category": "backend-source",
+   "area": "src/runtime",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 348
+  },
+  {
+   "path": "app/src/runtime/delivery.ts",
+   "category": "backend-source",
+   "area": "src/runtime",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 210
+  },
+  {
+   "path": "app/src/runtime/http.ts",
+   "category": "backend-source",
+   "area": "src/runtime",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 123
+  },
+  {
+   "path": "app/src/runtime/identity.ts",
+   "category": "backend-source",
+   "area": "src/runtime",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 43
+  },
+  {
+   "path": "app/src/runtime/local.ts",
+   "category": "backend-source",
+   "area": "src/runtime",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 10
+  },
+  {
+   "path": "app/src/runtime/module-clients.ts",
+   "category": "backend-source",
+   "area": "src/runtime",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 496
+  },
+  {
+   "path": "app/src/runtime/postgres.ts",
+   "category": "backend-source",
+   "area": "src/runtime",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 42
+  },
+  {
+   "path": "app/src/runtime/process.ts",
+   "category": "backend-source",
+   "area": "src/runtime",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 111
+  },
+  {
+   "path": "app/src/runtime/tile-guard.ts",
+   "category": "backend-source",
+   "area": "src/runtime",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 80
+  },
+  {
+   "path": "app/src/runtime/tile-http.ts",
+   "category": "backend-source",
+   "area": "src/runtime",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 70
+  },
+  {
+   "path": "app/src/runtime/tile-loop.ts",
+   "category": "backend-source",
+   "area": "src/runtime",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 252
+  },
+  {
+   "path": "app/src/runtime/tile-process.ts",
+   "category": "backend-source",
+   "area": "src/runtime",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 74
+  },
+  {
+   "path": "app/src/runtime/valkey.ts",
+   "category": "backend-source",
+   "area": "src/runtime",
+   "reason": null,
+   "ext": ".ts",
+   "lines": 171
+  },
+  {
+   "path": "app/test/integration/concurrency.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 229
+  },
+  {
+   "path": "app/test/integration/postgres.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 144
+  },
+  {
+   "path": "app/test/integration/schema.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 246
+  },
+  {
+   "path": "app/test/stack/link-api.stack.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 348
+  },
+  {
+   "path": "app/test/unit/configuration.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 58
+  },
+  {
+   "path": "app/test/unit/create.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 303
+  },
+  {
+   "path": "app/test/unit/destination.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 140
+  },
+  {
+   "path": "app/test/unit/google-credentials.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 155
+  },
+  {
+   "path": "app/test/unit/reputation.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 66
+  },
+  {
+   "path": "app/test/unit/slug-and-keys.test.ts",
+   "category": "tests",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 115
+  },
+  {
+   "path": "app/tsconfig.json",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".json",
+   "lines": 15
+  },
+  {
+   "path": "app/tsconfig.test.json",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".json",
+   "lines": 8
+  },
+  {
+   "path": "app/vitest.config.ts",
+   "category": "app-package-and-build-config",
+   "area": null,
+   "reason": "outside-src",
+   "ext": ".ts",
+   "lines": 26
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-deepseek-v4.1-flash-1017/README.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 700
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-deepseek-v4.1-flash-1017/charts/monte-carlo-mrr.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 11
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-deepseek-v4.1-flash-1017/charts/revenue-per-customer.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 9
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-deepseek-v4.1-flash-1017/data/competitor-pricing.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 25
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-deepseek-v4.1-flash-1017/data/monte_carlo_sensitivity.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 6
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-deepseek-v4.1-flash-1017/data/monte_carlo_summary.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 3
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-deepseek-v4.1-flash-1017/saas-table-stakes-for-jeeves.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 853
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-deepseek-v4.1-flash-1017/scripts/monte_carlo.py",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".py",
+   "lines": 214
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-deepseek-v4.1-flash-1017/scripts/revenue_chart.py",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".py",
+   "lines": 58
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/README.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 566
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/build-pdf.cjs",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".cjs",
+   "lines": 48
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/application-scorecard.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/campaign-tool-pricing.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/churn-by-arpa.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/competitor-price-10-codes.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/custom-domain-tiers.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/device-vs-sticker-capability-matrix.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/esl-and-display-cost-ladder.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/fleet-cost-per-unit-200-vs-1000.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/hosting-cost-vs-traffic.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/hunt-platform-pricing.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/label-media-cost-and-life.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/market-estimates-spread.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/model-comparison-scorecard.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/printer-and-device-cost-ladder.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/render.mjs",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 455
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/scenario-mrr-24mo.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/stamp-rally-and-checkin-pricing.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/charts/unattended-payment-take-rates.svg",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".svg",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/connected-device-opportunities.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 534
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/connected-device-opportunities.pdf",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".pdf",
+   "lines": 11958
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/application-scorecard.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 7
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/campaign-tool-pricing.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 12
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/churn-by-arpa.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/competitor-price-10-codes.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 12
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/custom-domain-tiers.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 7
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/device-vs-sticker-capability-matrix.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/esl-and-display-cost-ladder.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 10
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/fleet-cost-per-unit-200-vs-1000.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 22
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/hosting-cost-vs-traffic.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 4
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/hunt-platform-pricing.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 12
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/label-media-cost-and-life.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/market-estimates-spread.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 11
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/model-comparison-scorecard.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 7
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/printer-and-device-cost-ladder.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 12
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/scenario-mrr-24mo.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 9
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/stamp-rally-and-checkin-pricing.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 16
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/data/unattended-payment-take-rates.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 8
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/field-device-applications.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 435
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/field-device-applications.pdf",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".pdf",
+   "lines": 10176
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/report.pdf",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".pdf",
+   "lines": 11517
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty business model analysis/acquisition_channels.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 66
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty business model analysis/hardware_field_label_niche.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 105
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty business model analysis/hosted_saas_competitors.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 88
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty business model analysis/market_size_and_demand.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 115
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty business model analysis/micro_saas_exits_benchmarks.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 61
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty business model analysis/open_core_self_hosted.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 90
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty business model analysis/segments_pricing_benchmarks.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 70
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty connected device opportunities/dynamic_displays_esl.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 84
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty connected device opportunities/event_driven_field_printing.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 107
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty connected device opportunities/operators_byod_gapfill.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 62
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty connected device opportunities/presence_gapfill.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 65
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty connected device opportunities/presence_proof_stamp_rallies.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 69
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty connected device opportunities/scan_to_actuate.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 95
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty connected device opportunities/small_fleet_hardware_economics.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 80
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty field device applications/device_build_vs_buy.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 83
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty field device applications/item_level_inventory.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 71
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty field device applications/item_level_inventory_gapfill.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 66
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty field device applications/location_games_scavenger.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 71
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty field device applications/ooh_advertising_events.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 58
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty field device applications/political_signs_canvassing.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 75
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-fable-5.1/research_notes/qrwty field device applications/pricing_scanrates_gapfill.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 71
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-gpt-6/README.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 157
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-gpt-6/comparison.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 59
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-gpt-6/data/channel-monthly.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 97
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-gpt-6/data/channel-summary.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 5
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-gpt-6/data/income-targets.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 17
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-gpt-6/data/private-deployment.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 3
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-gpt-6/data/unit-economics.csv",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".csv",
+   "lines": 5
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-gpt-6/scripts/economics.py",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".py",
+   "lines": 119
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-gpt-6/sources.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 38
+  },
+  {
+   "path": "business-analysis/ai-generated-reports-gpt-6/validation.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 24
+  },
+  {
+   "path": "business-analysis/concise-review-of-reports-by-astra.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 18
+  },
+  {
+   "path": "deploy/cloudflare/.gitignore",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".gitignore",
+   "lines": 3
+  },
+  {
+   "path": "deploy/cloudflare/README.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 57
+  },
+  {
+   "path": "deploy/cloudflare/biome.json",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".json",
+   "lines": 13
+  },
+  {
+   "path": "deploy/cloudflare/check-live.sh",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".sh",
+   "lines": 151
+  },
+  {
+   "path": "deploy/cloudflare/deploy.sh",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".sh",
+   "lines": 75
+  },
+  {
+   "path": "deploy/cloudflare/package.json",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".json",
+   "lines": 25
+  },
+  {
+   "path": "deploy/cloudflare/pnpm-lock.yaml",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".yaml",
+   "lines": 1581
+  },
+  {
+   "path": "deploy/cloudflare/pnpm-workspace.yaml",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".yaml",
+   "lines": 8
+  },
+  {
+   "path": "deploy/cloudflare/scripts/check-health.mjs",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 36
+  },
+  {
+   "path": "deploy/cloudflare/scripts/scrub.mjs",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 13
+  },
+  {
+   "path": "deploy/cloudflare/src/index.ts",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".ts",
+   "lines": 13
+  },
+  {
+   "path": "deploy/cloudflare/src/router.ts",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".ts",
+   "lines": 130
+  },
+  {
+   "path": "deploy/cloudflare/test/router.test.ts",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".ts",
+   "lines": 134
+  },
+  {
+   "path": "deploy/cloudflare/tsconfig.json",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".json",
+   "lines": 18
+  },
+  {
+   "path": "deploy/cloudflare/vitest.config.ts",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".ts",
+   "lines": 6
+  },
+  {
+   "path": "deploy/cloudflare/wrangler.toml",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".toml",
+   "lines": 13
+  },
+  {
+   "path": "infra/README.md",
+   "category": "infrastructure",
+   "area": "infra/README.md",
+   "reason": null,
+   "ext": ".md",
+   "lines": 35
+  },
+  {
+   "path": "infra/app-overlay/compose.override.yaml",
+   "category": "infrastructure",
+   "area": "infra/app-overlay",
+   "reason": null,
+   "ext": ".yaml",
+   "lines": 157
+  },
+  {
+   "path": "infra/app-overlay/infra/qrwty/production-profile.json",
+   "category": "infrastructure",
+   "area": "infra/app-overlay",
+   "reason": null,
+   "ext": ".json",
+   "lines": 190
+  },
+  {
+   "path": "infra/app-overlay/scripts/qrwty-production-profile.mjs",
+   "category": "infrastructure",
+   "area": "infra/app-overlay",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 152
+  },
+  {
+   "path": "infra/gcp/.gitignore",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".gitignore",
+   "lines": 8
+  },
+  {
+   "path": "infra/gcp/iam.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 57
+  },
+  {
+   "path": "infra/gcp/lint_iac.py",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".py",
+   "lines": 198
+  },
+  {
+   "path": "infra/gcp/lint_selftest.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 30
+  },
+  {
+   "path": "infra/gcp/locals.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 134
+  },
+  {
+   "path": "infra/gcp/network.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 67
+  },
+  {
+   "path": "infra/gcp/outputs.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 27
+  },
+  {
+   "path": "infra/gcp/pubsub.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 126
+  },
+  {
+   "path": "infra/gcp/run.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 242
+  },
+  {
+   "path": "infra/gcp/secrets.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 36
+  },
+  {
+   "path": "infra/gcp/stores.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 62
+  },
+  {
+   "path": "infra/gcp/terraform.tfvars.example",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".example",
+   "lines": 6
+  },
+  {
+   "path": "infra/gcp/validate.sh",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 39
+  },
+  {
+   "path": "infra/gcp/variables.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 81
+  },
+  {
+   "path": "infra/gcp/versions.tf",
+   "category": "infrastructure",
+   "area": "infra/gcp",
+   "reason": null,
+   "ext": ".tf",
+   "lines": 21
+  },
+  {
+   "path": "infra/local/app-secrets.sh",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 19
+  },
+  {
+   "path": "infra/local/install-overlay.py",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".py",
+   "lines": 32
+  },
+  {
+   "path": "infra/local/oracle-commands.mjs",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 129
+  },
+  {
+   "path": "infra/local/ordinary-build.sh",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 21
+  },
+  {
+   "path": "infra/local/profile-check.mjs",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 189
+  },
+  {
+   "path": "infra/local/test-postgres.sh",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 31
+  },
+  {
+   "path": "infra/local/tls-certs.sh",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".sh",
+   "lines": 51
+  },
+  {
+   "path": "infra/local/verify-generated.py",
+   "category": "infrastructure",
+   "area": "infra/local",
+   "reason": null,
+   "ext": ".py",
+   "lines": 27
+  },
+  {
+   "path": "infra/q12a/probe-manifest.json",
+   "category": "infrastructure",
+   "area": "infra/q12a",
+   "reason": null,
+   "ext": ".json",
+   "lines": 260
+  },
+  {
+   "path": "infra/q12a/probe-manifest.schema.json",
+   "category": "infrastructure",
+   "area": "infra/q12a",
+   "reason": null,
+   "ext": ".json",
+   "lines": 80
+  },
+  {
+   "path": "infra/q12a/validate_manifest.py",
+   "category": "infrastructure",
+   "area": "infra/q12a",
+   "reason": null,
+   "ext": ".py",
+   "lines": 51
+  },
+  {
+   "path": "package.json",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".json",
+   "lines": 20
+  },
+  {
+   "path": "pnpm-lock.yaml",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".yaml",
+   "lines": 123
+  },
+  {
+   "path": "tools/loc/README.md",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".md",
+   "lines": 42
+  },
+  {
+   "path": "tools/loc/backend-scope.json",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".json",
+   "lines": 6
+  },
+  {
+   "path": "tools/loc/pins.json",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".json",
+   "lines": 26
+  },
+  {
+   "path": "tools/loc/setup.sh",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".sh",
+   "lines": 27
+  },
+  {
+   "path": "tools/loc/source-loc.sh",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".sh",
+   "lines": 29
+  },
+  {
+   "path": "tools/loc/summary.mts",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".mts",
+   "lines": 154
+  },
+  {
+   "path": "tools/loc/verify-runner.sh",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".sh",
+   "lines": 31
+  },
+  {
+   "path": "tools/open-work.mjs",
+   "category": "repo-other",
+   "area": null,
+   "reason": null,
+   "ext": ".mjs",
+   "lines": 55
+  }
+ ]
+}

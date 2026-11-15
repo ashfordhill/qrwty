@@ -1,0 +1,102 @@
+{
+ "zone": "qrwty.io",
+ "note": "Read-only API snapshots by .scratch/S02/cf.py (credentials from the environment, never printed). Sanitized: the zone's records (name, type, proxied; content and TTL for A/AAAA/CNAME), the qrwty.io Workers Custom Domains, zone Worker routes and the account's qrwty Workers. The account's other Workers and domains are left out; they were identical before and after.",
+ "before": {
+  "capturedAt": "2026-11-15T15:56Z (immediately before the first S02 deploy; identical to the 13:38Z read)",
+  "records": [
+   {
+    "name": "qrwty.io",
+    "type": "AAAA",
+    "proxied": true,
+    "content": "100::",
+    "ttl": 1,
+    "managedBy": "workers-custom-domain"
+   },
+   {
+    "name": "www.qrwty.io",
+    "type": "AAAA",
+    "proxied": true,
+    "content": "100::",
+    "ttl": 1,
+    "managedBy": "workers-custom-domain"
+   }
+  ],
+  "workersCustomDomains": [
+   {
+    "hostname": "qrwty.io",
+    "service": "qrwty-edge",
+    "environment": "production"
+   },
+   {
+    "hostname": "www.qrwty.io",
+    "service": "qrwty-edge",
+    "environment": "production"
+   }
+  ],
+  "workerRoutes": [],
+  "qrwtyWorkers": [
+   "qrwty-edge",
+   "qrwty-platform"
+  ],
+  "qrwtyPlatformWorkersDev": {
+   "workersDevEnabled": true,
+   "previewsEnabled": true
+  }
+ },
+ "after": {
+  "capturedAt": "2026-11-15T16:0xZ (after the dirty deploy)",
+  "records": [
+   {
+    "name": "b.qrwty.io",
+    "type": "AAAA",
+    "proxied": true,
+    "content": "100::",
+    "ttl": 1,
+    "managedBy": "workers-custom-domain"
+   },
+   {
+    "name": "qrwty.io",
+    "type": "AAAA",
+    "proxied": true,
+    "content": "100::",
+    "ttl": 1,
+    "managedBy": "workers-custom-domain"
+   },
+   {
+    "name": "www.qrwty.io",
+    "type": "AAAA",
+    "proxied": true,
+    "content": "100::",
+    "ttl": 1,
+    "managedBy": "workers-custom-domain"
+   }
+  ],
+  "workersCustomDomains": [
+   {
+    "hostname": "b.qrwty.io",
+    "service": "qrwty-edge",
+    "environment": "production"
+   },
+   {
+    "hostname": "qrwty.io",
+    "service": "qrwty-edge",
+    "environment": "production"
+   },
+   {
+    "hostname": "www.qrwty.io",
+    "service": "qrwty-edge",
+    "environment": "production"
+   }
+  ],
+  "workerRoutes": [],
+  "qrwtyWorkers": [
+   "qrwty-edge",
+   "qrwty-platform"
+  ],
+  "qrwtyPlatformWorkersDev": {
+   "workersDevEnabled": true,
+   "previewsEnabled": true
+  }
+ },
+ "change": "One Workers Custom Domain added, b.qrwty.io -> qrwty-edge, with the AAAA 100:: proxied record Cloudflare manages for it. Nothing else changed; qrwty-platform was only read."
+}

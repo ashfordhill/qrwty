@@ -1,0 +1,14 @@
+/versions | 301 |  | https://qrwty.io/versions/ | headers3=3 hsts=0 injected=0 | csp=default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-ur
+/versions/ | 200 | text/html |  | headers3=3 hsts=0 injected=0 | csp=default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-ur
+/versions/design/ | 200 | text/html |  | headers3=3 hsts=0 injected=0 | csp=default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline
+/versions/design/app.js | 200 | text/javascript |  | headers3=3 hsts=0 injected=0 | csp=default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline
+/versions/a | 301 |  | https://qrwty.io/versions/a/ | headers3=3 hsts=0 injected=0 | csp=default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-ur
+/versions/a/ | 200 | text/html |  | headers3=3 hsts=0 injected=0 | csp=default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-ur
+/versions/a/deploy/ | 200 | text/html |  | headers3=3 hsts=0 injected=0 | csp=default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-ur
+/versions/a/jeeves/QRWTY-production-candidate-v1-r84-detailed.png | 200 | image/png |  | headers3=3 hsts=0 injected= | csp=default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-ur
+/versions/b/ | 200 | text/html |  | headers3=3 hsts=0 injected=0 | csp=default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-ur
+/versions/b/diagrams/gcp-placement.png | 200 | image/png |  | headers3=3 hsts=0 injected= | csp=default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-ur
+/versions/b/inventory.jsonl | 200 | text/plain; charset=utf-8 |  | headers3=3 hsts=0 injected=0 | csp=default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-ur
+/versions/original/ | 200 | text/html |  | headers3=3 hsts=0 injected=0 | csp=default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self'; 
+/versions/original/styles.css | 200 | text/css |  | headers3=3 hsts=0 injected=0 | csp=default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self'; 
+/versions/nope.html | 404 | text/html; charset=utf-8 |  | headers3=3 hsts=0 injected=0 | csp=default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-ur

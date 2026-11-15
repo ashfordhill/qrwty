@@ -1,0 +1,825 @@
+{
+	"recordedAt": "2026-11-15T11:42:48.927Z",
+	"origin": "https://b.qrwty.io",
+	"release": "b07-3",
+	"testUser": "qrwtyb-test-alice@qrwtyb.invalid",
+	"counted": true,
+	"steps": [
+		{
+			"section": "health",
+			"title": "GET /healthz (the edge's own probe)",
+			"startedAt": "2026-11-15T11:42:12.298Z",
+			"ms": 2307,
+			"request": {
+				"method": "GET",
+				"url": "https://b.qrwty.io/healthz",
+				"headers": {
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 200,
+				"headers": {
+					"content-type": "text/plain; charset=utf-8",
+					"content-length": "3",
+					"cache-control": "no-store",
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": {
+					"text": "ok\n"
+				}
+			}
+		},
+		{
+			"section": "guest",
+			"title": "Guest session",
+			"startedAt": "2026-11-15T11:42:14.605Z",
+			"ms": 159,
+			"request": {
+				"method": "GET",
+				"url": "https://b.qrwty.io/api/v1/session",
+				"headers": {
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 200,
+				"headers": {
+					"content-type": "application/json; charset=utf-8",
+					"cache-control": "no-store",
+					"set-cookie": [
+						"__Host-qrwtyb-guest=<__Host-qrwtyb-guest value>; Max-Age=2592000; Path=/; Secure; HttpOnly; SameSite=Lax"
+					],
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": {
+					"json": {
+						"authenticated": false,
+						"csrfToken": "<csrf token (guest)>",
+						"account": null
+					}
+				}
+			}
+		},
+		{
+			"section": "guest",
+			"title": "Create a guest link",
+			"startedAt": "2026-11-15T11:42:14.764Z",
+			"ms": 4206,
+			"request": {
+				"method": "POST",
+				"url": "https://b.qrwty.io/api/v1/links",
+				"headers": {
+					"cookie": "__Host-qrwtyb-guest=<__Host-qrwtyb-guest value>",
+					"x-csrf-token": "<csrf token (guest)>",
+					"idempotency-key": "29aced67-ce6c-41da-a3f5-679d2e51648f",
+					"origin": "https://b.qrwty.io",
+					"content-type": "application/json",
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				},
+				"body": {
+					"destination": "https://example.com/qrwtyb-b-final/walkthrough?run=e4aa7cbe"
+				}
+			},
+			"response": {
+				"status": 201,
+				"headers": {
+					"content-type": "application/json; charset=utf-8",
+					"content-length": "405",
+					"cache-control": "no-store, no-transform",
+					"etag": "\"1\"",
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": {
+					"json": {
+						"claim": {
+							"expiresAt": "2026-11-16T11:42:21.050Z",
+							"token": "<claim token>"
+						},
+						"createdAt": "2026-11-15T11:42:21.050Z",
+						"destination": "https://example.com/qrwtyb-b-final/walkthrough?run=e4aa7cbe",
+						"expiresAt": null,
+						"id": "1c906510-4ecb-409d-b13a-30714cb93c9b",
+						"owned": false,
+						"shortUrl": "https://b.qrwty.io/4RpjhuIMUb",
+						"state": "active",
+						"updatedAt": "2026-11-15T11:42:21.050Z",
+						"version": 1
+					}
+				}
+			}
+		},
+		{
+			"section": "redirect",
+			"title": "Follow the short link",
+			"note": "No probe token: this click counts as real traffic. The click event is durable before the 302 is sent.",
+			"startedAt": "2026-11-15T11:42:18.970Z",
+			"ms": 482,
+			"request": {
+				"method": "GET",
+				"url": "https://b.qrwty.io/4RpjhuIMUb",
+				"headers": {
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 302,
+				"headers": {
+					"content-type": "text/html",
+					"cache-control": "no-store",
+					"location": "https://example.com/qrwtyb-b-final/walkthrough?run=e4aa7cbe",
+					"qrwty-click-event": "f18a96ea-c0d1-4cc5-a9d1-c2badea9fd8c",
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": null
+			}
+		},
+		{
+			"section": "redirect",
+			"title": "HEAD of the short link",
+			"note": "HEAD answers the same 302 but records no click event.",
+			"startedAt": "2026-11-15T11:42:19.453Z",
+			"ms": 84,
+			"request": {
+				"method": "HEAD",
+				"url": "https://b.qrwty.io/4RpjhuIMUb",
+				"headers": {
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 302,
+				"headers": {
+					"content-type": "text/html",
+					"cache-control": "no-store",
+					"location": "https://example.com/qrwtyb-b-final/walkthrough?run=e4aa7cbe",
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": null
+			}
+		},
+		{
+			"section": "abuse",
+			"title": "Create a link to a Web Risk test URL",
+			"startedAt": "2026-11-15T11:42:19.537Z",
+			"ms": 157,
+			"request": {
+				"method": "POST",
+				"url": "https://b.qrwty.io/api/v1/links",
+				"headers": {
+					"cookie": "__Host-qrwtyb-guest=<__Host-qrwtyb-guest value>",
+					"x-csrf-token": "<csrf token (guest)>",
+					"idempotency-key": "8f424802-3286-4b7f-9e58-ee8c52877636",
+					"origin": "https://b.qrwty.io",
+					"content-type": "application/json",
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				},
+				"body": {
+					"destination": "http://testsafebrowsing.appspot.com/s/malware.html"
+				}
+			},
+			"response": {
+				"status": 422,
+				"headers": {
+					"content-type": "application/json; charset=utf-8",
+					"content-length": "133",
+					"cache-control": "no-store",
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": {
+					"json": {
+						"error": {
+							"code": "reputation_rejected",
+							"message": "this destination is listed as unsafe by the reputation service",
+							"retryable": false
+						}
+					}
+				}
+			}
+		},
+		{
+			"section": "signin",
+			"title": "Start sign-in",
+			"startedAt": "2026-11-15T11:42:19.694Z",
+			"ms": 595,
+			"request": {
+				"method": "GET",
+				"url": "https://b.qrwty.io/auth/login?returnTo=%2Fwalkthrough",
+				"headers": {
+					"cookie": "__Host-qrwtyb-guest=<__Host-qrwtyb-guest value>",
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 302,
+				"headers": {
+					"content-type": "text/html",
+					"cache-control": "no-store",
+					"location": "<iss>authorize?redirect_uri=<redirect_uri>&scope=<scope>&audience=<audience>&code_challenge=<code_challenge>&code_challenge_method=S256&state=<state>&nonce=<nonce>&client_id=<client_id>&response_type=code",
+					"set-cookie": [
+						"__Host-qrwtyb-login=<__Host-qrwtyb-login value>; Max-Age=600; Path=/; Secure; HttpOnly; SameSite=Lax"
+					],
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": null
+			}
+		},
+		{
+			"section": "signin",
+			"title": "Issuer GET /authorize",
+			"note": "Auth0 Universal Login (the managed issuer). Recorded by path and status only; the issuer's page body and cookies are not B's.",
+			"startedAt": "2026-11-15T11:42:20.289Z",
+			"ms": 221,
+			"request": {
+				"method": "GET",
+				"url": "<iss>authorize?…",
+				"headers": {}
+			},
+			"response": {
+				"status": 302,
+				"headers": {
+					"location": "<iss>u/login?state=<state>"
+				},
+				"body": {
+					"text": ""
+				}
+			}
+		},
+		{
+			"section": "signin",
+			"title": "Issuer GET /u/login",
+			"note": "Auth0 Universal Login (the managed issuer). Recorded by path and status only; the issuer's page body and cookies are not B's.",
+			"startedAt": "2026-11-15T11:42:20.510Z",
+			"ms": 142,
+			"request": {
+				"method": "GET",
+				"url": "<iss>u/login?…",
+				"headers": {}
+			},
+			"response": {
+				"status": 200,
+				"headers": {},
+				"body": {
+					"text": "(HTML sign-in page, 58046 bytes, not recorded)"
+				}
+			}
+		},
+		{
+			"section": "signin",
+			"title": "Issuer POST /u/login",
+			"note": "Auth0 Universal Login (the managed issuer). Recorded by path and status only; the issuer's page body and cookies are not B's.",
+			"startedAt": "2026-11-15T11:42:20.654Z",
+			"ms": 266,
+			"request": {
+				"method": "POST",
+				"url": "<iss>u/login?…",
+				"headers": {},
+				"body": {
+					"state": "<state>",
+					"username": "qrwtyb-test-alice@qrwtyb.invalid",
+					"password": "<test-user password>",
+					"action": "default"
+				}
+			},
+			"response": {
+				"status": 302,
+				"headers": {
+					"location": "<iss>authorize/resume?state=<state>"
+				},
+				"body": {
+					"text": ""
+				}
+			}
+		},
+		{
+			"section": "signin",
+			"title": "Issuer GET /authorize/resume",
+			"note": "Auth0 Universal Login (the managed issuer). Recorded by path and status only; the issuer's page body and cookies are not B's.",
+			"startedAt": "2026-11-15T11:42:20.919Z",
+			"ms": 169,
+			"request": {
+				"method": "GET",
+				"url": "<iss>authorize/resume?…",
+				"headers": {}
+			},
+			"response": {
+				"status": 302,
+				"headers": {
+					"location": "<redirect_uri>?code=<code>&state=<state>&iss=<iss>"
+				},
+				"body": {
+					"text": ""
+				}
+			}
+		},
+		{
+			"section": "signin",
+			"title": "Back to B: the callback",
+			"startedAt": "2026-11-15T11:42:21.089Z",
+			"ms": 181,
+			"request": {
+				"method": "GET",
+				"url": "<redirect_uri>?code=<code>&state=<state>&iss=<iss>",
+				"headers": {
+					"cookie": "__Host-qrwtyb-guest=<__Host-qrwtyb-guest value>; __Host-qrwtyb-login=<__Host-qrwtyb-login value>",
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 302,
+				"headers": {
+					"content-type": "text/html",
+					"cache-control": "no-store",
+					"location": "/walkthrough",
+					"set-cookie": [
+						"__Host-qrwtyb-login=; Max-Age=0; Path=/; Secure; HttpOnly; SameSite=Lax",
+						"__Host-qrwtyb-sid=<__Host-qrwtyb-sid value>; Max-Age=604800; Path=/; Secure; HttpOnly; SameSite=Lax"
+					],
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": null
+			}
+		},
+		{
+			"section": "signin",
+			"title": "Session after sign-in",
+			"startedAt": "2026-11-15T11:42:21.270Z",
+			"ms": 78,
+			"request": {
+				"method": "GET",
+				"url": "https://b.qrwty.io/api/v1/session",
+				"headers": {
+					"cookie": "__Host-qrwtyb-guest=<__Host-qrwtyb-guest value>; __Host-qrwtyb-sid=<__Host-qrwtyb-sid value>",
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 200,
+				"headers": {
+					"content-type": "application/json; charset=utf-8",
+					"cache-control": "no-store",
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": {
+					"json": {
+						"authenticated": true,
+						"csrfToken": "<csrf token (signed in)>",
+						"account": {
+							"subject": "<alice account subject>",
+							"email": "qrwtyb-test-alice@qrwtyb.invalid",
+							"displayName": "qrwtyb-test-alice"
+						}
+					}
+				}
+			}
+		},
+		{
+			"section": "owned",
+			"title": "Claim the guest link",
+			"startedAt": "2026-11-15T11:42:21.348Z",
+			"ms": 178,
+			"request": {
+				"method": "POST",
+				"url": "https://b.qrwty.io/api/v1/links/1c906510-4ecb-409d-b13a-30714cb93c9b/claim",
+				"headers": {
+					"cookie": "__Host-qrwtyb-guest=<__Host-qrwtyb-guest value>; __Host-qrwtyb-sid=<__Host-qrwtyb-sid value>",
+					"x-csrf-token": "<csrf token (signed in)>",
+					"idempotency-key": "c59d6927-3cde-42e5-b919-de95b3a9d326",
+					"origin": "https://b.qrwty.io",
+					"content-type": "application/json",
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				},
+				"body": {
+					"claimToken": "<claim token>"
+				}
+			},
+			"response": {
+				"status": 200,
+				"headers": {
+					"content-type": "application/json; charset=utf-8",
+					"content-length": "301",
+					"cache-control": "no-store, no-transform",
+					"etag": "\"2\"",
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": {
+					"json": {
+						"createdAt": "2026-11-15T11:42:21.050Z",
+						"destination": "https://example.com/qrwtyb-b-final/walkthrough?run=e4aa7cbe",
+						"expiresAt": null,
+						"id": "1c906510-4ecb-409d-b13a-30714cb93c9b",
+						"owned": true,
+						"shortUrl": "https://b.qrwty.io/4RpjhuIMUb",
+						"state": "active",
+						"updatedAt": "2026-11-15T11:42:23.921Z",
+						"version": 2
+					}
+				}
+			}
+		},
+		{
+			"section": "owned",
+			"title": "List owned links (first page of 5)",
+			"startedAt": "2026-11-15T11:42:21.526Z",
+			"ms": 7431,
+			"request": {
+				"method": "GET",
+				"url": "https://b.qrwty.io/api/v1/me/links?limit=5",
+				"headers": {
+					"cookie": "__Host-qrwtyb-guest=<__Host-qrwtyb-guest value>; __Host-qrwtyb-sid=<__Host-qrwtyb-sid value>",
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 503,
+				"headers": {
+					"content-type": "application/json; charset=utf-8",
+					"content-length": "88",
+					"cache-control": "no-store",
+					"retry-after": "2",
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": {
+					"json": {
+						"error": {
+							"code": "unavailable",
+							"message": "account api is unavailable",
+							"retryable": true
+						}
+					}
+				}
+			}
+		},
+		{
+			"section": "analytics",
+			"title": "The owner's aggregates for the claimed link",
+			"note": "Counted at poll 2 (every 2 s from the claim): 25 s after the click, which was made before sign-in, while the link was a guest's.",
+			"startedAt": "2026-11-15T11:42:47.673Z",
+			"ms": 99,
+			"request": {
+				"method": "GET",
+				"url": "https://b.qrwty.io/api/v1/links/1c906510-4ecb-409d-b13a-30714cb93c9b/analytics",
+				"headers": {
+					"cookie": "__Host-qrwtyb-guest=<__Host-qrwtyb-guest value>; __Host-qrwtyb-sid=<__Host-qrwtyb-sid value>",
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 200,
+				"headers": {
+					"content-type": "application/json; charset=utf-8",
+					"cache-control": "no-store",
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": {
+					"json": {
+						"linkId": "1c906510-4ecb-409d-b13a-30714cb93c9b",
+						"range": {
+							"from": "2026-11-09",
+							"to": "2026-11-15"
+						},
+						"totals": {
+							"recordedAttempts": 1,
+							"filteredClicks": 1
+						},
+						"series": [
+							{
+								"date": "2026-11-09",
+								"recordedAttempts": 0,
+								"filteredClicks": 0
+							},
+							{
+								"date": "2026-11-10",
+								"recordedAttempts": 0,
+								"filteredClicks": 0
+							},
+							{
+								"date": "2026-11-11",
+								"recordedAttempts": 0,
+								"filteredClicks": 0
+							},
+							{
+								"date": "2026-11-12",
+								"recordedAttempts": 0,
+								"filteredClicks": 0
+							},
+							{
+								"date": "2026-11-13",
+								"recordedAttempts": 0,
+								"filteredClicks": 0
+							},
+							{
+								"date": "2026-11-14",
+								"recordedAttempts": 0,
+								"filteredClicks": 0
+							},
+							{
+								"date": "2026-11-15",
+								"recordedAttempts": 1,
+								"filteredClicks": 1
+							}
+						],
+						"breakdowns": null,
+						"freshness": {
+							"asOf": "2026-11-15T11:42:41.772Z",
+							"delayed": false
+						},
+						"reconciliation": {
+							"status": "ok"
+						},
+						"filter": {
+							"version": "filter-v1",
+							"definition": "A recorded attempt is a bot when its device class is bot: an empty user agent, or one matching bot|crawl|spider|slurp|preview|facebookexternalhit|curl|wget|python-requests|httpclient (case-insensitive). filteredClicks excludes bots; recordedAttempts includes them. Synthetic probes are excluded from both."
+						},
+						"lookback": {
+							"maxDays": 7,
+							"limitedByTier": false
+						}
+					}
+				}
+			}
+		},
+		{
+			"section": "analytics",
+			"title": "The same aggregates as CSV",
+			"startedAt": "2026-11-15T11:42:47.771Z",
+			"ms": 199,
+			"request": {
+				"method": "GET",
+				"url": "https://b.qrwty.io/api/v1/links/1c906510-4ecb-409d-b13a-30714cb93c9b/analytics.csv",
+				"headers": {
+					"cookie": "__Host-qrwtyb-guest=<__Host-qrwtyb-guest value>; __Host-qrwtyb-sid=<__Host-qrwtyb-sid value>",
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 200,
+				"headers": {
+					"content-type": "text/csv; charset=utf-8",
+					"content-length": "152",
+					"cache-control": "no-store",
+					"content-disposition": "attachment; filename=\"qrwty-4RpjhuIMUb-2026-11-09-2026-11-15.csv\"",
+					"server": "cloudflare",
+					"cf-cache-status": "BYPASS"
+				},
+				"body": {
+					"text": "date,recorded_attempts,filtered_clicks\r\n2026-11-09,0,0\r\n2026-11-10,0,0\r\n2026-11-11,0,0\r\n2026-11-12,0,0\r\n2026-11-13,0,0\r\n2026-11-14,0,0\r\n2026-11-15,1,1\r\n"
+				}
+			}
+		},
+		{
+			"section": "signout",
+			"title": "Sign out (revokes the issuer's refresh token)",
+			"startedAt": "2026-11-15T11:42:47.970Z",
+			"ms": 344,
+			"request": {
+				"method": "POST",
+				"url": "https://b.qrwty.io/auth/logout",
+				"headers": {
+					"cookie": "__Host-qrwtyb-guest=<__Host-qrwtyb-guest value>; __Host-qrwtyb-sid=<__Host-qrwtyb-sid value>",
+					"x-csrf-token": "<csrf token (signed in)>",
+					"origin": "https://b.qrwty.io",
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 204,
+				"headers": {
+					"content-type": "text/html",
+					"cache-control": "no-store",
+					"set-cookie": ["__Host-qrwtyb-sid=; Max-Age=0; Path=/; Secure; HttpOnly; SameSite=Lax"],
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": null
+			}
+		},
+		{
+			"section": "signout",
+			"title": "The old session cookie after sign-out",
+			"startedAt": "2026-11-15T11:42:48.315Z",
+			"ms": 150,
+			"request": {
+				"method": "GET",
+				"url": "https://b.qrwty.io/api/v1/me/links",
+				"headers": {
+					"cookie": "__Host-qrwtyb-guest=<__Host-qrwtyb-guest value>; __Host-qrwtyb-sid=<__Host-qrwtyb-sid value>",
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 401,
+				"headers": {
+					"content-type": "application/json; charset=utf-8",
+					"content-length": "112",
+					"cache-control": "no-store",
+					"set-cookie": ["__Host-qrwtyb-sid=; Max-Age=0; Path=/; Secure; HttpOnly; SameSite=Lax"],
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": {
+					"json": {
+						"error": {
+							"code": "session_expired",
+							"message": "the session is no longer valid; sign in again",
+							"retryable": false
+						}
+					}
+				}
+			}
+		},
+		{
+			"section": "edge",
+			"title": "The home page (no UI in B: the edge's not-found page)",
+			"startedAt": "2026-11-15T11:42:48.465Z",
+			"ms": 60,
+			"request": {
+				"method": "GET",
+				"url": "https://b.qrwty.io/",
+				"headers": {
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 404,
+				"headers": {
+					"content-type": "text/html; charset=utf-8",
+					"cache-control": "no-store",
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": {
+					"text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Not found</title></head><body><h1>Not found</h1><p>There is no page or short link at this address.</p><!-- Cloudflare Web Analytics beacon script injected here by the zone (omitted) -->\n</body></html>\n"
+				}
+			}
+		},
+		{
+			"section": "edge",
+			"title": "An unknown path",
+			"startedAt": "2026-11-15T11:42:48.525Z",
+			"ms": 66,
+			"request": {
+				"method": "GET",
+				"url": "https://b.qrwty.io/no/such/page",
+				"headers": {
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 404,
+				"headers": {
+					"content-type": "text/html; charset=utf-8",
+					"cache-control": "no-store",
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": {
+					"text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Not found</title></head><body><h1>Not found</h1><p>There is no page or short link at this address.</p><!-- Cloudflare Web Analytics beacon script injected here by the zone (omitted) -->\n</body></html>\n"
+				}
+			}
+		},
+		{
+			"section": "edge",
+			"title": "An unknown short link (answered by Redirect)",
+			"startedAt": "2026-11-15T11:42:48.591Z",
+			"ms": 93,
+			"request": {
+				"method": "GET",
+				"url": "https://b.qrwty.io/zzBfinal00",
+				"headers": {
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 404,
+				"headers": {
+					"content-type": "text/html; charset=utf-8",
+					"cache-control": "no-store",
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": {
+					"text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Not found</title></head><body><h1>Not found</h1><p>There is no page or short link at this address.</p><!-- Cloudflare Web Analytics beacon script injected here by the zone (omitted) -->\n</body></html>\n"
+				}
+			}
+		},
+		{
+			"section": "edge",
+			"title": "A method the path does not answer (page)",
+			"startedAt": "2026-11-15T11:42:48.685Z",
+			"ms": 64,
+			"request": {
+				"method": "POST",
+				"url": "https://b.qrwty.io/healthz",
+				"headers": {
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "text/html,application/json;q=0.9,*/*;q=0.8"
+				}
+			},
+			"response": {
+				"status": 405,
+				"headers": {
+					"content-type": "text/html; charset=utf-8",
+					"cache-control": "no-store",
+					"allow": "GET, HEAD",
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": {
+					"text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Method not allowed</title></head><body><h1>Method not allowed</h1><p>This address answers only GET and HEAD requests.</p><!-- Cloudflare Web Analytics beacon script injected here by the zone (omitted) -->\n</body></html>\n"
+				}
+			}
+		},
+		{
+			"section": "edge",
+			"title": "A method the path does not answer (API)",
+			"startedAt": "2026-11-15T11:42:48.749Z",
+			"ms": 69,
+			"request": {
+				"method": "GET",
+				"url": "https://b.qrwty.io/api/v1/billing/webhook",
+				"headers": {
+					"user-agent": "Mozilla/5.0 (X11; Linux x86_64) qrwtyb-b-final-walkthrough",
+					"accept": "application/json"
+				}
+			},
+			"response": {
+				"status": 405,
+				"headers": {
+					"content-type": "application/json; charset=utf-8",
+					"content-length": "88",
+					"cache-control": "no-store",
+					"allow": "POST",
+					"server": "cloudflare",
+					"cf-cache-status": "DYNAMIC"
+				},
+				"body": {
+					"json": {
+						"error": {
+							"code": "method_not_allowed",
+							"message": "method not allowed",
+							"retryable": false
+						}
+					}
+				}
+			}
+		},
+		{
+			"section": "edge",
+			"title": "Another host on B's load balancer",
+			"note": "Sent straight to the load balancer (Cloudflare skipped) with Host qrwty.io: the edge refuses hosts other than b.qrwty.io, without a Location.",
+			"startedAt": "2026-11-15T11:42:48.819Z",
+			"ms": 108,
+			"request": {
+				"method": "GET",
+				"url": "https://<load-balancer-address>/",
+				"headers": {
+					"host": "qrwty.io",
+					"tls-sni": "b.qrwty.io"
+				}
+			},
+			"response": {
+				"status": 421,
+				"headers": {
+					"content-type": "text/html; charset=utf-8",
+					"content-length": "194",
+					"cache-control": "no-store",
+					"server": "Google Frontend"
+				},
+				"body": {
+					"text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Misdirected request</title></head><body><h1>Misdirected request</h1><p>This server does not serve that host.</p></body></html>\n"
+				}
+			}
+		}
+	]
+}

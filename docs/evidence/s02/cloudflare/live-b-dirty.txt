@@ -1,0 +1,8 @@
+HTTP/2 301  location: https://qrwty.io/versions/b/ cache-control: public, max-age=3600, no-transform x-robots-tag: noindex  <- https://b.qrwty.io/
+HTTP/2 301  location: https://qrwty.io/versions/b/ cache-control: public, max-age=3600, no-transform x-robots-tag: noindex  <- https://b.qrwty.io/api/v1/links?x=1
+HTTP/1.1 301 Moved Permanently Location: https://qrwty.io/versions/b/ Cache-Control: public, max-age=3600, no-transform x-robots-tag: noindex  <- http://b.qrwty.io/healthz
+POST b -> 301 https://qrwty.io/versions/b/
+subject=CN = qrwty.io
+issuer=C = US, O = Google Trust Services, CN = WE1
+Verify return code: 0 (ok)
+follow -> 200 https://qrwty.io/versions/b/

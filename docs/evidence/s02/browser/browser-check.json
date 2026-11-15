@@ -1,0 +1,748 @@
+{
+ "base": "https://qrwty.io",
+ "checkedAt": "2026-11-15T15:57:51.771Z",
+ "chromium": "Playwright 1.63.0 (neutral pack v1.6 oracle install)",
+ "loads": 32,
+ "externalRequests": 0,
+ "problems": [
+  {
+   "page": "/versions/missing.html",
+   "viewport": "phone",
+   "scheme": "light",
+   "problems": [
+    "error: Failed to load resource: the server responded with a status of 404 ()"
+   ]
+  },
+  {
+   "page": "/versions/missing.html",
+   "viewport": "phone",
+   "scheme": "dark",
+   "problems": [
+    "error: Failed to load resource: the server responded with a status of 404 ()"
+   ]
+  },
+  {
+   "page": "/versions/missing.html",
+   "viewport": "desktop",
+   "scheme": "light",
+   "problems": [
+    "error: Failed to load resource: the server responded with a status of 404 ()"
+   ]
+  },
+  {
+   "page": "/versions/missing.html",
+   "viewport": "desktop",
+   "scheme": "dark",
+   "problems": [
+    "error: Failed to load resource: the server responded with a status of 404 ()"
+   ]
+  }
+ ],
+ "brokenImages": [],
+ "overflow": [
+  {
+   "page": "/versions/original/",
+   "viewport": "phone",
+   "px": 30
+  },
+  {
+   "page": "/versions/original/",
+   "viewport": "phone",
+   "px": 30
+  }
+ ],
+ "results": [
+  {
+   "page": "/",
+   "viewport": "phone",
+   "scheme": "light",
+   "status": 200,
+   "title": "QRWTY",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/",
+   "viewport": "phone",
+   "scheme": "light",
+   "status": 200,
+   "title": "QRWTY versions",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /versions/"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/design/",
+   "viewport": "phone",
+   "scheme": "light",
+   "status": 200,
+   "title": "Shorten a link · QRWTY",
+   "requests": 5,
+   "sameOriginRequests": [
+    "GET /versions/design/",
+    "GET /versions/design/tokens.css",
+    "GET /versions/design/app.css",
+    "GET /versions/design/qr.js",
+    "GET /versions/design/app.js"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": {
+    "screenOptions": 9,
+    "shortenClicked": true,
+    "resultShown": true
+   }
+  },
+  {
+   "page": "/versions/a/",
+   "viewport": "phone",
+   "scheme": "light",
+   "status": 200,
+   "title": "QRWTY arm A",
+   "requests": 3,
+   "sameOriginRequests": [
+    "GET /versions/a/",
+    "GET /versions/a/jeeves/QRWTY-production-candidate-v1-r83-detailed.png",
+    "GET /versions/a/jeeves/QRWTY-production-candidate-v1-r84-detailed.png"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 2,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/a/deploy/",
+   "viewport": "phone",
+   "scheme": "light",
+   "status": 200,
+   "title": "QRWTY A deploy record",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /versions/a/deploy/"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/b/",
+   "viewport": "phone",
+   "scheme": "light",
+   "status": 200,
+   "title": "QRWTY arm B staging record",
+   "requests": 9,
+   "sameOriginRequests": [
+    "GET /versions/b/",
+    "GET /versions/b/diagrams/request-paths.png",
+    "GET /versions/b/diagrams/store-ownership.png",
+    "GET /versions/b/diagrams/session-identity.png",
+    "GET /versions/b/diagrams/redirect-sequence.png",
+    "GET /versions/b/diagrams/click-pipeline.png",
+    "GET /versions/b/diagrams/billing-entitlements.png",
+    "GET /versions/b/diagrams/gcp-placement.png",
+    "GET /versions/b/diagrams/link-states.png"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 8,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/original/",
+   "viewport": "phone",
+   "scheme": "light",
+   "status": 200,
+   "title": "Qrwty | Beautiful, Ownable QR Infrastructure",
+   "requests": 2,
+   "sameOriginRequests": [
+    "GET /versions/original/",
+    "GET /versions/original/styles.css"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 30,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/missing.html",
+   "viewport": "phone",
+   "scheme": "light",
+   "status": 404,
+   "title": "Not found · QRWTY",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /versions/missing.html"
+   ],
+   "externalRequests": [],
+   "problems": [
+    "error: Failed to load resource: the server responded with a status of 404 ()"
+   ],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/",
+   "viewport": "phone",
+   "scheme": "dark",
+   "status": 200,
+   "title": "QRWTY",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/",
+   "viewport": "phone",
+   "scheme": "dark",
+   "status": 200,
+   "title": "QRWTY versions",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /versions/"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/design/",
+   "viewport": "phone",
+   "scheme": "dark",
+   "status": 200,
+   "title": "Shorten a link · QRWTY",
+   "requests": 5,
+   "sameOriginRequests": [
+    "GET /versions/design/",
+    "GET /versions/design/tokens.css",
+    "GET /versions/design/app.css",
+    "GET /versions/design/qr.js",
+    "GET /versions/design/app.js"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": {
+    "screenOptions": 9,
+    "shortenClicked": true,
+    "resultShown": true
+   }
+  },
+  {
+   "page": "/versions/a/",
+   "viewport": "phone",
+   "scheme": "dark",
+   "status": 200,
+   "title": "QRWTY arm A",
+   "requests": 3,
+   "sameOriginRequests": [
+    "GET /versions/a/",
+    "GET /versions/a/jeeves/QRWTY-production-candidate-v1-r83-detailed.png",
+    "GET /versions/a/jeeves/QRWTY-production-candidate-v1-r84-detailed.png"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 2,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/a/deploy/",
+   "viewport": "phone",
+   "scheme": "dark",
+   "status": 200,
+   "title": "QRWTY A deploy record",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /versions/a/deploy/"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/b/",
+   "viewport": "phone",
+   "scheme": "dark",
+   "status": 200,
+   "title": "QRWTY arm B staging record",
+   "requests": 9,
+   "sameOriginRequests": [
+    "GET /versions/b/",
+    "GET /versions/b/diagrams/request-paths.png",
+    "GET /versions/b/diagrams/store-ownership.png",
+    "GET /versions/b/diagrams/session-identity.png",
+    "GET /versions/b/diagrams/redirect-sequence.png",
+    "GET /versions/b/diagrams/click-pipeline.png",
+    "GET /versions/b/diagrams/billing-entitlements.png",
+    "GET /versions/b/diagrams/gcp-placement.png",
+    "GET /versions/b/diagrams/link-states.png"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 8,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/original/",
+   "viewport": "phone",
+   "scheme": "dark",
+   "status": 200,
+   "title": "Qrwty | Beautiful, Ownable QR Infrastructure",
+   "requests": 2,
+   "sameOriginRequests": [
+    "GET /versions/original/",
+    "GET /versions/original/styles.css"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 30,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/missing.html",
+   "viewport": "phone",
+   "scheme": "dark",
+   "status": 404,
+   "title": "Not found · QRWTY",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /versions/missing.html"
+   ],
+   "externalRequests": [],
+   "problems": [
+    "error: Failed to load resource: the server responded with a status of 404 ()"
+   ],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/",
+   "viewport": "desktop",
+   "scheme": "light",
+   "status": 200,
+   "title": "QRWTY",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/",
+   "viewport": "desktop",
+   "scheme": "light",
+   "status": 200,
+   "title": "QRWTY versions",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /versions/"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/design/",
+   "viewport": "desktop",
+   "scheme": "light",
+   "status": 200,
+   "title": "Shorten a link · QRWTY",
+   "requests": 5,
+   "sameOriginRequests": [
+    "GET /versions/design/",
+    "GET /versions/design/tokens.css",
+    "GET /versions/design/app.css",
+    "GET /versions/design/qr.js",
+    "GET /versions/design/app.js"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": {
+    "screenOptions": 9,
+    "shortenClicked": true,
+    "resultShown": true
+   }
+  },
+  {
+   "page": "/versions/a/",
+   "viewport": "desktop",
+   "scheme": "light",
+   "status": 200,
+   "title": "QRWTY arm A",
+   "requests": 3,
+   "sameOriginRequests": [
+    "GET /versions/a/",
+    "GET /versions/a/jeeves/QRWTY-production-candidate-v1-r83-detailed.png",
+    "GET /versions/a/jeeves/QRWTY-production-candidate-v1-r84-detailed.png"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 2,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/a/deploy/",
+   "viewport": "desktop",
+   "scheme": "light",
+   "status": 200,
+   "title": "QRWTY A deploy record",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /versions/a/deploy/"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/b/",
+   "viewport": "desktop",
+   "scheme": "light",
+   "status": 200,
+   "title": "QRWTY arm B staging record",
+   "requests": 9,
+   "sameOriginRequests": [
+    "GET /versions/b/",
+    "GET /versions/b/diagrams/request-paths.png",
+    "GET /versions/b/diagrams/store-ownership.png",
+    "GET /versions/b/diagrams/session-identity.png",
+    "GET /versions/b/diagrams/redirect-sequence.png",
+    "GET /versions/b/diagrams/click-pipeline.png",
+    "GET /versions/b/diagrams/billing-entitlements.png",
+    "GET /versions/b/diagrams/gcp-placement.png",
+    "GET /versions/b/diagrams/link-states.png"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 8,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/original/",
+   "viewport": "desktop",
+   "scheme": "light",
+   "status": 200,
+   "title": "Qrwty | Beautiful, Ownable QR Infrastructure",
+   "requests": 2,
+   "sameOriginRequests": [
+    "GET /versions/original/",
+    "GET /versions/original/styles.css"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/missing.html",
+   "viewport": "desktop",
+   "scheme": "light",
+   "status": 404,
+   "title": "Not found · QRWTY",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /versions/missing.html"
+   ],
+   "externalRequests": [],
+   "problems": [
+    "error: Failed to load resource: the server responded with a status of 404 ()"
+   ],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/",
+   "viewport": "desktop",
+   "scheme": "dark",
+   "status": 200,
+   "title": "QRWTY",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/",
+   "viewport": "desktop",
+   "scheme": "dark",
+   "status": 200,
+   "title": "QRWTY versions",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /versions/"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/design/",
+   "viewport": "desktop",
+   "scheme": "dark",
+   "status": 200,
+   "title": "Shorten a link · QRWTY",
+   "requests": 5,
+   "sameOriginRequests": [
+    "GET /versions/design/",
+    "GET /versions/design/tokens.css",
+    "GET /versions/design/app.css",
+    "GET /versions/design/qr.js",
+    "GET /versions/design/app.js"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": {
+    "screenOptions": 9,
+    "shortenClicked": true,
+    "resultShown": true
+   }
+  },
+  {
+   "page": "/versions/a/",
+   "viewport": "desktop",
+   "scheme": "dark",
+   "status": 200,
+   "title": "QRWTY arm A",
+   "requests": 3,
+   "sameOriginRequests": [
+    "GET /versions/a/",
+    "GET /versions/a/jeeves/QRWTY-production-candidate-v1-r83-detailed.png",
+    "GET /versions/a/jeeves/QRWTY-production-candidate-v1-r84-detailed.png"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 2,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/a/deploy/",
+   "viewport": "desktop",
+   "scheme": "dark",
+   "status": 200,
+   "title": "QRWTY A deploy record",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /versions/a/deploy/"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/b/",
+   "viewport": "desktop",
+   "scheme": "dark",
+   "status": 200,
+   "title": "QRWTY arm B staging record",
+   "requests": 9,
+   "sameOriginRequests": [
+    "GET /versions/b/",
+    "GET /versions/b/diagrams/request-paths.png",
+    "GET /versions/b/diagrams/store-ownership.png",
+    "GET /versions/b/diagrams/session-identity.png",
+    "GET /versions/b/diagrams/redirect-sequence.png",
+    "GET /versions/b/diagrams/click-pipeline.png",
+    "GET /versions/b/diagrams/billing-entitlements.png",
+    "GET /versions/b/diagrams/gcp-placement.png",
+    "GET /versions/b/diagrams/link-states.png"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 8,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/original/",
+   "viewport": "desktop",
+   "scheme": "dark",
+   "status": 200,
+   "title": "Qrwty | Beautiful, Ownable QR Infrastructure",
+   "requests": 2,
+   "sameOriginRequests": [
+    "GET /versions/original/",
+    "GET /versions/original/styles.css"
+   ],
+   "externalRequests": [],
+   "problems": [],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  },
+  {
+   "page": "/versions/missing.html",
+   "viewport": "desktop",
+   "scheme": "dark",
+   "status": 404,
+   "title": "Not found · QRWTY",
+   "requests": 1,
+   "sameOriginRequests": [
+    "GET /versions/missing.html"
+   ],
+   "externalRequests": [],
+   "problems": [
+    "error: Failed to load resource: the server responded with a status of 404 ()"
+   ],
+   "horizontalOverflowPx": 0,
+   "images": {
+    "total": 0,
+    "broken": []
+   },
+   "interaction": null
+  }
+ ]
+}

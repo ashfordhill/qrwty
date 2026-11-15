@@ -12,4 +12,16 @@ preview_urls = false
 routes = [
   { pattern = "qrwty.io", custom_domain = true },
   { pattern = "www.qrwty.io", custom_domain = true },
+  # Arm B's old staging host: every path answers 301 to https://qrwty.io/versions/b/ (S02).
+  { pattern = "b.qrwty.io", custom_domain = true },
 ]
+
+# The static /versions/ pages (S02). Every request runs the Worker first, so the www and b
+# redirects, the method check and the security headers apply to these files too; the Worker
+# fetches them through the ASSETS binding. Free on the Workers Free plan.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+html_handling = "auto-trailing-slash"
+not_found_handling = "none"

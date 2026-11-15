@@ -1,0 +1,16 @@
+PASS  https://qrwty.io/ -> 200 text/html, QRWTY page with build line: 364f283-dirty · 2026-11-15 15:56:31 UTC
+PASS  https://qrwty.io/: security headers present, no HSTS
+PASS  https://qrwty.io/ (browser request): no scripts, links, imports or absolute URLs in the page
+PASS  https://qrwty.io/healthz -> 200 {"ok":true,"commit":"364f28316aff78407f3847a003bc89a9912870d3-dirty","builtAt":"2026-11-15T15:56:31Z"}
+PASS  https://qrwty.io/build.json -> 200 {"commit":"364f28316aff78407f3847a003bc89a9912870d3-dirty","builtAt":"2026-11-15T15:56:31Z"}
+PASS  https://qrwty.io/healthz: security headers present, no HSTS
+PASS  https://qrwty.io/build.json: security headers present, no HSTS
+PASS  https://qrwty.io/x -> 404 text/html, no script (1205 bytes)
+PASS  https://qrwty.io/x: security headers present, no HSTS
+PASS  https://www.qrwty.io/x -> 301 Location: https://qrwty.io/x
+PASS  https://www.qrwty.io/x: security headers present, no HSTS
+PASS  https://www.qrwty.io/a/b?c=1 -> 301 Location: https://qrwty.io/a/b?c=1
+PASS  TLS qrwty.io: verified; subject=CN = qrwty.io issuer=C = US, O = Google Trust Services, CN = WE1 notBefore=Nov 14 21:59:24 2026 GMT notAfter=Feb 12 22:59:21 2027 GMT X509v3 Subject Alternative Name: DNS:qrwty.io, DNS:www.qrwty.io, DNS:*.www.qrwty.io
+PASS  TLS www.qrwty.io: verified; subject=CN = qrwty.io issuer=C = US, O = Google Trust Services, CN = WE1 notBefore=Nov 14 21:59:24 2026 GMT notAfter=Feb 12 22:59:21 2027 GMT X509v3 Subject Alternative Name: DNS:qrwty.io, DNS:www.qrwty.io, DNS:*.www.qrwty.io
+
+all checks passed

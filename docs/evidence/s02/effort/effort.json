@@ -1,0 +1,1636 @@
+{
+ "prices": {
+  "source": "Anthropic first-party list prices, claude-api skill model table cached 2026-10-06",
+  "perMillionTokens": {
+   "claude-opus-5-5": {
+    "in": 4.0,
+    "out": 20.0,
+    "read": 0.2
+   },
+   "claude-fable-5-1": {
+    "in": 10.0,
+    "out": 50.0,
+    "read": 0.25
+   }
+  },
+  "cacheWrite": "1.25x input (5-minute TTL, low end) to 2x input (1-hour TTL, high end); the ledger does not record the TTL split"
+ },
+ "groups": {
+  "A-application": {
+   "attempts": 7,
+   "units": [
+    "Q01",
+    "Q02",
+    "Q04",
+    "Q05",
+    "Q05-review",
+    "Q06",
+    "Q13"
+   ],
+   "requests": 1180,
+   "inputSideTokens": 345833365,
+   "uncachedInput": 3281,
+   "cacheWrite": 3073087,
+   "cacheRead": 342756997,
+   "outputTokens": 1158929,
+   "byModel": {
+    "claude-opus-5-5": 1147,
+    "claude-fable-5-1": 32,
+    "<synthetic>": 1
+   },
+   "agentMinutes": 450.0,
+   "agentHours": 7.5,
+   "calendarSpan": [
+    "2026-11-14T05:59:01+00:00",
+    "2026-11-15T13:27:35+00:00"
+   ],
+   "estimateUsd": [
+    112,
+    123
+   ],
+   "notCounted": []
+  },
+  "A-gap-audit": {
+   "attempts": 3,
+   "units": [
+    "Q03",
+    "Q03-review",
+    "Q03b"
+   ],
+   "requests": 201,
+   "inputSideTokens": 51327582,
+   "uncachedInput": 977,
+   "cacheWrite": 1418372,
+   "cacheRead": 49908233,
+   "outputTokens": 348593,
+   "byModel": {
+    "claude-opus-5-5": 181,
+    "claude-fable-5-1": 20
+   },
+   "agentMinutes": 70.0,
+   "agentHours": 1.17,
+   "calendarSpan": [
+    "2026-11-14T08:02:52+00:00",
+    "2026-11-14T09:17:16.267000+00:00"
+   ],
+   "estimateUsd": [
+    32,
+    40
+   ],
+   "notCounted": []
+  },
+  "A-jeeves-template-development": {
+   "attempts": 29,
+   "units": [
+    "QG01",
+    "QG01 a2",
+    "QG02",
+    "QG05",
+    "QG17",
+    "QG19",
+    "QG12",
+    "QG11",
+    "QGR1",
+    "QG03",
+    "QG04",
+    "QG06",
+    "QG24",
+    "QG07",
+    "QG08",
+    "QG09",
+    "QG10",
+    "QG18",
+    "QG20",
+    "QGR2",
+    "QG21",
+    "QG22",
+    "QG25",
+    "QG27",
+    "QGB3",
+    "QG30",
+    "QG29",
+    "QG32",
+    "QGR3"
+   ],
+   "requests": 3822,
+   "inputSideTokens": 863290158,
+   "uncachedInput": 11997,
+   "cacheWrite": 11072643,
+   "cacheRead": 852205518,
+   "outputTokens": 2905353,
+   "byModel": {
+    "claude-opus-5-5": 3657,
+    "claude-fable-5-1": 163,
+    "<synthetic>": 2
+   },
+   "agentMinutes": 1250.4,
+   "agentHours": 20.84,
+   "calendarSpan": [
+    "2026-11-14T09:33:00+00:00",
+    "2026-11-15T13:36:47+00:00"
+   ],
+   "estimateUsd": [
+    309,
+    350
+   ],
+   "notCounted": []
+  },
+  "B": {
+   "attempts": 19,
+   "units": [
+    "B00",
+    "B01",
+    "B01 a2",
+    "B02",
+    "B03",
+    "B04",
+    "B04-review",
+    "B04c",
+    "B04b",
+    "B05",
+    "B05-review",
+    "B05b",
+    "B06",
+    "B08a",
+    "B09",
+    "B09b",
+    "B07",
+    "B07-review",
+    "B-final"
+   ],
+   "requests": 3064,
+   "inputSideTokens": 991159041,
+   "uncachedInput": 9431,
+   "cacheWrite": 9611823,
+   "cacheRead": 981537787,
+   "outputTokens": 3483899,
+   "byModel": {
+    "claude-opus-5-5": 2939,
+    "claude-fable-5-1": 123,
+    "<synthetic>": 2
+   },
+   "agentMinutes": 1300.9,
+   "agentHours": 21.68,
+   "calendarSpan": [
+    "2026-11-14T09:18:38+00:00",
+    "2026-11-15T12:12:53+00:00"
+   ],
+   "estimateUsd": [
+    336,
+    371
+   ],
+   "notCounted": [
+    "b-0691 B04 (unavailable)"
+   ]
+  },
+  "shared": {
+   "attempts": 9,
+   "units": [
+    "Q00",
+    "N01",
+    "N02",
+    "N03",
+    "N04",
+    "S01",
+    "Q11",
+    "N05",
+    "N06"
+   ],
+   "requests": 983,
+   "inputSideTokens": 229668865,
+   "uncachedInput": 1990,
+   "cacheWrite": 2851832,
+   "cacheRead": 226815043,
+   "outputTokens": 1496490,
+   "byModel": {
+    "claude-opus-5-5": 983
+   },
+   "agentMinutes": 287.8,
+   "agentHours": 4.8,
+   "calendarSpan": [
+    "2026-11-14T05:20:06+00:00",
+    "2026-11-15T06:34:39+00:00"
+   ],
+   "estimateUsd": [
+    90,
+    98
+   ],
+   "notCounted": [
+    "shared-0001 PLAN-r1 (unavailable)",
+    "shared-0002 PLAN-r2 (unavailable)",
+    "shared-0003 PLAN-r3 (unavailable)",
+    "shared-0004 PLAN-coordinator-prompt (unavailable)",
+    "shared-0006 COORD (unavailable)"
+   ]
+  }
+ },
+ "attempts": [
+  {
+   "ledger": "a",
+   "event": "a-0001",
+   "unit": "Q01",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "architecture",
+   "repository": "qrwty",
+   "group": "A-application",
+   "requests": 151,
+   "counters": {
+    "input_tokens": 306,
+    "cache_creation_input_tokens": 395968,
+    "cache_read_input_tokens": 40322682,
+    "output_tokens": 122691
+   },
+   "minutes": 26.0,
+   "minutesSource": "attempt window",
+   "usdLow": 12.5,
+   "usdHigh": 13.69
+  },
+  {
+   "ledger": "a",
+   "event": "a-0154",
+   "unit": "Q02",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "architecture",
+   "repository": "qrwty",
+   "group": "A-application",
+   "requests": 122,
+   "counters": {
+    "input_tokens": 244,
+    "cache_creation_input_tokens": 257122,
+    "cache_read_input_tokens": 21067340,
+    "output_tokens": 95971
+   },
+   "minutes": 19.9,
+   "minutesSource": "attempt window",
+   "usdLow": 7.42,
+   "usdHigh": 8.19
+  },
+  {
+   "ledger": "a",
+   "event": "a-0278",
+   "unit": "Q03",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "qrwty",
+   "group": "A-gap-audit",
+   "requests": 145,
+   "counters": {
+    "input_tokens": 290,
+    "cache_creation_input_tokens": 493065,
+    "cache_read_input_tokens": 43400743,
+    "output_tokens": 218769
+   },
+   "minutes": 40.1,
+   "minutesSource": "attempt window",
+   "usdLow": 15.52,
+   "usdHigh": 17.0
+  },
+  {
+   "ledger": "a",
+   "event": "a-0425",
+   "unit": "Q03-review",
+   "attempt": 1,
+   "role": "reviewer",
+   "phase": "review",
+   "repository": "qrwty",
+   "group": "A-gap-audit",
+   "requests": 20,
+   "counters": {
+    "input_tokens": 615,
+    "cache_creation_input_tokens": 768665,
+    "cache_read_input_tokens": 2746730,
+    "output_tokens": 80432
+   },
+   "minutes": 20.0,
+   "minutesSource": "attempt window",
+   "usdLow": 14.32,
+   "usdHigh": 20.09
+  },
+  {
+   "ledger": "a",
+   "event": "a-0447",
+   "unit": "Q03b",
+   "attempt": 1,
+   "role": "repair",
+   "phase": "template-development",
+   "repository": "qrwty",
+   "group": "A-gap-audit",
+   "requests": 36,
+   "counters": {
+    "input_tokens": 72,
+    "cache_creation_input_tokens": 156642,
+    "cache_read_input_tokens": 3760760,
+    "output_tokens": 49392
+   },
+   "minutes": 9.9,
+   "minutesSource": "request span",
+   "usdLow": 2.52,
+   "usdHigh": 2.99
+  },
+  {
+   "ledger": "a",
+   "event": "a-0485",
+   "unit": "QG01",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 17,
+   "counters": {
+    "input_tokens": 34,
+    "cache_creation_input_tokens": 57068,
+    "cache_read_input_tokens": 988782,
+    "output_tokens": 9678
+   },
+   "minutes": 3.0,
+   "minutesSource": "attempt window",
+   "usdLow": 0.68,
+   "usdHigh": 0.85
+  },
+  {
+   "ledger": "a",
+   "event": "a-0505",
+   "unit": "QG01",
+   "attempt": 2,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 100,
+   "counters": {
+    "input_tokens": 202,
+    "cache_creation_input_tokens": 173392,
+    "cache_read_input_tokens": 12689652,
+    "output_tokens": 77732
+   },
+   "minutes": 32.3,
+   "minutesSource": "attempt window",
+   "usdLow": 4.96,
+   "usdHigh": 5.48
+  },
+  {
+   "ledger": "a",
+   "event": "a-0608",
+   "unit": "QG02",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 74,
+   "counters": {
+    "input_tokens": 150,
+    "cache_creation_input_tokens": 148343,
+    "cache_read_input_tokens": 9065233,
+    "output_tokens": 41413
+   },
+   "minutes": 14.9,
+   "minutesSource": "attempt window",
+   "usdLow": 3.38,
+   "usdHigh": 3.83
+  },
+  {
+   "ledger": "a",
+   "event": "a-0685",
+   "unit": "QG05",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 105,
+   "counters": {
+    "input_tokens": 218,
+    "cache_creation_input_tokens": 266933,
+    "cache_read_input_tokens": 10630343,
+    "output_tokens": 48107
+   },
+   "minutes": 50.5,
+   "minutesSource": "attempt window",
+   "usdLow": 4.42,
+   "usdHigh": 5.22
+  },
+  {
+   "ledger": "a",
+   "event": "a-0793",
+   "unit": "QG17",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 88,
+   "counters": {
+    "input_tokens": 178,
+    "cache_creation_input_tokens": 146836,
+    "cache_read_input_tokens": 9704623,
+    "output_tokens": 43255
+   },
+   "minutes": 31.3,
+   "minutesSource": "attempt window",
+   "usdLow": 3.54,
+   "usdHigh": 3.98
+  },
+  {
+   "ledger": "a",
+   "event": "a-0884",
+   "unit": "QG19",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 78,
+   "counters": {
+    "input_tokens": 158,
+    "cache_creation_input_tokens": 139024,
+    "cache_read_input_tokens": 7353417,
+    "output_tokens": 37820
+   },
+   "minutes": 18.1,
+   "minutesSource": "attempt window",
+   "usdLow": 2.92,
+   "usdHigh": 3.34
+  },
+  {
+   "ledger": "a",
+   "event": "a-0965",
+   "unit": "QG12",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 86,
+   "counters": {
+    "input_tokens": 178,
+    "cache_creation_input_tokens": 156602,
+    "cache_read_input_tokens": 9550504,
+    "output_tokens": 63436
+   },
+   "minutes": 12.9,
+   "minutesSource": "attempt window",
+   "usdLow": 3.96,
+   "usdHigh": 4.43
+  },
+  {
+   "ledger": "a",
+   "event": "a-1053",
+   "unit": "QG11",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 182,
+   "counters": {
+    "input_tokens": 368,
+    "cache_creation_input_tokens": 291010,
+    "cache_read_input_tokens": 34964013,
+    "output_tokens": 127347
+   },
+   "minutes": 60.9,
+   "minutesSource": "attempt window",
+   "usdLow": 11.0,
+   "usdHigh": 11.87
+  },
+  {
+   "ledger": "a",
+   "event": "a-1238",
+   "unit": "QGR1",
+   "attempt": 1,
+   "role": "reviewer",
+   "phase": "review",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 46,
+   "counters": {
+    "input_tokens": 1248,
+    "cache_creation_input_tokens": 271269,
+    "cache_read_input_tokens": 8493055,
+    "output_tokens": 93603
+   },
+   "minutes": 30.4,
+   "minutesSource": "attempt window",
+   "usdLow": 10.21,
+   "usdHigh": 12.24
+  },
+  {
+   "ledger": "a",
+   "event": "a-1287",
+   "unit": "QG03",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 117,
+   "counters": {
+    "input_tokens": 236,
+    "cache_creation_input_tokens": 228797,
+    "cache_read_input_tokens": 18972416,
+    "output_tokens": 67188
+   },
+   "minutes": 29.1,
+   "minutesSource": "attempt window",
+   "usdLow": 6.28,
+   "usdHigh": 6.97
+  },
+  {
+   "ledger": "a",
+   "event": "a-1407",
+   "unit": "QG04",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 176,
+   "counters": {
+    "input_tokens": 354,
+    "cache_creation_input_tokens": 301548,
+    "cache_read_input_tokens": 35707360,
+    "output_tokens": 116447
+   },
+   "minutes": 42.0,
+   "minutesSource": "attempt window",
+   "usdLow": 10.98,
+   "usdHigh": 11.88
+  },
+  {
+   "ledger": "a",
+   "event": "a-1586",
+   "unit": "QG06",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 158,
+   "counters": {
+    "input_tokens": 322,
+    "cache_creation_input_tokens": 1207741,
+    "cache_read_input_tokens": 42609402,
+    "output_tokens": 151846
+   },
+   "minutes": 41.9,
+   "minutesSource": "attempt window",
+   "usdLow": 17.6,
+   "usdHigh": 21.22
+  },
+  {
+   "ledger": "a",
+   "event": "a-1747",
+   "unit": "QG24",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 83,
+   "counters": {
+    "input_tokens": 168,
+    "cache_creation_input_tokens": 166378,
+    "cache_read_input_tokens": 10892642,
+    "output_tokens": 55531
+   },
+   "minutes": 18.4,
+   "minutesSource": "attempt window",
+   "usdLow": 4.12,
+   "usdHigh": 4.62
+  },
+  {
+   "ledger": "a",
+   "event": "a-1833",
+   "unit": "QG07",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 277,
+   "counters": {
+    "input_tokens": 556,
+    "cache_creation_input_tokens": 558023,
+    "cache_read_input_tokens": 97125163,
+    "output_tokens": 248745
+   },
+   "minutes": 78.2,
+   "minutesSource": "attempt window",
+   "usdLow": 27.19,
+   "usdHigh": 28.87
+  },
+  {
+   "ledger": "a",
+   "event": "a-2113",
+   "unit": "QG08",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 178,
+   "counters": {
+    "input_tokens": 360,
+    "cache_creation_input_tokens": 437581,
+    "cache_read_input_tokens": 53053583,
+    "output_tokens": 168439
+   },
+   "minutes": 78.6,
+   "minutesSource": "attempt window",
+   "usdLow": 16.17,
+   "usdHigh": 17.48
+  },
+  {
+   "ledger": "a",
+   "event": "a-2294",
+   "unit": "QG09",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 245,
+   "counters": {
+    "input_tokens": 492,
+    "cache_creation_input_tokens": 512235,
+    "cache_read_input_tokens": 75329806,
+    "output_tokens": 228378
+   },
+   "minutes": 69.9,
+   "minutesSource": "attempt window",
+   "usdLow": 22.2,
+   "usdHigh": 23.73
+  },
+  {
+   "ledger": "a",
+   "event": "a-2542",
+   "unit": "QG10",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 183,
+   "counters": {
+    "input_tokens": 370,
+    "cache_creation_input_tokens": 400213,
+    "cache_read_input_tokens": 50392180,
+    "output_tokens": 165199
+   },
+   "minutes": 76.2,
+   "minutesSource": "attempt window",
+   "usdLow": 15.38,
+   "usdHigh": 16.59
+  },
+  {
+   "ledger": "a",
+   "event": "a-2728",
+   "unit": "QG18",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 93,
+   "counters": {
+    "input_tokens": 188,
+    "cache_creation_input_tokens": 186062,
+    "cache_read_input_tokens": 13015903,
+    "output_tokens": 49376
+   },
+   "minutes": 32.1,
+   "minutesSource": "attempt window",
+   "usdLow": 4.52,
+   "usdHigh": 5.08
+  },
+  {
+   "ledger": "a",
+   "event": "a-2824",
+   "unit": "QG20",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 364,
+   "counters": {
+    "input_tokens": 728,
+    "cache_creation_input_tokens": 496988,
+    "cache_read_input_tokens": 131666448,
+    "output_tokens": 184425
+   },
+   "minutes": 42.5,
+   "minutesSource": "attempt window",
+   "usdLow": 32.51,
+   "usdHigh": 34.0
+  },
+  {
+   "ledger": "a",
+   "event": "a-3191",
+   "unit": "QGR2",
+   "attempt": 1,
+   "role": "reviewer",
+   "phase": "review",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 64,
+   "counters": {
+    "input_tokens": 1735,
+    "cache_creation_input_tokens": 1288013,
+    "cache_read_input_tokens": 18278265,
+    "output_tokens": 137220
+   },
+   "minutes": 85.5,
+   "minutesSource": "attempt window",
+   "usdLow": 27.55,
+   "usdHigh": 37.21
+  },
+  {
+   "ledger": "a",
+   "event": "a-3258",
+   "unit": "QG21",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 71,
+   "counters": {
+    "input_tokens": 148,
+    "cache_creation_input_tokens": 141991,
+    "cache_read_input_tokens": 7933100,
+    "output_tokens": 32632
+   },
+   "minutes": 11.0,
+   "minutesSource": "attempt window",
+   "usdLow": 2.95,
+   "usdHigh": 3.38
+  },
+  {
+   "ledger": "a",
+   "event": "a-3332",
+   "unit": "Q04",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "cloud",
+   "repository": "qrwty",
+   "group": "A-application",
+   "requests": 192,
+   "counters": {
+    "input_tokens": 388,
+    "cache_creation_input_tokens": 509990,
+    "cache_read_input_tokens": 65677346,
+    "output_tokens": 233229
+   },
+   "minutes": 69.0,
+   "minutesSource": "attempt window",
+   "usdLow": 20.35,
+   "usdHigh": 21.88
+  },
+  {
+   "ledger": "a",
+   "event": "a-3333",
+   "unit": "QG22",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 105,
+   "counters": {
+    "input_tokens": 212,
+    "cache_creation_input_tokens": 192725,
+    "cache_read_input_tokens": 14164830,
+    "output_tokens": 62494
+   },
+   "minutes": 27.9,
+   "minutesSource": "attempt window",
+   "usdLow": 5.05,
+   "usdHigh": 5.63
+  },
+  {
+   "ledger": "a",
+   "event": "a-3636",
+   "unit": "Q05",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "generation-baseline",
+   "repository": "qrwty",
+   "group": "A-application",
+   "requests": 182,
+   "counters": {
+    "input_tokens": 364,
+    "cache_creation_input_tokens": 377172,
+    "cache_read_input_tokens": 44390523,
+    "output_tokens": 144058
+   },
+   "minutes": 29.1,
+   "minutesSource": "attempt window",
+   "usdLow": 13.65,
+   "usdHigh": 14.78
+  },
+  {
+   "ledger": "a",
+   "event": "a-3637",
+   "unit": "QG25",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 195,
+   "counters": {
+    "input_tokens": 392,
+    "cache_creation_input_tokens": 292670,
+    "cache_read_input_tokens": 35902089,
+    "output_tokens": 102080
+   },
+   "minutes": 55.5,
+   "minutesSource": "attempt window",
+   "usdLow": 10.69,
+   "usdHigh": 11.56
+  },
+  {
+   "ledger": "a",
+   "event": "a-4020",
+   "unit": "Q05-review",
+   "attempt": 1,
+   "role": "reviewer",
+   "phase": "review",
+   "repository": "qrwty",
+   "group": "A-application",
+   "requests": 32,
+   "counters": {
+    "input_tokens": 971,
+    "cache_creation_input_tokens": 316230,
+    "cache_read_input_tokens": 5669113,
+    "output_tokens": 79139
+   },
+   "minutes": 20.4,
+   "minutesSource": "attempt window",
+   "usdLow": 9.34,
+   "usdHigh": 11.71
+  },
+  {
+   "ledger": "a",
+   "event": "a-4056",
+   "unit": "Q06",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "backend",
+   "repository": "qrwty",
+   "group": "A-application",
+   "requests": 225,
+   "counters": {
+    "input_tokens": 452,
+    "cache_creation_input_tokens": 746609,
+    "cache_read_input_tokens": 80918936,
+    "output_tokens": 251730
+   },
+   "minutes": 184.6,
+   "minutesSource": "attempt window",
+   "usdLow": 24.95,
+   "usdHigh": 27.19
+  },
+  {
+   "ledger": "a",
+   "event": "a-4057",
+   "unit": "QG27",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 160,
+   "counters": {
+    "input_tokens": 330,
+    "cache_creation_input_tokens": 1521474,
+    "cache_read_input_tokens": 33325074,
+    "output_tokens": 100256
+   },
+   "minutes": 189.4,
+   "minutesSource": "attempt window",
+   "usdLow": 16.28,
+   "usdHigh": 20.84
+  },
+  {
+   "ledger": "a",
+   "event": "a-4220",
+   "unit": "QGB3",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 91,
+   "counters": {
+    "input_tokens": 184,
+    "cache_creation_input_tokens": 397439,
+    "cache_read_input_tokens": 23081804,
+    "output_tokens": 151118
+   },
+   "minutes": 29.2,
+   "minutesSource": "attempt window",
+   "usdLow": 9.63,
+   "usdHigh": 10.82
+  },
+  {
+   "ledger": "a",
+   "event": "a-4542",
+   "unit": "Q13",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "cloud",
+   "repository": "qrwty",
+   "group": "A-application",
+   "requests": 276,
+   "counters": {
+    "input_tokens": 556,
+    "cache_creation_input_tokens": 469996,
+    "cache_read_input_tokens": 84711057,
+    "output_tokens": 232111
+   },
+   "minutes": 101.1,
+   "minutesSource": "attempt window",
+   "usdLow": 23.94,
+   "usdHigh": 25.35
+  },
+  {
+   "ledger": "a",
+   "event": "a-4543",
+   "unit": "QG30",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 176,
+   "counters": {
+    "input_tokens": 360,
+    "cache_creation_input_tokens": 312909,
+    "cache_read_input_tokens": 35451009,
+    "output_tokens": 113106
+   },
+   "minutes": 11.9,
+   "minutesSource": "attempt window",
+   "usdLow": 10.92,
+   "usdHigh": 11.86
+  },
+  {
+   "ledger": "a",
+   "event": "a-4722",
+   "unit": "QG29",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 149,
+   "counters": {
+    "input_tokens": 302,
+    "cache_creation_input_tokens": 288246,
+    "cache_read_input_tokens": 28070076,
+    "output_tokens": 97722
+   },
+   "minutes": 31.2,
+   "minutesSource": "request span",
+   "usdLow": 9.01,
+   "usdHigh": 9.88
+  },
+  {
+   "ledger": "a",
+   "event": "a-4874",
+   "unit": "QG32",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "template-development",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 107,
+   "counters": {
+    "input_tokens": 218,
+    "cache_creation_input_tokens": 188207,
+    "cache_read_input_tokens": 13906841,
+    "output_tokens": 64550
+   },
+   "minutes": 25.4,
+   "minutesSource": "attempt window",
+   "usdLow": 5.01,
+   "usdHigh": 5.58
+  },
+  {
+   "ledger": "a",
+   "event": "a-5262",
+   "unit": "QGR3",
+   "attempt": 1,
+   "role": "reviewer",
+   "phase": "review",
+   "repository": "jeeves",
+   "group": "A-jeeves-template-development",
+   "requests": 54,
+   "counters": {
+    "input_tokens": 1608,
+    "cache_creation_input_tokens": 302926,
+    "cache_read_input_tokens": 9887905,
+    "output_tokens": 66210
+   },
+   "minutes": 20.0,
+   "minutesSource": "attempt window",
+   "usdLow": 9.59,
+   "usdHigh": 11.86
+  },
+  {
+   "ledger": "b",
+   "event": "b-0001",
+   "unit": "B00",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "shared-preparation",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 57,
+   "counters": {
+    "input_tokens": 114,
+    "cache_creation_input_tokens": 175114,
+    "cache_read_input_tokens": 7439760,
+    "output_tokens": 63294
+   },
+   "minutes": 11.2,
+   "minutesSource": "attempt window",
+   "usdLow": 3.63,
+   "usdHigh": 4.16
+  },
+  {
+   "ledger": "b",
+   "event": "b-0061",
+   "unit": "B01",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "architecture",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 109,
+   "counters": {
+    "input_tokens": 246,
+    "cache_creation_input_tokens": 482903,
+    "cache_read_input_tokens": 31129340,
+    "output_tokens": 276051
+   },
+   "minutes": 65.6,
+   "minutesSource": "attempt window",
+   "usdLow": 14.16,
+   "usdHigh": 15.61
+  },
+  {
+   "ledger": "b",
+   "event": "b-0062",
+   "unit": "B01",
+   "attempt": 2,
+   "role": "repair",
+   "phase": "architecture",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 35,
+   "counters": {
+    "input_tokens": 70,
+    "cache_creation_input_tokens": 97478,
+    "cache_read_input_tokens": 2986841,
+    "output_tokens": 26740
+   },
+   "minutes": 5.3,
+   "minutesSource": "attempt window",
+   "usdLow": 1.62,
+   "usdHigh": 1.91
+  },
+  {
+   "ledger": "b",
+   "event": "b-0210",
+   "unit": "B02",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "backend",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 165,
+   "counters": {
+    "input_tokens": 330,
+    "cache_creation_input_tokens": 570636,
+    "cache_read_input_tokens": 59372118,
+    "output_tokens": 363645
+   },
+   "minutes": 87.4,
+   "minutesSource": "attempt window",
+   "usdLow": 22.0,
+   "usdHigh": 23.71
+  },
+  {
+   "ledger": "b",
+   "event": "b-0379",
+   "unit": "B03",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "backend",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 143,
+   "counters": {
+    "input_tokens": 290,
+    "cache_creation_input_tokens": 417755,
+    "cache_read_input_tokens": 42072197,
+    "output_tokens": 181081
+   },
+   "minutes": 43.9,
+   "minutesSource": "attempt window",
+   "usdLow": 14.13,
+   "usdHigh": 15.38
+  },
+  {
+   "ledger": "b",
+   "event": "b-0526",
+   "unit": "B04",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "backend",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 161,
+   "counters": {
+    "input_tokens": 326,
+    "cache_creation_input_tokens": 501453,
+    "cache_read_input_tokens": 56269377,
+    "output_tokens": 205389
+   },
+   "minutes": 51.1,
+   "minutesSource": "attempt window",
+   "usdLow": 17.87,
+   "usdHigh": 19.37
+  },
+  {
+   "ledger": "b",
+   "event": "b-0692",
+   "unit": "B04-review",
+   "attempt": 1,
+   "role": "reviewer",
+   "phase": "review",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 36,
+   "counters": {
+    "input_tokens": 1038,
+    "cache_creation_input_tokens": 335457,
+    "cache_read_input_tokens": 6610405,
+    "output_tokens": 79540
+   },
+   "minutes": 22.6,
+   "minutesSource": "attempt window",
+   "usdLow": 9.83,
+   "usdHigh": 12.35
+  },
+  {
+   "ledger": "b",
+   "event": "b-0732",
+   "unit": "B04c",
+   "attempt": 1,
+   "role": "repair",
+   "phase": "backend",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 97,
+   "counters": {
+    "input_tokens": 194,
+    "cache_creation_input_tokens": 253910,
+    "cache_read_input_tokens": 18366962,
+    "output_tokens": 111050
+   },
+   "minutes": 30.6,
+   "minutesSource": "attempt window",
+   "usdLow": 7.16,
+   "usdHigh": 7.93
+  },
+  {
+   "ledger": "b",
+   "event": "b-0833",
+   "unit": "B04b",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "backend",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 178,
+   "counters": {
+    "input_tokens": 358,
+    "cache_creation_input_tokens": 408014,
+    "cache_read_input_tokens": 50658602,
+    "output_tokens": 195147
+   },
+   "minutes": 57.6,
+   "minutesSource": "attempt window",
+   "usdLow": 16.08,
+   "usdHigh": 17.3
+  },
+  {
+   "ledger": "b",
+   "event": "b-1015",
+   "unit": "B05",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "backend",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 214,
+   "counters": {
+    "input_tokens": 430,
+    "cache_creation_input_tokens": 481863,
+    "cache_read_input_tokens": 69859187,
+    "output_tokens": 189776
+   },
+   "minutes": 69.9,
+   "minutesSource": "attempt window",
+   "usdLow": 20.18,
+   "usdHigh": 21.62
+  },
+  {
+   "ledger": "b",
+   "event": "b-1233",
+   "unit": "B05-review",
+   "attempt": 1,
+   "role": "reviewer",
+   "phase": "review",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 50,
+   "counters": {
+    "input_tokens": 1428,
+    "cache_creation_input_tokens": 442567,
+    "cache_read_input_tokens": 15099193,
+    "output_tokens": 112716
+   },
+   "minutes": 34.1,
+   "minutesSource": "attempt window",
+   "usdLow": 14.96,
+   "usdHigh": 18.28
+  },
+  {
+   "ledger": "b",
+   "event": "b-1286",
+   "unit": "B05b",
+   "attempt": 1,
+   "role": "repair",
+   "phase": "backend",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 208,
+   "counters": {
+    "input_tokens": 420,
+    "cache_creation_input_tokens": 369550,
+    "cache_read_input_tokens": 52592311,
+    "output_tokens": 176048
+   },
+   "minutes": 67.2,
+   "minutesSource": "attempt window",
+   "usdLow": 15.89,
+   "usdHigh": 17.0
+  },
+  {
+   "ledger": "b",
+   "event": "b-1497",
+   "unit": "B06",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "backend",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 218,
+   "counters": {
+    "input_tokens": 438,
+    "cache_creation_input_tokens": 489979,
+    "cache_read_input_tokens": 73253293,
+    "output_tokens": 188685
+   },
+   "minutes": 82.0,
+   "minutesSource": "attempt window",
+   "usdLow": 20.88,
+   "usdHigh": 22.35
+  },
+  {
+   "ledger": "b",
+   "event": "b-1718",
+   "unit": "B08a",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "cloud",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 311,
+   "counters": {
+    "input_tokens": 622,
+    "cache_creation_input_tokens": 480001,
+    "cache_read_input_tokens": 93445570,
+    "output_tokens": 247555
+   },
+   "minutes": 106.4,
+   "minutesSource": "attempt window",
+   "usdLow": 26.04,
+   "usdHigh": 27.48
+  },
+  {
+   "ledger": "b",
+   "event": "b-2032",
+   "unit": "B09",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "cloud",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 290,
+   "counters": {
+    "input_tokens": 584,
+    "cache_creation_input_tokens": 499827,
+    "cache_read_input_tokens": 99128892,
+    "output_tokens": 249976
+   },
+   "minutes": 101.8,
+   "minutesSource": "attempt window",
+   "usdLow": 27.33,
+   "usdHigh": 28.83
+  },
+  {
+   "ledger": "b",
+   "event": "b-2325",
+   "unit": "B09b",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "cloud",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 180,
+   "counters": {
+    "input_tokens": 364,
+    "cache_creation_input_tokens": 815336,
+    "cache_read_input_tokens": 50579791,
+    "output_tokens": 210931
+   },
+   "minutes": 93.3,
+   "minutesSource": "attempt window",
+   "usdLow": 18.41,
+   "usdHigh": 20.86
+  },
+  {
+   "ledger": "b",
+   "event": "b-2510",
+   "unit": "B07",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "backend",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 413,
+   "counters": {
+    "input_tokens": 828,
+    "cache_creation_input_tokens": 1480211,
+    "cache_read_input_tokens": 209558460,
+    "output_tokens": 361028
+   },
+   "minutes": 296.0,
+   "minutesSource": "attempt window",
+   "usdLow": 56.54,
+   "usdHigh": 60.98
+  },
+  {
+   "ledger": "b",
+   "event": "b-2926",
+   "unit": "B07-review",
+   "attempt": 1,
+   "role": "reviewer",
+   "phase": "review",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 37,
+   "counters": {
+    "input_tokens": 1015,
+    "cache_creation_input_tokens": 719995,
+    "cache_read_input_tokens": 8345448,
+    "output_tokens": 104299
+   },
+   "minutes": 36.2,
+   "minutesSource": "attempt window",
+   "usdLow": 16.31,
+   "usdHigh": 21.71
+  },
+  {
+   "ledger": "b",
+   "event": "b-2966",
+   "unit": "B-final",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "cloud",
+   "repository": "qrwty-baseline",
+   "group": "B",
+   "requests": 162,
+   "counters": {
+    "input_tokens": 336,
+    "cache_creation_input_tokens": 589774,
+    "cache_read_input_tokens": 34770040,
+    "output_tokens": 140948
+   },
+   "minutes": 38.6,
+   "minutesSource": "attempt window",
+   "usdLow": 12.72,
+   "usdHigh": 14.49
+  },
+  {
+   "ledger": "shared",
+   "event": "shared-0007",
+   "unit": "Q00",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "shared-preparation",
+   "repository": "qrwty",
+   "group": "shared",
+   "requests": 71,
+   "counters": {
+    "input_tokens": 144,
+    "cache_creation_input_tokens": 405273,
+    "cache_read_input_tokens": 19492820,
+    "output_tokens": 210557
+   },
+   "minutes": 35.8,
+   "minutesSource": "attempt window",
+   "usdLow": 10.14,
+   "usdHigh": 11.35
+  },
+  {
+   "ledger": "shared",
+   "event": "shared-0081",
+   "unit": "N01",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "shared-preparation",
+   "repository": "qrwty",
+   "group": "shared",
+   "requests": 164,
+   "counters": {
+    "input_tokens": 330,
+    "cache_creation_input_tokens": 529820,
+    "cache_read_input_tokens": 54434610,
+    "output_tokens": 371243
+   },
+   "minutes": 65.7,
+   "minutesSource": "attempt window",
+   "usdLow": 20.96,
+   "usdHigh": 22.55
+  },
+  {
+   "ledger": "shared",
+   "event": "shared-0248",
+   "unit": "N02",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "shared-preparation",
+   "repository": "qrwty, qrwty-baseline",
+   "group": "shared",
+   "requests": 60,
+   "counters": {
+    "input_tokens": 120,
+    "cache_creation_input_tokens": 152111,
+    "cache_read_input_tokens": 7023632,
+    "output_tokens": 59531
+   },
+   "minutes": 12.0,
+   "minutesSource": "attempt window",
+   "usdLow": 3.36,
+   "usdHigh": 3.81
+  },
+  {
+   "ledger": "shared",
+   "event": "shared-0312",
+   "unit": "N03",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "shared-preparation",
+   "repository": "qrwty, qrwty-baseline",
+   "group": "shared",
+   "requests": 92,
+   "counters": {
+    "input_tokens": 184,
+    "cache_creation_input_tokens": 187314,
+    "cache_read_input_tokens": 12773597,
+    "output_tokens": 77796
+   },
+   "minutes": 19.4,
+   "minutesSource": "attempt window",
+   "usdLow": 5.05,
+   "usdHigh": 5.61
+  },
+  {
+   "ledger": "shared",
+   "event": "shared-0409",
+   "unit": "N04",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "shared-preparation",
+   "repository": "qrwty",
+   "group": "shared",
+   "requests": 125,
+   "counters": {
+    "input_tokens": 252,
+    "cache_creation_input_tokens": 366626,
+    "cache_read_input_tokens": 32552160,
+    "output_tokens": 163115
+   },
+   "minutes": 36.1,
+   "minutesSource": "attempt window",
+   "usdLow": 11.61,
+   "usdHigh": 12.71
+  },
+  {
+   "ledger": "shared",
+   "event": "shared-0538",
+   "unit": "S01",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "cloud",
+   "repository": "qrwty",
+   "group": "shared",
+   "requests": 103,
+   "counters": {
+    "input_tokens": 206,
+    "cache_creation_input_tokens": 185920,
+    "cache_read_input_tokens": 12821441,
+    "output_tokens": 105738
+   },
+   "minutes": 20.8,
+   "minutesSource": "attempt window",
+   "usdLow": 5.61,
+   "usdHigh": 6.17
+  },
+  {
+   "ledger": "shared",
+   "event": "shared-0645",
+   "unit": "Q11",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "ui",
+   "repository": "qrwty",
+   "group": "shared",
+   "requests": 96,
+   "counters": {
+    "input_tokens": 206,
+    "cache_creation_input_tokens": 368219,
+    "cache_read_input_tokens": 20967311,
+    "output_tokens": 222862
+   },
+   "minutes": 40.8,
+   "minutesSource": "attempt window",
+   "usdLow": 10.49,
+   "usdHigh": 11.6
+  },
+  {
+   "ledger": "shared",
+   "event": "shared-0745",
+   "unit": "N05",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "shared-preparation",
+   "repository": "qrwty",
+   "group": "shared",
+   "requests": 99,
+   "counters": {
+    "input_tokens": 200,
+    "cache_creation_input_tokens": 274942,
+    "cache_read_input_tokens": 19917355,
+    "output_tokens": 111768
+   },
+   "minutes": 21.4,
+   "minutesSource": "attempt window",
+   "usdLow": 7.59,
+   "usdHigh": 8.42
+  },
+  {
+   "ledger": "shared",
+   "event": "shared-0848",
+   "unit": "N06",
+   "attempt": 1,
+   "role": "implementer",
+   "phase": "shared-preparation",
+   "repository": "qrwty",
+   "group": "shared",
+   "requests": 173,
+   "counters": {
+    "input_tokens": 348,
+    "cache_creation_input_tokens": 381607,
+    "cache_read_input_tokens": 46832117,
+    "output_tokens": 173880
+   },
+   "minutes": 35.7,
+   "minutesSource": "attempt window",
+   "usdLow": 14.75,
+   "usdHigh": 15.9
+  }
+ ]
+}

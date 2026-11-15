@@ -1,0 +1,162 @@
+{
+ "root": "deploy/cloudflare/public",
+ "files": [
+  {
+   "path": "versions/index.html",
+   "bytes": 9569,
+   "sha256": "5cbbb0a8d815ff8b8ba6ab39e6930b86f558ed9336b05a3b1af03a7cb7909855",
+   "source": "new (S02)"
+  },
+  {
+   "path": "versions/a/index.html",
+   "bytes": 13553,
+   "sha256": "7270a967cf358f54fd3da3ca412f8a5011625ff9cb2d8c4d5bfbd114bb34803f",
+   "source": "new (S02)"
+  },
+  {
+   "path": "versions/a/deploy/demo-data.json",
+   "bytes": 63513,
+   "sha256": "2f4066c8ef4f094a96bb9f503b0b039e28402d2aaec3420d020aa6a6498cef8e",
+   "source": "docs/evidence/q13/demo/ (byte copies)"
+  },
+  {
+   "path": "versions/a/deploy/index.html",
+   "bytes": 79418,
+   "sha256": "e3ce173befcd4f83ce31b952ee4ed94e266f440be4597b6444be6621dc0b228c",
+   "source": "docs/evidence/q13/demo/ (byte copies)"
+  },
+  {
+   "path": "versions/a/jeeves/QRWTY-production-candidate-v1-r83-detailed.png",
+   "bytes": 588945,
+   "sha256": "826a9efba1c0beb311b2aa45cd95bcd50e41ae7c3f722584f11ded5c3ed6f965",
+   "source": "docs/evidence/q01/jeeves/"
+  },
+  {
+   "path": "versions/a/jeeves/QRWTY-production-candidate-v1-r84-detailed.png",
+   "bytes": 588945,
+   "sha256": "826a9efba1c0beb311b2aa45cd95bcd50e41ae7c3f722584f11ded5c3ed6f965",
+   "source": "docs/evidence/q05/jeeves/"
+  },
+  {
+   "path": "versions/b/index.html",
+   "bytes": 68436,
+   "sha256": "b3113b6f69db8bfd2fdd747c0f39448e60ef1c5c9df100d4f7ccd48f9a57ce8d",
+   "source": "qrwty-baseline f2fb3ce:docs/evidence/b-final/demo/ (byte copies, git archive)"
+  },
+  {
+   "path": "versions/b/inventory.jsonl",
+   "bytes": 8948,
+   "sha256": "d07038f1636b684bea899f164b51e2afdb7e9afe935835aa17b05f1d9dddcab2",
+   "source": "qrwty-baseline f2fb3ce:docs/evidence/b-final/demo/ (byte copies, git archive)"
+  },
+  {
+   "path": "versions/b/release-b07-3.json",
+   "bytes": 1208,
+   "sha256": "2035758d0ea2aa8dd1b23f6999f41d012bf816cda306e183488e6bd881b6eabe",
+   "source": "qrwty-baseline f2fb3ce:docs/evidence/b-final/demo/ (byte copies, git archive)"
+  },
+  {
+   "path": "versions/b/walkthrough-run1.json",
+   "bytes": 24916,
+   "sha256": "9c7b0103c137ff4ec3b25ee18ebb8c0c3ee291abd732f998dd2fb65b5ad0a23e",
+   "source": "qrwty-baseline f2fb3ce:docs/evidence/b-final/demo/ (byte copies, git archive)"
+  },
+  {
+   "path": "versions/b/walkthrough.json",
+   "bytes": 27219,
+   "sha256": "3e7d8b88d4e193904064063dbf98e2ea4800bd79fd17614a8faf5bacef234d26",
+   "source": "qrwty-baseline f2fb3ce:docs/evidence/b-final/demo/ (byte copies, git archive)"
+  },
+  {
+   "path": "versions/b/diagrams/billing-entitlements.png",
+   "bytes": 555534,
+   "sha256": "9ab6293a21df4da8b7ecf66ce71f291e59099d8ba7deb62b4fc8f22b061d6a6b",
+   "source": "qrwty-baseline f2fb3ce:docs/evidence/b-final/demo/ (byte copies, git archive)"
+  },
+  {
+   "path": "versions/b/diagrams/click-pipeline.png",
+   "bytes": 551709,
+   "sha256": "283f84d3ff88df7b2b41f05efc008ef7aa6db3111211724ea328690e4a64c78c",
+   "source": "qrwty-baseline f2fb3ce:docs/evidence/b-final/demo/ (byte copies, git archive)"
+  },
+  {
+   "path": "versions/b/diagrams/gcp-placement.png",
+   "bytes": 728324,
+   "sha256": "c9194770661e6da44e78fef1d3b64b599b8f41257c36be94628dccebc594bf5d",
+   "source": "qrwty-baseline f2fb3ce:docs/evidence/b-final/demo/ (byte copies, git archive)"
+  },
+  {
+   "path": "versions/b/diagrams/link-states.png",
+   "bytes": 732835,
+   "sha256": "f7683d8de76ab614af82065397956dd8735248a8255d7df76ded64164c4552d1",
+   "source": "qrwty-baseline f2fb3ce:docs/evidence/b-final/demo/ (byte copies, git archive)"
+  },
+  {
+   "path": "versions/b/diagrams/redirect-sequence.png",
+   "bytes": 558087,
+   "sha256": "d94db26f6c3e66941444df0093bc7d8d2b3bbdfe7c53e49a934432cf87099cf9",
+   "source": "qrwty-baseline f2fb3ce:docs/evidence/b-final/demo/ (byte copies, git archive)"
+  },
+  {
+   "path": "versions/b/diagrams/request-paths.png",
+   "bytes": 697913,
+   "sha256": "d186e7b43498370bd95dbf7103bc9eb4919ffd998d4f541a60202fc0bfda0188",
+   "source": "qrwty-baseline f2fb3ce:docs/evidence/b-final/demo/ (byte copies, git archive)"
+  },
+  {
+   "path": "versions/b/diagrams/session-identity.png",
+   "bytes": 554893,
+   "sha256": "f5108793bd1ddc15443b61e6e37e8a1e0e7fde1a7af4e8657cec0b2c17b7780d",
+   "source": "qrwty-baseline f2fb3ce:docs/evidence/b-final/demo/ (byte copies, git archive)"
+  },
+  {
+   "path": "versions/b/diagrams/store-ownership.png",
+   "bytes": 746314,
+   "sha256": "6ac079078ad848487c810bd4f55932c45a360761a551f491b5bfbf08dd82eb15",
+   "source": "qrwty-baseline f2fb3ce:docs/evidence/b-final/demo/ (byte copies, git archive)"
+  },
+  {
+   "path": "versions/design/app.css",
+   "bytes": 29723,
+   "sha256": "0615bb5c39404fd132b46ed2ff51982ff23edf24611507420d8c6909b73ccf38",
+   "source": "docs/design/prototype/ (byte copies; identical to pack v1.6's files/docs/design/prototype/)"
+  },
+  {
+   "path": "versions/design/app.js",
+   "bytes": 77309,
+   "sha256": "80d9cbf02e3780b427213b6a51a96410aea467f9a79f3b8ab544adbba95994d3",
+   "source": "docs/design/prototype/ (byte copies; identical to pack v1.6's files/docs/design/prototype/)"
+  },
+  {
+   "path": "versions/design/index.html",
+   "bytes": 2106,
+   "sha256": "8c83ea94a9ffb5961828cb138a24595428a9df0fcd0362234f115eef5914be23",
+   "source": "docs/design/prototype/ (byte copies; identical to pack v1.6's files/docs/design/prototype/)"
+  },
+  {
+   "path": "versions/design/qr.js",
+   "bytes": 10177,
+   "sha256": "a788457fa203faf369ae537335884f929e8fb6ea48ea3bc1693a87879ce77bca",
+   "source": "docs/design/prototype/ (byte copies; identical to pack v1.6's files/docs/design/prototype/)"
+  },
+  {
+   "path": "versions/design/tokens.css",
+   "bytes": 6697,
+   "sha256": "dd8c5e563455f3a2fa2dd77768c078df3b03857300292e4be5d331b4cd20b9da",
+   "source": "docs/design/prototype/ (byte copies; identical to pack v1.6's files/docs/design/prototype/)"
+  },
+  {
+   "path": "versions/original/index.html",
+   "bytes": 12224,
+   "sha256": "e02da1c4f04e4a87585fb68b091ba48627ad73f81ac9eb85ea7613c4dd968dd5",
+   "source": "qrwty-platform's / with the edits in original-page.json"
+  },
+  {
+   "path": "versions/original/styles.css",
+   "bytes": 8850,
+   "sha256": "e54ddf5d996092324cf7576a6c35c05cb399d8aaa1182152f53c231e96e57ea7",
+   "source": "qrwty-platform's /styles.css (byte copy)"
+  }
+ ],
+ "totalBytes": 6747365
+}
