@@ -127,3 +127,4 @@ QG12 running; then QG11, QGR1, B04c, B04b, N03, batch 2 (QG03, QG04, QG06–QG10
   - **QG16 (clarification 8):** the owner delegated it to the planner (Fable); its answer is the decision.
   - **qrwty.io:** keep the new placeholder. The old `qrwty-platform` Worker stays in place, unrouted.
   - **QG07 follow-ups: yes.** In QG09: a generated `pnpm-workspace.yaml` with `allowBuilds: { protobufjs: false }`, and `METADATA_SERVER_DETECTION=none` in the local environment of every process using Pub/Sub. QG07 found the metadata lookup independently.
+- **One UI (owner, 2026-11-14 ~01:20Z):** owner decisions §11. Q11 builds one direction in the owner's style, and Q12 and B08 build that one skin. No reviewer pick, no competitor review.

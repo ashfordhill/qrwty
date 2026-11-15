@@ -131,3 +131,18 @@ in parallel), which this section restates. Sections 1–8 apply again, as change
 - **Spending.** Before any GCP resource exists, the first GCP unit creates the billing budget with
   alerts at $10, $25 and $50 (section 1). Both arms share the trial project, and B's resources are
   prefixed `qrwtyb-`. The trial credit pays for everything; nothing is upgraded.
+
+## 11. Amendment, 2026-11-14 night: one UI, in the owner's style, kept lean
+
+The owner said: "let's not have qrwty pick a UI. pick the most reasonable one that fits in with my
+personal style choices … we should save agent work for something more useful … Jeeves doesn't
+care about UI." This replaces section 5 and §10's "both skins".
+
+- **One direction.** Q11 builds it, choosing what fits the owner's own style: the accepted Jeeves
+  studio refresh (ink outline, one accent fill, one light fill, soft pastels, solid dark shades)
+  and their automation-pitch app, within `design-brief.md`'s constraints.
+- **No second skin, no reviewer pick, no competitor review, no Excalidraw flow sheet.**
+- **Q12 and B08 build that one skin.** The UI rows (U02–U08) run in one skin × light/dark ×
+  desktop/mobile.
+- **Kept lean.** UI work does what the product contract and the UI rows need, and nothing more.
+  The run's attention stays on the backend and on Jeeves.
