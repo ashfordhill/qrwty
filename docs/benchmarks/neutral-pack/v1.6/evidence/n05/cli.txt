@@ -1,0 +1,16 @@
+Oracle CLI with pack v1.5 (2026-11-15T01:48:04Z), Node v24.21.0, in <pack>/oracle.
+
+$ node src/cli.ts run --adapter oracle-adapter.json --out out --rows U02 --ui-names my-names.json
+--ui-names was removed in pack v1.5: browser rows always use the pack's frozen name list, files/docs/design/accessible-names.json
+exit 2
+
+$ node src/cli.ts list | grep -E "^(A01|U0)"
+A01	double	Local; staging subset	Logged-out browser creates, copies, opens and downloads QR
+U02	live-arm	One skin × light/dark × desktop/mobile	Mouse/touch-only core flows
+U03	live-arm	One skin × light/dark × desktop/mobile	Keyboard and screen reader
+U04	live-arm	One skin × light/dark × desktop/mobile, plus the brief's extra widths	Responsive, light/dark, reduced motion and solid fallback
+U05	live-arm	One skin × light/dark × desktop/mobile	Slow, offline, error and session-expiry states
+U06	live-arm	One skin × light/dark × desktop/mobile; human scans recorded	QR validation: automated decode plus recorded real-phone scans
+U07	live-arm	One skin × light/dark (mobile lab profile)	Performance under the recorded mobile lab profile
+U08	live-arm	One skin × light/dark × desktop/mobile	Real-length content, delayed analytics and billing states
+exit 0

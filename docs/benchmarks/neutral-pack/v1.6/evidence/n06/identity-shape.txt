@@ -1,0 +1,91 @@
+Adapter identity sections validated with `node src/cli.ts validate-adapter` (2026-11-15). The four
+adapters differ only in `identity`; the rest is a minimal valid adapter. Example values only:
+the domains are reserved (example.test) and no file holds a password.
+
+== local-v15-shape.json identity:
+{
+  "issuerUrl": "http://127.0.0.1:47180/realms/qrwty",
+  "audience": "qrwty-api",
+  "accounts": {
+    "alice": "oracle-alice",
+    "bob": "oracle-bob",
+    "operator": "oracle-operator"
+  },
+  "passwordEnv": "ORACLE_TEST_PASSWORD"
+}
+== staging.json identity:
+{
+  "issuerUrl": "https://tenant.auth0.example.test/",
+  "audience": "https://api.b.example.test/",
+  "accounts": {
+    "alice": "oracle-alice-b@example.test",
+    "bob": "oracle-bob-b@example.test"
+  },
+  "passwordCommand": {
+    "argv": [
+      "./oracle/password.sh",
+      "{account}"
+    ],
+    "timeoutMs": 10000
+  }
+}
+== both-sources.json identity:
+{
+  "issuerUrl": "https://tenant.auth0.example.test/",
+  "audience": "https://api.b.example.test/",
+  "accounts": {
+    "alice": "oracle-alice-b@example.test",
+    "bob": "oracle-bob-b@example.test"
+  },
+  "passwordCommand": {
+    "argv": [
+      "./oracle/password.sh",
+      "{account}"
+    ],
+    "timeoutMs": 10000
+  },
+  "passwordEnv": "ORACLE_TEST_PASSWORD"
+}
+== same-login.json identity:
+{
+  "issuerUrl": "https://tenant.auth0.example.test/",
+  "audience": "https://api.b.example.test/",
+  "accounts": {
+    "alice": "oracle-alice-b@example.test",
+    "bob": "oracle-alice-b@example.test"
+  },
+  "passwordCommand": {
+    "argv": [
+      "./oracle/password.sh",
+      "{account}"
+    ],
+    "timeoutMs": 10000
+  }
+}
+
+With pack v1.6 (oracle/ of this pack):
+$ node src/cli.ts validate-adapter local-v15-shape.json
+{"ok":true,"arm":"b","commit":"0123abc"}
+exit 0
+$ node src/cli.ts validate-adapter staging.json
+{"ok":true,"arm":"b","commit":"0123abc"}
+exit 0
+$ node src/cli.ts validate-adapter both-sources.json
+both-sources.json: identity needs exactly one of passwordEnv and passwordCommand
+exit 2
+$ node src/cli.ts validate-adapter same-login.json
+same-login.json: identity.accounts maps alice and bob to the same login
+exit 2
+
+With v1.5's oracle/src/ and adapter.schema.json (scratch copy):
+$ node src/cli.ts validate-adapter local-v15-shape.json
+{"ok":true,"arm":"b","commit":"0123abc"}
+exit 0
+$ node src/cli.ts validate-adapter staging.json
+staging.json: does not match adapter.schema.json:
+  $.identity: missing required passwordEnv
+  $.identity.accounts: missing required operator
+  $.identity.accounts.alice: must equal "oracle-alice"
+  $.identity.accounts.bob: must equal "oracle-bob"
+  $.identity: unknown key passwordCommand
+exit 2

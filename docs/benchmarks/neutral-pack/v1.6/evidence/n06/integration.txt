@@ -1,0 +1,12 @@
+$ ORACLE_IT_PUBSUB=127.0.0.1:47685 ORACLE_IT_TOXIPROXY=http://127.0.0.1:47674 pnpm test:integration   (2026-11-15T06:31:13Z)
+$ vitest run --project integration
+
+ RUN  v5.0.0 /home/ash/github/qrwty/docs/benchmarks/neutral-pack/v1.6/oracle
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  00:31:13
+   Duration  2.63s (tests 76%, import 21%, transform 3%)
+
+exit 0

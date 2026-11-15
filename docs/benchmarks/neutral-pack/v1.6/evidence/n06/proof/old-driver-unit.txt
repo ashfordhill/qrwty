@@ -1,0 +1,15 @@
+oracle/test/signin.test.ts (v1.6) against v1.5's oracle/src/client/session.ts in a scratch copy of the v1.6 oracle:
+$ pnpm exec vitest run --project unit test/signin.test.ts --reporter verbose
+ × |unit| test/signin.test.ts > sign-in driver: at most one login post (v1.6) > signs in with one post 38ms
+   → expected { ok: true, finalLocation: '/', …(1) } to match object { ok: true, posts: 1, …(2) }
+ × |unit| test/signin.test.ts > sign-in driver: at most one login post (v1.6) > never posts a refused login again, though the issuer shows its form again 11ms
+   → expected 11 to be 1 // Object.is equality
+ × |unit| test/signin.test.ts > sign-in driver: at most one login post (v1.6) > retries a network error before the post, and never one during the post 3ms
+   → connection closed before a complete response head
+ ✓ |unit| test/signin.test.ts > identity: login identifiers and the password command (v1.6) > reads one line once per account, registers it as a secret and never re-runs it 97ms
+ ✓ |unit| test/signin.test.ts > identity: login identifiers and the password command (v1.6) > blocks an account whose command fails or prints more than the password 106ms
+ ✓ |unit| test/signin.test.ts > runner: unmapped accounts are blocked, refused logins are not posted again (v1.6) > reports an unmapped account blocked with its reason, never failed 9ms
+ × |unit| test/signin.test.ts > runner: unmapped accounts are blocked, refused logins are not posted again (v1.6) > posts a refused login once in the whole run and fails each row with the reason 28ms
+   → expected 33 to be 1 // Object.is equality
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  4 failed | 3 passed (7)

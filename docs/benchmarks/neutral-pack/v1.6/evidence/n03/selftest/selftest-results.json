@@ -1,0 +1,664 @@
+{
+  "at": "2026-11-14T19:10:09.966Z",
+  "node": "v24.21.0",
+  "cases": 49,
+  "matched": 49,
+  "faultsDetected": "32/32",
+  "ok": true,
+  "outcomes": [
+    {
+      "id": "A01-good",
+      "row": "A01",
+      "mode": "good",
+      "fault": "none",
+      "expected": "passed",
+      "observed": "passed",
+      "ok": true,
+      "durationMs": 821,
+      "failedChecks": []
+    },
+    {
+      "id": "A01-qr",
+      "row": "A01",
+      "mode": "a01-qr-wrong-url",
+      "fault": "QR encodes the destination instead of shortUrl",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 653,
+      "failedChecks": [
+        "PNG decodes to shortUrl",
+        "SVG decodes to shortUrl"
+      ]
+    },
+    {
+      "id": "A02-good",
+      "row": "A02",
+      "mode": "good",
+      "fault": "none",
+      "expected": "passed",
+      "observed": "passed",
+      "ok": true,
+      "durationMs": 482,
+      "failedChecks": []
+    },
+    {
+      "id": "A02-new-body",
+      "row": "A02",
+      "mode": "a02-new-body-on-replay",
+      "fault": "a repeated idempotency key returns a different body (new slug)",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 496,
+      "failedChecks": [
+        "concurrent bodies identical",
+        "replay after restart",
+        "changed body with same key"
+      ]
+    },
+    {
+      "id": "A02-no-conflict",
+      "row": "A02",
+      "mode": "a02-no-conflict",
+      "fault": "the same key with another destination is accepted",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 490,
+      "failedChecks": [
+        "changed body with same key"
+      ]
+    },
+    {
+      "id": "A03-good",
+      "row": "A03",
+      "mode": "good",
+      "fault": "none",
+      "expected": "passed",
+      "observed": "passed",
+      "ok": true,
+      "durationMs": 532,
+      "failedChecks": []
+    },
+    {
+      "id": "A03-overwrite",
+      "row": "A03",
+      "mode": "a03-overwrites-on-collision",
+      "fault": "a forced slug collision overwrites the existing route",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 441,
+      "failedChecks": [
+        "forced collision outcome",
+        "existing slug unchanged"
+      ]
+    },
+    {
+      "id": "A04-good",
+      "row": "A04",
+      "mode": "good",
+      "fault": "none (browser step blocked until UI names are frozen)",
+      "expected": "blocked",
+      "observed": "blocked",
+      "ok": true,
+      "durationMs": 498,
+      "failedChecks": []
+    },
+    {
+      "id": "A04-expiry",
+      "row": "A04",
+      "mode": "a04-expiry-not-enforced",
+      "fault": "a claim proof is accepted after 24 h",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 457,
+      "failedChecks": [
+        "claim at 24 h + 1 s"
+      ]
+    },
+    {
+      "id": "A05-good",
+      "row": "A05",
+      "mode": "good",
+      "fault": "none",
+      "expected": "passed",
+      "observed": "passed",
+      "ok": true,
+      "durationMs": 110,
+      "failedChecks": []
+    },
+    {
+      "id": "A05-two-winners",
+      "row": "A05",
+      "mode": "a05-two-winners",
+      "fault": "two accounts both win one claim proof",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 208,
+      "failedChecks": [
+        "exactly one winner",
+        "loser gets claim_consumed",
+        "loser body has no private field",
+        "loser repeat"
+      ]
+    },
+    {
+      "id": "A05-leak",
+      "row": "A05",
+      "mode": "a05-leaks-owner",
+      "fault": "the losing claim's 409 names the owner",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 123,
+      "failedChecks": [
+        "loser body has no private field"
+      ]
+    },
+    {
+      "id": "A06-good",
+      "row": "A06",
+      "mode": "good",
+      "fault": "none",
+      "expected": "passed",
+      "observed": "passed",
+      "ok": true,
+      "durationMs": 133,
+      "failedChecks": []
+    },
+    {
+      "id": "A06-foreign",
+      "row": "A06",
+      "mode": "a06-foreign-200",
+      "fault": "another account's link is returned with 200",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 189,
+      "failedChecks": [
+        "foreign read",
+        "foreign edit",
+        "foreign delete",
+        "Bob's link untouched",
+        "Bob's cursor exists"
+      ]
+    },
+    {
+      "id": "A06-guest",
+      "row": "A06",
+      "mode": "a06-bad-cookie-guest",
+      "fault": "an invalid session cookie on create becomes a guest 201",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 114,
+      "failedChecks": [
+        "revoked session on create",
+        "invalid session cookie on create"
+      ]
+    },
+    {
+      "id": "A06-unknown-cookie",
+      "row": "A06",
+      "mode": "a06-unknown-cookie-guest",
+      "fault": "a session cookie the server never issued is ignored, so a garbage cookie on create becomes a guest 201 (a revoked cookie is refused with 401 and cleared)",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 126,
+      "failedChecks": [
+        "invalid session cookie on create"
+      ]
+    },
+    {
+      "id": "A07-good",
+      "row": "A07",
+      "mode": "good",
+      "fault": "none",
+      "expected": "passed",
+      "observed": "passed",
+      "ok": true,
+      "durationMs": 6220,
+      "failedChecks": []
+    },
+    {
+      "id": "A07-no-412",
+      "row": "A07",
+      "mode": "a07-no-412",
+      "fault": "concurrent PATCH ignores If-Match",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 6192,
+      "failedChecks": [
+        "one PATCH wins",
+        "PATCH without If-Match"
+      ]
+    },
+    {
+      "id": "A07-stale",
+      "row": "A07",
+      "mode": "a07-stale-replica",
+      "fault": "one replica keeps serving the old route",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 6724,
+      "failedChecks": [
+        "edit: every replica converged",
+        "disable: every replica converged",
+        "delete: every replica converged",
+        "block: every replica converged"
+      ]
+    },
+    {
+      "id": "A08-good",
+      "row": "A08",
+      "mode": "good",
+      "fault": "none",
+      "expected": "passed",
+      "observed": "passed",
+      "ok": true,
+      "durationMs": 6153,
+      "failedChecks": []
+    },
+    {
+      "id": "A08-expiry",
+      "row": "A08",
+      "mode": "a08-serves-after-expiry",
+      "fault": "302 for 3 s after expiresAt",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 6138,
+      "failedChecks": [
+        "no 302 after expiry",
+        "410 after expiry"
+      ]
+    },
+    {
+      "id": "A09-good",
+      "row": "A09",
+      "mode": "good",
+      "fault": "none",
+      "expected": "passed",
+      "observed": "passed",
+      "ok": true,
+      "durationMs": 4208,
+      "failedChecks": []
+    },
+    {
+      "id": "A09-location",
+      "row": "A09",
+      "mode": "a09-altered-location",
+      "fault": "an altered Location (query reordered)",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 4166,
+      "failedChecks": [
+        "accept order and case kept"
+      ]
+    },
+    {
+      "id": "A09-301",
+      "row": "A09",
+      "mode": "a09-status-301",
+      "fault": "301 instead of 302",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 4171,
+      "failedChecks": [
+        "accept unchanged",
+        "accept order and case kept",
+        "accept escapes kept",
+        "accept path case kept",
+        "accept fragment kept",
+        "accept scheme and host lower-cased",
+        "accept default port removed",
+        "accept IDN to A-label",
+        "accept http kept",
+        "accept exactly 8,192 bytes",
+        "HEAD matches GET",
+        "encoded CR LF in the query",
+        "query not forwarded"
+      ]
+    },
+    {
+      "id": "A09-no-store",
+      "row": "A09",
+      "mode": "a09-missing-no-store",
+      "fault": "missing Cache-Control: no-store",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 4156,
+      "failedChecks": [
+        "no-store unchanged",
+        "no-store order and case kept",
+        "no-store escapes kept",
+        "no-store path case kept",
+        "no-store fragment kept",
+        "no-store scheme and host lower-cased",
+        "no-store default port removed",
+        "no-store IDN to A-label",
+        "no-store http kept",
+        "no-store exactly 8,192 bytes",
+        "HEAD matches GET"
+      ]
+    },
+    {
+      "id": "A09-head",
+      "row": "A09",
+      "mode": "a09-head-emits-event",
+      "fault": "HEAD emits a click event",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 7797,
+      "failedChecks": [
+        "HEAD has no event header",
+        "HEAD emits no event"
+      ]
+    },
+    {
+      "id": "A09-private",
+      "row": "A09",
+      "mode": "a09-accepts-private-host",
+      "fault": "http://127.0.0.1/ accepted as a destination",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 4166,
+      "failedChecks": [
+        "rejected corpus"
+      ]
+    },
+    {
+      "id": "A09-query",
+      "row": "A09",
+      "mode": "a09-forwards-query",
+      "fault": "the short URL's query is forwarded",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 4196,
+      "failedChecks": [
+        "encoded CR LF in the query",
+        "query not forwarded"
+      ]
+    },
+    {
+      "id": "A10-good",
+      "row": "A10",
+      "mode": "good",
+      "fault": "none",
+      "expected": "passed",
+      "observed": "passed",
+      "ok": true,
+      "durationMs": 2265,
+      "failedChecks": []
+    },
+    {
+      "id": "A10-duplicates",
+      "row": "A10",
+      "mode": "a10-counts-duplicates",
+      "fault": "duplicate deliveries are counted twice",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 17289,
+      "failedChecks": [
+        "recordedAttempts",
+        "filteredClicks"
+      ]
+    },
+    {
+      "id": "A10-synthetic",
+      "row": "A10",
+      "mode": "a10-counts-synthetic",
+      "fault": "synthetic GETs are counted in customer totals",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 17854,
+      "failedChecks": [
+        "recordedAttempts",
+        "filteredClicks"
+      ]
+    },
+    {
+      "id": "A14-good",
+      "row": "A14",
+      "mode": "good",
+      "fault": "none",
+      "expected": "passed",
+      "observed": "passed",
+      "ok": true,
+      "durationMs": 441,
+      "failedChecks": []
+    },
+    {
+      "id": "A14-alg-none",
+      "row": "A14",
+      "mode": "a14-accepts-alg-none",
+      "fault": "an alg:none token is accepted on a guarded route",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 476,
+      "failedChecks": [
+        "every forged token is 401"
+      ]
+    },
+    {
+      "id": "A16-good",
+      "row": "A16",
+      "mode": "good",
+      "fault": "none",
+      "expected": "passed",
+      "observed": "passed",
+      "ok": true,
+      "durationMs": 198,
+      "failedChecks": []
+    },
+    {
+      "id": "A16-report-blocks",
+      "row": "A16",
+      "mode": "a16-report-blocks",
+      "fault": "public reports alone block the link",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 5224,
+      "failedChecks": [
+        "reports alone change nothing",
+        "operator lookup"
+      ]
+    },
+    {
+      "id": "A16-non-operator",
+      "row": "A16",
+      "mode": "a16-non-operator-200",
+      "fault": "a non-operator reaches operator routes",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 211,
+      "failedChecks": [
+        "non-operator 404"
+      ]
+    },
+    {
+      "id": "A17-good",
+      "row": "A17",
+      "mode": "good",
+      "fault": "none",
+      "expected": "passed",
+      "observed": "passed",
+      "ok": true,
+      "durationMs": 6317,
+      "failedChecks": []
+    },
+    {
+      "id": "A17-no-limit",
+      "row": "A17",
+      "mode": "a17-no-limit",
+      "fault": "guest creation is never limited",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 317,
+      "failedChecks": [
+        "bounded admission (IPv4)",
+        "useful 429",
+        "IPv6 /64 is one key"
+      ]
+    },
+    {
+      "id": "A17-per-address",
+      "row": "A17",
+      "mode": "a17-per-address-not-per-64",
+      "fault": "IPv6 addresses in one /64 are separate keys",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 6305,
+      "failedChecks": [
+        "IPv6 /64 is one key"
+      ]
+    },
+    {
+      "id": "A18-good",
+      "row": "A18",
+      "mode": "good",
+      "fault": "none (placeholder-credential start check not declared by the double)",
+      "expected": "blocked",
+      "observed": "blocked",
+      "ok": true,
+      "durationMs": 142,
+      "failedChecks": []
+    },
+    {
+      "id": "A18-501",
+      "row": "A18",
+      "mode": "a18-route-501",
+      "fault": "the CSV export returns 501 not implemented",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 115,
+      "failedChecks": [
+        "no 501 or not implemented"
+      ]
+    },
+    {
+      "id": "A20-good",
+      "row": "A20",
+      "mode": "good",
+      "fault": "none",
+      "expected": "passed",
+      "observed": "passed",
+      "ok": true,
+      "durationMs": 417,
+      "failedChecks": []
+    },
+    {
+      "id": "A20-bad-signature",
+      "row": "A20",
+      "mode": "a20-accepts-bad-signature",
+      "fault": "a webhook with a bad signature is accepted",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 424,
+      "failedChecks": [
+        "wrong signature",
+        "one byte changed after signing"
+      ]
+    },
+    {
+      "id": "A20-duplicate",
+      "row": "A20",
+      "mode": "a20-duplicate-second-effect",
+      "fault": "a duplicate event ID is stored twice",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 405,
+      "failedChecks": [
+        "no second effect"
+      ]
+    },
+    {
+      "id": "A24-good",
+      "row": "A24",
+      "mode": "good",
+      "fault": "none",
+      "expected": "passed",
+      "observed": "passed",
+      "ok": true,
+      "durationMs": 42720,
+      "failedChecks": []
+    },
+    {
+      "id": "A24-early-302",
+      "row": "A24",
+      "mode": "a24-302-before-event",
+      "fault": "302 sent before the event is published",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 39432,
+      "failedChecks": [
+        "every 302 event is captured for the right link",
+        "302 only after the publish",
+        "bots are present"
+      ]
+    },
+    {
+      "id": "A24-fail-open",
+      "row": "A24",
+      "mode": "a24-fail-open",
+      "fault": "302 when the publish failed",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 39128,
+      "failedChecks": [
+        "every 302 event is captured for the right link",
+        "302 only after the publish",
+        "bots are present"
+      ]
+    },
+    {
+      "id": "F03-good",
+      "row": "F03",
+      "mode": "good",
+      "fault": "none (consume-side proxy not separate in the double)",
+      "expected": "blocked",
+      "observed": "blocked",
+      "ok": true,
+      "durationMs": 34223,
+      "failedChecks": []
+    },
+    {
+      "id": "F03-fail-open",
+      "row": "F03",
+      "mode": "a24-fail-open",
+      "fault": "302 without a confirmed event during publisher faults",
+      "expected": "failed",
+      "observed": "failed",
+      "ok": true,
+      "durationMs": 31845,
+      "failedChecks": [
+        "no 302 without a confirmed event"
+      ]
+    }
+  ]
+}

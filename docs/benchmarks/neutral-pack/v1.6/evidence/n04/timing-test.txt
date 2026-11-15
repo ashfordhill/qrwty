@@ -1,0 +1,52 @@
+oracle/test/timing.test.ts against v1.4 (docs/benchmarks/neutral-pack/v1.4/oracle):
+
+ RUN  v5.0.0 /home/ash/github/qrwty/docs/benchmarks/neutral-pack/v1.4/oracle
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  16:42:51
+   Duration  1.32s (tests 94%, transform 4%, import 2%)
+exit 0
+
+The same test in a scratch copy with v1.3's oracle/src/faults/commands.ts and v1.3's wall-clock poll() and watchSlug() loop (v1.4's sentMono field kept so the types match):
+
+ RUN  v5.0.0 <scratch>/timing-old/oracle
+ ❯ |unit| test/timing.test.ts (3 tests | 3 failed) 755ms
+   ❯ monotonic timing (3)
+     × poll's elapsed time ignores a wall-clock jump 156ms
+     × an adapter command's duration ignores a wall-clock jump 425ms
+     × a timed loop and its deadline check ignore a wall-clock jump 174ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  |unit| test/timing.test.ts > monotonic timing > poll's elapsed time ignores a wall-clock jump
+AssertionError: expected 3740 to be less than 1500
+ ❯ test/timing.test.ts:40:28
+     38|   expect(result.ok).toBe(true);
+     39|   expect(result.elapsedMs).toBeGreaterThanOrEqual(140);
+     40|   expect(result.elapsedMs).toBeLessThan(1_500);
+       |                            ^
+     41|  });
+     42|
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+ FAIL  |unit| test/timing.test.ts > monotonic timing > an adapter command's duration ignores a wall-clock jump
+AssertionError: expected 4020 to be less than 3600
+ ❯ test/timing.test.ts:56:26
+     54|   expect(Date.now() - wallStart).toBeGreaterThanOrEqual(JUMP_MS);
+     55|   expect(out.durationMs).toBeGreaterThanOrEqual(350);
+     56|   expect(out.durationMs).toBeLessThan(JUMP_MS);
+       |                          ^
+     57|  });
+     58|
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+ FAIL  |unit| test/timing.test.ts > monotonic timing > a timed loop and its deadline check ignore a wall-clock jump
+AssertionError: expected 148.565202 to be greater than or equal to 450
+ ❯ test/timing.test.ts:84:43
+     82|    const last = observations[observations.length - 1];
+     83|    // With wall-clock time the loop would have stopped at the jump (ab…
+     84|    expect(last.sentMono - first.sentMono).toBeGreaterThanOrEqual(450);
+       |                                           ^
+     85|    expect(last.sentWallMs - first.sentWallMs).toBeGreaterThanOrEqual(J…
+     86|    // A deadline 500 ms after the first send: a wall-clock comparison …
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  16:28:51
+   Duration  904ms (tests 90%, transform 6%, import 3%)

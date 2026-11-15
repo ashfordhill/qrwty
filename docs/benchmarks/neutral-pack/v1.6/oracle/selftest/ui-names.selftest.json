@@ -1,0 +1,12 @@
+{
+	"version": "selftest-double-only",
+	"names": {
+		"create.destination": { "role": "textbox", "name": "Destination URL" },
+		"create.submit": { "role": "button", "name": "Create link" },
+		"result.shortUrl": { "role": "textbox", "name": "Short URL" },
+		"result.copy": { "role": "button", "name": "Copy link" },
+		"result.open": { "role": "link", "name": "Open link" },
+		"result.downloadPng": { "role": "link", "name": "Download PNG" },
+		"result.downloadSvg": { "role": "link", "name": "Download SVG" }
+	}
+}

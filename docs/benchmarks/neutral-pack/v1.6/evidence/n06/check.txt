@@ -1,0 +1,38 @@
+$ node --version: v24.21.0; pnpm --version: 12.16.1
+$ pnpm check   (2026-11-15T06:32:21Z, docs/benchmarks/neutral-pack/v1.6/oracle)
+Lockfile is up to date, resolution step is skipped
+Already up to date
+Done in 69ms using pnpm v12.16.1
+$ biome check . && tsc --noEmit -p tsconfig.json && vitest run --project unit
+Checked 104 files in 37ms. No fixes applied.
+
+ RUN  v5.0.0 /home/ash/github/qrwty/docs/benchmarks/neutral-pack/v1.6/oracle
+
+<claude-code-hint v="1" type="plugin" value="stripe@claude-plugins-official" />
+
+ Test Files  10 passed (10)
+      Tests  56 passed (56)
+   Start at  00:32:22
+   Duration  1.49s (tests 60%, import 23%, transform 17%, worker 1%)
+
+exit 0
+
+Fresh copy of the pack without node_modules (<scratch>/fresh/v1.6):
+$ pnpm install --frozen-lockfile --offline   (packages from the local pnpm store)
+
+Done in 237ms using pnpm v12.16.1
+exit 0
+$ pnpm check
+$ biome check . && tsc --noEmit -p tsconfig.json && vitest run --project unit
+Checked 104 files in 42ms. No fixes applied.
+
+ RUN  v5.0.0 <scratch>/fresh/v1.6/oracle
+
+<claude-code-hint v="1" type="plugin" value="stripe@claude-plugins-official" />
+
+ Test Files  10 passed (10)
+      Tests  56 passed (56)
+   Start at  00:32:24
+   Duration  1.54s (tests 59%, import 24%, transform 17%, worker 1%)
+
+exit 0

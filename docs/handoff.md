@@ -779,3 +779,78 @@ pre-rewrite history is kept locally at `refs/backup/pre-rewrite-20261114`.
     handoff, and no Jeeves file, was read.
   - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, a memory
     index, Git status); it was ignored.
+
+## N06: pack v1.6 (per-account sign-in identifiers, one login attempt), 2026-11-15
+
+- **Changed.** Pack **v1.6** (`docs/benchmarks/neutral-pack/v1.6/`, manifest SHA-256
+  `1250b85420ec9d7f5f016ebdc7174fccda4b591634333fc27daa5bd4a2bfc579`, 219 files) is a self-contained copy of v1.5 for a managed issuer (owner
+  decisions §12: Auth0 free tier, one shared email-only connection). It is recorded in
+  `frozen/decisions.md` §11 (the v1.6 row and its note), acceptance-oracle §2 (Identity) and the
+  pack README's "Changes from v1.5".
+  - **(a) Per-account login identifiers.** `identity.accounts` maps `alice`, `bob` and
+    `operator` to login identifiers (optional; without it the fixed `oracle-*` names, so local
+    adapters are unchanged). Exactly one of `passwordEnv` and the new `passwordCommand`
+    (`{account}`), which prints that account's password once. New `oracle/src/identity.ts` reads
+    each password at most once per run, registers it as a secret and never records it. An
+    unmapped account, or an unreadable password, gives a `blocked` check `account <key>`, never
+    `failed`. Schema, `types.ts`, `adapter.ts` (exactly one source, no two accounts alike),
+    `fixtures/accounts.ts` (`DEFAULT_LOGINS`, `loginFor`; `ACCOUNTS` gone), `context.ts`
+    (`ctx.login`, `ctx.credentials`, `ctx.signIn`; `ctx.password` gone), `runner.ts`, and every
+    row that named an account: A04, A05 (leak check), A06, A09 (spoofed `x-user-id`), A14 (also
+    `issueToken`'s `{account}`), A15, F04, U02, U05, U08 and `lib/ui.ts`.
+  - **(b) At most one login post.** `Api.signIn` posts once at most and returns `posts`,
+    `refused` and `reason`; a non-redirect answer to the post (or after it) is a refusal ("…;
+    posted once, not posted again"). Only network errors before the post are retried (twice).
+    `ctx.signIn` also remembers a refusal for the rest of the run, so a wrong password costs one
+    post per account per run, not one per row (A15's post-deletion and F04's outage sign-ins are
+    exempt).
+  - **(c) Self-test.** New cases `signin-lockout` (A14, stale password, issuer re-renders the
+    form and locks after 3 refused posts; expected `failed` with at most one post, no lock and the
+    reason) and `signin-mapped-identifier` (A06, email-only issuer, mapped emails and per-account
+    passwords via `selftest/password.ts`; expected `passed`, no refusal). The self-test now also
+    checks the issuer double's counts for these cases. New `test/signin.test.ts` (7 tests) and one
+    adapter test.
+  - **(d) Records.** Oracle build `1.6.0`; results report pack `v1.6`. `status.json` points at
+    v1.6.
+- **Checked.**
+  - **Self-test.** The full self-test (`n06-selftest-pubsub`, `n06-selftest-toxiproxy`,
+    Chromium) matched 53/53 cases and detected 35/35 faults; the 51 v1.5 cases keep
+    v1.5's expected and observed statuses.
+  - **v1.5 proofs.** With v1.5's `session.ts` alone, `signin-lockout` posts 11 times and locks
+    `oracle-alice` (MISMATCH). With v1.5's whole `src/` and schema, both new cases MISMATCH: the
+    lockout as above, and the email-only case fails with `oracle-bob` posted 11 times and locked.
+    v1.5's schema refuses the staging adapter, and `signin.test.ts` fails 4/7 on v1.5's driver
+    (33 posts across three rows with a wrong password).
+  - **Oracle tests.** `pnpm check` (Biome, TypeScript, 56 unit tests) passes in place and in a
+    fresh copy after `pnpm install --frozen-lockfile`; `pnpm test:integration` passes 3/3.
+  - **Pack.** `verify_pack.py` for v1.6 passes in place, with `--against-git .` (36
+    copies) and in a fresh copy. `verify_pack.py` is byte-identical to v1.5's.
+  - **Old packs.** v1 to v1.5 are unchanged against `HEAD`; v1, v1.3, v1.4 and v1.5 still verify
+    (v1.1 and v1.2 stay superseded, as before).
+  - **Hygiene.** A credential-shape scan of the finished v1.6 (215 files, 16 patterns,
+    including password literals and the self-test's runtime password shape) finds nothing.
+    `git diff --check` is clean. Both containers were removed by name.
+  - **Records.** The evidence is in `evidence/n06/`, with Node 24.21.0 and pnpm 12.16.1.
+- **Next.**
+  - **Coordinator: install.** Install v1.6 in qrwty-baseline, record each arm's adoption, and
+    fill `commits.after` of `shared-0848`.
+  - **Each arm, staging adapter.** `identity.issuerUrl` = the tenant's `iss` (with the trailing
+    slash), `identity.audience` = the arm's own API audience, `identity.accounts` = the arm's own
+    `alice` and `bob` email users in the shared connection (`operator` only if it has one), and a
+    `passwordCommand` that prints the given account's password once from its secret file by
+    name, replacing `passwordEnv`. Local adapters need no change.
+  - **For the coordinator to decide:**
+    - Without an operator user on staging, A07 (a staging-subset row) ends `blocked` at its
+      operator-block step, as do A08, A16 and A18.
+    - The run-level refusal memory goes beyond "once per call"; it exists so a wrong password
+      cannot reach Auth0's 10 across rows (A06, A07, A14 and F09 sign alice in up to 8 times).
+    - Browser sign-ins (U02, U05, U08) submit once per call and honour earlier refusals, but
+      cannot detect a refusal themselves; the U rows are not in the staging subset.
+    - Decisions §5's Identity row still names GCP Identity Platform as the candidate; the v1.6
+      row of §11 records Auth0 (owner decisions §12). The pack's owner-decisions copy still holds
+      §§1–8, and `reset`'s documented "accounts recreated" is unchanged.
+  - **What was read.** Pack v1.5, the ledger README, owner decisions §12, the N06 packet and this
+    file's N05 entry (for the format). No arm source, evidence, review or handoff, and no Jeeves
+    file, was read.
+  - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, a memory
+    index, Git status); it was ignored.
