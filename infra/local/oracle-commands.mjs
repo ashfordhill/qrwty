@@ -4,6 +4,7 @@
 //
 //   node infra/local/oracle-commands.mjs terminate|start|restart|stop|kill <replica or worker>
 //   node infra/local/oracle-commands.mjs inspect dbConnections
+//   node infra/local/oracle-commands.mjs faultPoint force-slug-collision on|off <slug>   (Q06)
 //   node infra/local/oracle-commands.mjs adapter <out.json>    (writes the Q04 adapter manifest)
 //
 // A target is `<service>-<n>` (for example `redirect-service-1`): the Compose container
@@ -20,7 +21,7 @@ if (!project || !/^qrwtya[a-z0-9-]*$/.test(project)) {
   process.exit(2);
 }
 const docker = (...args) => execFileSync("docker", args, { encoding: "utf8" }).trim();
-const [command, arg] = process.argv.slice(2);
+const [command, arg, state, faultArg] = process.argv.slice(2);
 const container = (target) => {
   if (!/^[a-z-]+-[0-9]+$/.test(target ?? "")) throw new Error(`bad target ${target}`);
   return `${project}-app-${target}`;
@@ -53,6 +54,25 @@ try {
     else if (command === "stop") docker("stop", "-t", String(BOUND_MS / 1000), name);
     else docker(command, name);
     console.log(JSON.stringify({ ok: true }));
+  } else if (command === "faultPoint") {
+    // TEST PROFILE ONLY (Q06): Link API's force-slug-collision, set on every Link API replica
+    // through its QRWTY_TEST_HOOKS route on the replica's loopback test port. The production
+    // preflight refuses QRWTY_TEST_HOOKS, so no deployed copy has this route.
+    if (arg !== "force-slug-collision" || (state !== "on" && state !== "off"))
+      throw new Error(`unsupported fault point ${arg} ${state}`);
+    const replicas = replicasOf("link-api");
+    if (replicas.length === 0) throw new Error("no link-api replica");
+    for (const name of replicas) {
+      const url = `http://${docker("port", name, "3000").split("\n")[0]}/modules/link-api-link-operations/__test/fault-points`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ name: arg, state, ...(state === "on" ? { arg: faultArg } : {}) }),
+        signal: AbortSignal.timeout(5000),
+      });
+      if (response.status !== 200) throw new Error(`${name} answered ${response.status}`);
+    }
+    console.log(JSON.stringify({ ok: true, replicas: replicas.length }));
   } else if (command === "inspect" && arg === "dbConnections") {
     const rows = docker("exec", `${project}-local-postgres-1`, "psql", "-U", "postgres", "-At", "-F", " ", "-c",
       "SELECT usename, count(*) FROM pg_stat_activity WHERE usename LIKE 'r\\_%' GROUP BY 1");
@@ -87,7 +107,8 @@ try {
       };
     const imageId = docker("image", "inspect", "-f", "{{.Id}}", `${project}-app`);
     const settings = readFileSync(resolve(dirname(self), "../../docs/evidence/q04/commands/r01-matrix.sh"), "utf8")
-      .match(/settings="([^"]+)"/)[1].split(" ").map((s) => ({ name: s.split(":")[0], category: s.split(":")[1] }));
+      .match(/settings="([^"]+)"/)[1].split(" ").map((s) => ({ name: s.split(":")[0], category: s.split(":")[1] }))
+      .concat([{ name: "test-hooks", category: "test-hook" }]); // Q06: Link API's QRWTY_TEST_HOOKS
     const adapter = {
       schemaVersion: 1,
       arm: "a",
@@ -104,8 +125,13 @@ try {
         stop: cmd("stop", "{target}"),
         kill: cmd("kill", "{target}"),
         inspect: cmd("inspect", "{what}"),
+        faultPoint: cmd("faultPoint", "{name}", "{state}", "{arg}"),
         ordinaryBuildAndTest: { argv: ["bash", resolve(dirname(self), "ordinary-build.sh")], cwd: relative(dirname(out), exportDir), timeoutMs: 300000 },
       },
+      faultPoints: ["force-slug-collision"],
+      // The pack's Web Risk fixture, on the Docker bridge's host address (172.17.0.1, not reachable
+      // from outside this host): the containers reach it as host.docker.internal:47212.
+      providers: { webRisk: { listen: process.env.QRWTY_WEB_RISK_LISTEN ?? "172.17.0.1:47212", deadlineMs: 500 } },
       productionProfileCheck: {
         command: { argv: ["node", resolve(dirname(self), "profile-check.mjs"), "check", "{process}", "{setting}", "{category}", "profile"], cwd: relative(dirname(out), exportDir), timeoutMs: 60000 },
         processes: Object.keys(profile.processes).filter((p) => p !== "migrate"),

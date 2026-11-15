@@ -1,0 +1,4 @@
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.test.json
+$ biome check
+Checked 22 files in 9ms. No fixes applied.

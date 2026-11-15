@@ -18,7 +18,7 @@
 // runtime directory into a throwaway mount layout and never printed.
 import { execFileSync, spawnSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
-import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 const project = process.env.COMPOSE_PROJECT_NAME;
@@ -97,12 +97,18 @@ for (const variable of spec.env) {
   else if (variable === "OIDC_ISSUER") env[variable] = issuer;
   else if (variable === "OIDC_JWKS_URL") env[variable] = `${issuer}.well-known/jwks.json`;
   else if (variable === "OIDC_AUDIENCE") env[variable] = "https://api.qrwtya.qrwty.io";
+  else if (variable === "QRWTY_PUBLIC_ORIGIN_URL") env[variable] = "https://qrwty.io";
 }
 const db = spec.env.find((v) => /^JEEVES_DATABASE_.+_HOST$/.test(v)).replace(/_HOST$/, "");
 const dbSecret = spec.secrets[0];
-const secrets = Object.fromEntries(
-  spec.secrets.map((s) => [s, readFileSync(join(exportDir, ".runtime/secrets", s), "utf8")]),
-);
+// The export's credentials are in its private runtime; the application's own (Q06: Link API's
+// replay key ring) in QRWTY_LOCAL_APP_SECRET_DIR (infra/local/app-secrets.sh).
+const appSecretDir = process.env.QRWTY_LOCAL_APP_SECRET_DIR;
+const secretFile = (s) =>
+  existsSync(join(exportDir, ".runtime/secrets", s)) || !appSecretDir
+    ? join(exportDir, ".runtime/secrets", s)
+    : join(appSecretDir, s);
+const secrets = Object.fromEntries(spec.secrets.map((s) => [s, readFileSync(secretFile(s), "utf8")]));
 
 // The forbidden settings: each names its variable, so the reason can be compared with it.
 const token = () => randomBytes(16).toString("hex");
@@ -123,6 +129,7 @@ const SETTINGS = {
   "placeholder-db-password": ["placeholder-credential", `secret:${dbSecret}`, (_e, s) => (s[dbSecret] = "changeme")],
   "oracle-edge-token": ["test-hook", "ORACLE_EDGE_TOKEN", (e) => (e.ORACLE_EDGE_TOKEN = token())],
   "test-clock": ["test-hook", "QRWTY_TEST_CLOCK_OFFSET_MS", (e) => (e.QRWTY_TEST_CLOCK_OFFSET_MS = "60000")],
+  "test-hooks": ["test-hook", "QRWTY_TEST_HOOKS", (e) => (e.QRWTY_TEST_HOOKS = "on")],
   none: [null, null, () => {}],
 };
 const chosen = SETTINGS[setting];

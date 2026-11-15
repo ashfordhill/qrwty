@@ -1,0 +1,17 @@
+
+ RUN  v5.0.0 /home/ash/github/qrwty/app
+
+ ✓ |stack| test/stack/link-api.stack.test.ts > the real route, two copies, TLS PostgreSQL > creates a guest link durably, over verify-full TLS 168ms
+ ✓ |stack| test/stack/link-api.stack.test.ts > A02 at Link API: one key, two copies, restarts > one link and one body, before and after restarting every copy; 409 for a changed body 2686ms
+ ✓ |stack| test/stack/link-api.stack.test.ts > A03 at Link API: 200 creates, forced collision > 200 concurrent creates over both copies give distinct slugs routed to their own destinations 481ms
+ ✓ |stack| test/stack/link-api.stack.test.ts > A03 at Link API: 200 creates, forced collision > under force-slug-collision a create succeeds with another slug; the existing one never changes 412ms
+ ✓ |stack| test/stack/link-api.stack.test.ts > A09 at Link API: destinations, reputation, spoofed headers > stores every accepted corpus entry byte for byte as the route's destination 642ms
+ ✓ |stack| test/stack/link-api.stack.test.ts > A09 at Link API: destinations, reputation, spoofed headers > refuses every rejected corpus entry with 400 invalid_destination 33ms
+ ✓ |stack| test/stack/link-api.stack.test.ts > A09 at Link API: destinations, reputation, spoofed headers > maps the fixture's verdicts: unsafe 422, slow and error 503 with Retry-After 662ms
+ ✓ |stack| test/stack/link-api.stack.test.ts > A09 at Link API: destinations, reputation, spoofed headers > ignores spoofed x-user-id and X-Forwarded-For, and refuses a bad bearer instead of a guest create 66ms
+ ✓ |stack| test/stack/link-api.stack.test.ts > A09 at Link API: destinations, reputation, spoofed headers > answers 405 with Allow for another method on /links 1ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  05:38:26
+   Duration  5.29s (tests 99%)

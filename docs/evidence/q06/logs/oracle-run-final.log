@@ -1,0 +1,27 @@
+A02 Same idempotency key twice concurrently, after restart, and with a changed body
+  -> failed
+A03 200 concurrent creates across replicas; creates under force-slug-collision
+  -> blocked
+A09 HTTP and URL edge cases
+  -> failed
+F07 A02, A05, A07 and A22 races with each replica in its own container
+  -> blocked
+R01 Production profile refuses development settings; ordinary checks need no credentials
+  -> passed
+R02 Real adapters exercised locally; limitations listed
+  -> passed
+R03 Final images start, drain and restart; copies share only external state
+  -> failed
+Run oracle-a-20261115T112957-511cad, arm a, commit 5065dded267e79bd5bf18a6d1b8542094ee59064
+
+Totals: failed 3, blocked 2, passed 2
+
+| ID | Status | Checks (passed/failed/blocked/not run) | Started | Ended | Notes |
+| --- | --- | --- | --- | --- | --- |
+| A02 | failed | 1/6/0/0 | 2026-11-15T11:29:57.530Z | 2026-11-15T11:31:17.404Z |  |
+| A03 | blocked | 0/0/1/0 | 2026-11-15T11:31:17.405Z | 2026-11-15T11:31:17.405Z |  |
+| A09 | failed | 0/15/0/0 | 2026-11-15T11:31:17.405Z | 2026-11-15T11:31:17.444Z |  |
+| F07 | blocked | 0/0/2/0 | 2026-11-15T11:31:17.444Z | 2026-11-15T11:31:17.444Z | live-arm row: needs replicas in separate containers; composes A02, A05, A07 and A22 |
+| R01 | passed | 3/0/0/0 | 2026-11-15T11:31:17.444Z | 2026-11-15T11:33:40.543Z | live-arm row: runs the arm's own production configuration validator and build |
+| R02 | passed | 2/0/0/0 | 2026-11-15T11:33:40.544Z | 2026-11-15T11:33:40.544Z | live-arm row: reads the arm's limitation inventory; the behaviour itself is exercised by the A and F rows; that production clients really run against local stor |
+| R03 | failed | 41/1/0/0 | 2026-11-15T11:33:40.544Z | 2026-11-15T11:34:23.429Z | live-arm row: needs the arm's production images and lifecycle commands |

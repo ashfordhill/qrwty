@@ -1051,3 +1051,113 @@ Stripe or `~/.config/qrwty/`. Full review: [Q05 review](reviews/Q05-review.md).
   2 min 43 s of it).
 - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, the Jeeves
   Git status naming later commits, a memory index); it was ignored and not used.
+
+## Q06: durable guest link creation, 2026-11-15
+
+Arm A, attempt 1 (ledger `a-4056`, role implementer, phase backend), from QRWTY `8c8edd4`; main
+moved to `678c199` during the unit (the coordinator's commits `5065dde`, which also carried this
+attempt's start record, `5a5bb23` and `678c199`). Generator: Jeeves **`4e87f97`** only (`git
+show`, and `git archive` through `tools/loc/setup.sh`); nothing in the Jeeves checkout was written
+or run. Pack v1.6 from a verified scratch copy. No cloud, Auth0, Cloudflare or Stripe call. A
+usage limit paused the session after the reading phase, before anything ran; it resumed with
+nothing lost and no `qrwtya*` resource present. Full record: [Q06 checks](evidence/q06/checks.md).
+
+- **Step 0.** **Q05c:** `tools/loc/setup.sh` refuses any Node but 24.21.0 before installing (Node
+  18: refused, nothing created); `verify-runner.sh` adds a one-line `codeLines` smoke (a copy
+  without Rolldown's binding: refused, "Cannot find native binding"); the new runner reproduces
+  `evidence/q05/loc/` byte for byte. **Q05d:** root README status (baseline `33d50e9`, r84,
+  Jeeves `4e87f97`, pack v1.6, not deployed), live sites (qrwty.io placeholder, `b.qrwty.io` live
+  for B), one skin (§11), the measured table (G0 2,926 = 2,871 + 55, UI 0, and Q06's values); the
+  diagram section is as Q05 left it.
+- **Changed.**
+  - `app/src/modules/link-api/link-api-link-operations.ts` (stub body) and
+    `app/src/modules/link-api/link-operations/` (destination, slug, idempotency, replay seal,
+    Web Risk adapter, store, create route, test hooks, service): `POST
+    /modules/link-api-link-operations/links`, the internal route Session API forwards
+    `POST /api/v1/links` to. Destination validation and the contract's normalization only;
+    replay or 409 before any other work; Web Risk (422 / 503 with `Retry-After: 5`, 500 ms);
+    CSPRNG slugs, 1 + 5 attempts then 503 `slug_allocation_failed`; a database error is 503
+    `storage_unavailable`, never a success; owned create 503 `entitlement_unavailable` until
+    Q10b. Guest scope: header `QRWTY-Guest-Scope` (an opaque handle Session API derives from the
+    guest session, Q07). Claim proof: 32 random bytes, only its SHA-256 stored, 24 h; the replay
+    copy sealed AES-256-GCM with the `link-replay-keys` ring, bound to the link.
+  - `app/infra/postgres/links/modules/link-api-link-operations.sql`: migration sequence
+    (`product_migrations`, step 1), `links`, `link_versions`, `link_claims`,
+    `idempotency_records`, tombstone/version/append-only triggers, `create_guest_link` (one call,
+    one transaction; same-key racers wait and replay), `find_idempotent`, bounded purge, and
+    `published.link_routes` (routing fields only) for Q08.
+  - Overlay installed into `app/` with `install-overlay.py`; `infra/app-overlay/` (its source)
+    adds Link API's origin, replay key ring and test hooks; the production profile requires the
+    origin and the key ring. `infra/local/`: `app-secrets.sh`, `test-postgres.sh`, the `faultPoint`
+    command and adapter fields in `oracle-commands.mjs`, Link API's settings and `test-hooks` in
+    `profile-check.mjs`, lint and unit tests in `ordinary-build.sh`.
+  - Tests and tools in `app/`: Vitest 5.0.0 and Biome 2.6.4 (dev), `vitest.config.ts`
+    (`unit`, `integration`, `stack`), `biome.json` (new files only), `tsconfig.test.json`,
+    `app/test/`.
+  - State diagram: `docs/architecture/link-states.excalidraw`, `.png`, `.svg`.
+- **Checks.** Unit **118** passed (offline); integration on PostgreSQL 17.11 **20** passed (200
+  concurrent creates on two pools: 200 distinct slugs; 20 same-key requests: one link, one body;
+  two bodies on one key: one winner, the rest 409; restart replay; collisions; triggers; grants);
+  stack (two copies, own containers, verify-full TLS, the pack's Web Risk fixture) **9** passed
+  (A02, A03 and A09 at Link API's route, restarts, the adapter's `force-slug-collision`; final run
+  on a second, fresh stack). R01's ordinary build now runs Biome and the unit tests. Root
+  `build`, `typecheck`, `check`; app build, test typecheck, Biome: exit 0. `verify-generated`: 64
+  generated files unchanged. Production profile: Link, Session, Account and Billing API start
+  ready; `QRWTY_TEST_HOOKS` refused.
+- **Oracle v1.6** (first run and final rerun alike): **A02** failed → reported **blocked** (Q07:
+  `/api/v1/session` and `/api/v1/links` are 404 on Session API); **A03** blocked (no trusted edge
+  token; also Q07 and Q08); **A09** failed → **blocked** (Q07 creates, Q08 Location/HEAD/405/Host);
+  **F07** blocked (no identity, no Stripe: Q07, Q10a/b); **R01 passed**, **R02 passed**, **R03**
+  failed 41/42, unchanged since Q04 (the session check needs Q07). `clear-route-caches` and
+  `admissionBound` not added (no row run needs them).
+- **LOC** (source-loc-v2, backend only, UI 0; [summary](evidence/q06/loc/summary.json), counted
+  before the commit on a scratch commit of the same `app/` and `tools/`): G0 2,926; R **2,925**, C
+  **720**, D **1** (the stub's `throw`), B **3,645**; template share **80.25%**; R + C = B and
+  G0 − R = D hold. Product SQL 411 lines (support). The tests (1,675 TS lines) land in the support
+  category `other`, because source-loc-v2 marks every path outside `src/` first (noted in the gaps
+  file). The same count on the unit commit itself is in the final report.
+- **A-found gaps** ([details](evidence/q06/a-found-gaps.md)): AG-10 (medium) a stub has no
+  startup step or declared configuration (settings and credentials read at import, outside the
+  report and Compose); AG-11 (low) product SQL has no versioned steps; AG-12 (low) the module
+  schema's grant can't express append-only or never-delete tables. Each worked around in
+  application files; no generated file edited.
+- **Next: the live deploy (Q12a+Q13).** The owner decisions of 2026-11-15 (committed during this
+  unit, `5a5bb23`) stop A after Q06 and one live deploy: Q07–Q10b won't run, so A02, A03, A09 and
+  F07 stay blocked and R03's session check stays failed. For the deploy: add the
+  `link-replay-keys` secret (one line `<kid> <32 bytes base64url>`; a kid not starting `dev`,
+  `local`, `test`, `fixture` or `oracle`, which the preflight refuses) to `infra/gcp` and mount it
+  for Link API; set `QRWTY_PUBLIC_ORIGIN_URL` (`https://qrwty.io`); Link API sends Web Risk no
+  credential yet, so live creation answers 503 `reputation_unavailable` until one is added (API key
+  or the service account); Link API stays internal, and with no Session API facade the public
+  `/api/v1/links` is 404 (only Link API's own route, reached inside the deployment, creates).
+- **If Q07 ever runs.** Session API forwards `POST /api/v1/links` to Link API's `/links` with the
+  caller's bearer (none for a guest), the `Idempotency-Key` and `QRWTY-Guest-Scope` derived from
+  the guest session (strip any client-sent copy; never the cookie value), and maps the runtime's
+  `{error: CODE}` answers to the product shape. Claim reads `link_claims` (hash, expiry,
+  `consumed_*`) in one function; `qrwty.link_change`/`qrwty.link_actor` name each change for
+  `link_versions`; account deletion must also clear `link_versions`' private data; Link API has
+  `/__test/clock`, the oracle's `clock` command is not written. Q08 would read
+  `published.link_routes`.
+- **Q06b.** None: the unit is complete; the oracle rows it can't pass need Q07, Q08 and Q10a/b.
+- **Docker.** `qrwtya-q06` (18 containers, network, volumes), `qrwtya-q06-rehearsal`,
+  `qrwtya-q06-testpg` and the image `qrwtya-q06-app` removed by exact name; no prune; nothing of
+  arm B's or Jeeves's touched.
+- **Read.** The packet, `AGENTS.md`, this file (Q04, Q05, Q05 review), the Q05 review,
+  `evidence/q04` (a-found gaps, limitations, adapter, commands), `evidence/q05` (checks, loc),
+  `units.md` (contract, Q06–Q09), pack v1.6's `decisions.md`, `http-contract.md`,
+  `acceptance-oracle.md`, `product-contract.md`, the oracle README, rows A02, A03, A09, F07 and
+  their helpers, the Web Risk fixture; Q03's `capabilities.md` (G02, G08, G10 and the gap table);
+  `app/README.md`, `report.json`, the generated runtime, scripts and product SQL headers; Jeeves at
+  `4e87f97`: `source-loc.ts` (exports, exclusions); the owner decisions of 2026-11-15, committed
+  mid-unit. Nothing in qrwty-baseline; `~/.config/qrwty/` not read.
+- **Checks of the finish.** Secret scan (credential shapes, and this run's credential values
+  from the second stack's runtime, the TLS keys, the replay key ring and the test database
+  password) over the 80 unit files: no credential; the only shape hits are the pack's own A09
+  input (a URL with a user and password, which must be refused), echoed in the oracle's two
+  `results.jsonl` (my sources build it at run time). `git diff --check` clean. Ledger validates.
+- **Elapsed.** Started 08:38:56Z (wall clock). A usage limit paused the session after the
+  reading phase (the pause's start isn't recorded); from the resume to the commit took about 48
+  minutes on `/proc/uptime`. The whole span is about 2 h 47 min on `/proc/uptime` and about 3 h
+  7 min on this host's wall clock, which jumps.
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
+  memory index); it was ignored.

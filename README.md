@@ -48,15 +48,16 @@ with anonymous quick links, individual free/paid accounts, management and durabl
 a real cloud deployment and two comparable implementations: [with Jeeves](docs/plans/production-build/units.md) and
 [without Jeeves](docs/plans/production-build/baseline-units.md).
 
-**Status: experiment frozen (Q00, run `qrwty-r1-20261114`); local build first, then cloud work
-within the GCP free-trial credit only.** The [neutral pack](docs/benchmarks/neutral-pack/v1/README.md)
-holds the shared inputs both builds use. The application
-has not been generated, built or deployed. The first
-application phase saves the architecture in Jeeves before generating into this repository.
-The saved Jeeves diagram and its as-found export are linked below. The Excalidraw drawing after
-them is a proposed explanation, not a saved Jeeves diagram or runtime verification.
+**Status: generated baseline frozen; product backend in progress (run `qrwty-r1-20261114`);
+local build first, then cloud work within the GCP free-trial credit only.** The
+[neutral pack v1.6](docs/benchmarks/neutral-pack/v1.6/README.md) holds the shared inputs both builds
+use. Q05 froze the generated baseline in [`app/`](app/README.md) (commit `33d50e9`, Jeeves
+revision 84, frozen generator Jeeves `4e87f97`): it builds and starts, and product units write its
+stub bodies and product SQL from there. Arm A's application is not deployed. The saved Jeeves
+diagram and its export are linked below. The Excalidraw drawing after them is a proposed
+explanation, not a saved Jeeves diagram or runtime verification.
 
-**Live site:** [qrwty.io](https://qrwty.io) serves a placeholder from a Cloudflare Worker (Free plan); redeploy with `deploy/cloudflare/deploy.sh` ([details](deploy/cloudflare/README.md)).
+**Live sites:** [qrwty.io](https://qrwty.io) serves a placeholder from a Cloudflare Worker (Free plan); redeploy with `deploy/cloudflare/deploy.sh` ([details](deploy/cloudflare/README.md)). `b.qrwty.io` is live for the independent arm B's staging; arm A's preview will take the apex.
 
 The [local-to-cloud contract](docs/plans/production-build/local-to-cloud.md) requires production
 containers, real GCP adapters, migrations and infrastructure definitions during the local build.
@@ -117,31 +118,35 @@ or uncertain acknowledgment produces a temporary error. Anonymous links have no 
 The [billing contract](docs/plans/production-build/billing-contract.md) covers subscriptions and
 server-enforced tiers; downgrades do not break existing published links. No custom domains or teams.
 The [UI brief](docs/plans/production-build/design-brief.md) calls for an original, restrained
-Liquid Glass interface; both reviewed directions are built as switchable skins, with a
-reviewer's default the owner may override.
+Liquid Glass interface. Q11 chose one visual direction in the owner's style, and the UI is built as
+that one skin, with no second skin and no reviewer's pick (owner decisions §11).
 
 ### Source and effort measurement
 
-Counts are pending, rather than estimated. Backend and UI are deliberately separate. “Template
-share” measures retained generated backend source, not the percentage of the whole product or
-the time saved. [Counting and comparison protocol](docs/plans/production-build/comparison.md) ·
-[Machine-readable status](docs/benchmarks/status.json)
+Counts are measured, never estimated, with the pinned [source-count runner](tools/loc/README.md)
+(source-loc-v2, backend only). Backend and UI are deliberately separate. “Template share”
+measures retained generated backend source, not the percentage of the whole product or the time
+saved. The baseline's share is 100% by definition; it means something only once product code is
+written. [Counting and comparison protocol](docs/plans/production-build/comparison.md) ·
+[Machine-readable status](docs/benchmarks/status.json) ·
+[Baseline report](docs/evidence/q05/loc/summary.json) ·
+[Q06 report](docs/evidence/q06/loc/summary.json)
 
 | Source measure | Jeeves-assisted QRWTY | Independent QRWTY |
 | --- | ---: | ---: |
-| Untouched reusable generated backend baseline LOC | Not generated | Not applicable |
-| Retained generated backend LOC | Not measured | Not applicable |
-| Backend LOC written after generation / independently | Not measured | Not measured |
-| Removed or replaced baseline LOC | Not measured | Not applicable |
-| Final backend production LOC | Not measured | Not measured |
-| Template share of final backend | Not measured | Not applicable |
-| UI source LOC (JS/TS, CSS and markup subtotals) | Not built | Not built |
-| Product SQL / infrastructure / scripts / tests | Separate counts pending | Separate counts pending |
+| Untouched reusable generated backend baseline LOC (G0) | 2,926 = 2,871 scaffolding + 55 stub bodies (Q05, `33d50e9`) | Not applicable |
+| Retained generated backend LOC (R) | 2,925 after Q06 (2,926 at the baseline) | Not applicable |
+| Backend LOC written after generation / independently (C) | 720 after Q06 (Link API's guest create) | Not measured |
+| Removed or replaced baseline LOC (D) | 1 after Q06 (a stub's `throw`) | Not applicable |
+| Final backend production LOC (B) | 3,645 after Q06; product units add to it | Not measured |
+| Template share of final backend | 80.25% after Q06 (100% at the baseline, by definition); not final until the backend is complete | Not applicable |
+| UI source LOC (JS/TS, CSS and markup subtotals) | 0 (no `web/` yet) | Not built |
+| Product SQL / infrastructure / scripts / tests | Counted separately in each LOC summary (Q06: product SQL 411 lines) | Separate counts pending |
 
 | Effort and outcome | Jeeves-assisted QRWTY | Independent QRWTY |
 | --- | --- | --- |
-| Exact models and execution settings | [Pinned](docs/benchmarks/neutral-pack/v1/frozen/decisions.md#7-execution-model-settings-and-review-policy) (Opus builders, Fable xhigh reviewers); actual IDs from transcripts | Same pinned settings |
-| Model requests, prompts and tokens | [Run ledger](docs/benchmarks/runs/qrwty-r1-20261114/README.md) started; no build run | Ledger created at B00; no build run |
+| Exact models and execution settings | [Pinned](docs/benchmarks/neutral-pack/v1.6/frozen/decisions.md#7-execution-model-settings-and-review-policy) (Opus builders, Fable xhigh reviewers); actual IDs from transcripts | Same pinned settings |
+| Model requests, prompts and tokens | [Run ledger](docs/benchmarks/runs/qrwty-r1-20261114/README.md): every attempt recorded, usage imported by the coordinator | Kept in B's repository |
 | Template development / application / UI effort | Separate totals pending | Independent effort pending |
 | Human review time and failed attempts | To be recorded | To be recorded |
 | Provider-reported / estimated model cost | Pending, distinguished | Pending, distinguished |

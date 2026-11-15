@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "about": "QRWTY arm A, Q06 (from Q04's list, the Web Risk item updated): each local stand-in for a managed service or provider, the production client it exercises, and what it cannot prove. Read by oracle R02 (pack v1.6). Live checks are Q12a's (infra/q12a/probe-manifest.json).",
+  "items": [
+    {
+      "component": "pubsub-emulator",
+      "localStandIn": "gcr.io/google.com/cloudsdktool/google-cloud-cli:591.0.0-emulators (digest pinned by the export), service local-pubsub, project local",
+      "productionClient": "@google-cloud/pubsub 6.3.2 through the generated pubsubPublisher (Redirect service) and pubsubLoop (Analytics worker) in src/runtime/module-clients.ts",
+      "exercisedLocally": "publish resolves only after the emulator acknowledges (202 with publishMs 14-21 ms); the messageId attribute survives; a repeated ID reaches the consumer twice and is stored once; a poison message lands in click-events--analytics-worker.failed with x-terminal-code NOT_IMPLEMENTED; the subscription's ack deadline 60 s, retry 1-10 s and dead-letter after 100 attempts; the production profile refuses PUBSUB_EMULATOR_HOST",
+      "limitation": "The emulator keeps messages and resources only for its session, does not enforce IAM, has no regional storage policy or synchronous multi-zone durability, no Cloud Storage export subscription, and its default retention (7 days) is not the 31 days the IaC sets. An acknowledgement from it proves ordering in the client (await ACK before 302), not managed durability. Without the emulator the production client needs Application Default Credentials, so a production-profile start of Redirect service and Analytics worker cannot pass locally (it stops at 'Could not load the default credentials')."
+    },
+    {
+      "component": "stripe-fixture",
+      "localStandIn": "the oracle's stateful Stripe fixture (pack v1.6 oracle/src/fixtures), reached by Billing API at JEEVES_EXTERNAL_STRIPE_API_URL=http://host.docker.internal:47211 in the test profile's compose.override.yaml",
+      "productionClient": "the generated externalTarget HTTP client (JEEVES_EXTERNAL_STRIPE_API_URL; production value https://api.stripe.com) and, from Q10a, the official Stripe SDK in Billing API's own stub bodies",
+      "exercisedLocally": "startup validation only in Q04: the variable is required (Invalid endpoint until set), https under JEEVES_REQUIRE_TLS, and the preflight refuses any value but https://api.stripe.com; no Stripe call is made (Billing API's stubs are unwritten)",
+      "limitation": "The fixture imitates Stripe's test-mode API and signs webhooks with a test secret; it does not prove Stripe's real API versions, idempotency semantics, rate limits, webhook delivery or retries. Live Stripe test-mode calls are Q12a/Q13."
+    },
+    {
+      "component": "web-risk-fixture",
+      "localStandIn": "the pack v1.6 oracle's Web Risk fixture (GET /v1/uris:search), started by the oracle (or the stack test) on the Docker bridge's host address 172.17.0.1:47212 and reached by Link API at JEEVES_EXTERNAL_REPUTATION_API_URL=http://host.docker.internal:47212 in the test profile (containers can't reach the host's loopback)",
+      "productionClient": "Link API's reputation adapter (src/modules/link-api/link-operations/reputation.ts) on the generated externalTarget HTTP client (production value https://webrisk.googleapis.com): uris.search with MALWARE, SOCIAL_ENGINEERING and UNWANTED_SOFTWARE, a 500 ms deadline and a 64 KiB answer bound",
+      "exercisedLocally": "Q06: every guest create calls it with the exact normalized destination; a threat verdict is 422 reputation_rejected, the fixture's slow (deadline) and error (500) paths are 503 reputation_unavailable with Retry-After 5 within 1 s, and nothing is stored; with the fixture down every create is 503 (fails closed)",
+      "limitation": "The fixture's verdicts are fixed by path; it does not prove Web Risk's authentication (API key or service account), quotas, latency or threat-type coverage. Link API sends no credential yet: a production call is refused by Web Risk and creation answers 503 until Q12a adds the live credential. A live no-charge Web Risk call is Q12a's."
+    },
+    {
+      "component": "local-issuer",
+      "localStandIn": "Keycloak 26.8.1 (identity-identity, realm identity, public client identity-web) for the stack; and Q04's OIDC key-set fixture (docs/evidence/q04/commands/oidc-fixture.mjs) for the audience and issuer binding",
+      "productionClient": "the generated sign-in guard (createPrincipalVerifier: OIDC_ISSUER, OIDC_AUDIENCE, OIDC_JWKS_URL, RS256) on Link, Account and Billing API, and the generated identityTarget (JEEVES_IDENTITY_IDENTITY_URL) on Session API",
+      "exercisedLocally": "Link API's guard with an Auth0-shaped issuer (trailing slash) and A's own audience: the configured issuer and audience pass, the Keycloak audience identity-web, the issuer without its slash and another issuer are 401; Session API's identityTarget reaches Keycloak's realm (200) from inside the network; the production profile refuses an http or Keycloak-path issuer and the identity-web audience",
+      "limitation": "Neither Keycloak nor the fixture is Auth0: Auth0's tenant issuer, its API audience, refresh-token rotation, key rotation, login page, rate limits and the 10-failed-login lock are not exercised. A's Auth0 application and API are created in Q12a/Q13 (owner decisions \u00a712)."
+    },
+    {
+      "component": "postgres-tls",
+      "localStandIn": "the export's pinned PostgreSQL 17.11 with ssl=on, a throwaway CA from infra/local/tls-certs.sh, and hostnossl reject for every login but the setup admin and Keycloak's",
+      "productionClient": "the generated databaseClient / createPostgres (verify-full with _CA_FILE and _TLS_SERVERNAME; QG10, QG17) and scripts/migrate.mjs (QG12)",
+      "exercisedLocally": "every runtime login connects with TLSv1.3 and verify-full; a plain-text attempt is rejected by the server; a wrong CA is refused; a production-profile start by private address with _TLS_SERVERNAME passes; migrations pass with a CREATEDB CREATEROLE non-superuser admin, twice at once",
+      "limitation": "Not Cloud SQL: no Cloud SQL connector or Unix socket at /cloudsql, no IAM database authentication, no server certificate named project:instance (which Node cannot verify, QGR2 finding 13), no managed backups or failover. The migration job's TLS over TCP relies on NODE_EXTRA_CA_CERTS locally (QGR2 finding 11); production uses the socket."
+    },
+    {
+      "component": "valkey-tls",
+      "localStandIn": "the export's pinned Valkey 8.1.10 with TLS only on 6379 and the same throwaway CA",
+      "productionClient": "the generated cacheClient / createValkeyCache (verify-full with _CA_FILE and _TLS_SERVERNAME)",
+      "exercisedLocally": "both caches healthy and used over TLS (set and get through Redirect service); a production-profile start by private address with _TLS_SERVERNAME passes",
+      "limitation": "Not Memorystore for Valkey: no PSC endpoint, no IAM authentication (the generated client sends a static password read once; AG-04), no managed CA or certificate names, no failover. Memorystore's cluster mode would need a cluster client; the IaC selects CLUSTER_DISABLED."
+    }
+  ]
+}

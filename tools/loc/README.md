@@ -23,9 +23,11 @@ bash tools/loc/setup.sh /home/ash/github/jeeves .scratch/loc-runner
 bash tools/loc/source-loc.sh .scratch/loc-runner <baseline commit> <final commit> <out dir>
 ```
 
-`pnpm loc:setup …` and `pnpm loc …` are the same commands. `verify-runner.sh` refuses a copy whose
-pinned files, method document or installed parser differ from [pins.json](pins.json), and
-`source-loc.sh` refuses any Node but 24.21.0.
+`pnpm loc:setup …` and `pnpm loc …` are the same commands. `setup.sh` and `source-loc.sh` refuse
+any Node but 24.21.0. `verify-runner.sh` refuses a copy whose pinned files, method document or
+installed parser differ from [pins.json](pins.json), or whose parser does not load (a one-line
+`codeLines` smoke). A copy installed under another Node lacks Rolldown's native binding and stays
+broken after a reinstall: delete it and build a new one under 24.21.0 (Q05c).
 
 ## What it reads
 

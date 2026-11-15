@@ -1,0 +1,87 @@
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"error","event":"failure","tile":"link-api","what":"reputation check","error":"Error: Web Risk answered 500"}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"error","event":"failure","tile":"link-api","what":"reputation check","error":"Error: Web Risk answered 500"}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"error","event":"failure","tile":"link-api","what":"reputation check","error":"Error: Web Risk answered 500"}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"error","event":"failure","tile":"link-api","what":"reputation check","error":"TypeError: fetch failed"}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"error","event":"failure","tile":"link-api","what":"reputation check","error":"TimeoutError: The operation was aborted due to timeout"}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"error","event":"failure","tile":"link-api","what":"reputation check","error":"TimeoutError: The operation was aborted due to timeout"}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"info","event":"cache","tile":"link-api","cache":"admission-cache","state":"available"}
+{"event":"probe","tile":"link-api","level":"info","client":"admission-cache","kind":"cache","check":"PING","result":"ok"}
+{"event":"probe","tile":"link-api","level":"info","client":"links","kind":"database","check":"SELECT 1","result":"ok"}
+{"level":"info","event":"started","tile":"link-api","module":"link-api-sign-in","template":"verified-identity","wiring":"mounted","checks":["sign-in Optional on every module route"]}
+{"level":"error","event":"failure","tile":"link-api","what":"reputation check","error":"TimeoutError: The operation was aborted due to timeout"}

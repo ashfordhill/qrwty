@@ -1,0 +1,28 @@
+## before
+19
+(no other qrwtya container)
+## teardown
+{"ok":true}
+ Volume qrwtya-q06_cache-hot-routes Removed
+ Volume qrwtya-q06_postgres-data Removed
+ Network qrwtya-q06_default Removed
+Deleted: sha256:72811c3914c29fc31c3fa33738bdd5998db192307fc05472863f0b1232d1d845
+{"ok":true,"removed":"qrwtya-q06-testpg"}
+## after
+containers: 0
+arm-a labelled containers: 0
+networks: 0
+volumes: 0
+images: 0
+
+## second stack (final stack tests), teardown
+containers before: 18
+ Volume qrwtya-q06_cache-admission-cache Removed
+ Network qrwtya-q06_default Removed
+Deleted: sha256:3de575b612ff467e27b577ed51db5dfdef1733498e9a5eb57f4750230d798ccc
+## after
+containers: 0
+arm-a labelled containers: 0
+networks: 0
+volumes: 0
+images: 0

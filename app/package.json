@@ -13,9 +13,11 @@
     "zod": "4.5.4"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.6.4",
     "@types/node": "24.19.2",
     "@types/pg": "8.23.1",
-    "typescript": "7.0.2"
+    "typescript": "7.0.2",
+    "vitest": "5.0.0"
   },
   "engines": {
     "node": "24.21.0"
@@ -26,8 +28,13 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "first-run": "node scripts/local.mjs first-run",
+    "lint": "biome check",
     "start": "node scripts/local.mjs start",
-    "stop": "node scripts/local.mjs stop"
+    "stop": "node scripts/local.mjs stop",
+    "test": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:stack": "vitest run --project stack",
+    "typecheck:test": "tsc -p tsconfig.test.json"
   },
   "type": "module",
   "version": "0.0.0-experimental.2"

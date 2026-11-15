@@ -7,6 +7,8 @@
 #     throwaway CA from infra/local/tls-certs.sh in QRWTY_LOCAL_TLS_DIR (outside the app tree).
 #     PostgreSQL rejects plain TCP for every login except the setup admin and Keycloak's own.
 #   - External API base URLs (QG20) point at the oracle's local provider fixtures on the host.
+#   - Application credentials the export doesn't provision (Q06: Link API's replay key ring),
+#     from QRWTY_LOCAL_APP_SECRET_DIR (infra/local/app-secrets.sh; outside the app tree).
 # Production uses none of this: see infra/app-overlay/infra/qrwty/production-profile.json, whose
 # preflight refuses each of these test settings.
 x-arm: &arm
@@ -41,12 +43,20 @@ services:
     <<: *app
     ports: ["127.0.0.1:47225-47226:3000"]
     extra_hosts: *hostgateway
+    secrets: [link-replay-keys]
     environment:
       JEEVES_DATABASE_LINKS_TLS: verify-full
       JEEVES_DATABASE_LINKS_CA_FILE: /qrwty-tls/ca.crt
       JEEVES_CACHE_ADMISSION_CACHE_TLS: verify-full
       JEEVES_CACHE_ADMISSION_CACHE_CA_FILE: /qrwty-tls/ca.crt
+      # The pack's Web Risk fixture, which the oracle (or infra/local/q06-stack.sh) runs on the
+      # Docker bridge's host address: containers can't reach the host's loopback.
       JEEVES_EXTERNAL_REPUTATION_API_URL: http://host.docker.internal:47212
+      # Q06: short URLs are <public origin>/<slug>; locally the edge's loopback address.
+      QRWTY_PUBLIC_ORIGIN_URL: http://127.0.0.1:${LOCAL_HTTP_PORT:?Set LOCAL_HTTP_PORT}
+      # TEST PROFILE ONLY: the oracle's force-slug-collision fault point and test clock (the
+      # production preflight refuses QRWTY_TEST_*).
+      QRWTY_TEST_HOOKS: "on"
   app-account-api:
     <<: *app
     ports: ["127.0.0.1:47227-47228:3000"]
@@ -133,6 +143,10 @@ services:
     labels: *arm
     build:
       labels: *arm
+
+secrets:
+  link-replay-keys:
+    file: ${QRWTY_LOCAL_APP_SECRET_DIR:?Set QRWTY_LOCAL_APP_SECRET_DIR (infra/local/app-secrets.sh)}/link-replay-keys
 
 networks:
   default:

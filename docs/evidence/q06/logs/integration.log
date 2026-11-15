@@ -1,0 +1,52 @@
+
+ RUN  v5.0.0 /home/ash/github/qrwty/app
+
+stdout | test/integration/concurrency.test.ts
+Applied infra/postgres/links/modules/link-api-abuse-and-moderation.sql
+
+stdout | test/integration/concurrency.test.ts
+Applied infra/postgres/links/modules/link-api-link-operations.sql
+
+ ✓ |integration| test/integration/concurrency.test.ts > A03's invariants: 200 concurrent creates across two replicas > give 200 distinct slugs, each stored with its own destination 269ms
+ ✓ |integration| test/integration/concurrency.test.ts > A02's invariants: one key, one link > 20 concurrent same-key requests on two replicas make one link, one body, one proof 23ms
+ ✓ |integration| test/integration/concurrency.test.ts > A02's invariants: one key, one link > two bodies racing on one key: one wins everywhere, the other is 409 12ms
+ ✓ |integration| test/integration/concurrency.test.ts > A02's invariants: one key, one link > replays the same body after every replica restarts, and 409s a changed body 33ms
+ ✓ |integration| test/integration/concurrency.test.ts > slug collisions > a forced collision retries to a new slug and never changes the existing link 38ms
+ ✓ |integration| test/integration/concurrency.test.ts > slug collisions > after 5 retries answers 503 slug_allocation_failed and writes nothing 79ms
+ ✓ |integration| test/integration/concurrency.test.ts > storage failure > answers 503 storage_unavailable, never a success, when the database is unreachable 1ms
+stdout | test/integration/schema.test.ts
+Applied infra/postgres/links/modules/link-api-abuse-and-moderation.sql
+
+stdout | test/integration/schema.test.ts
+Applied infra/postgres/links/modules/link-api-link-operations.sql
+
+stdout | test/integration/schema.test.ts > migration sequence > is re-runnable and applies each step once
+Applied infra/postgres/links/modules/link-api-abuse-and-moderation.sql
+
+stdout | test/integration/schema.test.ts > migration sequence > is re-runnable and applies each step once
+Applied infra/postgres/links/modules/link-api-link-operations.sql
+
+stdout | test/integration/schema.test.ts > migration sequence > is re-runnable and applies each step once
+Applied infra/postgres/links/modules/link-api-abuse-and-moderation.sql
+
+stdout | test/integration/schema.test.ts > migration sequence > is re-runnable and applies each step once
+Applied infra/postgres/links/modules/link-api-link-operations.sql
+
+ ✓ |integration| test/integration/schema.test.ts > migration sequence > is re-runnable and applies each step once 77ms
+ ✓ |integration| test/integration/schema.test.ts > create_guest_link > writes the link, version 1, the claim proof's hash and the idempotency record together 30ms
+ ✓ |integration| test/integration/schema.test.ts > create_guest_link > replays the same scope, key and request; refuses another request under the key 11ms
+ ✓ |integration| test/integration/schema.test.ts > create_guest_link > rolls everything back on a taken slug 21ms
+ ✓ |integration| test/integration/schema.test.ts > create_guest_link > refuses an expiry not after the database clock, writing nothing 9ms
+ ✓ |integration| test/integration/schema.test.ts > create_guest_link > ends a key's window after 24 hours on the database clock 17ms
+ ✓ |integration| test/integration/schema.test.ts > create_guest_link > purges a bounded batch of expired records on each create 159ms
+ ✓ |integration| test/integration/schema.test.ts > invariants the database enforces > never deletes a link 2ms
+ ✓ |integration| test/integration/schema.test.ts > invariants the database enforces > raises the version by exactly one 1ms
+ ✓ |integration| test/integration/schema.test.ts > invariants the database enforces > never changes a slug 1ms
+ ✓ |integration| test/integration/schema.test.ts > invariants the database enforces > keeps a deleted link a permanent tombstone, with its history 11ms
+ ✓ |integration| test/integration/schema.test.ts > invariants the database enforces > refuses a slug that is not 10 base62 characters, and a non-http destination 1ms
+ ✓ |integration| test/integration/schema.test.ts > invariants the database enforces > gives Redirect and Account API the routing view only 20ms
+
+ Test Files  2 passed (2)
+      Tests  20 passed (20)
+   Start at  05:32:05
+   Duration  2.33s (tests 94%, transform 3%, import 2%)

@@ -1,0 +1,15 @@
+{
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"files": {
+		"includes": [
+			"src/modules/link-api/link-operations/**",
+			"test/**",
+			"vitest.config.ts",
+			"biome.json",
+			"tsconfig.test.json"
+		]
+	},
+	"formatter": {
+		"lineWidth": 100
+	}
+}

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Refuse a runner copy that is not the pinned one: every pinned file's SHA-256, the method
 # document's, and the installed parser, schema and loader versions must equal tools/loc/pins.json.
+# Then the parser must load (Q05c): a one-line `codeLines` smoke through the copy's own loader, so
+# a copy installed under another Node, which lacks the native binding, fails here and not later.
 #
 #   bash tools/loc/verify-runner.sh <runner dir>
 set -euo pipefail
@@ -19,5 +21,11 @@ for name, version in pins["installed"].items():
         bad.append(f"{name}@{got} (pinned {version})")
 if bad:
     sys.exit("runner is not the pinned copy: " + ", ".join(bad))
-print(json.dumps({"runner": os.path.abspath(root), "jeeves": pins["jeeves"]["commit"], "verified": True}))
 PY
+generator=$(cd "$1/jeeves-generator" && pwd)
+smoke=$(cd "$generator" && node_modules/.bin/tsx -e \
+  'import("./src/source-loc.ts").then((m) => console.log(JSON.stringify(m.codeLines("smoke.ts", "const a = 1;\n"))))' 2>&1) ||
+  { echo "runner is not usable: the parser does not load; rebuild the copy under the pinned Node: $(printf '%s' "$smoke" | grep -m1 -oE 'Cannot find native binding|[A-Za-z]+Error: [^"]{0,120}' || true)" >&2; exit 1; }
+[ "$smoke" = '["const a = 1;"]' ] || { echo "runner is not usable: codeLines smoke printed $smoke" >&2; exit 1; }
+python3 -I -c 'import json,sys; print(json.dumps({"runner": sys.argv[1], "jeeves": json.load(open(sys.argv[2]))["jeeves"]["commit"], "verified": True, "parserSmoke": "ok"}))' \
+  "$(cd "$1" && pwd)" "$here/pins.json"

@@ -1,0 +1,126 @@
+
+ RUN  v5.0.0 /home/ash/github/qrwty/app
+
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > accepts https://example.com/oracle/a09/plain 2ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > accepts https://example.com/oracle/a09/q?b=2&a=1&A=3 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > accepts https://example.com/oracle/a09/esc?x=%2F%20%E2%9C%93&y=a+b 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > accepts https://example.com/oracle/a09/Case/Path 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > accepts https://example.com/oracle/a09/frag#section-2 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > accepts HTTPS://EXAMPLE.COM/oracle/a09/host-case 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > accepts https://example.com:443/oracle/a09/default-port 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > accepts https://münchen.example.com/oracle/a09/idn 3ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > accepts http://example.com/oracle/a09/http 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > accepts https://example.com/oracle/a09/len?p=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 1 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 2 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 3 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 4 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 5 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 6 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 7 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 8 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 9 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 10 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 11 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 12 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 13 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 14 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 15 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 16 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 17 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 18 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 19 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 20 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 21 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 22 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 23 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 24 3ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 25 1ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 26 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 27 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 28 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 29 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 30 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 31 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 32 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > rejects corpus entry 33 0ms
+ ✓ |unit| test/unit/destination.test.ts > the A09 destination corpus > checks the length of exactly the bound 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > keeps https://Example.COM:8443/A?B#C as https://example.com:8443/A?B#C 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > keeps http://example.com:80 as http://example.com 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > keeps https://example.com?x=1 as https://example.com?x=1 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > keeps https://example.com/a/../b/./c as https://example.com/a/../b/./c 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > keeps https://example.com/%zz as https://example.com/%zz 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > keeps https://8.8.8.8/dns as https://8.8.8.8/dns 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > keeps https://[2001:4860:4860::8888]/ as https://[2001:4860:4860::8888]/ 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > keeps https://example.com./trailing-dot as https://example.com./trailing-dot 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > keeps https://ＥＸＡＭＰＬＥ.com/fullwidth as https://example.com/fullwidth 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https://example.com\\@evil.example/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https://ex%61mple.com/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https://example.com:/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https://example.com:08080/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "http://127.1/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "http://0177.0.0.1/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "http://[::ffff:127.0.0.1]/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "http://[64:ff9b::7f00:1]/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "http://[2001:db8::1]/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "http://[fe80::1%25eth0]/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "http://100.64.0.1/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "http://224.0.0.1/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "http://192.0.2.10/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https://localhost./" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https://qrwty.io./loop" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https://QRWTY.IO/loop" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https://router.home.arpa/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https://example.com/a b" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https://example.com/ü" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https://example.com/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https://example.com/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https://-bad.example.com/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https://１２７.０.０.１/" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "https:example.com" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects "" 0ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects anything but a string 1ms
+ ✓ |unit| test/unit/destination.test.ts > beyond the corpus > rejects a lone surrogate 0ms
+ ✓ |unit| test/unit/configuration.test.ts > QRWTY_PUBLIC_ORIGIN_URL > is the origin itself 2ms
+ ✓ |unit| test/unit/configuration.test.ts > startup > needs the replay key ring, and names it without its value 1ms
+ ✓ |unit| test/unit/configuration.test.ts > startup > starts with an origin and a key ring, and refuses a test-hook value other than on 1ms
+ ✓ |unit| test/unit/create.test.ts > guest create > answers 201 with the link, its claim proof and its ETag 4ms
+ ✓ |unit| test/unit/create.test.ts > guest create > replays the same key and request with the same body, proof included, before any check 1ms
+ ✓ |unit| test/unit/create.test.ts > guest create > treats an equal normalized request as the same request 1ms
+ ✓ |unit| test/unit/create.test.ts > guest create > answers 409 for the same key with another request 1ms
+ ✓ |unit| test/unit/create.test.ts > guest create > scopes keys: another guest's same key is a new link 1ms
+ ✓ |unit| test/unit/create.test.ts > guest create > needs an Idempotency-Key 0ms
+ ✓ |unit| test/unit/create.test.ts > guest create > needs the guest scope from Session API 0ms
+ ✓ |unit| test/unit/create.test.ts > guest create > refuses a bad destination with 400 invalid_destination and its reason 0ms
+ ✓ |unit| test/unit/create.test.ts > guest create > refuses other bodies with 400 invalid_request 1ms
+ ✓ |unit| test/unit/create.test.ts > guest create > refuses a past expiresAt 0ms
+ ✓ |unit| test/unit/create.test.ts > guest create > ignores spoofed identity and address headers 0ms
+ ✓ |unit| test/unit/create.test.ts > reputation, storage and allocation failures > answers 422 for a threat and 503 with Retry-After when the check is unavailable 0ms
+ ✓ |unit| test/unit/create.test.ts > reputation, storage and allocation failures > never turns a database error into a success 0ms
+ ✓ |unit| test/unit/create.test.ts > reputation, storage and allocation failures > retries a forced collision and keeps the existing slug's link 1ms
+ ✓ |unit| test/unit/create.test.ts > reputation, storage and allocation failures > gives up after 5 retries with 503 slug_allocation_failed 0ms
+ ✓ |unit| test/unit/create.test.ts > routes and the signed-in caller > answers 405 with Allow on /links and 404 elsewhere 0ms
+ ✓ |unit| test/unit/create.test.ts > routes and the signed-in caller > keeps the test hooks closed unless the test profile turns them on 0ms
+ ✓ |unit| test/unit/create.test.ts > routes and the signed-in caller > fails an account's create closed until entitlements exist 0ms
+ ✓ |unit| test/unit/reputation.test.ts > Web Risk uris.search > asks for the three threat types and the exact destination 18ms
+ ✓ |unit| test/unit/reputation.test.ts > Web Risk uris.search > reads a threat 0ms
+ ✓ |unit| test/unit/reputation.test.ts > Web Risk uris.search > is unavailable on an error status, bad JSON, an oversized body or a network error 1ms
+ ✓ |unit| test/unit/reputation.test.ts > Web Risk uris.search > gives up at its deadline 51ms
+ ✓ |unit| test/unit/slug-and-keys.test.ts > slugs > are 10 base62 characters, all distinct over 10,000 draws 28ms
+ ✓ |unit| test/unit/slug-and-keys.test.ts > slugs > use every base62 character, with no byte bias 40ms
+ ✓ |unit| test/unit/slug-and-keys.test.ts > slugs > discard bytes at or above 248 instead of wrapping them 0ms
+ ✓ |unit| test/unit/slug-and-keys.test.ts > slugs > never match a reserved path, in any case 0ms
+ ✓ |unit| test/unit/slug-and-keys.test.ts > slugs > give at most 1 + 5 candidates, forced ones first 1ms
+ ✓ |unit| test/unit/slug-and-keys.test.ts > idempotency keys and scopes > accept 1–255 visible ASCII characters only 0ms
+ ✓ |unit| test/unit/slug-and-keys.test.ts > idempotency keys and scopes > accept an opaque guest handle only 0ms
+ ✓ |unit| test/unit/slug-and-keys.test.ts > idempotency keys and scopes > separate guests from accounts and keys from scopes 1ms
+ ✓ |unit| test/unit/slug-and-keys.test.ts > idempotency keys and scopes > hash a request by operation and fields, independent of field order 1ms
+ ✓ |unit| test/unit/slug-and-keys.test.ts > the sealed replay payload > round-trips under its own link only 1ms
+ ✓ |unit| test/unit/slug-and-keys.test.ts > the sealed replay payload > detects a changed byte 0ms
+ ✓ |unit| test/unit/slug-and-keys.test.ts > the sealed replay payload > seals with the first key and opens with any listed key 0ms
+ ✓ |unit| test/unit/slug-and-keys.test.ts > the sealed replay payload > refuses a malformed key ring 1ms
+
+ Test Files  5 passed (5)
+      Tests  118 passed (118)
+   Start at  05:36:28
+   Duration  216ms (transform 44%, tests 39%, import 15%, worker 3%)

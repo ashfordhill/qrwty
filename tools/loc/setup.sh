@@ -10,6 +10,10 @@ set -euo pipefail
 here=$(cd "$(dirname "$0")" && pwd)
 jeeves=$1 dest=$2
 commit=$(python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1]))["jeeves"]["commit"])' "$here/pins.json")
+# Q05c: under another Node, pnpm skips the parser's native binding (an optional dependency with an
+# `engines` range) and the copy never recovers, so refuse before installing anything.
+node_pin=$(python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1]))["node"])' "$here/pins.json")
+test "$(node --version)" = "v$node_pin" || { echo "refused: node $(node --version), pinned v$node_pin" >&2; exit 1; }
 if [ -e "$dest" ]; then echo "refused: $dest exists" >&2; exit 1; fi
 test "$(git -C "$jeeves" rev-parse "$commit^{commit}")" = "$commit"
 mkdir -p "$dest"
