@@ -1004,3 +1004,50 @@ read through Git. Pack v1.6. No cloud, Auth0, Cloudflare or Stripe call. Full re
   30 to the follow-up.
 - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
   memory index); it was ignored.
+
+## Q05 review: the generated baseline, 2026-11-15
+
+Arm A, `Q05-review`, attempt 1 (ledger `a-4020`, role reviewer, phase review, requested Fable
+xhigh), from QRWTY `f7f333d`. Reviewer only; Q05 (`33d50e9`, `7b432f7`) was not mine. Jeeves read
+only at `4e87f97` (`git archive` without `docs/`, `git show`) into `.scratch/Q05-review/`; nothing
+written or run in the Jeeves checkout; no later commit, no `qrwty-lessons`. Studio API: `GET
+/projects` and the QRWTY project's `GET /design` only. Arm B not read. No cloud, Auth0, Cloudflare,
+Stripe or `~/.config/qrwty/`. Full review: [Q05 review](reviews/Q05-review.md).
+
+- **Verdict: passed with findings.** Everything re-runnable reproduced byte for byte.
+- **Re-ran.** Frozen copy at `4e87f97` (pins verified); live `GET /design` canonicalised by the
+  frozen generator = `4fbcd311…024d` = `33d50e9:app/.jeeves/inputs/design.json`; two fresh
+  `export:v2` runs identical to each other and to `git archive 33d50e9 app` (87 files, manifest
+  `c4c33e26…7daff`); r83 → r84 source diff = provider + revision only; blueprint diff = 4 fields as
+  claimed; own M01 (11/11, 165 sources = `4e87f97` blobs, studio records consistent); LOC runner
+  rebuilt with `tools/loc/setup.sh` and run on `33d50e9`: report and summary byte-identical to
+  `evidence/q05/loc/` (G0 2,926 = 2,871 + 55; identities hold; UI 0); Git-object proof in a scratch
+  clone (five worktree corruptions change nothing; a committed code line gives C 1); Node-18
+  refusal; root `app:install`/`build`/`check` exit 0 with `git status app/` clean; smoke of the
+  committed baseline as project `qrwtya-q05r` (ports 47251–47253): 12 healthy, the same 25 probe
+  answers as Q05 (10 named 501s, 401 before the Required guard, 501s with a token, dead letter
+  `NOT_IMPLEMENTED`), logs with 11 `not-implemented` and no error; torn down by exact name, nothing
+  left; `SHA256SUMS` 58/58 and complete; PNGs equal r83's; Q01/Q02 evidence untouched; ledger valid.
+- **Findings.** F1 (low) `tools/loc/setup.sh` under another Node builds a runner that verifies but
+  whose Rolldown binding is missing (optional dep skipped by `engines`); F2 (low, process) Q05 read
+  Jeeves's later commits and uncommitted tree for the attribution (disclosed; nothing entered
+  `app/`); F3 (low, docs) root README status and table still say "not generated", two skins, pack
+  v1; F4 (low, ledger) all 24 coordinator imports record `agentToolTotals` 0/0/0 with the real
+  totals only in notes; F5–F7 info (stale Click events description, AG-08/09 not in run-status,
+  no lint/unit tests in root `check` yet).
+- **Proposed units.** Q05c runner setup fix (ready); Q05d README status/table (ready); N07 pack
+  v1.7 ledger `update` with agent totals + correction pass (needs the owner); rule on reading
+  Jeeves's working tree from arm A (needs the owner); next revision folds the description (needs
+  the owner); coordinator status update (ready).
+- **Readiness.** Sound baseline for Q12a/Q13 and Q06–Q10b. AG-01–09 recorded honestly; none
+  blocks. Q13's apply still waits on Q04b (OpenTofu download permission), from Q04.
+- **Not re-run.** Exports at later Jeeves commits (forbidden here; attribution verified from the
+  records and diff content); the studio's mouse steps (renders verified by hash); Q05's `m01.py`
+  as written (needs the studio ZIP directory; replaced by equivalent checks).
+- **Writes.** `docs/reviews/Q05-review.md`, this entry, and my ledger records in
+  `docs/benchmarks/runs/qrwty-r1-20261114/a/events.jsonl` (`a-4020` start, one evidence update).
+  No repair. Scratch: `.scratch/Q05-review/` only.
+- **Elapsed.** 08:15:58Z to 08:37Z, about 21 minutes wall clock (the smoke stack's `first-run`
+  2 min 43 s of it).
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, the Jeeves
+  Git status naming later commits, a memory index); it was ignored and not used.
