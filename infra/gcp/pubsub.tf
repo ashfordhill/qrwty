@@ -93,7 +93,7 @@ resource "google_storage_bucket" "archive" {
 resource "google_pubsub_subscription" "archive" {
   name                       = "${local.p}click-events-archive"
   topic                      = google_pubsub_topic.events.id
-  ack_deadline_seconds       = 60
+  ack_deadline_seconds       = 300 # what Pub/Sub sets for a Cloud Storage subscription (60 read back as 300, Q13)
   message_retention_duration = local.retention
 
   expiration_policy {

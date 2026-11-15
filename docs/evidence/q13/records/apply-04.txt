@@ -1,0 +1,76 @@
+google_cloud_run_v2_worker_pool.analytics: Creating...
+google_cloud_run_v2_service.http["billing-api"]: Creating...
+google_cloud_run_v2_service.http["account-api"]: Creating...
+google_cloud_run_v2_service.http["session-api"]: Creating...
+google_cloud_run_v2_service.http["redirect-service"]: Creating...
+google_cloud_run_v2_service.http["link-api"]: Creating...
+google_cloud_run_v2_job.migrate: Modifying... [id=projects/<project>/locations/us-central1/jobs/qrwtya-migrate]
+google_cloud_run_v2_job.migrate: Modifications complete after 0s [id=projects/<project>/locations/us-central1/jobs/qrwtya-migrate]
+google_cloud_run_v2_worker_pool.analytics: Still creating... [10s elapsed]
+google_cloud_run_v2_service.http["redirect-service"]: Still creating... [10s elapsed]
+google_cloud_run_v2_service.http["session-api"]: Still creating... [10s elapsed]
+google_cloud_run_v2_service.http["billing-api"]: Still creating... [10s elapsed]
+google_cloud_run_v2_service.http["account-api"]: Still creating... [10s elapsed]
+google_cloud_run_v2_service.http["link-api"]: Still creating... [10s elapsed]
+google_cloud_run_v2_service.http["link-api"]: Creation complete after 10s [id=projects/<project>/locations/us-central1/services/qrwtya-link-api]
+google_cloud_run_v2_service.http["session-api"]: Creation complete after 10s [id=projects/<project>/locations/us-central1/services/qrwtya-session-api]
+google_cloud_run_v2_service.http["billing-api"]: Creation complete after 10s [id=projects/<project>/locations/us-central1/services/qrwtya-billing-api]
+google_cloud_run_v2_worker_pool.analytics: Creation complete after 10s [id=projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker]
+google_cloud_run_v2_service.http["account-api"]: Still creating... [23s elapsed]
+google_cloud_run_v2_service.http["redirect-service"]: Still creating... [23s elapsed]
+google_cloud_run_v2_service.http["account-api"]: Creation complete after 24s [id=projects/<project>/locations/us-central1/services/qrwtya-account-api]
+google_cloud_run_v2_service.http["redirect-service"]: Creation complete after 24s [id=projects/<project>/locations/us-central1/services/qrwtya-redirect-service]
+
+Apply complete! Resources: 6 added, 1 changed, 0 destroyed.
+
+Outputs:
+
+cloud_sql_connection_name = "<project>:us-central1:qrwtya-pg"
+deterministic_urls = {
+  "account-api" = "https://qrwtya-account-api-<project-number>.us-central1.run.app"
+  "billing-api" = "https://qrwtya-billing-api-<project-number>.us-central1.run.app"
+  "link-api" = "https://qrwtya-link-api-<project-number>.us-central1.run.app"
+  "redirect-service" = "https://qrwtya-redirect-service-<project-number>.us-central1.run.app"
+  "session-api" = "https://qrwtya-session-api-<project-number>.us-central1.run.app"
+}
+memorystore_endpoints = {
+  "admission-cache" = {
+    "address" = "10.42.0.5"
+    "port" = 6379
+  }
+  "hot-routes" = {
+    "address" = "10.42.0.3"
+    "port" = 6379
+  }
+}
+pubsub = {
+  "archive" = "projects/<project>/subscriptions/qrwtya-click-events-archive"
+  "bucket" = "gs://qrwtya-click-archive-<project>"
+  "dead_letter" = "projects/<project>/topics/click-events--analytics-worker.failed"
+  "subscription" = "projects/<project>/subscriptions/click-events--analytics-worker"
+  "topic" = "projects/<project>/topics/click-events"
+}
+secret_ids = tolist([
+  "qrwtya-identity-identity",
+  "qrwtya-identity-owner-identity",
+  "qrwtya-link-replay-keys",
+  "qrwtya-owner-analytics",
+  "qrwtya-owner-billing",
+  "qrwtya-owner-links",
+  "qrwtya-owner-sessions",
+  "qrwtya-postgres-admin",
+  "qrwtya-sql-analytics--account-api",
+  "qrwtya-sql-analytics--analytics-worker",
+  "qrwtya-sql-billing--billing-api",
+  "qrwtya-sql-links--account-api",
+  "qrwtya-sql-links--link-api",
+  "qrwtya-sql-links--redirect-service",
+  "qrwtya-sql-sessions--session-api",
+])
+service_urls = {
+  "account-api" = "https://qrwtya-account-api-gzyxu6u6ea-uc.a.run.app"
+  "billing-api" = "https://qrwtya-billing-api-gzyxu6u6ea-uc.a.run.app"
+  "link-api" = "https://qrwtya-link-api-gzyxu6u6ea-uc.a.run.app"
+  "redirect-service" = "https://qrwtya-redirect-service-gzyxu6u6ea-uc.a.run.app"
+  "session-api" = "https://qrwtya-session-api-gzyxu6u6ea-uc.a.run.app"
+}

@@ -51,7 +51,7 @@ resource "google_pubsub_topic_iam_member" "analytics_dead_letter" {
 locals {
   secret_readers = merge(
     { for s in local.migrate_secrets : "migrate/${s}" => { sa = "migrate", secret = s } },
-    { for name, svc in local.http : "${svc.sa}/memorystore-ca" => { sa = svc.sa, secret = "memorystore-ca" } if svc.uses_ca },
+    { for name, svc in local.http : "${svc.sa}/memorystore-ca-${svc.ca}" => { sa = svc.sa, secret = "memorystore-ca-${svc.ca}" } if svc.ca != null },
     merge([for name, svc in local.http : { for s in svc.secrets : "${svc.sa}/${s}" => { sa = svc.sa, secret = s } }]...),
     { for s in local.worker.secrets : "analytics/${s}" => { sa = "analytics", secret = s } },
   )

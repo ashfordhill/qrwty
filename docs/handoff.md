@@ -1161,3 +1161,86 @@ nothing lost and no `qrwtya*` resource present. Full record: [Q06 checks](eviden
   7 min on this host's wall clock, which jumps.
 - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
   memory index); it was ignored.
+
+## Q13: arm A's one live deploy, recorded and torn down, 2026-11-15
+
+Arm A, Q13 attempt 1 (Q12a and Q13 combined; ledger `a-4542`, role implementer, phase cloud), from
+QRWTY `1d79868`. Generator: Jeeves `4e87f97`, only through the frozen export in `app/` (no Jeeves
+file read or run). OpenTofu 1.13.2 and the google 8.8.1 mirror the coordinator installed; nothing
+downloaded but the image's own build inputs. Status: **done, except free network leftovers
+(Q13b).** Record: [demo/index.html](evidence/q13/demo/index.html) (offline, sanitized); full
+account: [Q13 checks](evidence/q13/checks.md).
+
+- **Q04b.** `infra/gcp/validate.sh` exits 0: `tofu validate` passed at once, only `fmt` failed
+  (`locals.tf`). Re-run after every change; lint self-test 8/8.
+- **Requote.** Cloud Billing Catalog list prices, smallest tiers (db-f1-micro, 2 × shared-core-nano,
+  1 vCPU / 512 MiB): about USD 0.18 an hour, USD 131.74 a 730-hour month
+  ([cost-quote.json](evidence/q13/cost-quote.json)). The project's one budget (USD 50, alerts
+  USD 10/25/50) was reused; none created.
+- **Applied** with eleven saved plans: VPC, Cloud NAT, PSA, PSC policy, Cloud SQL by socket,
+  two Valkey instances (TLS, `AUTH_DISABLED`), Pub/Sub with dead letter and archive, seven service
+  accounts and IAM, 17 secrets (`link-replay-keys` added), Artifact Registry, five services, the
+  worker pool and the migration job, `QRWTY_PUBLIC_ORIGIN_URL` set. Two digests: Q06's app
+  (`a99d60c7…`) and the same with the AG-13 fix (`fa158f69…`). Auth0: `qrwtya-api` and an M2M
+  `qrwtya-web` for the probe.
+- **Probes.** P01, P02, P04, P06, P07, P08, P09, P11 passed; P03 and P05 passed after IaC fixes;
+  P10 and P12 partial. Valkey and Cloud SQL TLS: plain text refused, verify-full +PONG with each
+  instance's own CA, the other CA refused, Cloud SQL refuses TLS without a client certificate.
+  Migrations: two at once (one waits on the lock), a third with no template migration; no PUBLIC
+  or admin CONNECT, no runtime CREATE. Pub/Sub: 20 ACKed publishes (p50 44.6 ms) dead-lettered by
+  the worker stub with `NOT_IMPLEMENTED`, all 20 in the Avro archive, another account
+  PERMISSION_DENIED. Auth0: A's token accepted; changed audience, foreign issuer, unknown key,
+  malformed and expired tokens 401 (a validly signed other-audience token not run). Ingress:
+  internal services closed to the Internet, public origins IAM-protected (403), run.app closed or
+  protected. Rollout of image 2 under 1,501 requests: none failed; worker pool 1 → 2 → 1. P11's
+  revision refused naming `PUBSUB_EMULATOR_HOST`. Guest create from inside: 503
+  `reputation_unavailable` with Q06's code, then 201 with the fix and the link in Cloud SQL; Web
+  Risk's test URLs 422. Not run: Stripe test mode (Q10a), old instances' exit codes (AG-17),
+  D03 rollback and rotation.
+- **A-found gaps (cloud)** ([details](evidence/q13/a-found-gaps.md)): AG-13 (medium) no workload
+  identity for an External API; AG-14 (medium) tile calls send no ID token, so Cloud Run IAM can't
+  protect a called service; AG-15 (medium) `/healthz` is reserved by Cloud Run's front end; AG-16
+  (medium) no regional Pub/Sub endpoint under in-transit region enforcement; AG-17 (low) no drain
+  or exit log line. AG-03, AG-04, AG-05 and AG-06 held as Q04 predicted.
+- **IaC findings, fixed in `infra/gcp/`** (I-1 to I-10 in [gaps.json](evidence/q13/records/gaps.json)):
+  fmt; CLUSTER_DISABLED Valkey has no discovery endpoints (the first apply failed late); one CA per
+  instance; the job needed VPC egress; Cloud NAT (a fresh task's first connection through it failed
+  for 12–48 s); the archive's 300 s ack deadline; volume order; a declared `traffic` block (a manual
+  pin had survived the apply); Billing API internal and public origins IAM-protected.
+- **Application change (AG-13).** `app/src/modules/link-api/link-operations/google-credentials.ts`
+  (new), `reputation.ts`, `service.ts`, a unit test file and the production profile (overlay
+  source and installed copy): `QRWTY_REPUTATION_CREDENTIALS=metadata` sends Web Risk Link API's
+  service-account token; the preflight requires it. Under Node 24.21.0: build, test typecheck,
+  Biome and 127 unit tests (9 new) pass; `verify-generated.py app`: 64 generated files unchanged.
+- **qrwty.io route.** Not added: the Worker has no proxy code and A's public origins need an
+  ID token (AG-14). No Cloudflare call.
+- **Teardown.** Probe jobs, probe secret and service account by `gcloud`; archive objects; saved
+  plans for protection off and destroy (`prevent_destroy` dropped only in a scratch copy of
+  `pubsub.tf`); Auth0 `qrwtya-web` (and grant) and `qrwtya-api` deleted; local images removed by
+  name. Nothing billable is left; budget kept; no image kept. **Spend:** about **USD 0.23**,
+  computed from each resource's cloud lifetime at list prices ([spend.json](evidence/q13/records/spend.json));
+  not a billing figure (billing reports lag; no export).
+- **Q13b (free, USD 0 an hour).** Left: VPC `qrwtya-vpc`, subnet `qrwtya-run`, PSA range
+  `qrwtya-psa` and its `servicenetworking-googleapis-com` peering, and two Cloud Run-managed
+  `serverless-ipv4-cloudrun-*` reservations on the subnet. The subnet waits for Cloud Run to release
+  those reservations; the PSA connection was refused three times (its producer, Cloud SQL, still
+  held it). Teardown, once they release: `.scratch/Q13/tf.sh plan -destroy -out=plans/q13b.tfplan`
+  then `.scratch/Q13/tf.sh apply plans/q13b.tfplan` (state in `.scratch/Q13/tf/`), or by name:
+  `gcloud compute networks peerings delete servicenetworking-googleapis-com --network=qrwtya-vpc`,
+  `gcloud compute addresses delete qrwtya-psa --global`, `gcloud compute networks subnets delete
+  qrwtya-run --region=us-central1`, `gcloud compute networks delete qrwtya-vpc`; then
+  `docs/evidence/q13/commands/inventory.sh` must list nothing.
+- **Checks.** `validate.sh` exit 0; the probes above; the record renders offline in headless
+  Chromium with every host unresolvable (desktop and 390 px) and its CSP allows no request; a
+  by-value secret scan of the evidence and the unit's files is clean (below); teardown verified by
+  inventory; ledger validates; `git diff --check` clean.
+- **Read.** The packet, `AGENTS.md`, this file (S01, Q04, Q05 and its review, Q06), owner
+  decisions §1–§4, §10–§12 and 2026-11-15, `units.md` (contract, Q12a, Q13), pack v1.6's D, G and
+  R rows, `evidence/q04` (a-found gaps, probe manifest, records), `evidence/q06` a-found gaps,
+  `infra/`, the app's runtime and Link API stub, `deploy/cloudflare/src/router.ts` and
+  `wrangler.toml`. Nothing in qrwty-baseline; in `~/.config/qrwty/` only `auth0.env` (loaded with
+  `set -a`, never printed). Arm B's resources were only listed by name in the inventory.
+- **Elapsed.** About 90 minutes on `/proc/uptime` to the commit; the host clock shows 11:44Z to
+  about 13:30Z (it runs ahead of uptime on this host).
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
+  memory index); it was ignored.

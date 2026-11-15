@@ -1,0 +1,9 @@
+provider_installation {
+  filesystem_mirror {
+    path    = "/home/ash/github/qrwty/.scratch/tools/providers"
+    include = ["registry.opentofu.org/hashicorp/google"]
+  }
+  direct {
+    exclude = ["registry.opentofu.org/hashicorp/google"]
+  }
+}

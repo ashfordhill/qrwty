@@ -69,6 +69,28 @@ variable "analytics_workers" {
   default     = 1
 }
 
+variable "public_origin" {
+  description = "Link API's QRWTY_PUBLIC_ORIGIN_URL: the public origin short links are built on (Q06)."
+  type        = string
+  default     = "https://qrwty.io"
+
+  validation {
+    condition     = can(regex("^https://[a-z0-9.-]+$", var.public_origin))
+    error_message = "public_origin must be an https origin with no path."
+  }
+}
+
+variable "reputation_credentials" {
+  description = "Link API's QRWTY_REPUTATION_CREDENTIALS: \"metadata\" sends Web Risk the service account's access token from the metadata server (Q13, AG-13). Null leaves it unset (the Q06 image sends none)."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.reputation_credentials == null || var.reputation_credentials == "metadata"
+    error_message = "reputation_credentials must be null or \"metadata\"."
+  }
+}
+
 variable "deletion_protection" {
   description = "Protect stateful resources (Cloud SQL, Memorystore, Cloud Run). Teardown sets false and applies before destroy."
   type        = bool

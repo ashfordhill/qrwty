@@ -1,0 +1,213 @@
+data.google_project.this: Reading...
+google_service_account.run["analytics"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_service_account.run["account"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-account@<project>.iam.gserviceaccount.com]
+google_service_account.run["session"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-session@<project>.iam.gserviceaccount.com]
+google_service_account.run["redirect"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_service_account.run["link"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-link@<project>.iam.gserviceaccount.com]
+google_service_account.run["billing"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-billing@<project>.iam.gserviceaccount.com]
+google_service_account.run["migrate"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_pubsub_topic.dead_letter: Refreshing state... [id=projects/<project>/topics/click-events--analytics-worker.failed]
+google_storage_bucket.archive: Refreshing state... [id=qrwtya-click-archive-<project>]
+google_project_service.api["compute.googleapis.com"]: Refreshing state... [id=<project>/compute.googleapis.com]
+google_project_service.api["servicenetworking.googleapis.com"]: Refreshing state... [id=<project>/servicenetworking.googleapis.com]
+google_project_service.api["sqladmin.googleapis.com"]: Refreshing state... [id=<project>/sqladmin.googleapis.com]
+google_project_service.api["networkconnectivity.googleapis.com"]: Refreshing state... [id=<project>/networkconnectivity.googleapis.com]
+google_project_service.api["webrisk.googleapis.com"]: Refreshing state... [id=<project>/webrisk.googleapis.com]
+google_project_service.api["iam.googleapis.com"]: Refreshing state... [id=<project>/iam.googleapis.com]
+google_project_service.api["storage.googleapis.com"]: Refreshing state... [id=<project>/storage.googleapis.com]
+google_project_service.api["pubsub.googleapis.com"]: Refreshing state... [id=<project>/pubsub.googleapis.com]
+google_project_service.api["secretmanager.googleapis.com"]: Refreshing state... [id=<project>/secretmanager.googleapis.com]
+data.google_project.this: Read complete after 1s [id=projects/<project>]
+google_project_service.api["memorystore.googleapis.com"]: Refreshing state... [id=<project>/memorystore.googleapis.com]
+google_project_service.api["run.googleapis.com"]: Refreshing state... [id=<project>/run.googleapis.com]
+google_project_iam_member.sql_client["link"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["session"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-session@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["redirect"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["account"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["migrate"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_project_service.api["artifactregistry.googleapis.com"]: Refreshing state... [id=<project>/artifactregistry.googleapis.com]
+google_project_iam_member.sql_client["billing"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-billing@<project>.iam.gserviceaccount.com]
+google_pubsub_topic_iam_member.analytics_dead_letter: Refreshing state... [id=projects/<project>/topics/click-events--analytics-worker.failed/roles/pubsub.publisher/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["analytics"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription.dead_letter: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker.failed]
+google_pubsub_topic_iam_member.dead_letter_publisher: Refreshing state... [id=projects/<project>/topics/click-events--analytics-worker.failed/roles/pubsub.publisher/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_storage_bucket_iam_member.archive_writer: Refreshing state... [id=b/qrwtya-click-archive-<project>/roles/storage.objectCreator/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_storage_bucket_iam_member.archive_reader: Refreshing state... [id=b/qrwtya-click-archive-<project>/roles/storage.legacyBucketReader/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_compute_network.vpc: Refreshing state... [id=projects/<project>/global/networks/qrwtya-vpc]
+google_artifact_registry_repository.images: Refreshing state... [id=projects/<project>/locations/us-central1/repositories/qrwtya-images]
+google_secret_manager_secret.s["identity-owner-identity"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-identity-owner-identity]
+google_secret_manager_secret.s["sql-billing--billing-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-billing--billing-api]
+google_secret_manager_secret.s["memorystore-ca-hot-routes"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-memorystore-ca-hot-routes]
+google_secret_manager_secret.s["owner-analytics"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-analytics]
+google_secret_manager_secret.s["sql-sessions--session-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-sessions--session-api]
+google_secret_manager_secret.s["sql-links--redirect-service"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--redirect-service]
+google_pubsub_topic.events: Refreshing state... [id=projects/<project>/topics/click-events]
+google_secret_manager_secret.s["identity-identity"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-identity-identity]
+google_secret_manager_secret.s["sql-links--account-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--account-api]
+google_secret_manager_secret.s["memorystore-ca-admission-cache"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-memorystore-ca-admission-cache]
+google_secret_manager_secret.s["owner-billing"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-billing]
+google_secret_manager_secret.s["owner-sessions"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-sessions]
+google_secret_manager_secret.s["sql-links--link-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--link-api]
+google_secret_manager_secret.s["owner-links"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-links]
+google_secret_manager_secret.s["sql-analytics--analytics-worker"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker]
+google_secret_manager_secret.s["sql-analytics--account-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-analytics--account-api]
+google_secret_manager_secret.s["link-replay-keys"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-link-replay-keys]
+google_secret_manager_secret.s["postgres-admin"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-postgres-admin]
+google_pubsub_topic_iam_member.redirect_publish: Refreshing state... [id=projects/<project>/topics/click-events/roles/pubsub.publisher/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription.analytics: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker]
+google_pubsub_topic_iam_member.redirect_probe: Refreshing state... [id=projects/<project>/topics/click-events/roles/pubsub.viewer/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription.archive: Refreshing state... [id=projects/<project>/subscriptions/qrwtya-click-events-archive]
+google_compute_global_address.psa: Refreshing state... [id=projects/<project>/global/addresses/qrwtya-psa]
+google_compute_subnetwork.run: Refreshing state... [id=projects/<project>/regions/us-central1/subnetworks/qrwtya-run]
+google_compute_router.nat: Refreshing state... [id=projects/<project>/regions/us-central1/routers/qrwtya-router]
+google_pubsub_subscription_iam_member.dead_letter_subscriber: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.subscriber/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_pubsub_subscription_iam_member.analytics_probe: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.viewer/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription_iam_member.analytics_consume: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.subscriber/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_network_connectivity_service_connection_policy.memorystore: Refreshing state... [id=projects/<project>/locations/us-central1/serviceConnectionPolicies/qrwtya-memorystore]
+google_service_networking_connection.psa: Refreshing state... [id=projects%2F<project>%2Fglobal%2Fnetworks%2Fqrwtya-vpc:servicenetworking.googleapis.com]
+google_memorystore_instance.cache["admission-cache"]: Refreshing state... [id=projects/<project>/locations/us-central1/instances/qrwtya-admission-cache]
+google_memorystore_instance.cache["hot-routes"]: Refreshing state... [id=projects/<project>/locations/us-central1/instances/qrwtya-hot-routes]
+google_compute_router_nat.nat: Refreshing state... [id=<project>/us-central1/qrwtya-router/qrwtya-nat]
+google_secret_manager_secret_version.memorystore_ca["hot-routes"]: Refreshing state... [id=projects/<project-number>/secrets/qrwtya-memorystore-ca-hot-routes/versions/1]
+google_secret_manager_secret_version.memorystore_ca["admission-cache"]: Refreshing state... [id=projects/<project-number>/secrets/qrwtya-memorystore-ca-admission-cache/versions/1]
+google_sql_database_instance.pg: Refreshing state... [id=qrwtya-pg]
+google_secret_manager_secret_iam_member.reader["redirect/sql-links--redirect-service"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--redirect-service/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--redirect-service"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--redirect-service/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/postgres-admin"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-postgres-admin/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["link/link-replay-keys"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-link-replay-keys/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--account-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-analytics--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-sessions"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-sessions/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["link/memorystore-ca-admission-cache"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-memorystore-ca-admission-cache/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["redirect/memorystore-ca-hot-routes"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-memorystore-ca-hot-routes/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["billing/sql-billing--billing-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-billing--billing-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-billing@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["analytics/sql-analytics--analytics-worker"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/identity-identity"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-identity-identity/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["session/sql-sessions--session-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-sessions--session-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-session@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--link-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--link-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["account/sql-analytics--account-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-analytics--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/identity-owner-identity"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-identity-owner-identity/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-links"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-links/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["link/sql-links--link-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--link-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--account-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--analytics-worker"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-billing--billing-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-billing--billing-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-analytics"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-analytics/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-sessions--session-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-sessions--session-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-billing"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-billing/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["account/sql-links--account-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com]
+google_cloud_run_v2_worker_pool.analytics: Refreshing state... [id=projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker]
+google_cloud_run_v2_job.migrate: Refreshing state... [id=projects/<project>/locations/us-central1/jobs/qrwtya-migrate]
+google_cloud_run_v2_service.http["session-api"]: Refreshing state... [id=projects/<project>/locations/us-central1/services/qrwtya-session-api]
+google_cloud_run_v2_service.http["billing-api"]: Refreshing state... [id=projects/<project>/locations/us-central1/services/qrwtya-billing-api]
+google_cloud_run_v2_service.http["account-api"]: Refreshing state... [id=projects/<project>/locations/us-central1/services/qrwtya-account-api]
+google_cloud_run_v2_service.http["redirect-service"]: Refreshing state... [id=projects/<project>/locations/us-central1/services/qrwtya-redirect-service]
+google_cloud_run_v2_service.http["link-api"]: Refreshing state... [id=projects/<project>/locations/us-central1/services/qrwtya-link-api]
+
+OpenTofu used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place (current -> planned)
+
+OpenTofu will perform the following actions:
+
+  # google_cloud_run_v2_job.migrate will be updated in-place
+  ~ resource "google_cloud_run_v2_job" "migrate" {
+      ~ deletion_protection      = true -> false
+        id                       = "projects/<project>/locations/us-central1/jobs/qrwtya-migrate"
+        name                     = "qrwtya-migrate"
+        # (22 unchanged attributes hidden)
+
+        # (1 unchanged block hidden)
+    }
+
+  # google_cloud_run_v2_service.http["account-api"] will be updated in-place
+  ~ resource "google_cloud_run_v2_service" "http" {
+      ~ deletion_protection     = true -> false
+        id                      = "projects/<project>/locations/us-central1/services/qrwtya-account-api"
+        name                    = "qrwtya-account-api"
+        # (31 unchanged attributes hidden)
+
+        # (3 unchanged blocks hidden)
+    }
+
+  # google_cloud_run_v2_service.http["billing-api"] will be updated in-place
+  ~ resource "google_cloud_run_v2_service" "http" {
+      ~ deletion_protection     = true -> false
+        id                      = "projects/<project>/locations/us-central1/services/qrwtya-billing-api"
+        name                    = "qrwtya-billing-api"
+        # (31 unchanged attributes hidden)
+
+        # (3 unchanged blocks hidden)
+    }
+
+  # google_cloud_run_v2_service.http["link-api"] will be updated in-place
+  ~ resource "google_cloud_run_v2_service" "http" {
+      ~ deletion_protection     = true -> false
+        id                      = "projects/<project>/locations/us-central1/services/qrwtya-link-api"
+        name                    = "qrwtya-link-api"
+        # (31 unchanged attributes hidden)
+
+        # (3 unchanged blocks hidden)
+    }
+
+  # google_cloud_run_v2_service.http["redirect-service"] will be updated in-place
+  ~ resource "google_cloud_run_v2_service" "http" {
+      ~ deletion_protection     = true -> false
+        id                      = "projects/<project>/locations/us-central1/services/qrwtya-redirect-service"
+        name                    = "qrwtya-redirect-service"
+        # (31 unchanged attributes hidden)
+
+        # (3 unchanged blocks hidden)
+    }
+
+  # google_cloud_run_v2_service.http["session-api"] will be updated in-place
+  ~ resource "google_cloud_run_v2_service" "http" {
+      ~ deletion_protection     = true -> false
+        id                      = "projects/<project>/locations/us-central1/services/qrwtya-session-api"
+        name                    = "qrwtya-session-api"
+        # (31 unchanged attributes hidden)
+
+        # (3 unchanged blocks hidden)
+    }
+
+  # google_cloud_run_v2_worker_pool.analytics will be updated in-place
+  ~ resource "google_cloud_run_v2_worker_pool" "analytics" {
+      ~ deletion_protection     = true -> false
+        id                      = "projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker"
+        name                    = "qrwtya-analytics-worker"
+        # (23 unchanged attributes hidden)
+
+        # (3 unchanged blocks hidden)
+    }
+
+  # google_memorystore_instance.cache["admission-cache"] will be updated in-place
+  ~ resource "google_memorystore_instance" "cache" {
+      ~ deletion_protection_enabled    = true -> false
+        id                             = "projects/<project>/locations/us-central1/instances/qrwtya-admission-cache"
+        name                           = "projects/<project>/locations/us-central1/instances/qrwtya-admission-cache"
+        # (31 unchanged attributes hidden)
+
+        # (3 unchanged blocks hidden)
+    }
+
+  # google_memorystore_instance.cache["hot-routes"] will be updated in-place
+  ~ resource "google_memorystore_instance" "cache" {
+      ~ deletion_protection_enabled    = true -> false
+        id                             = "projects/<project>/locations/us-central1/instances/qrwtya-hot-routes"
+        name                           = "projects/<project>/locations/us-central1/instances/qrwtya-hot-routes"
+        # (31 unchanged attributes hidden)
+
+        # (3 unchanged blocks hidden)
+    }
+
+  # google_sql_database_instance.pg will be updated in-place
+  ~ resource "google_sql_database_instance" "pg" {
+      ~ deletion_protection                  = true -> false
+        id                                   = "qrwtya-pg"
+        name                                 = "qrwtya-pg"
+      ~ root_password_wo                     = (write-only attribute)
+        # (18 unchanged attributes hidden)
+
+        # (2 unchanged blocks hidden)
+    }
+
+Plan: 0 to add, 10 to change, 0 to destroy.

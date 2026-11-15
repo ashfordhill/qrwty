@@ -1,0 +1,82 @@
+## run services
+qrwtya-account-api
+qrwtya-billing-api
+qrwtya-link-api
+qrwtya-redirect-service
+qrwtya-session-api
+## run jobs
+qrwtya-migrate
+qrwtya-probe
+qrwtya-probe-redirect
+qrwtya-probe-sql
+## run worker pools
+qrwtya-analytics-worker
+## cloud sql
+qrwtya-pg
+## memorystore
+qrwtya-admission-cache
+qrwtya-hot-routes
+## pubsub topics
+click-events--analytics-worker.failed
+click-events
+## pubsub subscriptions
+click-events--analytics-worker.failed
+qrwtya-click-events-archive
+click-events--analytics-worker
+## storage buckets
+qrwtya-click-archive-<project>
+## secrets
+qrwtya-identity-identity
+qrwtya-identity-owner-identity
+qrwtya-link-replay-keys
+qrwtya-memorystore-ca-admission-cache
+qrwtya-memorystore-ca-hot-routes
+qrwtya-owner-analytics
+qrwtya-owner-billing
+qrwtya-owner-links
+qrwtya-owner-sessions
+qrwtya-postgres-admin
+qrwtya-probe-auth0-web
+qrwtya-sql-analytics--account-api
+qrwtya-sql-analytics--analytics-worker
+qrwtya-sql-billing--billing-api
+qrwtya-sql-links--account-api
+qrwtya-sql-links--link-api
+qrwtya-sql-links--redirect-service
+qrwtya-sql-sessions--session-api
+## service accounts
+qrwtya-migrate
+qrwtya-redirect
+qrwtya-analytics
+qrwtya-billing
+qrwtya-session
+qrwtya-account
+qrwtya-probe
+qrwtya-link
+## networks
+qrwtya-vpc
+## subnets
+qrwtya-run
+## global addresses
+qrwtya-psa
+## routers
+qrwtya-router
+## forwarding rules on qrwtya-vpc
+sca-auto-fr-22c5b997-7001-43b7-9752-3eacebf254bd
+sca-auto-fr-390733b6-a295-4cee-a509-a93b49a75f38
+sca-auto-fr-76db9979-cc48-4d2b-98bd-cafb80fd33ef
+sca-auto-fr-c5d7a81e-ed1a-44f5-8d40-10130f43cc44
+## service connection policies
+qrwtya-memorystore
+## artifact registry
+qrwtya-images
+## vpc peerings on qrwtya-vpc
+servicenetworking-googleapis-com
+## project IAM members qrwtya-
+roles/cloudsql.client serviceAccount:qrwtya-account
+roles/cloudsql.client serviceAccount:qrwtya-analytics
+roles/cloudsql.client serviceAccount:qrwtya-billing
+roles/cloudsql.client serviceAccount:qrwtya-link
+roles/cloudsql.client serviceAccount:qrwtya-migrate
+roles/cloudsql.client serviceAccount:qrwtya-redirect
+roles/cloudsql.client serviceAccount:qrwtya-session

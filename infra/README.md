@@ -1,14 +1,18 @@
 # QRWTY arm A: deployment preparation
 
-Status: **locally verified; cloud activation pending.** Nothing here has been applied to GCP. Q04
-wrote it from the Jeeves `4e87f97` export of revision 83 with Click events on Google Cloud; the
-evidence is in [docs/evidence/q04](../docs/evidence/q04/checks.md).
+Status: **applied once and torn down (Q13, 2026-11-15).** Q04 wrote it from the Jeeves `4e87f97`
+export of revision 83 with Click events on Google Cloud ([Q04 evidence](../docs/evidence/q04/checks.md)).
+Q13 applied it with OpenTofu 1.13.2 and the google provider 8.8.1, fixed what the cloud showed
+(Cloud NAT, Memorystore's primary endpoint and per-instance CA, the migration job's VPC egress,
+declared traffic, read-back orders) until a plan reported no changes, ran the probes and destroyed
+it ([Q13 evidence](../docs/evidence/q13/checks.md), [record](../docs/evidence/q13/demo/index.html)).
+Nothing of it runs now; a few free network objects wait for Q13b.
 
 | Folder | What it is |
 | --- | --- |
 | [`app-overlay/`](app-overlay/) | Application-owned files that go into the export (Q05+ `app/`), never generated ones: `compose.override.yaml` (the local test profile), `scripts/qrwty-production-profile.mjs` (the production preflight) and `infra/qrwty/production-profile.json` (what it allows) |
 | [`local/`](local/) | Local harness: `tls-certs.sh` (throwaway CA), `install-overlay.py` (refuses any generated path), `verify-generated.py` (no generated file changed), `profile-check.mjs` (R01's production-profile start), `oracle-commands.mjs` and `ordinary-build.sh` (the oracle adapter's commands) |
-| [`gcp/`](gcp/) | OpenTofu draft: VPC, Cloud SQL, Memorystore, Pub/Sub and archive, IAM, secrets, Cloud Run services, worker pool and migration job. `validate.sh` is the offline check |
+| [`gcp/`](gcp/) | OpenTofu: VPC, Cloud NAT, Cloud SQL, Memorystore, Pub/Sub and archive, IAM, secrets, Cloud Run services, worker pool and migration job. `validate.sh` is the offline check; Q13's commands to apply and probe it are in `docs/evidence/q13/commands/` |
 | [`q12a/`](q12a/) | The live-probe manifest Q12a runs, its schema and validator |
 
 ## Local test profile

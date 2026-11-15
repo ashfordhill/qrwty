@@ -1,0 +1,1 @@
+{"ok":true,"lint":{"ok": true, "errors": []},"tofu":{"status": "ran", "fmt": 0, "init": 0, "validate": 0, "validateOutput": "{\n  \"format_version\": \"1.0\",\n  \"valid\": true,\n  \"error_count\": 0,\n  \"warning_count\": 0,\n  \"diagnostics\": []\n}"}}

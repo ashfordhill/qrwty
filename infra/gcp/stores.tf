@@ -42,7 +42,7 @@ resource "google_sql_database_instance" "pg" {
 # verify-full with the instance's managed CA), authorization off: IAM_AUTH needs an access token
 # refreshed hourly, which the generated cache client cannot send (AG-04); reached only through PSC.
 resource "google_memorystore_instance" "cache" {
-  for_each = toset(["hot-routes", "admission-cache"])
+  for_each = local.caches
 
   instance_id                 = "${local.p}${each.key}"
   location                    = var.region

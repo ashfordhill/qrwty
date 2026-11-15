@@ -3,13 +3,23 @@
 resource "google_cloud_run_v2_service" "http" {
   for_each = local.http
 
-  name                 = "${local.p}${each.key}"
-  location             = var.region
-  ingress              = each.value.ingress
-  invoker_iam_disabled = true # the generated tile clients send no ID token; internal-only ingress restricts link/account (Q12a probe)
+  name     = "${local.p}${each.key}"
+  location = var.region
+  ingress  = each.value.ingress
+  # An origin the Internet can reach requires Cloud Run IAM, so its run.app URL refuses anyone
+  # without roles/run.invoker (no allUsers binding). Internal-only services keep IAM off: the
+  # generated tile clients send no ID token, and internal ingress is their restriction.
+  invoker_iam_disabled = each.value.ingress != "INGRESS_TRAFFIC_ALL"
   deletion_protection  = var.deletion_protection
   labels = {
     arm = "a"
+  }
+
+  # All traffic on the latest revision, declared: without this block a traffic split or tag set
+  # outside OpenTofu survives every apply (Q13: a pinned revision kept serving the old image).
+  traffic {
+    type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+    percent = 100
   }
 
   template {
@@ -72,27 +82,23 @@ resource "google_cloud_run_v2_service" "http" {
         failure_threshold = 3
       }
 
+      # Secret volumes first, then the Cloud SQL one: the order Cloud Run reads them back in, so a
+      # plan shows no reordering diff (Q13).
+      dynamic "volume_mounts" {
+        for_each = toset(concat(each.value.secrets, each.value.ca == null ? [] : ["memorystore-ca-${each.value.ca}"]))
+        content {
+          name       = "s-${replace(volume_mounts.key, "--", "-")}"
+          mount_path = startswith(volume_mounts.key, "memorystore-ca-") ? local.ca_mount : "${local.secret_mount}/${volume_mounts.key}"
+        }
+      }
       volume_mounts {
         name       = "cloudsql"
         mount_path = "/cloudsql"
       }
-      dynamic "volume_mounts" {
-        for_each = toset(concat(each.value.secrets, each.value.uses_ca ? ["memorystore-ca"] : []))
-        content {
-          name       = "s-${replace(volume_mounts.key, "--", "-")}"
-          mount_path = volume_mounts.key == "memorystore-ca" ? local.ca_mount : "${local.secret_mount}/${volume_mounts.key}"
-        }
-      }
     }
 
-    volumes {
-      name = "cloudsql"
-      cloud_sql_instance {
-        instances = [google_sql_database_instance.pg.connection_name]
-      }
-    }
     dynamic "volumes" {
-      for_each = toset(concat(each.value.secrets, each.value.uses_ca ? ["memorystore-ca"] : []))
+      for_each = toset(concat(each.value.secrets, each.value.ca == null ? [] : ["memorystore-ca-${each.value.ca}"]))
       content {
         name = "s-${replace(volumes.key, "--", "-")}"
         secret {
@@ -102,6 +108,12 @@ resource "google_cloud_run_v2_service" "http" {
             path    = "value"
           }
         }
+      }
+    }
+    volumes {
+      name = "cloudsql"
+      cloud_sql_instance {
+        instances = [google_sql_database_instance.pg.connection_name]
       }
     }
   }
@@ -145,21 +157,15 @@ resource "google_cloud_run_v2_worker_pool" "analytics" {
         }
       }
       volume_mounts {
-        name       = "cloudsql"
-        mount_path = "/cloudsql"
-      }
-      volume_mounts {
         name       = "s-sql-analytics-analytics-worker"
         mount_path = "${local.secret_mount}/sql-analytics--analytics-worker"
       }
-    }
-
-    volumes {
-      name = "cloudsql"
-      cloud_sql_instance {
-        instances = [google_sql_database_instance.pg.connection_name]
+      volume_mounts {
+        name       = "cloudsql"
+        mount_path = "/cloudsql"
       }
     }
+
     volumes {
       name = "s-sql-analytics-analytics-worker"
       secret {
@@ -168,6 +174,12 @@ resource "google_cloud_run_v2_worker_pool" "analytics" {
           version = "latest"
           path    = "value"
         }
+      }
+    }
+    volumes {
+      name = "cloudsql"
+      cloud_sql_instance {
+        instances = [google_sql_database_instance.pg.connection_name]
       }
     }
   }
@@ -193,6 +205,17 @@ resource "google_cloud_run_v2_job" "migrate" {
       max_retries     = 0
       timeout         = "600s"
 
+      # The instance has only a private address: the Cloud SQL connector reaches it through the
+      # VPC, so the job needs Direct VPC egress like the services (without it every connection
+      # timed out after 5 s, Q13).
+      vpc_access {
+        egress = "ALL_TRAFFIC"
+        network_interfaces {
+          network    = google_compute_network.vpc.id
+          subnetwork = google_compute_subnetwork.run.id
+        }
+      }
+
       containers {
         image   = var.image
         command = ["/bin/sh", "-c", "node scripts/qrwty-production-profile.mjs migrate && SECRET_DIR=/tmp/qrwty-secrets exec node scripts/migrate.mjs"]
@@ -207,10 +230,6 @@ resource "google_cloud_run_v2_job" "migrate" {
             value = env.value
           }
         }
-        volume_mounts {
-          name       = "cloudsql"
-          mount_path = "/cloudsql"
-        }
         dynamic "volume_mounts" {
           for_each = toset(local.migrate_secrets)
           content {
@@ -218,14 +237,12 @@ resource "google_cloud_run_v2_job" "migrate" {
             mount_path = "${local.secret_mount}/${volume_mounts.key}"
           }
         }
-      }
-
-      volumes {
-        name = "cloudsql"
-        cloud_sql_instance {
-          instances = [google_sql_database_instance.pg.connection_name]
+        volume_mounts {
+          name       = "cloudsql"
+          mount_path = "/cloudsql"
         }
       }
+
       dynamic "volumes" {
         for_each = toset(local.migrate_secrets)
         content {
@@ -237,6 +254,12 @@ resource "google_cloud_run_v2_job" "migrate" {
               path    = "value"
             }
           }
+        }
+      }
+      volumes {
+        name = "cloudsql"
+        cloud_sql_instance {
+          instances = [google_sql_database_instance.pg.connection_name]
         }
       }
     }

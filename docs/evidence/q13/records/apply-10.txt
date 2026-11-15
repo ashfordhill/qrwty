@@ -1,0 +1,79 @@
+google_memorystore_instance.cache["hot-routes"]: Modifying... [id=projects/<project>/locations/us-central1/instances/qrwtya-hot-routes]
+google_memorystore_instance.cache["admission-cache"]: Modifying... [id=projects/<project>/locations/us-central1/instances/qrwtya-admission-cache]
+google_sql_database_instance.pg: Modifying... [id=qrwtya-pg]
+google_sql_database_instance.pg: Still modifying... [id=qrwtya-pg, 10s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still modifying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 10s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still modifying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 10s elapsed]
+google_sql_database_instance.pg: Modifications complete after 11s [id=qrwtya-pg]
+google_memorystore_instance.cache["hot-routes"]: Still modifying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 24s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still modifying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 24s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Modifications complete after 25s [id=projects/<project>/locations/us-central1/instances/qrwtya-admission-cache]
+google_memorystore_instance.cache["hot-routes"]: Modifications complete after 25s [id=projects/<project>/locations/us-central1/instances/qrwtya-hot-routes]
+google_cloud_run_v2_worker_pool.analytics: Modifying... [id=projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker]
+google_cloud_run_v2_service.http["session-api"]: Modifying... [id=projects/<project>/locations/us-central1/services/qrwtya-session-api]
+google_cloud_run_v2_service.http["billing-api"]: Modifying... [id=projects/<project>/locations/us-central1/services/qrwtya-billing-api]
+google_cloud_run_v2_service.http["account-api"]: Modifying... [id=projects/<project>/locations/us-central1/services/qrwtya-account-api]
+google_cloud_run_v2_service.http["link-api"]: Modifying... [id=projects/<project>/locations/us-central1/services/qrwtya-link-api]
+google_cloud_run_v2_service.http["redirect-service"]: Modifying... [id=projects/<project>/locations/us-central1/services/qrwtya-redirect-service]
+google_cloud_run_v2_job.migrate: Modifying... [id=projects/<project>/locations/us-central1/jobs/qrwtya-migrate]
+google_cloud_run_v2_service.http["redirect-service"]: Modifications complete after 0s [id=projects/<project>/locations/us-central1/services/qrwtya-redirect-service]
+google_cloud_run_v2_job.migrate: Modifications complete after 0s [id=projects/<project>/locations/us-central1/jobs/qrwtya-migrate]
+google_cloud_run_v2_service.http["account-api"]: Modifications complete after 0s [id=projects/<project>/locations/us-central1/services/qrwtya-account-api]
+google_cloud_run_v2_worker_pool.analytics: Modifications complete after 0s [id=projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker]
+google_cloud_run_v2_service.http["link-api"]: Modifications complete after 0s [id=projects/<project>/locations/us-central1/services/qrwtya-link-api]
+google_cloud_run_v2_service.http["session-api"]: Modifications complete after 0s [id=projects/<project>/locations/us-central1/services/qrwtya-session-api]
+google_cloud_run_v2_service.http["billing-api"]: Modifications complete after 0s [id=projects/<project>/locations/us-central1/services/qrwtya-billing-api]
+
+Apply complete! Resources: 0 added, 10 changed, 0 destroyed.
+
+Outputs:
+
+cloud_sql_connection_name = "<project>:us-central1:qrwtya-pg"
+deterministic_urls = {
+  "account-api" = "https://qrwtya-account-api-<project-number>.us-central1.run.app"
+  "billing-api" = "https://qrwtya-billing-api-<project-number>.us-central1.run.app"
+  "link-api" = "https://qrwtya-link-api-<project-number>.us-central1.run.app"
+  "redirect-service" = "https://qrwtya-redirect-service-<project-number>.us-central1.run.app"
+  "session-api" = "https://qrwtya-session-api-<project-number>.us-central1.run.app"
+}
+memorystore_endpoints = {
+  "admission-cache" = {
+    "address" = "10.42.0.5"
+    "port" = 6379
+  }
+  "hot-routes" = {
+    "address" = "10.42.0.3"
+    "port" = 6379
+  }
+}
+pubsub = {
+  "archive" = "projects/<project>/subscriptions/qrwtya-click-events-archive"
+  "bucket" = "gs://qrwtya-click-archive-<project>"
+  "dead_letter" = "projects/<project>/topics/click-events--analytics-worker.failed"
+  "subscription" = "projects/<project>/subscriptions/click-events--analytics-worker"
+  "topic" = "projects/<project>/topics/click-events"
+}
+secret_ids = tolist([
+  "qrwtya-identity-identity",
+  "qrwtya-identity-owner-identity",
+  "qrwtya-link-replay-keys",
+  "qrwtya-owner-analytics",
+  "qrwtya-owner-billing",
+  "qrwtya-owner-links",
+  "qrwtya-owner-sessions",
+  "qrwtya-postgres-admin",
+  "qrwtya-sql-analytics--account-api",
+  "qrwtya-sql-analytics--analytics-worker",
+  "qrwtya-sql-billing--billing-api",
+  "qrwtya-sql-links--account-api",
+  "qrwtya-sql-links--link-api",
+  "qrwtya-sql-links--redirect-service",
+  "qrwtya-sql-sessions--session-api",
+])
+service_urls = {
+  "account-api" = "https://qrwtya-account-api-gzyxu6u6ea-uc.a.run.app"
+  "billing-api" = "https://qrwtya-billing-api-gzyxu6u6ea-uc.a.run.app"
+  "link-api" = "https://qrwtya-link-api-gzyxu6u6ea-uc.a.run.app"
+  "redirect-service" = "https://qrwtya-redirect-service-gzyxu6u6ea-uc.a.run.app"
+  "session-api" = "https://qrwtya-session-api-gzyxu6u6ea-uc.a.run.app"
+}

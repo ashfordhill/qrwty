@@ -8,8 +8,9 @@ locals {
   subscription      = "click-events--analytics-worker"
   dead_letter_topic = "click-events--analytics-worker.failed"
 
-  secret_mount = "/var/run/qrwty-secrets" # QRWTY_SECRET_MOUNT_DIR: one volume per secret, file "value"
-  ca_mount     = "/var/run/qrwty-tls/memorystore-ca"
+  secret_mount = "/var/run/qrwty-secrets"            # QRWTY_SECRET_MOUNT_DIR: one volume per secret, file "value"
+  ca_mount     = "/var/run/qrwty-tls/memorystore-ca" # the CA of the one cache a process uses
+  caches       = toset(["hot-routes", "admission-cache"])
   issuer       = "https://${var.auth0_domain}/"
 
   # Cloud Run's deterministic service URLs (https://<service>-<project number>.<region>.run.app),
@@ -21,9 +22,15 @@ locals {
     "JEEVES_DATABASE_${upper(d)}_PORT" = "5432"
     "JEEVES_DATABASE_${upper(d)}_TLS"  = "disable" # a Unix socket: the Cloud SQL connector encrypts
   } }
+  # A CLUSTER_DISABLED instance reports no discovery_endpoints (deprecated, empty: Q13); its
+  # primary endpoint is the PSC auto connection of type CONNECTION_TYPE_PRIMARY.
+  cache_primary = { for c, i in google_memorystore_instance.cache : c => one([
+    for conn in flatten([for e in i.endpoints : e.connections]) : conn.psc_auto_connection[0]
+    if length(conn.psc_auto_connection) > 0 && conn.psc_auto_connection[0].connection_type == "CONNECTION_TYPE_PRIMARY"
+  ]) }
   cache = { for c, i in google_memorystore_instance.cache : c => merge({
-    "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_HOST"    = i.discovery_endpoints[0].address
-    "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_PORT"    = tostring(i.discovery_endpoints[0].port)
+    "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_HOST"    = local.cache_primary[c].ip_address
+    "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_PORT"    = tostring(local.cache_primary[c].port)
     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_TLS"     = "verify-full"
     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_CA_FILE" = "${local.ca_mount}/value"
     }, var.memorystore_tls_servername == null ? {} : {
@@ -44,12 +51,12 @@ locals {
   # (compose.yaml secrets), and how it is reached. Values are production values; none is secret.
   http = {
     "redirect-service" = {
-      env      = merge(local.db.links, local.cache["hot-routes"], { JEEVES_PUBSUB_PROJECT = var.project_id, QRWTY_CACHE_AUTH_DISABLED = "true" })
-      secrets  = ["sql-links--redirect-service"]
-      uses_ca  = true
-      ingress  = "INGRESS_TRAFFIC_ALL" # the qrwty.io Worker is the trusted edge (Q13 restricts the origin)
-      sa       = "redirect"
-      min      = 1
+      env     = merge(local.db.links, local.cache["hot-routes"], { JEEVES_PUBSUB_PROJECT = var.project_id, QRWTY_CACHE_AUTH_DISABLED = "true" })
+      secrets = ["sql-links--redirect-service"]
+      ca      = "hot-routes"          # Memorystore's CA is per instance (GOOGLE_MANAGED_PER_INSTANCE_CA, Q13)
+      ingress = "INGRESS_TRAFFIC_ALL" # the qrwty.io Worker is the trusted edge (Q13 restricts the origin)
+      sa      = "redirect"
+      min     = 1
     }
     "session-api" = {
       env = merge(local.db.sessions, {
@@ -59,7 +66,7 @@ locals {
         JEEVES_TILE_LINK_API_URL     = "https://${local.p}link-api-${data.google_project.this.number}.${var.region}.run.app"
       })
       secrets = ["sql-sessions--session-api"]
-      uses_ca = false
+      ca      = null
       ingress = "INGRESS_TRAFFIC_ALL"
       sa      = "session"
       min     = 0
@@ -69,9 +76,10 @@ locals {
         JEEVES_EXTERNAL_REPUTATION_API_URL = "https://webrisk.googleapis.com"
         JEEVES_TILE_BILLING_API_URL        = "https://${local.p}billing-api-${data.google_project.this.number}.${var.region}.run.app"
         QRWTY_CACHE_AUTH_DISABLED          = "true"
-      })
-      secrets = ["sql-links--link-api"]
-      uses_ca = true
+        QRWTY_PUBLIC_ORIGIN_URL            = var.public_origin # short URLs and loop rejection (Q06, AG-10)
+      }, var.reputation_credentials == null ? {} : { QRWTY_REPUTATION_CREDENTIALS = var.reputation_credentials })
+      secrets = ["sql-links--link-api", "link-replay-keys"] # link-replay-keys: Q06's claim-proof seal ring
+      ca      = "admission-cache"
       ingress = "INGRESS_TRAFFIC_INTERNAL_ONLY"
       sa      = "link"
       min     = 0
@@ -81,7 +89,7 @@ locals {
         JEEVES_TILE_BILLING_API_URL = "https://${local.p}billing-api-${data.google_project.this.number}.${var.region}.run.app"
       })
       secrets = ["sql-analytics--account-api", "sql-links--account-api"]
-      uses_ca = false
+      ca      = null
       ingress = "INGRESS_TRAFFIC_INTERNAL_ONLY"
       sa      = "account"
       min     = 0
@@ -89,8 +97,10 @@ locals {
     "billing-api" = {
       env     = merge(local.db.billing, local.oidc, { JEEVES_EXTERNAL_STRIPE_API_URL = "https://api.stripe.com" })
       secrets = ["sql-billing--billing-api"]
-      uses_ca = false
-      ingress = "INGRESS_TRAFFIC_ALL" # Stripe's signed webhooks arrive here through the edge
+      ca      = null
+      # Internal until Stripe's signed webhooks exist (Q10a, not run): the tile clients that call it
+      # send no ID token, so it can't be both public and IAM-protected (Q13 finding).
+      ingress = "INGRESS_TRAFFIC_INTERNAL_ONLY"
       sa      = "billing"
       min     = 0
     }
@@ -106,8 +116,9 @@ locals {
     "sql-billing--billing-api", "sql-links--link-api", "sql-links--redirect-service", "sql-sessions--session-api",
   ]
   # Every credential: a Secret Manager secret per generated name. The caches have none: Memorystore
-  # runs AUTH_DISABLED (AG-04), and the preflight gives the client an empty credential.
-  secrets = toset(concat(local.migrate_secrets, ["memorystore-ca"]))
+  # runs AUTH_DISABLED (AG-04), and the preflight gives the client an empty credential. Each
+  # instance has its own managed CA, so each has its own public CA secret.
+  secrets = toset(concat(local.migrate_secrets, [for c in local.caches : "memorystore-ca-${c}"], ["link-replay-keys"]))
 
   service_accounts = {
     redirect  = "Redirect service"

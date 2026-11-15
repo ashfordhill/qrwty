@@ -19,11 +19,12 @@ resource "google_secret_manager_secret" "s" {
   depends_on = [google_project_service.api]
 }
 
-# Both instances are created in one project and region; Q12a confirms they share the managed CA
-# (if not, this becomes one CA secret per cache).
+# Each instance has its own managed CA (serverCaMode GOOGLE_MANAGED_PER_INSTANCE_CA; the two
+# instances' CAs differed in Q13), so each cache's public CA is its own secret.
 resource "google_secret_manager_secret_version" "memorystore_ca" {
-  secret      = google_secret_manager_secret.s["memorystore-ca"].id
-  secret_data = join("\n", flatten([for ca in google_memorystore_instance.cache["hot-routes"].managed_server_ca[0].ca_certs : ca.certificates]))
+  for_each    = local.caches
+  secret      = google_secret_manager_secret.s["memorystore-ca-${each.key}"].id
+  secret_data = join("\n", flatten([for ca in google_memorystore_instance.cache[each.key].managed_server_ca[0].ca_certs : ca.certificates]))
 }
 
 # Images: one repository; the same digest for every process and the migration job.

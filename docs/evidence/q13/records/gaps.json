@@ -1,0 +1,91 @@
+{
+ "jeeves": [
+  {
+   "id": "AG-13",
+   "severity": "Medium",
+   "where": "module-clients.ts.template (externalTarget: 'the client reads no credential'); jeeves-generator README",
+   "gap": "An External API client has no workload-identity credential. A stub that calls a Google API (Web Risk) can only add a header itself; the documented way is a credential from a SECRET_DIR file, i.e. a long-lived API key. On Cloud Run, Link API's Q06 code got 403 from Web Risk and every guest create failed closed (503).",
+   "workaround": "Application files: link-operations/google-credentials.ts fetches Link API's service-account token from the metadata server (cached, monotonic, one deadline with the lookup) when QRWTY_REPUTATION_CREDENTIALS=metadata; the production profile requires that value. 9 unit tests."
+  },
+  {
+   "id": "AG-14",
+   "severity": "Medium",
+   "where": "module-clients.ts.template (httpTarget)",
+   "gap": "Tile-to-tile calls carry no ID token, so Cloud Run's invoker IAM can't protect a service another tile calls: such a service must be internal-only with IAM off, and any VPC caller can reach it. A public origin can be IAM-protected only if no tile calls it (Billing API had to become internal; Stripe webhooks would need it public).",
+   "workaround": "IaC: internal ingress with IAM off for Link, Account and Billing API; IAM required for the public Redirect and Session origins (no allUsers)."
+  },
+  {
+   "id": "AG-15",
+   "severity": "Medium",
+   "where": "http.ts.template (the reserved /healthz route); probe wiring",
+   "gap": "The generated health route /healthz is a path Cloud Run's front end reserves: <service>.run.app/healthz answers Google's 404 page before the container. Only Cloud Run's own startup and liveness probes reach it, so no edge, uptime check or tile can read a process's health over HTTP.",
+   "workaround": "None needed for this deploy (Cloud Run's probes work); P09 used the sign-in me routes to show reachability."
+  },
+  {
+   "id": "AG-16",
+   "severity": "Medium",
+   "where": "module-clients.ts.template (pubsubPublisher, pubsubLoop: new PubSub without apiEndpoint)",
+   "gap": "The Pub/Sub clients always use the global endpoint and have no regional-endpoint binding. The durable-clicks contract pins storage to us-central1 with in-transit enforcement; Pub/Sub then refuses any request the global endpoint routes to another region (FAILED_PRECONDITION, seen from outside the region). The generated publisher and worker work only because Google routes them to us-central1.",
+   "workaround": "None in the app; operators pull dead letters through https://us-central1-pubsub.googleapis.com/. Remedy: JEEVES_PUBSUB_ENDPOINT, required when the topic enforces in transit."
+  },
+  {
+   "id": "AG-17",
+   "severity": "Low",
+   "where": "process.ts.template (runProcess)",
+   "gap": "A process logs 'Application ready' but nothing when SIGTERM arrives, when its drain starts or ends, or with what code it exits; Cloud Run logs no exit for a service instance either. A rollout's drain can't be shown from logs (P10).",
+   "workaround": "P10 shows the drain by traffic instead: 1,501 requests during the rollout, none failed."
+  }
+ ],
+ "deployment": [
+  {
+   "id": "I-1",
+   "finding": "Q04b: tofu validate passed at once; only tofu fmt failed (locals.tf alignment).",
+   "fix": "tofu fmt; validate.sh exits 0 (fmt 0, init 0, validate 0); lint self-test 8/8."
+  },
+  {
+   "id": "I-2",
+   "finding": "A CLUSTER_DISABLED Memorystore instance reports no discovery_endpoints (deprecated, empty). The first apply created all 93 resources' worth of stores but failed evaluating the cache variables, so 24 secret IAM bindings and the outputs were never applied.",
+   "fix": "locals.cache_primary: the PSC auto connection of type CONNECTION_TYPE_PRIMARY (address and port); outputs use it."
+  },
+  {
+   "id": "I-3",
+   "finding": "Each Memorystore instance has its own managed CA (GOOGLE_MANAGED_PER_INSTANCE_CA); the IaC had one CA secret from hot-routes, which Link API's admission-cache would have refused.",
+   "fix": "One public CA secret per cache (qrwtya-memorystore-ca-<cache>), mounted for the one process that uses it; the probe shows the other instance's CA is refused."
+  },
+  {
+   "id": "I-4",
+   "finding": "The migration job had no VPC egress: the Cloud SQL connector couldn't reach the private-only instance and both first executions timed out (pg 'timeout expired' after 5 s, uncaught).",
+   "fix": "vpc_access (Direct VPC egress, ALL_TRAFFIC) on the job, as on the services."
+  },
+  {
+   "id": "I-5",
+   "finding": "Cloud Run's Direct VPC egress with ALL_TRAFFIC leaves no Internet route: Auth0's key set, the tenant origin and Stripe need a NAT. Added before the first apply. Measured: a fresh task's first connection through the NAT failed for 12 s and 48 s in two runs, a second destination for about 4 s; Google APIs over Private Google Access worked at once.",
+   "fix": "qrwtya-router and qrwtya-nat (AUTO_ONLY, the run subnet only)."
+  },
+  {
+   "id": "I-6",
+   "finding": "Pub/Sub reads the archive (Cloud Storage) subscription's ack deadline back as 300 s; the IaC said 60, a perpetual diff.",
+   "fix": "ack_deadline_seconds = 300 on the archive subscription."
+  },
+  {
+   "id": "I-7",
+   "finding": "Cloud Run returns secret volumes before the Cloud SQL volume; the IaC's order made every plan show a reorder of all six resources.",
+   "fix": "Secret volumes and mounts first; the final plan reports no changes."
+  },
+  {
+   "id": "I-8",
+   "finding": "The services declared no traffic block, so P11's manual pin (gcloud --no-traffic) survived the image-2 apply: Session API kept serving image 1 with a dangling tag.",
+   "fix": "traffic { LATEST 100 } on every service; the next apply moved Session API to its latest revision and dropped the tag."
+  },
+  {
+   "id": "I-9",
+   "finding": "Billing API was public (for Stripe webhooks through the edge), but tile clients can't authenticate to an IAM-protected origin (AG-14) and no edge exists in this release.",
+   "fix": "Billing API internal; public origins (Redirect, Session) require Cloud Run IAM. The qrwty.io Worker route was not added: it would need proxy code, not only a route, and an edge credential the origin can verify."
+  },
+  {
+   "id": "I-10",
+   "finding": "Additions the Q06 handoff asked for and the cloud needs.",
+   "fix": "Secret link-replay-keys (mounted for Link API), QRWTY_PUBLIC_ORIGIN_URL = https://qrwty.io, webrisk.googleapis.com in the API list, QRWTY_REPUTATION_CREDENTIALS = metadata with image 2."
+  }
+ ]
+}

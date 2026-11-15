@@ -1,0 +1,195 @@
+{
+ "recordedAt": "2026-11-15T11:52:38Z",
+ "source": "Cloud Billing Catalog API v1 services/*/skus, currencyCode USD, list prices before credits; fetched with the owner's gcloud user and x-goog-user-project = the trial project",
+ "region": "us-central1",
+ "tiers": {
+  "cloudSql": "db-f1-micro (the smallest shared-core tier; ZONAL; 10 GiB)",
+  "memorystore": "SHARED_CORE_NANO, 1 shard, 0 replicas, two instances (one per Cache tile)",
+  "cloudRun": "1 vCPU, 512 MiB, cpu_idle on services, max 3; redirect min 1, others min 0; worker pool 1 instance"
+ },
+ "budget": {
+  "reused": "the project's existing budget (displayName 'qrwtyb monthly budget (trial credit)', USD 50, thresholds 20 %, 50 %, 100 % = USD 10, 25, 50, current spend, credits excluded, filtered to this project); none created"
+ },
+ "fixedHourly": [
+  {
+   "resource": "Cloud SQL for PostgreSQL zonal db-f1-micro (Enterprise, qrwtya-pg)",
+   "sku": "9662-B51E-5089/C2D4-F7DF-B8D0",
+   "unitPriceUsd": 0.0105,
+   "unit": "hour",
+   "quantity": 1,
+   "usdPerHour": 0.0105
+  },
+  {
+   "resource": "Cloud SQL zonal standard storage, 10 GiB",
+   "sku": "9662-B51E-5089/C18F-7FE0-0717",
+   "unitPriceUsd": 0.17,
+   "unit": "GiB-month",
+   "quantity": 10,
+   "usdPerHour": 0.002329
+  },
+  {
+   "resource": "Memorystore for Valkey shared-core-nano node (hot-routes, admission-cache)",
+   "sku": "A2B5-E0F1-B0F3/1E97-7EC7-226D",
+   "unitPriceUsd": 0.0318,
+   "unit": "node-hour",
+   "quantity": 2,
+   "usdPerHour": 0.0636
+  },
+  {
+   "resource": "Private Service Connect consumer endpoints (Memorystore; count confirmed after apply)",
+   "sku": "E505-1604-58F8/9E4E-F9A7-5EAE",
+   "unitPriceUsd": 0.01,
+   "unit": "endpoint-hour",
+   "quantity": 4,
+   "usdPerHour": 0.04
+  },
+  {
+   "resource": "Cloud NAT gateway uptime",
+   "sku": "E505-1604-58F8/32E2-4EFC-EF9F",
+   "unitPriceUsd": 0.0014,
+   "unit": "hour",
+   "quantity": 1,
+   "usdPerHour": 0.0014
+  },
+  {
+   "resource": "Cloud NAT IP (AUTO_ONLY, one address)",
+   "sku": "E505-1604-58F8/8515-9425-D2CE",
+   "unitPriceUsd": 0.005,
+   "unit": "IP-hour",
+   "quantity": 1,
+   "usdPerHour": 0.005
+  },
+  {
+   "resource": "Cloud Run min instance, redirect-service (1 vCPU idle, request-based)",
+   "sku": "152E-C115-5142/7EBB-8579-2C98",
+   "unitPriceUsd": 2.5e-06,
+   "unit": "vCPU-second",
+   "quantity": 3600,
+   "usdPerHour": 0.009
+  },
+  {
+   "resource": "Cloud Run min instance memory, redirect-service (0.5 GiB idle)",
+   "sku": "152E-C115-5142/740D-08F2-7A11",
+   "unitPriceUsd": 2.5e-06,
+   "unit": "GiB-second",
+   "quantity": 1800.0,
+   "usdPerHour": 0.0045
+  },
+  {
+   "resource": "Cloud Run worker pool CPU, analytics-worker (1 vCPU always on)",
+   "sku": "152E-C115-5142/BF8A-6421-7754",
+   "unitPriceUsd": 1.1244e-05,
+   "unit": "vCPU-second",
+   "quantity": 3600,
+   "usdPerHour": 0.040478
+  },
+  {
+   "resource": "Cloud Run worker pool memory, analytics-worker (0.5 GiB)",
+   "sku": "152E-C115-5142/7199-FFC2-0D21",
+   "unitPriceUsd": 1.235e-06,
+   "unit": "GiB-second",
+   "quantity": 1800.0,
+   "usdPerHour": 0.002223
+  },
+  {
+   "resource": "Secret Manager active secret versions (17; the first 6 per account are free, counted as paid)",
+   "sku": "EE82-7A5E-871C/7756-ADEF-84F4",
+   "unitPriceUsd": 0.06,
+   "unit": "version-month",
+   "quantity": 17,
+   "usdPerHour": 0.001397
+  },
+  {
+   "resource": "Artifact Registry storage (about 0.25 GB; the first 0.5 GB per account is free, counted as paid)",
+   "sku": "149C-F9EC-3994/8502-299A-ABAF",
+   "unitPriceUsd": 0.1,
+   "unit": "GiB-month",
+   "quantity": 0.25,
+   "usdPerHour": 3.4e-05
+  }
+ ],
+ "estimatedUsdPerHour": 0.1805,
+ "estimatedUsdPer730hMonth": 131.74,
+ "usageBased": [
+  {
+   "resource": "Cloud Run request-based CPU while serving",
+   "sku": "152E-C115-5142/4856-B847-F1EB",
+   "unitPriceUsd": 2.4e-05,
+   "unit": "vCPU-second"
+  },
+  {
+   "resource": "Cloud Run request-based memory while serving",
+   "sku": "152E-C115-5142/02A2-9231-36A6",
+   "unitPriceUsd": 2.5e-06,
+   "unit": "GiB-second"
+  },
+  {
+   "resource": "Cloud Run jobs CPU (migrate, probe)",
+   "sku": "152E-C115-5142/257B-2A84-3396",
+   "unitPriceUsd": 1.8e-05,
+   "unit": "vCPU-second"
+  },
+  {
+   "resource": "Cloud Run jobs memory",
+   "sku": "152E-C115-5142/8A79-9F45-5F32",
+   "unitPriceUsd": 2e-06,
+   "unit": "GiB-second"
+  },
+  {
+   "resource": "Cloud Run requests (first 2 million a month free)",
+   "sku": "152E-C115-5142/2DA5-55D3-E679",
+   "unitPriceUsd": 4e-07,
+   "unit": "request"
+  },
+  {
+   "resource": "Pub/Sub message delivery basic (first 10 GiB a month free)",
+   "sku": "A1E8-BE35-7EBC/027D-B6C7-CCA2",
+   "unitPriceUsd": 40.0,
+   "unit": "TiB"
+  },
+  {
+   "resource": "Pub/Sub delivery to Cloud Storage (archive)",
+   "sku": "A1E8-BE35-7EBC/2792-0D28-83D3",
+   "unitPriceUsd": 50.0,
+   "unit": "TiB"
+  },
+  {
+   "resource": "Pub/Sub retained acknowledged messages",
+   "sku": "A1E8-BE35-7EBC/3C0B-A83B-E6EE",
+   "unitPriceUsd": 0.27,
+   "unit": "GiB-month"
+  },
+  {
+   "resource": "Cloud Storage standard, US regional (first 5 GiB free)",
+   "sku": "95FF-2EF5-5EA1/E5F0-6A5D-7BAD",
+   "unitPriceUsd": 0.02,
+   "unit": "GiB-month"
+  },
+  {
+   "resource": "Cloud NAT data processing",
+   "sku": "E505-1604-58F8/015F-5732-FFF0",
+   "unitPriceUsd": 0.045,
+   "unit": "GiB"
+  },
+  {
+   "resource": "PSC consumer data processing",
+   "sku": "E505-1604-58F8/C40A-084F-09B4",
+   "unitPriceUsd": 0.01,
+   "unit": "GiB"
+  },
+  {
+   "resource": "Secret Manager access operations (first 10,000 a month free)",
+   "sku": "EE82-7A5E-871C/EBA7-264F-2D2C",
+   "unitPriceUsd": 3e-06,
+   "unit": "operation"
+  },
+  {
+   "resource": "Web Risk Lookup API uris.search (first 100,000 a month free, then $0.0005 each)",
+   "sku": "01BA-36F6-AA33/18BE-2734-5DE4",
+   "unitPriceUsd": 0.0005,
+   "unit": "request after 100,000"
+  }
+ ],
+ "expectedForThisUnit": "about 3-4 hours of the fixed rate (USD 0.55-0.75) plus usage of a few cents; well under the USD 10 first alert",
+ "webRiskBeforeFirstCall": "SearchUris (Lookup API): first 100,000 requests a month at USD 0, then USD 0.0005 each; this unit makes fewer than 20"
+}

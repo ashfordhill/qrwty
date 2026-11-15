@@ -59,7 +59,8 @@
   ],
   "fixed": {
     "JEEVES_EXTERNAL_STRIPE_API_URL": "https://api.stripe.com",
-    "JEEVES_EXTERNAL_REPUTATION_API_URL": "https://webrisk.googleapis.com"
+    "JEEVES_EXTERNAL_REPUTATION_API_URL": "https://webrisk.googleapis.com",
+    "QRWTY_REPUTATION_CREDENTIALS": "metadata"
   },
   "processes": {
     "redirect-service": {
@@ -133,7 +134,8 @@
         "OIDC_AUDIENCE",
         "OIDC_ISSUER",
         "OIDC_JWKS_URL",
-        "QRWTY_PUBLIC_ORIGIN_URL"
+        "QRWTY_PUBLIC_ORIGIN_URL",
+        "QRWTY_REPUTATION_CREDENTIALS"
       ],
       "secrets": [
         "sql-links--link-api",

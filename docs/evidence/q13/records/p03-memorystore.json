@@ -1,0 +1,52 @@
+[
+ {
+  "name": "qrwtya-hot-routes",
+  "mode": "CLUSTER_DISABLED",
+  "nodeType": "SHARED_CORE_NANO",
+  "engineVersion": "VALKEY_8_0",
+  "shardCount": 1,
+  "replicaCount": 0,
+  "transitEncryptionMode": "SERVER_AUTHENTICATION",
+  "authorizationMode": "AUTH_DISABLED",
+  "serverCaMode": "GOOGLE_MANAGED_PER_INSTANCE_CA",
+  "discoveryEndpoints": [],
+  "pscAutoConnections": [
+   {
+    "type": "CONNECTION_TYPE_PRIMARY",
+    "ip": "10.42.0.3",
+    "port": 6379
+   },
+   {
+    "type": "CONNECTION_TYPE_READER",
+    "ip": "10.42.0.2",
+    "port": 6379
+   }
+  ],
+  "createTime": "2026-11-15T12:00:31.231118948Z"
+ },
+ {
+  "name": "qrwtya-admission-cache",
+  "mode": "CLUSTER_DISABLED",
+  "nodeType": "SHARED_CORE_NANO",
+  "engineVersion": "VALKEY_8_0",
+  "shardCount": 1,
+  "replicaCount": 0,
+  "transitEncryptionMode": "SERVER_AUTHENTICATION",
+  "authorizationMode": "AUTH_DISABLED",
+  "serverCaMode": "GOOGLE_MANAGED_PER_INSTANCE_CA",
+  "discoveryEndpoints": [],
+  "pscAutoConnections": [
+   {
+    "type": "CONNECTION_TYPE_PRIMARY",
+    "ip": "10.42.0.5",
+    "port": 6379
+   },
+   {
+    "type": "CONNECTION_TYPE_READER",
+    "ip": "10.42.0.4",
+    "port": 6379
+   }
+  ],
+  "createTime": "2026-11-15T12:00:31.243703642Z"
+ }
+]

@@ -1,0 +1,591 @@
+[
+  {
+    "insertId": "-ivujsdzr46",
+    "logName": "projects/<project>/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Services.ReplaceService",
+      "resourceName": "namespaces/<project>/revisions/qrwtya-session-api-00002-rpx",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Revision",
+        "apiVersion": "serving.knative.dev/v1",
+        "kind": "Revision",
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "3",
+            "autoscaling.knative.dev/minScale": "0",
+            "run.googleapis.com/client-name": "gcloud",
+            "run.googleapis.com/client-version": "593.0.0",
+            "run.googleapis.com/cloudsql-instances": "<project>:us-central1:qrwtya-pg",
+            "run.googleapis.com/cpu-throttling": "true",
+            "run.googleapis.com/execution-environment": "gen2",
+            "run.googleapis.com/ingress": "all",
+            "run.googleapis.com/network-interfaces": "[{\"network\":\"projects/<project>/global/networks/qrwtya-vpc\",\"subnetwork\":\"projects/<project>/regions/us-central1/subnetworks/qrwtya-run\"}]",
+            "run.googleapis.com/operation-id": "046966b0-7c4c-4581-8478-0654f1498329",
+            "run.googleapis.com/sessionAffinity": "false",
+            "run.googleapis.com/vpc-access-egress": "all-traffic",
+            "serving.knative.dev/creator": "<owner>"
+          },
+          "creationTimestamp": "2026-11-15T12:48:14.888799Z",
+          "generation": 1,
+          "labels": {
+            "client.knative.dev/nonce": "jzoakmtbgv",
+            "cloud.googleapis.com/location": "us-central1",
+            "run.googleapis.com/startupProbeType": "Custom",
+            "serving.knative.dev/configuration": "qrwtya-session-api",
+            "serving.knative.dev/configurationGeneration": "2",
+            "serving.knative.dev/service": "qrwtya-session-api",
+            "serving.knative.dev/serviceUid": "7dee8f17-a942-4a20-bea5-43fe7567a604"
+          },
+          "name": "qrwtya-session-api-00002-rpx",
+          "namespace": "<project-number>",
+          "ownerReferences": [
+            {
+              "apiVersion": "serving.knative.dev/v1",
+              "blockOwnerDeletion": true,
+              "controller": true,
+              "kind": "Configuration",
+              "name": "qrwtya-session-api",
+              "uid": "59d0f9ce-9195-4212-bb0b-35324f7d3c4f"
+            }
+          ],
+          "resourceVersion": "AAZgUBMrhkg",
+          "selfLink": "/apis/serving.knative.dev/v1/namespaces/<project-number>/revisions/qrwtya-session-api-00002-rpx",
+          "uid": "773d0109-44ed-4907-852b-f590e2c3dc66"
+        },
+        "spec": {
+          "containerConcurrency": 100,
+          "containers": [
+            {
+              "command": [
+                "/bin/sh",
+                "-c",
+                "node scripts/qrwty-production-profile.mjs session-api && SECRET_DIR=/tmp/qrwty-secrets exec node dist/processes/session-api.js"
+              ],
+              "env": [
+                {
+                  "name": "JEEVES_DATABASE_SESSIONS_TLS",
+                  "value": "disable"
+                },
+                {
+                  "name": "JEEVES_DATABASE_SESSIONS_PORT",
+                  "value": "5432"
+                },
+                {
+                  "name": "JEEVES_IDENTITY_IDENTITY_URL",
+                  "value": "https://<tenant>.auth0.com"
+                },
+                {
+                  "name": "QRWTY_PROFILE",
+                  "value": "production"
+                },
+                {
+                  "name": "JEEVES_REQUIRE_TLS",
+                  "value": "true"
+                },
+                {
+                  "name": "JEEVES_DATABASE_SESSIONS_HOST",
+                  "value": "/cloudsql/<project>:us-central1:qrwtya-pg"
+                },
+                {
+                  "name": "QRWTY_SECRET_MOUNT_DIR",
+                  "value": "/var/run/qrwty-secrets"
+                },
+                {
+                  "name": "JEEVES_TILE_ACCOUNT_API_URL",
+                  "value": "https://qrwtya-account-api-<project-number>.us-central1.run.app"
+                },
+                {
+                  "name": "JEEVES_TILE_BILLING_API_URL",
+                  "value": "https://qrwtya-billing-api-<project-number>.us-central1.run.app"
+                },
+                {
+                  "name": "JEEVES_TILE_LINK_API_URL",
+                  "value": "https://qrwtya-link-api-<project-number>.us-central1.run.app"
+                },
+                {
+                  "name": "PUBSUB_EMULATOR_HOST",
+                  "value": "localhost:8085"
+                }
+              ],
+              "image": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:7ce1b32defc0714aa8fff260554e2d17518b603bb35a10c013b2e3e6d3f9ced0",
+              "livenessProbe": {
+                "failureThreshold": 3,
+                "httpGet": {
+                  "path": "/healthz",
+                  "port": 3000
+                },
+                "periodSeconds": 10,
+                "timeoutSeconds": 1
+              },
+              "name": "app-1",
+              "ports": [
+                {
+                  "containerPort": 3000,
+                  "name": "http1"
+                }
+              ],
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "512Mi"
+                }
+              },
+              "startupProbe": {
+                "failureThreshold": 30,
+                "httpGet": {
+                  "path": "/healthz",
+                  "port": 3000
+                },
+                "periodSeconds": 2,
+                "timeoutSeconds": 1
+              },
+              "volumeMounts": [
+                {
+                  "mountPath": "/var/run/qrwty-secrets/sql-sessions--session-api",
+                  "name": "s-sql-sessions-session-api"
+                }
+              ]
+            }
+          ],
+          "serviceAccountName": "qrwtya-session@<project>.iam.gserviceaccount.com",
+          "timeoutSeconds": 30,
+          "volumes": [
+            {
+              "name": "s-sql-sessions-session-api",
+              "secret": {
+                "items": [
+                  {
+                    "key": "latest",
+                    "path": "value"
+                  }
+                ],
+                "secretName": "qrwtya-sql-sessions--session-api"
+              }
+            }
+          ]
+        },
+        "status": {
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-11-15T12:48:15.533640Z",
+              "status": "True",
+              "type": "Ready"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:48:15.490119Z",
+              "message": "Container image import completed.",
+              "status": "True",
+              "type": "ContainerReady"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:48:15.533640Z",
+              "message": "System will retry after 00:05 from lastTransitionTime for attempt 0.",
+              "reason": "WatchWaiting",
+              "severity": "Info",
+              "status": "True",
+              "type": "Retry"
+            }
+          ],
+          "containerStatuses": [
+            {
+              "imageDigest": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:7ce1b32defc0714aa8fff260554e2d17518b603bb35a10c013b2e3e6d3f9ced0",
+              "name": "app-1"
+            }
+          ],
+          "imageDigest": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:7ce1b32defc0714aa8fff260554e2d17518b603bb35a10c013b2e3e6d3f9ced0",
+          "logUrl": "https://console.cloud.google.com/logs/viewer?project=<project>&resource=cloud_run_revision/service_name/qrwtya-session-api/revision_name/qrwtya-session-api-00002-rpx&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22qrwtya-session-api%22%0Aresource.labels.revision_name%3D%22qrwtya-session-api-00002-rpx%22",
+          "observedGeneration": 1
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "message": "Ready condition status changed to True for Revision qrwtya-session-api-00002-rpx."
+      }
+    },
+    "receiveTimestamp": "2026-11-15T12:48:15.670549151Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-session-api",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-session-api-00002-rpx",
+        "service_name": ""
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "timestamp": "2026-11-15T12:48:15.546335Z"
+  },
+  {
+    "insertId": "6af9aa28000dc2ad3475642a",
+    "labels": {
+      "instanceId": "00e8a408bd049d4f1a6c3694336e595c8df4dd613a04dab0a308989a445f831ccdc240d794888ba928f3401e5f3abb9d5f3e4fbbec055f031fa996bd8f398e029189f059616a9816350be678f97dbed67e155d8821929f8c97390a1ddacf",
+      "scaling_reason": "DEPLOYMENT_ROLLOUT"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-11-15T12:48:40.909570934Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-session-api",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-session-api-00002-rpx",
+        "service_name": "qrwtya-session-api"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "Starting new instance. Reason: DEPLOYMENT_ROLLOUT - Instance started due to traffic shifting between revisions due to deployment, traffic split adjustment, or deployment health check.",
+    "timestamp": "2026-11-15T12:48:40.901805Z"
+  },
+  {
+    "insertId": "6af9aa2b0003394435695895",
+    "jsonPayload": {
+      "event": "profile-refused",
+      "level": "error",
+      "process": "session-api",
+      "reasons": [
+        {
+          "category": "emulator-endpoint",
+          "reason": "PUBSUB_EMULATOR_HOST: Pub/Sub emulator endpoint",
+          "variable": "PUBSUB_EMULATOR_HOST"
+        }
+      ]
+    },
+    "labels": {
+      "instanceId": "00e8a408bd049d4f1a6c3694336e595c8df4dd613a04dab0a308989a445f831ccdc240d794888ba928f3401e5f3abb9d5f3e4fbbec055f031fa996bd8f398e029189f059616a9816350be678f97dbed67e155d8821929f8c97390a1ddacf"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-11-15T12:48:43.219692268Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-session-api",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-session-api-00002-rpx",
+        "service_name": "qrwtya-session-api"
+      },
+      "type": "cloud_run_revision"
+    },
+    "timestamp": "2026-11-15T12:48:43.211268Z"
+  },
+  {
+    "insertId": "6af9aa2b0003ffec604cf7b2",
+    "labels": {
+      "container_name": "app-1",
+      "instanceId": "00e8a408bd049d4f1a6c3694336e595c8df4dd613a04dab0a308989a445f831ccdc240d794888ba928f3401e5f3abb9d5f3e4fbbec055f031fa996bd8f398e029189f059616a9816350be678f97dbed67e155d8821929f8c97390a1ddacf"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-11-15T12:48:43.574049242Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-session-api",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-session-api-00002-rpx",
+        "service_name": "qrwtya-session-api"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "WARNING",
+    "textPayload": "Container called exit(1).",
+    "timestamp": "2026-11-15T12:48:43.262059Z"
+  },
+  {
+    "insertId": "-4epkeje1cjki",
+    "logName": "projects/<project>/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Services.ReplaceService",
+      "resourceName": "namespaces/<project>/revisions/qrwtya-session-api-00002-rpx",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Revision",
+        "apiVersion": "serving.knative.dev/v1",
+        "kind": "Revision",
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "3",
+            "autoscaling.knative.dev/minScale": "0",
+            "run.googleapis.com/client-name": "gcloud",
+            "run.googleapis.com/client-version": "593.0.0",
+            "run.googleapis.com/cloudsql-instances": "<project>:us-central1:qrwtya-pg",
+            "run.googleapis.com/cpu-throttling": "true",
+            "run.googleapis.com/execution-environment": "gen2",
+            "run.googleapis.com/ingress": "all",
+            "run.googleapis.com/network-interfaces": "[{\"network\":\"projects/<project>/global/networks/qrwtya-vpc\",\"subnetwork\":\"projects/<project>/regions/us-central1/subnetworks/qrwtya-run\"}]",
+            "run.googleapis.com/operation-id": "1d8c83f4-40a6-409f-88ec-fe5760508b45",
+            "run.googleapis.com/sessionAffinity": "false",
+            "run.googleapis.com/vpc-access-egress": "all-traffic",
+            "serving.knative.dev/creator": "<owner>"
+          },
+          "creationTimestamp": "2026-11-15T12:48:14.888799Z",
+          "generation": 1,
+          "labels": {
+            "client.knative.dev/nonce": "jzoakmtbgv",
+            "cloud.googleapis.com/location": "us-central1",
+            "run.googleapis.com/startupProbeType": "Custom",
+            "serving.knative.dev/configuration": "qrwtya-session-api",
+            "serving.knative.dev/configurationGeneration": "2",
+            "serving.knative.dev/route": "qrwtya-session-api",
+            "serving.knative.dev/service": "qrwtya-session-api",
+            "serving.knative.dev/serviceUid": "7dee8f17-a942-4a20-bea5-43fe7567a604"
+          },
+          "name": "qrwtya-session-api-00002-rpx",
+          "namespace": "<project-number>",
+          "ownerReferences": [
+            {
+              "apiVersion": "serving.knative.dev/v1",
+              "blockOwnerDeletion": true,
+              "controller": true,
+              "kind": "Configuration",
+              "name": "qrwtya-session-api",
+              "uid": "59d0f9ce-9195-4212-bb0b-35324f7d3c4f"
+            }
+          ],
+          "resourceVersion": "AAZgUBUKdr0",
+          "selfLink": "/apis/serving.knative.dev/v1/namespaces/<project-number>/revisions/qrwtya-session-api-00002-rpx",
+          "uid": "773d0109-44ed-4907-852b-f590e2c3dc66"
+        },
+        "spec": {
+          "containerConcurrency": 100,
+          "containers": [
+            {
+              "command": [
+                "/bin/sh",
+                "-c",
+                "node scripts/qrwty-production-profile.mjs session-api && SECRET_DIR=/tmp/qrwty-secrets exec node dist/processes/session-api.js"
+              ],
+              "env": [
+                {
+                  "name": "JEEVES_DATABASE_SESSIONS_TLS",
+                  "value": "disable"
+                },
+                {
+                  "name": "JEEVES_DATABASE_SESSIONS_PORT",
+                  "value": "5432"
+                },
+                {
+                  "name": "JEEVES_IDENTITY_IDENTITY_URL",
+                  "value": "https://<tenant>.auth0.com"
+                },
+                {
+                  "name": "QRWTY_PROFILE",
+                  "value": "production"
+                },
+                {
+                  "name": "JEEVES_REQUIRE_TLS",
+                  "value": "true"
+                },
+                {
+                  "name": "JEEVES_DATABASE_SESSIONS_HOST",
+                  "value": "/cloudsql/<project>:us-central1:qrwtya-pg"
+                },
+                {
+                  "name": "QRWTY_SECRET_MOUNT_DIR",
+                  "value": "/var/run/qrwty-secrets"
+                },
+                {
+                  "name": "JEEVES_TILE_ACCOUNT_API_URL",
+                  "value": "https://qrwtya-account-api-<project-number>.us-central1.run.app"
+                },
+                {
+                  "name": "JEEVES_TILE_BILLING_API_URL",
+                  "value": "https://qrwtya-billing-api-<project-number>.us-central1.run.app"
+                },
+                {
+                  "name": "JEEVES_TILE_LINK_API_URL",
+                  "value": "https://qrwtya-link-api-<project-number>.us-central1.run.app"
+                },
+                {
+                  "name": "PUBSUB_EMULATOR_HOST",
+                  "value": "localhost:8085"
+                }
+              ],
+              "image": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:7ce1b32defc0714aa8fff260554e2d17518b603bb35a10c013b2e3e6d3f9ced0",
+              "livenessProbe": {
+                "failureThreshold": 3,
+                "httpGet": {
+                  "path": "/healthz",
+                  "port": 3000
+                },
+                "periodSeconds": 10,
+                "timeoutSeconds": 1
+              },
+              "name": "app-1",
+              "ports": [
+                {
+                  "containerPort": 3000,
+                  "name": "http1"
+                }
+              ],
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "512Mi"
+                }
+              },
+              "startupProbe": {
+                "failureThreshold": 30,
+                "httpGet": {
+                  "path": "/healthz",
+                  "port": 3000
+                },
+                "periodSeconds": 2,
+                "timeoutSeconds": 1
+              },
+              "volumeMounts": [
+                {
+                  "mountPath": "/var/run/qrwty-secrets/sql-sessions--session-api",
+                  "name": "s-sql-sessions-session-api"
+                }
+              ]
+            }
+          ],
+          "serviceAccountName": "qrwtya-session@<project>.iam.gserviceaccount.com",
+          "timeoutSeconds": 30,
+          "volumes": [
+            {
+              "name": "s-sql-sessions-session-api",
+              "secret": {
+                "items": [
+                  {
+                    "key": "latest",
+                    "path": "value"
+                  }
+                ],
+                "secretName": "qrwtya-sql-sessions--session-api"
+              }
+            }
+          ]
+        },
+        "status": {
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-11-15T12:48:46.921405Z",
+              "message": "The user-provided container failed the configured startup probe checks. Logs for this revision might contain more information.\n\nLogs URL: https://console.cloud.google.com/logs/viewer?project=<project>&resource=cloud_run_revision/service_name/qrwtya-session-api/revision_name/qrwtya-session-api-00002-rpx&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22qrwtya-session-api%22%0Aresource.labels.revision_name%3D%22qrwtya-session-api-00002-rpx%22 \nFor more troubleshooting guidance, see https://docs.cloud.google.com/run/docs/troubleshooting#container-failed-to-start",
+              "reason": "HealthCheckContainerError",
+              "status": "False",
+              "type": "Ready"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:48:38.927318Z",
+              "message": "Recreating retired Revision.",
+              "reason": "Recreating",
+              "severity": "Info",
+              "status": "Unknown",
+              "type": "Active"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:48:46.921405Z",
+              "message": "The user-provided container failed the configured startup probe checks. Logs for this revision might contain more information.\n\nLogs URL: https://console.cloud.google.com/logs/viewer?project=<project>&resource=cloud_run_revision/service_name/qrwtya-session-api/revision_name/qrwtya-session-api-00002-rpx&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22qrwtya-session-api%22%0Aresource.labels.revision_name%3D%22qrwtya-session-api-00002-rpx%22 \nFor more troubleshooting guidance, see https://docs.cloud.google.com/run/docs/troubleshooting#container-failed-to-start",
+              "reason": "HealthCheckContainerError",
+              "status": "False",
+              "type": "ContainerHealthy"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:48:39.262612Z",
+              "message": "Container image import completed.",
+              "status": "True",
+              "type": "ContainerReady"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:48:40.766159Z",
+              "message": "Provisioning imported containers completed in 1.84s. Checking container health. This will wait for up to 1m for the configured startup probe, including an initial delay of 0s.",
+              "status": "True",
+              "type": "ResourcesAvailable"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:48:40.766159Z",
+              "message": "System will retry after 00:00 from lastTransitionTime for attempt 0.",
+              "reason": "ImmediateRetry",
+              "severity": "Info",
+              "status": "True",
+              "type": "Retry"
+            }
+          ],
+          "containerStatuses": [
+            {
+              "imageDigest": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:7ce1b32defc0714aa8fff260554e2d17518b603bb35a10c013b2e3e6d3f9ced0",
+              "name": "app-1"
+            }
+          ],
+          "imageDigest": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:7ce1b32defc0714aa8fff260554e2d17518b603bb35a10c013b2e3e6d3f9ced0",
+          "logUrl": "https://console.cloud.google.com/logs/viewer?project=<project>&resource=cloud_run_revision/service_name/qrwtya-session-api/revision_name/qrwtya-session-api-00002-rpx&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22qrwtya-session-api%22%0Aresource.labels.revision_name%3D%22qrwtya-session-api-00002-rpx%22",
+          "observedGeneration": 1
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "code": 9,
+        "message": "Ready condition status changed to False for Revision qrwtya-session-api-00002-rpx with message: The user-provided container failed the configured startup probe checks. Logs for this revision might contain more information.\n\nLogs URL: https://console.cloud.google.com/logs/viewer?project=<project>&resource=cloud_run_revision/service_name/qrwtya-session-api/revision_name/qrwtya-session-api-00002-rpx&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22qrwtya-session-api%22%0Aresource.labels.revision_name%3D%22qrwtya-session-api-00002-rpx%22 \nFor more troubleshooting guidance, see https://docs.cloud.google.com/run/docs/troubleshooting#container-failed-to-start"
+      }
+    },
+    "receiveTimestamp": "2026-11-15T12:48:47.659526136Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-session-api",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-session-api-00002-rpx",
+        "service_name": "qrwtya-session-api"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "ERROR",
+    "timestamp": "2026-11-15T12:48:46.934350Z"
+  },
+  {
+    "insertId": "6af9aa310004a816a3160bd5",
+    "jsonPayload": {
+      "event": "profile-refused",
+      "level": "error",
+      "process": "session-api",
+      "reasons": [
+        {
+          "category": "emulator-endpoint",
+          "reason": "PUBSUB_EMULATOR_HOST: Pub/Sub emulator endpoint",
+          "variable": "PUBSUB_EMULATOR_HOST"
+        }
+      ]
+    },
+    "labels": {
+      "instanceId": "00e8a408bd1b4f25a7ac4db0fb3c3fa34b06e565fbe1f33ec2220b2b6ecebccbf116b03913c67cb781fcefa00b037b3db6f813852894d5b8b5349cd253b6d1c73c5f81eec818e5e3b3ee5ee533a733f7c9db9f250dc7fd8f301094c56a69"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstderr",
+    "receiveTimestamp": "2026-11-15T12:48:49.547354607Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-session-api",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-session-api-00002-rpx",
+        "service_name": "qrwtya-session-api"
+      },
+      "type": "cloud_run_revision"
+    },
+    "timestamp": "2026-11-15T12:48:49.305174Z"
+  },
+  {
+    "insertId": "6af9aa310004fbdac1adf348",
+    "labels": {
+      "container_name": "app-1",
+      "instanceId": "00e8a408bd1b4f25a7ac4db0fb3c3fa34b06e565fbe1f33ec2220b2b6ecebccbf116b03913c67cb781fcefa00b037b3db6f813852894d5b8b5349cd253b6d1c73c5f81eec818e5e3b3ee5ee533a733f7c9db9f250dc7fd8f301094c56a69"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-11-15T12:48:49.567854257Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-session-api",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-session-api-00002-rpx",
+        "service_name": "qrwtya-session-api"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "WARNING",
+    "textPayload": "Container called exit(1).",
+    "timestamp": "2026-11-15T12:48:49.326539Z"
+  }
+]

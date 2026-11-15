@@ -1,0 +1,301 @@
+[
+  {
+    "insertId": "6af9a64a0000097cd17083f0",
+    "jsonPayload": {
+      "action": "sent to click-events--analytics-worker.failed (NOT_IMPLEMENTED)",
+      "event": "not-implemented",
+      "level": "warn",
+      "messageId": "23384928454557555",
+      "module": "analytics-worker-click-aggregator",
+      "queue": "click-events--analytics-worker",
+      "tile": "analytics-worker",
+      "what": "Click aggregator"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd5dc0937d8c81b1886e7220a24261c6095ee6ac99fb55d790684cee35fbb1c1ee810e71f3b38ddefb091ca01378aff4198bec04b440bfac34467f03347579ea25b6fd00eda987df047056a75b8ee1a0a4c811d0bff8f1b5455b"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:32:10.008355325Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00001-x2p",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "timestamp": "2026-11-15T12:32:10.002428Z"
+  },
+  {
+    "insertId": "6af9a64b0006e134a8fa2e0d",
+    "jsonPayload": {
+      "action": "sent to click-events--analytics-worker.failed (NOT_IMPLEMENTED)",
+      "event": "not-implemented",
+      "level": "warn",
+      "messageId": "23385412139293197",
+      "module": "analytics-worker-click-aggregator",
+      "queue": "click-events--analytics-worker",
+      "suppressed": 1,
+      "tile": "analytics-worker",
+      "what": "Click aggregator"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd5dc0937d8c81b1886e7220a24261c6095ee6ac99fb55d790684cee35fbb1c1ee810e71f3b38ddefb091ca01378aff4198bec04b440bfac34467f03347579ea25b6fd00eda987df047056a75b8ee1a0a4c811d0bff8f1b5455b"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:32:11.675116818Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00001-x2p",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "timestamp": "2026-11-15T12:32:11.450868Z"
+  },
+  {
+    "insertId": "6af9a64c000d07cb5dc34990",
+    "jsonPayload": {
+      "action": "sent to click-events--analytics-worker.failed (NOT_IMPLEMENTED)",
+      "event": "not-implemented",
+      "level": "warn",
+      "messageId": "23385369426157548",
+      "module": "analytics-worker-click-aggregator",
+      "queue": "click-events--analytics-worker",
+      "suppressed": 1,
+      "tile": "analytics-worker",
+      "what": "Click aggregator"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd5dc0937d8c81b1886e7220a24261c6095ee6ac99fb55d790684cee35fbb1c1ee810e71f3b38ddefb091ca01378aff4198bec04b440bfac34467f03347579ea25b6fd00eda987df047056a75b8ee1a0a4c811d0bff8f1b5455b"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:32:13.006874205Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00001-x2p",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "timestamp": "2026-11-15T12:32:12.853963Z"
+  },
+  {
+    "insertId": "6af9a64e0003ead32d6120a4",
+    "jsonPayload": {
+      "action": "sent to click-events--analytics-worker.failed (NOT_IMPLEMENTED)",
+      "event": "not-implemented",
+      "level": "warn",
+      "messageId": "23385861075440136",
+      "module": "analytics-worker-click-aggregator",
+      "queue": "click-events--analytics-worker",
+      "suppressed": 1,
+      "tile": "analytics-worker",
+      "what": "Click aggregator"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd5dc0937d8c81b1886e7220a24261c6095ee6ac99fb55d790684cee35fbb1c1ee810e71f3b38ddefb091ca01378aff4198bec04b440bfac34467f03347579ea25b6fd00eda987df047056a75b8ee1a0a4c811d0bff8f1b5455b"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:32:14.337970905Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00001-x2p",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "timestamp": "2026-11-15T12:32:14.256723Z"
+  },
+  {
+    "insertId": "6af9a6500006d89e9b6cabbd",
+    "jsonPayload": {
+      "action": "sent to click-events--analytics-worker.failed (NOT_IMPLEMENTED)",
+      "event": "not-implemented",
+      "level": "warn",
+      "messageId": "23385319664620272",
+      "module": "analytics-worker-click-aggregator",
+      "queue": "click-events--analytics-worker",
+      "suppressed": 1,
+      "tile": "analytics-worker",
+      "what": "Click aggregator"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd5dc0937d8c81b1886e7220a24261c6095ee6ac99fb55d790684cee35fbb1c1ee810e71f3b38ddefb091ca01378aff4198bec04b440bfac34467f03347579ea25b6fd00eda987df047056a75b8ee1a0a4c811d0bff8f1b5455b"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:32:16.669387814Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00001-x2p",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "timestamp": "2026-11-15T12:32:16.448670Z"
+  },
+  {
+    "insertId": "6af9a651000cf95383fdf4b4",
+    "jsonPayload": {
+      "action": "sent to click-events--analytics-worker.failed (NOT_IMPLEMENTED)",
+      "event": "not-implemented",
+      "level": "warn",
+      "messageId": "23385428267378435",
+      "module": "analytics-worker-click-aggregator",
+      "queue": "click-events--analytics-worker",
+      "suppressed": 1,
+      "tile": "analytics-worker",
+      "what": "Click aggregator"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd5dc0937d8c81b1886e7220a24261c6095ee6ac99fb55d790684cee35fbb1c1ee810e71f3b38ddefb091ca01378aff4198bec04b440bfac34467f03347579ea25b6fd00eda987df047056a75b8ee1a0a4c811d0bff8f1b5455b"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:32:18.001434836Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00001-x2p",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "timestamp": "2026-11-15T12:32:17.850259Z"
+  },
+  {
+    "insertId": "6af9a6530003db9c9b043419",
+    "jsonPayload": {
+      "action": "sent to click-events--analytics-worker.failed (NOT_IMPLEMENTED)",
+      "event": "not-implemented",
+      "level": "warn",
+      "messageId": "23385807439581858",
+      "module": "analytics-worker-click-aggregator",
+      "queue": "click-events--analytics-worker",
+      "suppressed": 1,
+      "tile": "analytics-worker",
+      "what": "Click aggregator"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd5dc0937d8c81b1886e7220a24261c6095ee6ac99fb55d790684cee35fbb1c1ee810e71f3b38ddefb091ca01378aff4198bec04b440bfac34467f03347579ea25b6fd00eda987df047056a75b8ee1a0a4c811d0bff8f1b5455b"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:32:19.333566526Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00001-x2p",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "timestamp": "2026-11-15T12:32:19.252828Z"
+  },
+  {
+    "insertId": "6af9a654000a0229b98c7162",
+    "jsonPayload": {
+      "action": "sent to click-events--analytics-worker.failed (NOT_IMPLEMENTED)",
+      "event": "not-implemented",
+      "level": "warn",
+      "messageId": "23385339964843797",
+      "module": "analytics-worker-click-aggregator",
+      "queue": "click-events--analytics-worker",
+      "suppressed": 1,
+      "tile": "analytics-worker",
+      "what": "Click aggregator"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd5dc0937d8c81b1886e7220a24261c6095ee6ac99fb55d790684cee35fbb1c1ee810e71f3b38ddefb091ca01378aff4198bec04b440bfac34467f03347579ea25b6fd00eda987df047056a75b8ee1a0a4c811d0bff8f1b5455b"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:32:20.665223087Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00001-x2p",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "timestamp": "2026-11-15T12:32:20.655913Z"
+  },
+  {
+    "insertId": "6af9a656000e8cd277186d34",
+    "jsonPayload": {
+      "action": "sent to click-events--analytics-worker.failed (NOT_IMPLEMENTED)",
+      "event": "not-implemented",
+      "level": "warn",
+      "messageId": "23385528038902239",
+      "module": "analytics-worker-click-aggregator",
+      "queue": "click-events--analytics-worker",
+      "suppressed": 1,
+      "tile": "analytics-worker",
+      "what": "Click aggregator"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd5dc0937d8c81b1886e7220a24261c6095ee6ac99fb55d790684cee35fbb1c1ee810e71f3b38ddefb091ca01378aff4198bec04b440bfac34467f03347579ea25b6fd00eda987df047056a75b8ee1a0a4c811d0bff8f1b5455b"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:32:23.000088218Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00001-x2p",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "timestamp": "2026-11-15T12:32:22.953554Z"
+  },
+  {
+    "insertId": "6af9a65800056c36a315610d",
+    "jsonPayload": {
+      "action": "sent to click-events--analytics-worker.failed (NOT_IMPLEMENTED)",
+      "event": "not-implemented",
+      "level": "warn",
+      "messageId": "23385624371518039",
+      "module": "analytics-worker-click-aggregator",
+      "queue": "click-events--analytics-worker",
+      "suppressed": 1,
+      "tile": "analytics-worker",
+      "what": "Click aggregator"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd5dc0937d8c81b1886e7220a24261c6095ee6ac99fb55d790684cee35fbb1c1ee810e71f3b38ddefb091ca01378aff4198bec04b440bfac34467f03347579ea25b6fd00eda987df047056a75b8ee1a0a4c811d0bff8f1b5455b"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:32:24.663052336Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00001-x2p",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "timestamp": "2026-11-15T12:32:24.355382Z"
+  }
+]

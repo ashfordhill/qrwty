@@ -1,0 +1,46 @@
+{
+ "steps": [
+  {
+   "step": "Probe resources (gcloud, not in OpenTofu): jobs qrwtya-probe, qrwtya-probe-redirect, qrwtya-probe-sql; secret qrwtya-probe-auth0-web; service account qrwtya-probe",
+   "result": "deleted 13:06Z"
+  },
+  {
+   "step": "Archive objects (11 Avro files) in qrwtya-click-archive-<project>",
+   "result": "deleted (the bucket keeps force_destroy = false)"
+  },
+  {
+   "step": "Saved plan plan-10: deletion protection off (5 services, worker pool, job, 2 Memorystore instances, Cloud SQL)",
+   "result": "applied: 10 changed"
+  },
+  {
+   "step": "Saved plan plan-11-destroy: every OpenTofu resource, prevent_destroy removed only in a scratch copy of pubsub.tf",
+   "result": "86 of 102 destroyed in 10 min 51 s (Cloud SQL 1 min 28 s, Memorystore 10\u201311 min); two errors: the subnet is held by two Cloud Run serverless-ipv4 reservations, and the private services access connection by its producer (Cloud SQL)"
+  },
+  {
+   "step": "Saved plans plan-12, plan-13 and plan-14 (13:20\u201313:24Z): retry the private services access connection and range",
+   "result": "refused each time (the producer still uses the connection); left for Q13b with the subnet"
+  },
+  {
+   "step": "Auth0: the qrwtya-web grant, qrwtya-web and qrwtya-api (Management API)",
+   "result": "204, 204, 204; no qrwtya- object left"
+  },
+  {
+   "step": "qrwty.io Worker route",
+   "result": "none added, so none reverted; no Cloudflare call"
+  },
+  {
+   "step": "Local Docker: qrwtya-q13-app:build-1, :build-2 and the two registry tags",
+   "result": "removed by exact name; no qrwtya image or arm-A container left; no prune"
+  },
+  {
+   "step": "Inventory after (records/inventory-after.txt)",
+   "result": "No Cloud Run service, job or worker pool; no Cloud SQL, Memorystore, Pub/Sub topic or subscription, bucket, secret, service account, router, NAT, PSC endpoint, connection policy, Artifact Registry repository or project IAM binding of arm A; no external address. Left, all free: VPC qrwtya-vpc, subnet qrwtya-run, PSA range qrwtya-psa, its peering, and two Cloud Run-managed internal reservations on the subnet (Q13b)"
+  },
+  {
+   "step": "Kept",
+   "result": "The project budget (not arm A's), the enabled APIs (shared with arm B; disable_on_destroy = false). No image was kept"
+  }
+ ],
+ "spend": "Spend computed from each billable resource's cloud lifetime at the requoted list prices: about USD 0.23 (Memorystore nodes and their PSC endpoints USD 0.14, the worker pool USD 0.04, Cloud SQL USD 0.01, the rest under USD 0.03), paid from the trial credit. Not a billing figure: Cloud Billing reports lag and the project has no billing export (records/spend.json). Nothing billable is left.",
+ "spendUsd": 0.23
+}

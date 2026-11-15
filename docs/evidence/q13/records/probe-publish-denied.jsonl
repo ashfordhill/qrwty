@@ -1,0 +1,3 @@
+{"timestamp": "2026-11-15T12:37:06.027353Z", "severity": null, "acknowledged": 0, "atMs": 857.3, "count": 1, "maxMs": null, "mode": "publish", "p50Ms": null, "p99Ms": null, "probe": "q13", "results": [{"error": "7 7 PERMISSION_DENIED: User not authorized to perform this action.", "ms": 394.4, "seq": 0}], "step": "publish"}
+{"timestamp": "2026-11-15T12:37:06.057582Z", "severity": "INFO", "text": "Container called exit(0)."}
+{"timestamp": "2026-11-15T12:37:13.813146Z", "severity": "INFO", "text": null}

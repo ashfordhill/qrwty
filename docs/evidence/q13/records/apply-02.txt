@@ -1,0 +1,123 @@
+google_secret_manager_secret_version.memorystore_ca: Destroying... [id=projects/<project-number>/secrets/qrwtya-memorystore-ca/versions/1]
+google_secret_manager_secret_version.memorystore_ca: Destruction complete after 0s
+google_secret_manager_secret.s["memorystore-ca"]: Destroying... [id=projects/<project>/secrets/qrwtya-memorystore-ca]
+google_secret_manager_secret.s["memorystore-ca-admission-cache"]: Creating...
+google_secret_manager_secret.s["memorystore-ca-hot-routes"]: Creating...
+google_secret_manager_secret.s["memorystore-ca-hot-routes"]: Creation complete after 1s [id=projects/<project>/secrets/qrwtya-memorystore-ca-hot-routes]
+google_secret_manager_secret.s["memorystore-ca"]: Destruction complete after 1s
+google_secret_manager_secret.s["memorystore-ca-admission-cache"]: Creation complete after 1s [id=projects/<project>/secrets/qrwtya-memorystore-ca-admission-cache]
+google_secret_manager_secret_iam_member.reader["link/link-replay-keys"]: Creating...
+google_secret_manager_secret_iam_member.reader["migrate/postgres-admin"]: Creating...
+google_secret_manager_secret_iam_member.reader["redirect/memorystore-ca-hot-routes"]: Creating...
+google_secret_manager_secret_iam_member.reader["analytics/sql-analytics--analytics-worker"]: Creating...
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--account-api"]: Creating...
+google_secret_manager_secret_iam_member.reader["migrate/owner-links"]: Creating...
+google_secret_manager_secret_iam_member.reader["account/sql-links--account-api"]: Creating...
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--link-api"]: Creating...
+google_secret_manager_secret_version.memorystore_ca["hot-routes"]: Creating...
+google_secret_manager_secret_version.memorystore_ca["admission-cache"]: Creating...
+google_secret_manager_secret_version.memorystore_ca["admission-cache"]: Creation complete after 1s [id=projects/<project-number>/secrets/qrwtya-memorystore-ca-admission-cache/versions/1]
+google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--analytics-worker"]: Creating...
+google_secret_manager_secret_version.memorystore_ca["hot-routes"]: Creation complete after 1s [id=projects/<project-number>/secrets/qrwtya-memorystore-ca-hot-routes/versions/1]
+google_secret_manager_secret_iam_member.reader["link/sql-links--link-api"]: Creating...
+google_secret_manager_secret_iam_member.reader["migrate/postgres-admin"]: Creation complete after 4s [id=projects/<project>/secrets/qrwtya-postgres-admin/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--redirect-service"]: Creating...
+google_secret_manager_secret_iam_member.reader["link/link-replay-keys"]: Creation complete after 4s [id=projects/<project>/secrets/qrwtya-link-replay-keys/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["redirect/memorystore-ca-hot-routes"]: Creation complete after 4s [id=projects/<project>/secrets/qrwtya-memorystore-ca-hot-routes/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["link/memorystore-ca-admission-cache"]: Creating...
+google_secret_manager_secret_iam_member.reader["migrate/owner-sessions"]: Creating...
+google_secret_manager_secret_iam_member.reader["migrate/owner-links"]: Creation complete after 4s [id=projects/<project>/secrets/qrwtya-owner-links/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/identity-identity"]: Creating...
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--account-api"]: Creation complete after 8s [id=projects/<project>/secrets/qrwtya-sql-links--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["redirect/sql-links--redirect-service"]: Creating...
+google_secret_manager_secret_iam_member.reader["analytics/sql-analytics--analytics-worker"]: Creation complete after 8s [id=projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["account/sql-analytics--account-api"]: Creating...
+google_secret_manager_secret_iam_member.reader["account/sql-links--account-api"]: Creation complete after 8s [id=projects/<project>/secrets/qrwtya-sql-links--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["link/sql-links--link-api"]: Creation complete after 7s [id=projects/<project>/secrets/qrwtya-sql-links--link-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-billing"]: Creating...
+google_secret_manager_secret_iam_member.reader["migrate/sql-billing--billing-api"]: Creating...
+google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--analytics-worker"]: Creation complete after 7s [id=projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--account-api"]: Creating...
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--link-api"]: Creation complete after 8s [id=projects/<project>/secrets/qrwtya-sql-links--link-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["link/memorystore-ca-admission-cache"]: Creation complete after 4s [id=projects/<project>/secrets/qrwtya-memorystore-ca-admission-cache/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/identity-identity"]: Creation complete after 4s [id=projects/<project>/secrets/qrwtya-identity-identity/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-sessions"]: Creation complete after 4s [id=projects/<project>/secrets/qrwtya-owner-sessions/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["billing/sql-billing--billing-api"]: Creating...
+google_secret_manager_secret_iam_member.reader["session/sql-sessions--session-api"]: Creating...
+google_secret_manager_secret_iam_member.reader["migrate/identity-owner-identity"]: Creating...
+google_secret_manager_secret_iam_member.reader["migrate/sql-sessions--session-api"]: Creating...
+google_secret_manager_secret_iam_member.reader["redirect/sql-links--redirect-service"]: Creation complete after 4s [id=projects/<project>/secrets/qrwtya-sql-links--redirect-service/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-billing"]: Creation complete after 4s [id=projects/<project>/secrets/qrwtya-owner-billing/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-analytics"]: Creating...
+google_secret_manager_secret_iam_member.reader["migrate/identity-owner-identity"]: Creation complete after 4s [id=projects/<project>/secrets/qrwtya-identity-owner-identity/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--redirect-service"]: Creation complete after 8s [id=projects/<project>/secrets/qrwtya-sql-links--redirect-service/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["billing/sql-billing--billing-api"]: Creation complete after 11s [id=projects/<project>/secrets/qrwtya-sql-billing--billing-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-billing@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-billing--billing-api"]: Creation complete after 11s [id=projects/<project>/secrets/qrwtya-sql-billing--billing-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["account/sql-analytics--account-api"]: Creation complete after 11s [id=projects/<project>/secrets/qrwtya-sql-analytics--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--account-api"]: Creation complete after 11s [id=projects/<project>/secrets/qrwtya-sql-analytics--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-analytics"]: Creation complete after 8s [id=projects/<project>/secrets/qrwtya-owner-analytics/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["session/sql-sessions--session-api"]: Creation complete after 12s [id=projects/<project>/secrets/qrwtya-sql-sessions--session-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-session@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-sessions--session-api"]: Creation complete after 12s [id=projects/<project>/secrets/qrwtya-sql-sessions--session-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_cloud_run_v2_job.migrate: Creating...
+google_cloud_run_v2_job.migrate: Still creating... [10s elapsed]
+google_cloud_run_v2_job.migrate: Creation complete after 10s [id=projects/<project>/locations/us-central1/jobs/qrwtya-migrate]
+
+Warning: Applied changes may be incomplete
+
+The plan was created with the -target or the -exclude option in effect, so
+some changes requested in the configuration may have been ignored and the
+output values may not be fully updated. Run the following command to verify
+that no other changes are pending:
+    tofu plan
+
+Note that the -target and -exclude options are not suitable for routine use,
+and are provided only for exceptional situations such as recovering from
+errors or mistakes, or when OpenTofu specifically suggests to use it as part
+of an error message.
+
+Apply complete! Resources: 29 added, 0 changed, 2 destroyed.
+
+Outputs:
+
+cloud_sql_connection_name = "<project>:us-central1:qrwtya-pg"
+deterministic_urls = {
+  "account-api" = "https://qrwtya-account-api-<project-number>.us-central1.run.app"
+  "billing-api" = "https://qrwtya-billing-api-<project-number>.us-central1.run.app"
+  "link-api" = "https://qrwtya-link-api-<project-number>.us-central1.run.app"
+  "redirect-service" = "https://qrwtya-redirect-service-<project-number>.us-central1.run.app"
+  "session-api" = "https://qrwtya-session-api-<project-number>.us-central1.run.app"
+}
+memorystore_endpoints = {
+  "admission-cache" = {
+    "address" = "10.42.0.5"
+    "port" = 6379
+  }
+  "hot-routes" = {
+    "address" = "10.42.0.3"
+    "port" = 6379
+  }
+}
+pubsub = {
+  "archive" = "projects/<project>/subscriptions/qrwtya-click-events-archive"
+  "bucket" = "gs://qrwtya-click-archive-<project>"
+  "dead_letter" = "projects/<project>/topics/click-events--analytics-worker.failed"
+  "subscription" = "projects/<project>/subscriptions/click-events--analytics-worker"
+  "topic" = "projects/<project>/topics/click-events"
+}
+secret_ids = tolist([
+  "qrwtya-identity-identity",
+  "qrwtya-identity-owner-identity",
+  "qrwtya-link-replay-keys",
+  "qrwtya-owner-analytics",
+  "qrwtya-owner-billing",
+  "qrwtya-owner-links",
+  "qrwtya-owner-sessions",
+  "qrwtya-postgres-admin",
+  "qrwtya-sql-analytics--account-api",
+  "qrwtya-sql-analytics--analytics-worker",
+  "qrwtya-sql-billing--billing-api",
+  "qrwtya-sql-links--account-api",
+  "qrwtya-sql-links--link-api",
+  "qrwtya-sql-links--redirect-service",
+  "qrwtya-sql-sessions--session-api",
+])

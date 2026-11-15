@@ -1,0 +1,351 @@
+google_project_service.api["run.googleapis.com"]: Creating...
+google_service_account.run["redirect"]: Creating...
+google_service_account.run["session"]: Creating...
+google_service_account.run["account"]: Creating...
+google_service_account.run["billing"]: Creating...
+google_storage_bucket.archive: Creating...
+google_service_account.run["link"]: Creating...
+google_pubsub_topic.dead_letter: Creating...
+google_service_account.run["analytics"]: Creating...
+google_project_service.api["servicenetworking.googleapis.com"]: Creating...
+google_storage_bucket.archive: Creation complete after 2s [id=qrwtya-click-archive-<project>]
+google_service_account.run["migrate"]: Creating...
+google_pubsub_topic.dead_letter: Creation complete after 4s [id=projects/<project>/topics/click-events--analytics-worker.failed]
+google_project_service.api["storage.googleapis.com"]: Creating...
+google_project_service.api["run.googleapis.com"]: Creation complete after 4s [id=<project>/run.googleapis.com]
+google_project_service.api["servicenetworking.googleapis.com"]: Creation complete after 4s [id=<project>/servicenetworking.googleapis.com]
+google_project_service.api["sqladmin.googleapis.com"]: Creating...
+google_project_service.api["webrisk.googleapis.com"]: Creating...
+google_project_service.api["webrisk.googleapis.com"]: Creation complete after 3s [id=<project>/webrisk.googleapis.com]
+google_project_service.api["sqladmin.googleapis.com"]: Creation complete after 3s [id=<project>/sqladmin.googleapis.com]
+google_project_service.api["storage.googleapis.com"]: Creation complete after 3s [id=<project>/storage.googleapis.com]
+google_project_service.api["pubsub.googleapis.com"]: Creating...
+google_project_service.api["compute.googleapis.com"]: Creating...
+google_project_service.api["secretmanager.googleapis.com"]: Creating...
+google_project_service.api["secretmanager.googleapis.com"]: Creation complete after 3s [id=<project>/secretmanager.googleapis.com]
+google_project_service.api["pubsub.googleapis.com"]: Creation complete after 3s [id=<project>/pubsub.googleapis.com]
+google_project_service.api["compute.googleapis.com"]: Creation complete after 3s [id=<project>/compute.googleapis.com]
+google_project_service.api["networkconnectivity.googleapis.com"]: Creating...
+google_project_service.api["artifactregistry.googleapis.com"]: Creating...
+google_project_service.api["memorystore.googleapis.com"]: Creating...
+google_service_account.run["billing"]: Still creating... [10s elapsed]
+google_service_account.run["analytics"]: Still creating... [10s elapsed]
+google_service_account.run["session"]: Still creating... [10s elapsed]
+google_service_account.run["link"]: Still creating... [10s elapsed]
+google_service_account.run["account"]: Still creating... [10s elapsed]
+google_service_account.run["redirect"]: Still creating... [10s elapsed]
+google_service_account.run["migrate"]: Still creating... [10s elapsed]
+google_service_account.run["account"]: Creation complete after 12s [id=projects/<project>/serviceAccounts/qrwtya-account@<project>.iam.gserviceaccount.com]
+google_project_service.api["iam.googleapis.com"]: Creating...
+google_service_account.run["link"]: Creation complete after 12s [id=projects/<project>/serviceAccounts/qrwtya-link@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription.dead_letter: Creating...
+google_service_account.run["redirect"]: Creation complete after 13s [id=projects/<project>/serviceAccounts/qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_pubsub_topic_iam_member.dead_letter_publisher: Creating...
+google_service_account.run["billing"]: Creation complete after 13s [id=projects/<project>/serviceAccounts/qrwtya-billing@<project>.iam.gserviceaccount.com]
+google_storage_bucket_iam_member.archive_writer: Creating...
+google_service_account.run["analytics"]: Creation complete after 13s [id=projects/<project>/serviceAccounts/qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_storage_bucket_iam_member.archive_reader: Creating...
+google_project_service.api["iam.googleapis.com"]: Creation complete after 1s [id=<project>/iam.googleapis.com]
+google_project_service.api["artifactregistry.googleapis.com"]: Creation complete after 3s [id=<project>/artifactregistry.googleapis.com]
+google_project_service.api["networkconnectivity.googleapis.com"]: Creation complete after 3s [id=<project>/networkconnectivity.googleapis.com]
+google_project_service.api["memorystore.googleapis.com"]: Creation complete after 3s [id=<project>/memorystore.googleapis.com]
+google_pubsub_topic_iam_member.analytics_dead_letter: Creating...
+google_compute_network.vpc: Creating...
+google_pubsub_topic.events: Creating...
+google_artifact_registry_repository.images: Creating...
+google_pubsub_subscription.dead_letter: Creation complete after 3s [id=projects/<project>/subscriptions/click-events--analytics-worker.failed]
+google_secret_manager_secret.s["identity-owner-identity"]: Creating...
+google_secret_manager_secret.s["identity-owner-identity"]: Creation complete after 1s [id=projects/<project>/secrets/qrwtya-identity-owner-identity]
+google_secret_manager_secret.s["sql-links--account-api"]: Creating...
+google_pubsub_topic.events: Creation complete after 3s [id=projects/<project>/topics/click-events]
+google_secret_manager_secret.s["sql-sessions--session-api"]: Creating...
+google_secret_manager_secret.s["sql-links--account-api"]: Creation complete after 0s [id=projects/<project>/secrets/qrwtya-sql-links--account-api]
+google_secret_manager_secret.s["sql-links--redirect-service"]: Creating...
+google_secret_manager_secret.s["sql-sessions--session-api"]: Creation complete after 0s [id=projects/<project>/secrets/qrwtya-sql-sessions--session-api]
+google_secret_manager_secret.s["sql-analytics--account-api"]: Creating...
+google_secret_manager_secret.s["sql-links--redirect-service"]: Creation complete after 1s [id=projects/<project>/secrets/qrwtya-sql-links--redirect-service]
+google_secret_manager_secret.s["sql-links--link-api"]: Creating...
+google_secret_manager_secret.s["sql-analytics--account-api"]: Creation complete after 1s [id=projects/<project>/secrets/qrwtya-sql-analytics--account-api]
+google_secret_manager_secret.s["identity-identity"]: Creating...
+google_pubsub_topic_iam_member.dead_letter_publisher: Creation complete after 4s [id=projects/<project>/topics/click-events--analytics-worker.failed/roles/pubsub.publisher/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_secret_manager_secret.s["sql-analytics--analytics-worker"]: Creating...
+google_secret_manager_secret.s["sql-links--link-api"]: Creation complete after 0s [id=projects/<project>/secrets/qrwtya-sql-links--link-api]
+google_secret_manager_secret.s["link-replay-keys"]: Creating...
+google_secret_manager_secret.s["identity-identity"]: Creation complete after 0s [id=projects/<project>/secrets/qrwtya-identity-identity]
+google_secret_manager_secret.s["owner-sessions"]: Creating...
+google_secret_manager_secret.s["sql-analytics--analytics-worker"]: Creation complete after 0s [id=projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker]
+google_secret_manager_secret.s["owner-analytics"]: Creating...
+google_secret_manager_secret.s["link-replay-keys"]: Creation complete after 0s [id=projects/<project>/secrets/qrwtya-link-replay-keys]
+google_secret_manager_secret.s["postgres-admin"]: Creating...
+google_secret_manager_secret.s["owner-sessions"]: Creation complete after 1s [id=projects/<project>/secrets/qrwtya-owner-sessions]
+google_secret_manager_secret.s["owner-links"]: Creating...
+google_secret_manager_secret.s["owner-analytics"]: Creation complete after 1s [id=projects/<project>/secrets/qrwtya-owner-analytics]
+google_secret_manager_secret.s["owner-billing"]: Creating...
+google_secret_manager_secret.s["postgres-admin"]: Creation complete after 1s [id=projects/<project>/secrets/qrwtya-postgres-admin]
+google_secret_manager_secret.s["sql-billing--billing-api"]: Creating...
+google_secret_manager_secret.s["owner-links"]: Creation complete after 0s [id=projects/<project>/secrets/qrwtya-owner-links]
+google_secret_manager_secret.s["memorystore-ca"]: Creating...
+google_secret_manager_secret.s["owner-billing"]: Creation complete after 0s [id=projects/<project>/secrets/qrwtya-owner-billing]
+google_pubsub_topic_iam_member.redirect_publish: Creating...
+google_secret_manager_secret.s["sql-billing--billing-api"]: Creation complete after 0s [id=projects/<project>/secrets/qrwtya-sql-billing--billing-api]
+google_pubsub_topic_iam_member.redirect_probe: Creating...
+google_secret_manager_secret.s["memorystore-ca"]: Creation complete after 0s [id=projects/<project>/secrets/qrwtya-memorystore-ca]
+google_pubsub_subscription.analytics: Creating...
+google_pubsub_subscription.analytics: Creation complete after 2s [id=projects/<project>/subscriptions/click-events--analytics-worker]
+google_pubsub_subscription_iam_member.analytics_probe: Creating...
+google_service_account.run["session"]: Still creating... [20s elapsed]
+google_storage_bucket_iam_member.archive_reader: Creation complete after 8s [id=b/qrwtya-click-archive-<project>/roles/storage.legacyBucketReader/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_pubsub_subscription_iam_member.dead_letter_subscriber: Creating...
+google_storage_bucket_iam_member.archive_writer: Creation complete after 8s [id=b/qrwtya-click-archive-<project>/roles/storage.objectCreator/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_pubsub_subscription_iam_member.analytics_consume: Creating...
+google_pubsub_topic_iam_member.analytics_dead_letter: Creation complete after 8s [id=projects/<project>/topics/click-events--analytics-worker.failed/roles/pubsub.publisher/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription.archive: Creating...
+google_service_account.run["migrate"]: Still creating... [20s elapsed]
+google_pubsub_subscription.archive: Creation complete after 2s [id=projects/<project>/subscriptions/qrwtya-click-events-archive]
+google_compute_network.vpc: Still creating... [10s elapsed]
+google_artifact_registry_repository.images: Still creating... [10s elapsed]
+google_artifact_registry_repository.images: Creation complete after 11s [id=projects/<project>/locations/us-central1/repositories/qrwtya-images]
+google_pubsub_subscription_iam_member.analytics_probe: Creation complete after 8s [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.viewer/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_pubsub_topic_iam_member.redirect_publish: Creation complete after 12s [id=projects/<project>/topics/click-events/roles/pubsub.publisher/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_pubsub_topic_iam_member.redirect_probe: Creation complete after 12s [id=projects/<project>/topics/click-events/roles/pubsub.viewer/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_service_account.run["session"]: Creation complete after 31s [id=projects/<project>/serviceAccounts/qrwtya-session@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription_iam_member.dead_letter_subscriber: Still creating... [13s elapsed]
+google_pubsub_subscription_iam_member.analytics_consume: Still creating... [13s elapsed]
+google_service_account.run["migrate"]: Still creating... [33s elapsed]
+google_pubsub_subscription_iam_member.analytics_consume: Creation complete after 16s [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.subscriber/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription_iam_member.dead_letter_subscriber: Creation complete after 16s [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.subscriber/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_compute_network.vpc: Still creating... [24s elapsed]
+google_compute_network.vpc: Creation complete after 25s [id=projects/<project>/global/networks/qrwtya-vpc]
+google_compute_global_address.psa: Creating...
+google_compute_router.nat: Creating...
+google_compute_subnetwork.run: Creating...
+google_service_account.run["migrate"]: Still creating... [43s elapsed]
+google_compute_global_address.psa: Still creating... [10s elapsed]
+google_compute_subnetwork.run: Still creating... [10s elapsed]
+google_compute_router.nat: Still creating... [10s elapsed]
+google_compute_subnetwork.run: Creation complete after 11s [id=projects/<project>/regions/us-central1/subnetworks/qrwtya-run]
+google_network_connectivity_service_connection_policy.memorystore: Creating...
+google_compute_router.nat: Creation complete after 11s [id=projects/<project>/regions/us-central1/routers/qrwtya-router]
+google_compute_router_nat.nat: Creating...
+google_compute_global_address.psa: Creation complete after 12s [id=projects/<project>/global/addresses/qrwtya-psa]
+google_service_networking_connection.psa: Creating...
+google_service_account.run["migrate"]: Still creating... [53s elapsed]
+google_network_connectivity_service_connection_policy.memorystore: Still creating... [10s elapsed]
+google_compute_router_nat.nat: Still creating... [10s elapsed]
+google_network_connectivity_service_connection_policy.memorystore: Creation complete after 15s [id=projects/<project>/locations/us-central1/serviceConnectionPolicies/qrwtya-memorystore]
+google_memorystore_instance.cache["hot-routes"]: Creating...
+google_memorystore_instance.cache["admission-cache"]: Creating...
+google_compute_router_nat.nat: Creation complete after 15s [id=<project>/us-central1/qrwtya-router/qrwtya-nat]
+google_service_networking_connection.psa: Still creating... [14s elapsed]
+google_service_account.run["migrate"]: Still creating... [1m7s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [10s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [10s elapsed]
+google_service_networking_connection.psa: Still creating... [24s elapsed]
+google_service_account.run["migrate"]: Still creating... [1m17s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [20s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [20s elapsed]
+google_service_networking_connection.psa: Still creating... [34s elapsed]
+google_service_account.run["migrate"]: Still creating... [1m27s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [30s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [30s elapsed]
+google_service_networking_connection.psa: Still creating... [44s elapsed]
+google_service_networking_connection.psa: Creation complete after 45s [id=projects%2F<project>%2Fglobal%2Fnetworks%2Fqrwtya-vpc:servicenetworking.googleapis.com]
+google_sql_database_instance.pg: Creating...
+google_service_account.run["migrate"]: Still creating... [1m40s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [43s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [43s elapsed]
+google_sql_database_instance.pg: Still creating... [14s elapsed]
+google_service_account.run["migrate"]: Creation complete after 1m50s [id=projects/<project>/serviceAccounts/qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["redirect"]: Creating...
+google_project_iam_member.sql_client["session"]: Creating...
+google_project_iam_member.sql_client["migrate"]: Creating...
+google_project_iam_member.sql_client["account"]: Creating...
+google_project_iam_member.sql_client["billing"]: Creating...
+google_project_iam_member.sql_client["analytics"]: Creating...
+google_project_iam_member.sql_client["link"]: Creating...
+google_memorystore_instance.cache["admission-cache"]: Still creating... [53s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [53s elapsed]
+google_sql_database_instance.pg: Still creating... [24s elapsed]
+google_project_iam_member.sql_client["link"]: Creation complete after 7s [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["session"]: Creation complete after 8s [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-session@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["analytics"]: Creation complete after 8s [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["migrate"]: Creation complete after 8s [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["redirect"]: Creation complete after 8s [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["account"]: Creation complete after 8s [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["billing"]: Creation complete after 9s [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-billing@<project>.iam.gserviceaccount.com]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [1m3s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [1m3s elapsed]
+google_sql_database_instance.pg: Still creating... [34s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [1m17s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [1m17s elapsed]
+google_sql_database_instance.pg: Still creating... [48s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [1m27s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [1m27s elapsed]
+google_sql_database_instance.pg: Still creating... [58s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [1m37s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [1m37s elapsed]
+google_sql_database_instance.pg: Still creating... [1m8s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [1m50s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [1m50s elapsed]
+google_sql_database_instance.pg: Still creating... [1m21s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [2m0s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [2m0s elapsed]
+google_sql_database_instance.pg: Still creating... [1m31s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [2m10s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [2m10s elapsed]
+google_sql_database_instance.pg: Still creating... [1m41s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [2m24s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [2m24s elapsed]
+google_sql_database_instance.pg: Still creating... [1m55s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [2m34s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [2m34s elapsed]
+google_sql_database_instance.pg: Still creating... [2m5s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [2m44s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [2m44s elapsed]
+google_sql_database_instance.pg: Still creating... [2m15s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [2m54s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [2m54s elapsed]
+google_sql_database_instance.pg: Still creating... [2m28s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [3m8s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [3m8s elapsed]
+google_sql_database_instance.pg: Still creating... [2m38s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [3m18s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [3m18s elapsed]
+google_sql_database_instance.pg: Still creating... [2m48s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [3m28s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [3m28s elapsed]
+google_sql_database_instance.pg: Still creating... [2m58s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [3m41s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [3m41s elapsed]
+google_sql_database_instance.pg: Still creating... [3m12s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [3m51s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [3m51s elapsed]
+google_sql_database_instance.pg: Still creating... [3m22s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [4m1s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [4m1s elapsed]
+google_sql_database_instance.pg: Still creating... [3m32s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [4m15s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [4m15s elapsed]
+google_sql_database_instance.pg: Still creating... [3m46s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [4m25s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [4m25s elapsed]
+google_sql_database_instance.pg: Still creating... [3m56s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [4m35s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [4m35s elapsed]
+google_sql_database_instance.pg: Still creating... [4m6s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [4m48s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [4m48s elapsed]
+google_sql_database_instance.pg: Still creating... [4m19s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [4m58s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [4m58s elapsed]
+google_sql_database_instance.pg: Still creating... [4m29s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [5m8s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [5m8s elapsed]
+google_sql_database_instance.pg: Still creating... [4m39s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [5m18s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still creating... [5m18s elapsed]
+google_sql_database_instance.pg: Still creating... [4m53s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Creation complete after 5m24s [id=projects/<project>/locations/us-central1/instances/qrwtya-hot-routes]
+google_secret_manager_secret_version.memorystore_ca: Creating...
+google_secret_manager_secret_version.memorystore_ca: Creation complete after 1s [id=projects/<project-number>/secrets/qrwtya-memorystore-ca/versions/1]
+google_memorystore_instance.cache["admission-cache"]: Still creating... [5m32s elapsed]
+google_sql_database_instance.pg: Still creating... [5m3s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Creation complete after 5m34s [id=projects/<project>/locations/us-central1/instances/qrwtya-admission-cache]
+google_sql_database_instance.pg: Still creating... [5m13s elapsed]
+google_sql_database_instance.pg: Still creating... [5m23s elapsed]
+google_sql_database_instance.pg: Still creating... [5m36s elapsed]
+google_sql_database_instance.pg: Still creating... [5m46s elapsed]
+google_sql_database_instance.pg: Still creating... [5m56s elapsed]
+google_sql_database_instance.pg: Still creating... [6m10s elapsed]
+google_sql_database_instance.pg: Still creating... [6m20s elapsed]
+google_sql_database_instance.pg: Still creating... [6m30s elapsed]
+google_sql_database_instance.pg: Still creating... [6m44s elapsed]
+google_sql_database_instance.pg: Still creating... [6m54s elapsed]
+google_sql_database_instance.pg: Still creating... [7m4s elapsed]
+google_sql_database_instance.pg: Still creating... [7m17s elapsed]
+google_sql_database_instance.pg: Still creating... [7m27s elapsed]
+google_sql_database_instance.pg: Still creating... [7m37s elapsed]
+google_sql_database_instance.pg: Still creating... [7m51s elapsed]
+google_sql_database_instance.pg: Still creating... [8m1s elapsed]
+google_sql_database_instance.pg: Still creating... [8m11s elapsed]
+google_sql_database_instance.pg: Still creating... [8m21s elapsed]
+google_sql_database_instance.pg: Still creating... [8m34s elapsed]
+google_sql_database_instance.pg: Still creating... [8m44s elapsed]
+google_sql_database_instance.pg: Still creating... [8m54s elapsed]
+google_sql_database_instance.pg: Still creating... [9m8s elapsed]
+google_sql_database_instance.pg: Still creating... [9m18s elapsed]
+google_sql_database_instance.pg: Still creating... [9m28s elapsed]
+google_sql_database_instance.pg: Still creating... [9m41s elapsed]
+google_sql_database_instance.pg: Still creating... [9m51s elapsed]
+google_sql_database_instance.pg: Still creating... [10m1s elapsed]
+google_sql_database_instance.pg: Still creating... [10m15s elapsed]
+google_sql_database_instance.pg: Still creating... [10m25s elapsed]
+google_sql_database_instance.pg: Still creating... [10m35s elapsed]
+google_sql_database_instance.pg: Creation complete after 10m43s [id=qrwtya-pg]
+
+Warning: Applied changes may be incomplete
+
+The plan was created with the -target or the -exclude option in effect, so
+some changes requested in the configuration may have been ignored and the
+output values may not be fully updated. Run the following command to verify
+that no other changes are pending:
+    tofu plan
+
+Note that the -target and -exclude options are not suitable for routine use,
+and are provided only for exceptional situations such as recovering from
+errors or mistakes, or when OpenTofu specifically suggests to use it as part
+of an error message.
+
+Error: Invalid index
+
+  on locals.tf line 25, in locals:
+  25:     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_HOST"    = i.discovery_endpoints[0].address
+    ├────────────────
+    │ i.discovery_endpoints is empty list of object
+
+The given key does not identify an element in this collection value.
+
+Error: Invalid index
+
+  on locals.tf line 25, in locals:
+  25:     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_HOST"    = i.discovery_endpoints[0].address
+    ├────────────────
+    │ i.discovery_endpoints is empty list of object
+
+The given key does not identify an element in this collection value.
+
+Error: Invalid index
+
+  on locals.tf line 26, in locals:
+  26:     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_PORT"    = tostring(i.discovery_endpoints[0].port)
+    ├────────────────
+    │ i.discovery_endpoints is empty list of object
+
+The given key does not identify an element in this collection value.
+
+Error: Invalid index
+
+  on locals.tf line 26, in locals:
+  26:     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_PORT"    = tostring(i.discovery_endpoints[0].port)
+    ├────────────────
+    │ i.discovery_endpoints is empty list of object
+
+The given key does not identify an element in this collection value.
+
+Error: Invalid index
+
+  on outputs.tf line 16, in output "memorystore_endpoints":
+  16:   value = { for k, i in google_memorystore_instance.cache : k => i.discovery_endpoints[0] }
+    ├────────────────
+    │ i.discovery_endpoints is empty list of object
+
+The given key does not identify an element in this collection value.
+
+Error: Invalid index
+
+  on outputs.tf line 16, in output "memorystore_endpoints":
+  16:   value = { for k, i in google_memorystore_instance.cache : k => i.discovery_endpoints[0] }
+    ├────────────────
+    │ i.discovery_endpoints is empty list of object
+
+The given key does not identify an element in this collection value.

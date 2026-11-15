@@ -1,0 +1,319 @@
+google_pubsub_subscription_iam_member.analytics_consume: Destroying... [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.subscriber/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_pubsub_topic_iam_member.redirect_probe: Destroying... [id=projects/<project>/topics/click-events/roles/pubsub.viewer/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_pubsub_topic_iam_member.analytics_dead_letter: Destroying... [id=projects/<project>/topics/click-events--analytics-worker.failed/roles/pubsub.publisher/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription_iam_member.dead_letter_subscriber: Destroying... [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.subscriber/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_pubsub_subscription_iam_member.analytics_probe: Destroying... [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.viewer/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription.archive: Destroying... [id=projects/<project>/subscriptions/qrwtya-click-events-archive]
+google_secret_manager_secret_version.memorystore_ca["hot-routes"]: Destroying... [id=projects/<project-number>/secrets/qrwtya-memorystore-ca-hot-routes/versions/1]
+google_cloud_run_v2_service.http["billing-api"]: Destroying... [id=projects/<project>/locations/us-central1/services/qrwtya-billing-api]
+google_cloud_run_v2_service.http["redirect-service"]: Destroying... [id=projects/<project>/locations/us-central1/services/qrwtya-redirect-service]
+google_cloud_run_v2_service.http["account-api"]: Destroying... [id=projects/<project>/locations/us-central1/services/qrwtya-account-api]
+google_secret_manager_secret_version.memorystore_ca["hot-routes"]: Destruction complete after 0s
+google_cloud_run_v2_worker_pool.analytics: Destroying... [id=projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker]
+google_pubsub_subscription.archive: Destruction complete after 0s
+google_cloud_run_v2_service.http["session-api"]: Destroying... [id=projects/<project>/locations/us-central1/services/qrwtya-session-api]
+google_pubsub_topic_iam_member.redirect_probe: Destruction complete after 7s
+google_compute_router_nat.nat: Destroying... [id=<project>/us-central1/qrwtya-router/qrwtya-nat]
+google_pubsub_topic_iam_member.analytics_dead_letter: Destruction complete after 7s
+google_pubsub_topic_iam_member.dead_letter_publisher: Destroying... [id=projects/<project>/topics/click-events--analytics-worker.failed/roles/pubsub.publisher/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_pubsub_subscription_iam_member.dead_letter_subscriber: Destruction complete after 8s
+google_cloud_run_v2_service.http["link-api"]: Destroying... [id=projects/<project>/locations/us-central1/services/qrwtya-link-api]
+google_pubsub_topic_iam_member.dead_letter_publisher: Destruction complete after 5s
+google_artifact_registry_repository.images: Destroying... [id=projects/<project>/locations/us-central1/repositories/qrwtya-images]
+google_artifact_registry_repository.images: Destruction complete after 0s
+google_cloud_run_v2_job.migrate: Destroying... [id=projects/<project>/locations/us-central1/jobs/qrwtya-migrate]
+google_pubsub_subscription_iam_member.analytics_probe: Still destroying... [id=projects/<project>...-8e74-42a0-ab1.iam.gserviceaccount.com, 13s elapsed]
+google_pubsub_subscription_iam_member.analytics_consume: Still destroying... [id=projects/<project>...-8e74-42a0-ab1.iam.gserviceaccount.com, 13s elapsed]
+google_cloud_run_v2_service.http["billing-api"]: Still destroying... [id=projects/<project>...s-central1/services/qrwtya-billing-api, 13s elapsed]
+google_cloud_run_v2_service.http["account-api"]: Still destroying... [id=projects/<project>...s-central1/services/qrwtya-account-api, 13s elapsed]
+google_cloud_run_v2_service.http["redirect-service"]: Still destroying... [id=projects/<project>...tral1/services/qrwtya-redirect-service, 13s elapsed]
+google_cloud_run_v2_worker_pool.analytics: Still destroying... [id=projects/<project>...l1/workerPools/qrwtya-analytics-worker, 13s elapsed]
+google_cloud_run_v2_service.http["account-api"]: Destruction complete after 13s
+google_pubsub_subscription.dead_letter: Destroying... [id=projects/<project>/subscriptions/click-events--analytics-worker.failed]
+google_cloud_run_v2_service.http["billing-api"]: Destruction complete after 14s
+google_pubsub_topic_iam_member.redirect_publish: Destroying... [id=projects/<project>/topics/click-events/roles/pubsub.publisher/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_cloud_run_v2_service.http["redirect-service"]: Destruction complete after 14s
+google_secret_manager_secret_version.memorystore_ca["admission-cache"]: Destroying... [id=projects/<project-number>/secrets/qrwtya-memorystore-ca-admission-cache/versions/1]
+google_cloud_run_v2_worker_pool.analytics: Destruction complete after 14s
+google_storage_bucket_iam_member.archive_writer: Destroying... [id=b/qrwtya-click-archive-<project>/roles/storage.objectCreator/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_cloud_run_v2_service.http["session-api"]: Still destroying... [id=projects/<project>...s-central1/services/qrwtya-session-api, 14s elapsed]
+google_secret_manager_secret_version.memorystore_ca["admission-cache"]: Destruction complete after 0s
+google_storage_bucket_iam_member.archive_reader: Destroying... [id=b/qrwtya-click-archive-<project>/roles/storage.legacyBucketReader/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_pubsub_subscription.dead_letter: Destruction complete after 1s
+google_cloud_run_v2_service.http["session-api"]: Destruction complete after 14s
+google_pubsub_subscription_iam_member.analytics_consume: Destruction complete after 17s
+google_pubsub_subscription_iam_member.analytics_probe: Destruction complete after 17s
+google_pubsub_subscription.analytics: Destroying... [id=projects/<project>/subscriptions/click-events--analytics-worker]
+google_pubsub_subscription.analytics: Destruction complete after 0s
+google_pubsub_topic.dead_letter: Destroying... [id=projects/<project>/topics/click-events--analytics-worker.failed]
+google_compute_router_nat.nat: Still destroying... [id=<project>/us-central1/qrwtya-router/qrwtya-nat, 10s elapsed]
+google_storage_bucket_iam_member.archive_writer: Destruction complete after 3s
+google_pubsub_topic.dead_letter: Destruction complete after 1s
+google_pubsub_topic_iam_member.redirect_publish: Destruction complete after 4s
+google_pubsub_topic.events: Destroying... [id=projects/<project>/topics/click-events]
+google_cloud_run_v2_service.http["link-api"]: Still destroying... [id=projects/<project>...s/us-central1/services/qrwtya-link-api, 10s elapsed]
+google_cloud_run_v2_service.http["link-api"]: Destruction complete after 10s
+google_compute_router_nat.nat: Destruction complete after 11s
+google_compute_router.nat: Destroying... [id=projects/<project>/regions/us-central1/routers/qrwtya-router]
+google_pubsub_topic.events: Destruction complete after 0s
+google_storage_bucket_iam_member.archive_reader: Destruction complete after 7s
+google_storage_bucket.archive: Destroying... [id=qrwtya-click-archive-<project>]
+google_storage_bucket.archive: Destruction complete after 1s
+google_cloud_run_v2_job.migrate: Still destroying... [id=projects/<project>...ations/us-central1/jobs/qrwtya-migrate, 10s elapsed]
+google_cloud_run_v2_job.migrate: Destruction complete after 10s
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--account-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-links--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--link-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-links--link-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--analytics-worker"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["billing/sql-billing--billing-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-billing--billing-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-billing@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["link/sql-links--link-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-links--link-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/identity-owner-identity"]: Destroying... [id=projects/<project>/secrets/qrwtya-identity-owner-identity/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["migrate"]: Destroying... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--redirect-service"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-links--redirect-service/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-billing"]: Destroying... [id=projects/<project>/secrets/qrwtya-owner-billing/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/identity-owner-identity"]: Destruction complete after 4s
+google_secret_manager_secret_iam_member.reader["billing/sql-billing--billing-api"]: Destruction complete after 4s
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--account-api"]: Destruction complete after 4s
+google_secret_manager_secret_iam_member.reader["redirect/sql-links--redirect-service"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-links--redirect-service/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-sessions--session-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-sessions--session-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-billing--billing-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-billing--billing-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-billing"]: Destruction complete after 4s
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--link-api"]: Destruction complete after 4s
+google_secret_manager_secret_iam_member.reader["analytics/sql-analytics--analytics-worker"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-analytics"]: Destroying... [id=projects/<project>/secrets/qrwtya-owner-analytics/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--analytics-worker"]: Destruction complete after 4s
+google_project_iam_member.sql_client["account"]: Destroying... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--redirect-service"]: Destruction complete after 4s
+google_secret_manager_secret_iam_member.reader["redirect/memorystore-ca-hot-routes"]: Destroying... [id=projects/<project>/secrets/qrwtya-memorystore-ca-hot-routes/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_compute_router.nat: Still destroying... [id=projects/<project>...ions/us-central1/routers/qrwtya-router, 10s elapsed]
+google_compute_router.nat: Destruction complete after 11s
+google_project_iam_member.sql_client["analytics"]: Destroying... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["migrate"]: Destruction complete after 8s
+google_secret_manager_secret_iam_member.reader["link/link-replay-keys"]: Destroying... [id=projects/<project>/secrets/qrwtya-link-replay-keys/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-billing--billing-api"]: Destruction complete after 4s
+google_secret_manager_secret_iam_member.reader["migrate/identity-identity"]: Destroying... [id=projects/<project>/secrets/qrwtya-identity-identity/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["analytics/sql-analytics--analytics-worker"]: Destruction complete after 4s
+google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--account-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-analytics--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["redirect/sql-links--redirect-service"]: Destruction complete after 4s
+google_project_iam_member.sql_client["session"]: Destroying... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-session@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-analytics"]: Destruction complete after 4s
+google_secret_manager_secret_iam_member.reader["link/sql-links--link-api"]: Destruction complete after 8s
+google_secret_manager_secret_iam_member.reader["link/memorystore-ca-admission-cache"]: Destroying... [id=projects/<project>/secrets/qrwtya-memorystore-ca-admission-cache/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["account/sql-links--account-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-links--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["redirect/memorystore-ca-hot-routes"]: Destruction complete after 5s
+google_secret_manager_secret_iam_member.reader["migrate/sql-sessions--session-api"]: Destruction complete after 5s
+google_project_iam_member.sql_client["billing"]: Destroying... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-billing@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-links"]: Destroying... [id=projects/<project>/secrets/qrwtya-owner-links/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["link/link-replay-keys"]: Destruction complete after 4s
+google_project_iam_member.sql_client["link"]: Destroying... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--account-api"]: Destruction complete after 4s
+google_project_iam_member.sql_client["redirect"]: Destroying... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["account/sql-links--account-api"]: Destruction complete after 4s
+google_secret_manager_secret_iam_member.reader["session/sql-sessions--session-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-sessions--session-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-session@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/identity-identity"]: Destruction complete after 4s
+google_secret_manager_secret_iam_member.reader["migrate/postgres-admin"]: Destroying... [id=projects/<project>/secrets/qrwtya-postgres-admin/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["link/memorystore-ca-admission-cache"]: Destruction complete after 5s
+google_secret_manager_secret_iam_member.reader["migrate/owner-sessions"]: Destroying... [id=projects/<project>/secrets/qrwtya-owner-sessions/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-links"]: Destruction complete after 4s
+google_secret_manager_secret_iam_member.reader["account/sql-analytics--account-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-analytics--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["account"]: Still destroying... [id=<project>/roles/cl...-8e74-42a0-ab1.iam.gserviceaccount.com, 14s elapsed]
+google_project_iam_member.sql_client["billing"]: Destruction complete after 10s
+google_project_iam_member.sql_client["analytics"]: Destruction complete after 12s
+google_project_iam_member.sql_client["account"]: Destruction complete after 15s
+google_secret_manager_secret_iam_member.reader["session/sql-sessions--session-api"]: Destruction complete after 8s
+google_secret_manager_secret_iam_member.reader["migrate/postgres-admin"]: Destruction complete after 8s
+google_secret_manager_secret_iam_member.reader["account/sql-analytics--account-api"]: Destruction complete after 7s
+google_secret_manager_secret_iam_member.reader["migrate/owner-sessions"]: Destruction complete after 7s
+google_secret_manager_secret.s["link-replay-keys"]: Destroying... [id=projects/<project>/secrets/qrwtya-link-replay-keys]
+google_secret_manager_secret.s["owner-sessions"]: Destroying... [id=projects/<project>/secrets/qrwtya-owner-sessions]
+google_secret_manager_secret.s["owner-links"]: Destroying... [id=projects/<project>/secrets/qrwtya-owner-links]
+google_secret_manager_secret.s["sql-links--redirect-service"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-links--redirect-service]
+google_memorystore_instance.cache["admission-cache"]: Destroying... [id=projects/<project>/locations/us-central1/instances/qrwtya-admission-cache]
+google_secret_manager_secret.s["postgres-admin"]: Destroying... [id=projects/<project>/secrets/qrwtya-postgres-admin]
+google_sql_database_instance.pg: Destroying... [id=qrwtya-pg]
+google_secret_manager_secret.s["owner-links"]: Destruction complete after 0s
+google_secret_manager_secret.s["sql-analytics--account-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-analytics--account-api]
+google_secret_manager_secret.s["sql-links--redirect-service"]: Destruction complete after 1s
+google_secret_manager_secret.s["sql-links--link-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-links--link-api]
+google_secret_manager_secret.s["owner-sessions"]: Destruction complete after 1s
+google_secret_manager_secret.s["sql-links--account-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-links--account-api]
+google_secret_manager_secret.s["postgres-admin"]: Destruction complete after 1s
+google_secret_manager_secret.s["link-replay-keys"]: Destruction complete after 1s
+google_memorystore_instance.cache["hot-routes"]: Destroying... [id=projects/<project>/locations/us-central1/instances/qrwtya-hot-routes]
+google_secret_manager_secret.s["identity-identity"]: Destroying... [id=projects/<project>/secrets/qrwtya-identity-identity]
+google_secret_manager_secret.s["sql-analytics--account-api"]: Destruction complete after 1s
+google_secret_manager_secret.s["sql-sessions--session-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-sessions--session-api]
+google_secret_manager_secret.s["sql-links--link-api"]: Destruction complete after 0s
+google_secret_manager_secret.s["sql-analytics--analytics-worker"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker]
+google_secret_manager_secret.s["sql-links--account-api"]: Destruction complete after 0s
+google_secret_manager_secret.s["identity-owner-identity"]: Destroying... [id=projects/<project>/secrets/qrwtya-identity-owner-identity]
+google_secret_manager_secret.s["identity-identity"]: Destruction complete after 0s
+google_secret_manager_secret.s["memorystore-ca-hot-routes"]: Destroying... [id=projects/<project>/secrets/qrwtya-memorystore-ca-hot-routes]
+google_secret_manager_secret.s["sql-sessions--session-api"]: Destruction complete after 0s
+google_secret_manager_secret.s["owner-billing"]: Destroying... [id=projects/<project>/secrets/qrwtya-owner-billing]
+google_secret_manager_secret.s["sql-analytics--analytics-worker"]: Destruction complete after 0s
+google_secret_manager_secret.s["memorystore-ca-admission-cache"]: Destroying... [id=projects/<project>/secrets/qrwtya-memorystore-ca-admission-cache]
+google_secret_manager_secret.s["identity-owner-identity"]: Destruction complete after 1s
+google_secret_manager_secret.s["sql-billing--billing-api"]: Destroying... [id=projects/<project>/secrets/qrwtya-sql-billing--billing-api]
+google_secret_manager_secret.s["memorystore-ca-hot-routes"]: Destruction complete after 1s
+google_secret_manager_secret.s["owner-analytics"]: Destroying... [id=projects/<project>/secrets/qrwtya-owner-analytics]
+google_secret_manager_secret.s["memorystore-ca-admission-cache"]: Destruction complete after 1s
+google_project_iam_member.sql_client["session"]: Still destroying... [id=<project>/roles/cl...-8e74-42a0-ab1.iam.gserviceaccount.com, 14s elapsed]
+google_secret_manager_secret.s["owner-billing"]: Destruction complete after 1s
+google_secret_manager_secret.s["sql-billing--billing-api"]: Destruction complete after 0s
+google_secret_manager_secret.s["owner-analytics"]: Destruction complete after 0s
+google_project_iam_member.sql_client["session"]: Destruction complete after 15s
+google_project_iam_member.sql_client["redirect"]: Destruction complete after 11s
+google_project_iam_member.sql_client["link"]: Destruction complete after 11s
+google_service_account.run["migrate"]: Destroying... [id=projects/<project>/serviceAccounts/qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_service_account.run["session"]: Destroying... [id=projects/<project>/serviceAccounts/qrwtya-session@<project>.iam.gserviceaccount.com]
+google_service_account.run["account"]: Destroying... [id=projects/<project>/serviceAccounts/qrwtya-account@<project>.iam.gserviceaccount.com]
+google_service_account.run["billing"]: Destroying... [id=projects/<project>/serviceAccounts/qrwtya-billing@<project>.iam.gserviceaccount.com]
+google_service_account.run["analytics"]: Destroying... [id=projects/<project>/serviceAccounts/qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_service_account.run["redirect"]: Destroying... [id=projects/<project>/serviceAccounts/qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_service_account.run["link"]: Destroying... [id=projects/<project>/serviceAccounts/qrwtya-link@<project>.iam.gserviceaccount.com]
+google_service_account.run["redirect"]: Destruction complete after 0s
+google_service_account.run["link"]: Destruction complete after 0s
+google_service_account.run["account"]: Destruction complete after 0s
+google_service_account.run["migrate"]: Destruction complete after 0s
+google_service_account.run["session"]: Destruction complete after 0s
+google_service_account.run["analytics"]: Destruction complete after 0s
+google_service_account.run["billing"]: Destruction complete after 0s
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 10s elapsed]
+google_sql_database_instance.pg: Still destroying... [id=qrwtya-pg, 10s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 10s elapsed]
+google_sql_database_instance.pg: Still destroying... [id=qrwtya-pg, 20s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 20s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 20s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 34s elapsed]
+google_sql_database_instance.pg: Still destroying... [id=qrwtya-pg, 34s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 33s elapsed]
+google_sql_database_instance.pg: Still destroying... [id=qrwtya-pg, 44s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 44s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 43s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 54s elapsed]
+google_sql_database_instance.pg: Still destroying... [id=qrwtya-pg, 54s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 53s elapsed]
+google_sql_database_instance.pg: Still destroying... [id=qrwtya-pg, 1m4s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 1m4s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 1m3s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 1m17s elapsed]
+google_sql_database_instance.pg: Still destroying... [id=qrwtya-pg, 1m17s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 1m17s elapsed]
+google_sql_database_instance.pg: Still destroying... [id=qrwtya-pg, 1m27s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 1m27s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 1m27s elapsed]
+google_sql_database_instance.pg: Destruction complete after 1m28s
+google_service_networking_connection.psa: Destroying... [id=projects%2F<project>%2Fglobal%2Fnetworks%2Fqrwtya-vpc:servicenetworking.googleapis.com]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 1m37s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 1m37s elapsed]
+google_service_networking_connection.psa: Still destroying... [id=projects%2Fproject-f46f6d6a-8e74-42a0-a...a-vpc:servicenetworking.googleapis.com, 10s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 1m51s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 1m50s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 2m1s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 2m0s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 2m11s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 2m10s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 2m24s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 2m24s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 2m34s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 2m34s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 2m44s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 2m44s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 2m58s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 2m58s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 3m8s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 3m8s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 3m18s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 3m18s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 3m28s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 3m28s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 3m42s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 3m41s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 3m52s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 3m51s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 4m2s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 4m1s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 4m15s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 4m15s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 4m25s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 4m25s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 4m35s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 4m35s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 4m49s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 4m48s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 4m59s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 4m58s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 5m9s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 5m8s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 5m22s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 5m22s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 5m32s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 5m32s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 5m42s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 5m42s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 5m56s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 5m55s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 6m6s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 6m5s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 6m16s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 6m15s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 6m26s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 6m25s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 6m40s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 6m39s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 6m50s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 6m49s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 7m0s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 6m59s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 7m13s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 7m13s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 7m23s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 7m23s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 7m33s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 7m33s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 7m47s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 7m46s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 7m57s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 7m56s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 8m7s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 8m6s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 8m20s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 8m20s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 8m30s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 8m30s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 8m40s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 8m40s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 8m50s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 8m50s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 9m4s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 9m3s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 9m14s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 9m13s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 9m24s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 9m23s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 9m38s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 9m37s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 9m48s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 9m47s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 9m58s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 9m57s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 10m11s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 10m11s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Still destroying... [id=projects/<project>...tral1/instances/qrwtya-admission-cache, 10m21s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 10m21s elapsed]
+google_memorystore_instance.cache["admission-cache"]: Destruction complete after 10m25s
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 10m31s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 10m44s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 10m54s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Still destroying... [id=projects/<project>...s-central1/instances/qrwtya-hot-routes, 11m4s elapsed]
+google_memorystore_instance.cache["hot-routes"]: Destruction complete after 11m7s
+google_network_connectivity_service_connection_policy.memorystore: Destroying... [id=projects/<project>/locations/us-central1/serviceConnectionPolicies/qrwtya-memorystore]
+google_network_connectivity_service_connection_policy.memorystore: Still destroying... [id=projects/<project>...eConnectionPolicies/qrwtya-memorystore, 10s elapsed]
+google_network_connectivity_service_connection_policy.memorystore: Destruction complete after 11s
+google_compute_subnetwork.run: Destroying... [id=projects/<project>/regions/us-central1/subnetworks/qrwtya-run]
+
+Error: Error when reading or editing Subnetwork: googleapi: Error 400: The subnetwork resource 'projects/<project>/regions/us-central1/subnetworks/qrwtya-run' is already being used by 'projects/<project>/regions/us-central1/addresses/serverless-ipv4-cloudrun-1794746920914768989', resourceInUseByAnotherResource
+
+
+Error: Unable to remove Service Networking Connection, err: Error waiting for Delete Service Networking Connection: Error code 9, message: Failed to delete connection; Producer services (e.g. CloudSQL, Cloud Memstore, etc.) are still using this connection.
+Help Token: AaVM3aMwV8s1LeXjeLkVDpnBdsHSDvkq5p1UlAJ1bXeFVphnSeK3q643RlO2qLwJg-t0H3AW1gyjpJgqqqYaJQZmnuPxKKiIeC-lgf4Ogq-70yhC

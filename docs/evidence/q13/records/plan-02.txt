@@ -1,0 +1,824 @@
+google_project_service.api["pubsub.googleapis.com"]: Refreshing state... [id=<project>/pubsub.googleapis.com]
+google_project_service.api["servicenetworking.googleapis.com"]: Refreshing state... [id=<project>/servicenetworking.googleapis.com]
+google_project_service.api["webrisk.googleapis.com"]: Refreshing state... [id=<project>/webrisk.googleapis.com]
+google_project_service.api["secretmanager.googleapis.com"]: Refreshing state... [id=<project>/secretmanager.googleapis.com]
+google_project_service.api["sqladmin.googleapis.com"]: Refreshing state... [id=<project>/sqladmin.googleapis.com]
+google_project_service.api["compute.googleapis.com"]: Refreshing state... [id=<project>/compute.googleapis.com]
+google_project_service.api["run.googleapis.com"]: Refreshing state... [id=<project>/run.googleapis.com]
+google_project_service.api["storage.googleapis.com"]: Refreshing state... [id=<project>/storage.googleapis.com]
+google_project_service.api["artifactregistry.googleapis.com"]: Refreshing state... [id=<project>/artifactregistry.googleapis.com]
+google_pubsub_topic.dead_letter: Refreshing state... [id=projects/<project>/topics/click-events--analytics-worker.failed]
+google_project_service.api["networkconnectivity.googleapis.com"]: Refreshing state... [id=<project>/networkconnectivity.googleapis.com]
+google_project_service.api["memorystore.googleapis.com"]: Refreshing state... [id=<project>/memorystore.googleapis.com]
+google_service_account.run["analytics"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_service_account.run["migrate"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_service_account.run["account"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-account@<project>.iam.gserviceaccount.com]
+google_service_account.run["session"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-session@<project>.iam.gserviceaccount.com]
+google_service_account.run["billing"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-billing@<project>.iam.gserviceaccount.com]
+google_service_account.run["link"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-link@<project>.iam.gserviceaccount.com]
+google_project_service.api["iam.googleapis.com"]: Refreshing state... [id=<project>/iam.googleapis.com]
+google_service_account.run["redirect"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-redirect@<project>.iam.gserviceaccount.com]
+data.google_project.this: Reading...
+google_pubsub_subscription.dead_letter: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker.failed]
+google_storage_bucket.archive: Refreshing state... [id=qrwtya-click-archive-<project>]
+google_project_iam_member.sql_client["link"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_pubsub_topic_iam_member.analytics_dead_letter: Refreshing state... [id=projects/<project>/topics/click-events--analytics-worker.failed/roles/pubsub.publisher/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["migrate"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["session"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-session@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["redirect"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["account"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com]
+data.google_project.this: Read complete after 0s [id=projects/<project>]
+google_project_iam_member.sql_client["analytics"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["billing"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-billing@<project>.iam.gserviceaccount.com]
+google_storage_bucket_iam_member.archive_writer: Refreshing state... [id=b/qrwtya-click-archive-<project>/roles/storage.objectCreator/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_pubsub_topic_iam_member.dead_letter_publisher: Refreshing state... [id=projects/<project>/topics/click-events--analytics-worker.failed/roles/pubsub.publisher/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_storage_bucket_iam_member.archive_reader: Refreshing state... [id=b/qrwtya-click-archive-<project>/roles/storage.legacyBucketReader/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_compute_network.vpc: Refreshing state... [id=projects/<project>/global/networks/qrwtya-vpc]
+google_pubsub_topic.events: Refreshing state... [id=projects/<project>/topics/click-events]
+google_artifact_registry_repository.images: Refreshing state... [id=projects/<project>/locations/us-central1/repositories/qrwtya-images]
+google_secret_manager_secret.s["owner-sessions"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-sessions]
+google_secret_manager_secret.s["sql-sessions--session-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-sessions--session-api]
+google_secret_manager_secret.s["sql-analytics--account-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-analytics--account-api]
+google_secret_manager_secret.s["sql-links--account-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--account-api]
+google_secret_manager_secret.s["identity-owner-identity"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-identity-owner-identity]
+google_secret_manager_secret.s["sql-links--link-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--link-api]
+google_secret_manager_secret.s["sql-billing--billing-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-billing--billing-api]
+google_secret_manager_secret.s["sql-analytics--analytics-worker"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker]
+google_secret_manager_secret.s["sql-links--redirect-service"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--redirect-service]
+google_secret_manager_secret.s["link-replay-keys"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-link-replay-keys]
+google_secret_manager_secret.s["owner-links"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-links]
+google_secret_manager_secret.s["postgres-admin"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-postgres-admin]
+google_secret_manager_secret.s["memorystore-ca"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-memorystore-ca]
+google_secret_manager_secret.s["owner-analytics"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-analytics]
+google_secret_manager_secret.s["identity-identity"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-identity-identity]
+google_secret_manager_secret.s["owner-billing"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-billing]
+google_pubsub_subscription.analytics: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker]
+google_pubsub_topic_iam_member.redirect_probe: Refreshing state... [id=projects/<project>/topics/click-events/roles/pubsub.viewer/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription.archive: Refreshing state... [id=projects/<project>/subscriptions/qrwtya-click-events-archive]
+google_pubsub_topic_iam_member.redirect_publish: Refreshing state... [id=projects/<project>/topics/click-events/roles/pubsub.publisher/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_compute_router.nat: Refreshing state... [id=projects/<project>/regions/us-central1/routers/qrwtya-router]
+google_compute_subnetwork.run: Refreshing state... [id=projects/<project>/regions/us-central1/subnetworks/qrwtya-run]
+google_compute_global_address.psa: Refreshing state... [id=projects/<project>/global/addresses/qrwtya-psa]
+google_pubsub_subscription_iam_member.analytics_consume: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.subscriber/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription_iam_member.analytics_probe: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.viewer/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription_iam_member.dead_letter_subscriber: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.subscriber/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_service_networking_connection.psa: Refreshing state... [id=projects%2F<project>%2Fglobal%2Fnetworks%2Fqrwtya-vpc:servicenetworking.googleapis.com]
+google_network_connectivity_service_connection_policy.memorystore: Refreshing state... [id=projects/<project>/locations/us-central1/serviceConnectionPolicies/qrwtya-memorystore]
+google_compute_router_nat.nat: Refreshing state... [id=<project>/us-central1/qrwtya-router/qrwtya-nat]
+google_memorystore_instance.cache["hot-routes"]: Refreshing state... [id=projects/<project>/locations/us-central1/instances/qrwtya-hot-routes]
+google_memorystore_instance.cache["admission-cache"]: Refreshing state... [id=projects/<project>/locations/us-central1/instances/qrwtya-admission-cache]
+google_sql_database_instance.pg: Refreshing state... [id=qrwtya-pg]
+google_secret_manager_secret_version.memorystore_ca: Refreshing state... [id=projects/<project-number>/secrets/qrwtya-memorystore-ca/versions/1]
+
+OpenTofu used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+  - destroy
+
+OpenTofu will perform the following actions:
+
+  # google_cloud_run_v2_job.migrate will be created
+  + resource "google_cloud_run_v2_job" "migrate" {
+      + conditions               = (known after apply)
+      + create_time              = (known after apply)
+      + creator                  = (known after apply)
+      + delete_time              = (known after apply)
+      + deletion_policy          = "DELETE"
+      + deletion_protection      = true
+      + effective_annotations    = (known after apply)
+      + effective_labels         = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + etag                     = (known after apply)
+      + execution_count          = (known after apply)
+      + expire_time              = (known after apply)
+      + generation               = (known after apply)
+      + id                       = (known after apply)
+      + labels                   = {
+          + "arm" = "a"
+        }
+      + last_modifier            = (known after apply)
+      + latest_created_execution = (known after apply)
+      + launch_stage             = (known after apply)
+      + location                 = "us-central1"
+      + name                     = "qrwtya-migrate"
+      + observed_generation      = (known after apply)
+      + project                  = "<project>"
+      + reconciling              = (known after apply)
+      + terminal_condition       = (known after apply)
+      + terraform_labels         = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + uid                      = (known after apply)
+      + update_time              = (known after apply)
+
+      + template {
+          + parallelism = (known after apply)
+          + task_count  = 1
+
+          + template {
+              + execution_environment = (known after apply)
+              + max_retries           = 0
+              + service_account       = "qrwtya-migrate@<project>.iam.gserviceaccount.com"
+              + timeout               = "600s"
+
+              + containers {
+                  + command = [
+                      + "/bin/sh",
+                      + "-c",
+                      + "node scripts/qrwty-production-profile.mjs migrate && SECRET_DIR=/tmp/qrwty-secrets exec node scripts/migrate.mjs",
+                    ]
+                  + image   = "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:a99d60c7fe89e183b192dbb9f41e722f9d9670d6f7993ff5b46289dd07d87a99"
+
+                  + env {
+                      + name  = "JEEVES_REQUIRE_TLS"
+                      + value = "true"
+                    }
+                  + env {
+                      + name  = "PGHOST"
+                      + value = "/cloudsql/<project>:us-central1:qrwtya-pg"
+                    }
+                  + env {
+                      + name  = "PGPORT"
+                      + value = "5432"
+                    }
+                  + env {
+                      + name  = "QRWTY_PROFILE"
+                      + value = "production"
+                    }
+                  + env {
+                      + name  = "QRWTY_SECRET_MOUNT_DIR"
+                      + value = "/var/run/qrwty-secrets"
+                    }
+
+                  + resources (known after apply)
+
+                  + startup_probe (known after apply)
+
+                  + volume_mounts {
+                      + mount_path = "/cloudsql"
+                      + name       = "cloudsql"
+                    }
+                  + volume_mounts {
+                      + mount_path = "/var/run/qrwty-secrets/identity-identity"
+                      + name       = "s-identity-identity"
+                    }
+                  + volume_mounts {
+                      + mount_path = "/var/run/qrwty-secrets/identity-owner-identity"
+                      + name       = "s-identity-owner-identity"
+                    }
+                  + volume_mounts {
+                      + mount_path = "/var/run/qrwty-secrets/owner-analytics"
+                      + name       = "s-owner-analytics"
+                    }
+                  + volume_mounts {
+                      + mount_path = "/var/run/qrwty-secrets/owner-billing"
+                      + name       = "s-owner-billing"
+                    }
+                  + volume_mounts {
+                      + mount_path = "/var/run/qrwty-secrets/owner-links"
+                      + name       = "s-owner-links"
+                    }
+                  + volume_mounts {
+                      + mount_path = "/var/run/qrwty-secrets/owner-sessions"
+                      + name       = "s-owner-sessions"
+                    }
+                  + volume_mounts {
+                      + mount_path = "/var/run/qrwty-secrets/postgres-admin"
+                      + name       = "s-postgres-admin"
+                    }
+                  + volume_mounts {
+                      + mount_path = "/var/run/qrwty-secrets/sql-analytics--account-api"
+                      + name       = "s-sql-analytics-account-api"
+                    }
+                  + volume_mounts {
+                      + mount_path = "/var/run/qrwty-secrets/sql-analytics--analytics-worker"
+                      + name       = "s-sql-analytics-analytics-worker"
+                    }
+                  + volume_mounts {
+                      + mount_path = "/var/run/qrwty-secrets/sql-billing--billing-api"
+                      + name       = "s-sql-billing-billing-api"
+                    }
+                  + volume_mounts {
+                      + mount_path = "/var/run/qrwty-secrets/sql-links--account-api"
+                      + name       = "s-sql-links-account-api"
+                    }
+                  + volume_mounts {
+                      + mount_path = "/var/run/qrwty-secrets/sql-links--link-api"
+                      + name       = "s-sql-links-link-api"
+                    }
+                  + volume_mounts {
+                      + mount_path = "/var/run/qrwty-secrets/sql-links--redirect-service"
+                      + name       = "s-sql-links-redirect-service"
+                    }
+                  + volume_mounts {
+                      + mount_path = "/var/run/qrwty-secrets/sql-sessions--session-api"
+                      + name       = "s-sql-sessions-session-api"
+                    }
+                }
+
+              + volumes {
+                  + name = "cloudsql"
+
+                  + cloud_sql_instance {
+                      + instances = [
+                          + "<project>:us-central1:qrwtya-pg",
+                        ]
+                    }
+                }
+              + volumes {
+                  + name = "s-identity-identity"
+
+                  + secret {
+                      + secret = "qrwtya-identity-identity"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+              + volumes {
+                  + name = "s-identity-owner-identity"
+
+                  + secret {
+                      + secret = "qrwtya-identity-owner-identity"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+              + volumes {
+                  + name = "s-owner-analytics"
+
+                  + secret {
+                      + secret = "qrwtya-owner-analytics"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+              + volumes {
+                  + name = "s-owner-billing"
+
+                  + secret {
+                      + secret = "qrwtya-owner-billing"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+              + volumes {
+                  + name = "s-owner-links"
+
+                  + secret {
+                      + secret = "qrwtya-owner-links"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+              + volumes {
+                  + name = "s-owner-sessions"
+
+                  + secret {
+                      + secret = "qrwtya-owner-sessions"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+              + volumes {
+                  + name = "s-postgres-admin"
+
+                  + secret {
+                      + secret = "qrwtya-postgres-admin"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+              + volumes {
+                  + name = "s-sql-analytics-account-api"
+
+                  + secret {
+                      + secret = "qrwtya-sql-analytics--account-api"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+              + volumes {
+                  + name = "s-sql-analytics-analytics-worker"
+
+                  + secret {
+                      + secret = "qrwtya-sql-analytics--analytics-worker"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+              + volumes {
+                  + name = "s-sql-billing-billing-api"
+
+                  + secret {
+                      + secret = "qrwtya-sql-billing--billing-api"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+              + volumes {
+                  + name = "s-sql-links-account-api"
+
+                  + secret {
+                      + secret = "qrwtya-sql-links--account-api"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+              + volumes {
+                  + name = "s-sql-links-link-api"
+
+                  + secret {
+                      + secret = "qrwtya-sql-links--link-api"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+              + volumes {
+                  + name = "s-sql-links-redirect-service"
+
+                  + secret {
+                      + secret = "qrwtya-sql-links--redirect-service"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+              + volumes {
+                  + name = "s-sql-sessions-session-api"
+
+                  + secret {
+                      + secret = "qrwtya-sql-sessions--session-api"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["memorystore-ca"] will be destroyed
+  # (because key ["memorystore-ca"] is not in for_each map)
+  - resource "google_secret_manager_secret" "s" {
+      - annotations           = {} -> null
+      - create_time           = "2026-11-15T11:59:47.888230Z" -> null
+      - deletion_policy       = "DELETE" -> null
+      - deletion_protection   = false -> null
+      - effective_annotations = {} -> null
+      - effective_labels      = {
+          - "arm"                        = "a"
+          - "goog-terraform-provisioned" = "true"
+          - "run"                        = "qrwty-r1-20261114"
+          - "system"                     = "qrwty"
+        } -> null
+      - id                    = "projects/<project>/secrets/qrwtya-memorystore-ca" -> null
+      - labels                = {
+          - "arm" = "a"
+        } -> null
+      - name                  = "projects/<project-number>/secrets/qrwtya-memorystore-ca" -> null
+      - project               = "<project>" -> null
+      - secret_id             = "qrwtya-memorystore-ca" -> null
+      - terraform_labels      = {
+          - "arm"                        = "a"
+          - "goog-terraform-provisioned" = "true"
+          - "run"                        = "qrwty-r1-20261114"
+          - "system"                     = "qrwty"
+        } -> null
+      - version_aliases       = {} -> null
+
+      - replication {
+          - user_managed {
+              - replicas {
+                  - location = "us-central1" -> null
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["memorystore-ca-admission-cache"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-memorystore-ca-admission-cache"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["memorystore-ca-hot-routes"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-memorystore-ca-hot-routes"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret_iam_member.reader["account/sql-analytics--account-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-sql-analytics--account-api"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["account/sql-links--account-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-sql-links--account-api"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["analytics/sql-analytics--analytics-worker"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["billing/sql-billing--billing-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-billing@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-sql-billing--billing-api"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["link/link-replay-keys"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-link-replay-keys"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["link/memorystore-ca-admission-cache"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["link/sql-links--link-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-sql-links--link-api"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/identity-identity"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-identity-identity"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/identity-owner-identity"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-identity-owner-identity"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/owner-analytics"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-owner-analytics"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/owner-billing"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-owner-billing"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/owner-links"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-owner-links"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/owner-sessions"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-owner-sessions"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/postgres-admin"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-postgres-admin"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--account-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-sql-analytics--account-api"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--analytics-worker"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/sql-billing--billing-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-sql-billing--billing-api"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/sql-links--account-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-sql-links--account-api"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/sql-links--link-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-sql-links--link-api"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/sql-links--redirect-service"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-sql-links--redirect-service"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/sql-sessions--session-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-sql-sessions--session-api"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["redirect/memorystore-ca-hot-routes"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["redirect/sql-links--redirect-service"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-sql-links--redirect-service"
+    }
+
+  # google_secret_manager_secret_iam_member.reader["session/sql-sessions--session-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-session@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = "projects/<project>/secrets/qrwtya-sql-sessions--session-api"
+    }
+
+  # google_secret_manager_secret_version.memorystore_ca will be destroyed
+  # (because resource uses count or for_each)
+  - resource "google_secret_manager_secret_version" "memorystore_ca" {
+      - create_time           = "2026-11-15T12:05:55.649354Z" -> null
+      - deletion_policy       = "DELETE" -> null
+      - enabled               = true -> null
+      - id                    = "projects/<project-number>/secrets/qrwtya-memorystore-ca/versions/1" -> null
+      - is_secret_data_base64 = false -> null
+      - name                  = "projects/<project-number>/secrets/qrwtya-memorystore-ca/versions/1" -> null
+      - secret                = "projects/<project>/secrets/qrwtya-memorystore-ca" -> null
+      - secret_data           = (sensitive value) -> null
+      - secret_data_wo        = (write-only attribute) -> null
+      - version               = "1" -> null
+    }
+
+  # google_secret_manager_secret_version.memorystore_ca["admission-cache"] will be created
+  + resource "google_secret_manager_secret_version" "memorystore_ca" {
+      + create_time     = (known after apply)
+      + deletion_policy = (known after apply)
+      + destroy_time    = (known after apply)
+      + enabled         = true
+      + id              = (known after apply)
+      + name            = (known after apply)
+      + project         = (known after apply)
+      + secret          = (known after apply)
+      + secret_data     = (sensitive value)
+      + secret_data_wo  = (write-only attribute)
+      + version         = (known after apply)
+    }
+
+  # google_secret_manager_secret_version.memorystore_ca["hot-routes"] will be created
+  + resource "google_secret_manager_secret_version" "memorystore_ca" {
+      + create_time     = (known after apply)
+      + deletion_policy = (known after apply)
+      + destroy_time    = (known after apply)
+      + enabled         = true
+      + id              = (known after apply)
+      + name            = (known after apply)
+      + project         = (known after apply)
+      + secret          = (known after apply)
+      + secret_data     = (sensitive value)
+      + secret_data_wo  = (write-only attribute)
+      + version         = (known after apply)
+    }
+
+Plan: 29 to add, 0 to change, 2 to destroy.
+
+Changes to Outputs:
+  + memorystore_endpoints     = {
+      + admission-cache = {
+          + address = "10.42.0.5"
+          + port    = 6379
+        }
+      + hot-routes      = {
+          + address = "10.42.0.3"
+          + port    = 6379
+        }
+    }
+
+Warning: Resource targeting is in effect
+
+You are creating a plan with either the -target option or the -exclude
+option, which means that the result of this plan may not represent all of the
+changes requested by the current configuration.
+
+The -target and -exclude options are not for routine use, and are provided
+only for exceptional situations such as recovering from errors or mistakes,
+or when OpenTofu specifically suggests to use it as part of an error message.

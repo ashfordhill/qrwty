@@ -1,0 +1,626 @@
+[
+  {
+    "insertId": "fb8au1dnfxt",
+    "logName": "projects/<project>/logs/cloudaudit.googleapis.com%2Factivity",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "authenticationInfo": {
+        "oauthInfo": {
+          "oauthClientId": "764086051850-6qr4p6gpi6hn506pt8ejuq83di341hur.apps.googleusercontent.com"
+        },
+        "principalEmail": "<owner>",
+        "principalSubject": "user:<owner>"
+      },
+      "authorizationInfo": [
+        {
+          "granted": true,
+          "permission": "run.workerpools.update",
+          "permissionType": "ADMIN_WRITE",
+          "resource": "projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker",
+          "resourceAttributes": {}
+        },
+        {
+          "granted": true,
+          "permission": "run.workerpools.update",
+          "permissionType": "ADMIN_WRITE",
+          "resource": "projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker",
+          "resourceAttributes": {
+            "name": "projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker",
+            "service": "run.googleapis.com/",
+            "type": "run.googleapis.com/WorkerPool"
+          }
+        }
+      ],
+      "methodName": "google.cloud.run.v2.WorkerPools.UpdateWorkerPool",
+      "request": {
+        "@type": "type.googleapis.com/google.cloud.run.v2.UpdateWorkerPoolRequest",
+        "workerPool": {
+          "instanceSplits": [
+            {
+              "percent": 100,
+              "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+            }
+          ],
+          "labels": {
+            "arm": "a",
+            "goog-terraform-provisioned": "true",
+            "run": "qrwty-r1-20261114",
+            "system": "qrwty"
+          },
+          "launchStage": "GA",
+          "name": "projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker",
+          "scaling": {
+            "manualInstanceCount": 2
+          },
+          "template": {
+            "containers": [
+              {
+                "image": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:fa158f69e427215cbe3b5123bee9601f0038412c93b306132b9ed1b6385fe989",
+                "resources": {
+                  "limits": {
+                    "cpu": "1000m",
+                    "memory": "512Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/cloudsql",
+                    "name": "cloudsql"
+                  },
+                  {
+                    "mountPath": "/var/run/qrwty-secrets/sql-analytics--analytics-worker",
+                    "name": "s-sql-analytics-analytics-worker"
+                  }
+                ]
+              }
+            ],
+            "serviceAccount": "qrwtya-analytics@<project>.iam.gserviceaccount.com",
+            "volumes": [
+              {
+                "cloudSqlInstance": {
+                  "instances": [
+                    "<project>:us-central1:qrwtya-pg"
+                  ]
+                },
+                "name": "cloudsql"
+              },
+              {
+                "name": "s-sql-analytics-analytics-worker",
+                "secret": {
+                  "items": [
+                    {
+                      "version": "latest"
+                    }
+                  ],
+                  "secret": "qrwtya-sql-analytics--analytics-worker"
+                }
+              }
+            ],
+            "vpcAccess": {
+              "egress": "ALL_TRAFFIC",
+              "networkInterfaces": [
+                {
+                  "network": "projects/<project>/global/networks/qrwtya-vpc",
+                  "subnetwork": "projects/<project>/regions/us-central1/subnetworks/qrwtya-run"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "requestMetadata": {
+        "callerIp": "23.118.82.118",
+        "callerSuppliedUserAgent": "Terraform/1.13.0 (+https://www.terraform.io) Terraform-Plugin-SDK/2.40.1 terraform-provider-google/dev8,gzip(gfe)",
+        "destinationAttributes": {},
+        "requestAttributes": {
+          "auth": {},
+          "time": "2026-11-15T12:56:20.815048Z"
+        }
+      },
+      "resourceLocation": {
+        "currentLocations": [
+          "us-central1"
+        ]
+      },
+      "resourceName": "projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker",
+      "serviceName": "run.googleapis.com",
+      "status": {}
+    },
+    "receiveTimestamp": "2026-11-15T12:56:21.029619093Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "severity": "NOTICE",
+    "timestamp": "2026-11-15T12:56:20.667024Z"
+  },
+  {
+    "insertId": "6af9ac160002adcd1df3afb7",
+    "labels": {
+      "instanceId": "00e8a408bd771886cad53e1e4d175b46ea7a5bb6cf76b81cfa37b2ff2d76395fe1d290dc09259a4e39563b34d1d4ddc1c7e85b09e1161450a7f225cd3dd72bd39bd2f067dabeed4c1d1e3f74c5413169bd5baf4cb39b0009c0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-11-15T12:56:54.182254994Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00002-6ds",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "severity": "INFO",
+    "textPayload": "Default STARTUP START_COMPLETE probe succeeded after 3 attempts for container \"app-1\".",
+    "timestamp": "2026-11-15T12:56:54.175565Z"
+  },
+  {
+    "insertId": "6af9ac160007d9528ef8ff82",
+    "jsonPayload": {
+      "event": "profile-ok",
+      "level": "info",
+      "process": "analytics-worker",
+      "secrets": 1
+    },
+    "labels": {
+      "instanceId": "00e8a408bd771886cad53e1e4d175b46ea7a5bb6cf76b81cfa37b2ff2d76395fe1d290dc09259a4e39563b34d1d4ddc1c7e85b09e1161450a7f225cd3dd72bd39bd2f067dabeed4c1d1e3f74c5413169bd5baf4cb39b0009c0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:56:54.522525087Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00002-6ds",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "timestamp": "2026-11-15T12:56:54.514386Z"
+  },
+  {
+    "insertId": "6af9ac180003301df53686ef",
+    "jsonPayload": {
+      "check": "SELECT 1",
+      "client": "analytics",
+      "event": "probe",
+      "kind": "database",
+      "level": "info",
+      "result": "ok",
+      "tile": "analytics-worker"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd771886cad53e1e4d175b46ea7a5bb6cf76b81cfa37b2ff2d76395fe1d290dc09259a4e39563b34d1d4ddc1c7e85b09e1161450a7f225cd3dd72bd39bd2f067dabeed4c1d1e3f74c5413169bd5baf4cb39b0009c0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:56:56.524697004Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00002-6ds",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "timestamp": "2026-11-15T12:56:56.208925Z"
+  },
+  {
+    "insertId": "6af9ac180008ed9f50503d25",
+    "jsonPayload": {
+      "check": "the Pub/Sub subscription exists",
+      "client": "click-events--analytics-worker",
+      "event": "probe",
+      "kind": "queue",
+      "level": "info",
+      "result": "ok",
+      "tile": "analytics-worker"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd771886cad53e1e4d175b46ea7a5bb6cf76b81cfa37b2ff2d76395fe1d290dc09259a4e39563b34d1d4ddc1c7e85b09e1161450a7f225cd3dd72bd39bd2f067dabeed4c1d1e3f74c5413169bd5baf4cb39b0009c0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:56:56.856117156Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00002-6ds",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "timestamp": "2026-11-15T12:56:56.585119Z"
+  },
+  {
+    "insertId": "6af9ac180008f10e8608ea8a",
+    "jsonPayload": {
+      "event": "broker",
+      "level": "info",
+      "state": "available",
+      "tile": "analytics-worker",
+      "what": "broker consume click-events--analytics-worker"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd771886cad53e1e4d175b46ea7a5bb6cf76b81cfa37b2ff2d76395fe1d290dc09259a4e39563b34d1d4ddc1c7e85b09e1161450a7f225cd3dd72bd39bd2f067dabeed4c1d1e3f74c5413169bd5baf4cb39b0009c0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:56:56.856117156Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00002-6ds",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "timestamp": "2026-11-15T12:56:56.585998Z"
+  },
+  {
+    "insertId": "6af9ac180008f1eea4fe6e6b",
+    "labels": {
+      "instanceId": "00e8a408bd771886cad53e1e4d175b46ea7a5bb6cf76b81cfa37b2ff2d76395fe1d290dc09259a4e39563b34d1d4ddc1c7e85b09e1161450a7f225cd3dd72bd39bd2f067dabeed4c1d1e3f74c5413169bd5baf4cb39b0009c0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:56:56.856117156Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00002-6ds",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "textPayload": "Application ready",
+    "timestamp": "2026-11-15T12:56:56.586222Z"
+  },
+  {
+    "insertId": "-4ed4f9de9eu",
+    "logName": "projects/<project>/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/WorkerPools.UpdateWorkerPool",
+      "resourceName": "namespaces/<project>/revisions/qrwtya-analytics-worker-00002-6ds",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Revision",
+        "apiVersion": "serving.knative.dev/v1",
+        "kind": "Revision",
+        "metadata": {
+          "annotations": {
+            "run.googleapis.com/cloudsql-instances": "<project>:us-central1:qrwtya-pg",
+            "run.googleapis.com/network-interfaces": "[{\"network\":\"projects/<project>/global/networks/qrwtya-vpc\",\"subnetwork\":\"projects/<project>/regions/us-central1/subnetworks/qrwtya-run\"}]",
+            "run.googleapis.com/operation-id": "3b447973-1b93-428e-a1f0-deb354fdac93",
+            "run.googleapis.com/vpc-access-egress": "all-traffic",
+            "serving.knative.dev/creator": "<owner>"
+          },
+          "creationTimestamp": "2026-11-15T12:50:01.347309Z",
+          "generation": 1,
+          "labels": {
+            "cloud.googleapis.com/location": "us-central1",
+            "run.googleapis.com/workerPool": "qrwtya-analytics-worker",
+            "run.googleapis.com/workerPoolUid": "8555a40e-8dac-446b-97c9-ab9230d876b8"
+          },
+          "name": "qrwtya-analytics-worker-00002-6ds",
+          "namespace": "<project-number>",
+          "ownerReferences": [
+            {
+              "apiVersion": "run.googleapis.com/v1",
+              "blockOwnerDeletion": true,
+              "controller": true,
+              "kind": "WorkerPool",
+              "name": "qrwtya-analytics-worker",
+              "uid": "8555a40e-8dac-446b-97c9-ab9230d876b8"
+            }
+          ],
+          "resourceVersion": "AAZgUDJxNSE",
+          "selfLink": "/apis/serving.knative.dev/v1/namespaces/<project-number>/revisions/qrwtya-analytics-worker-00002-6ds",
+          "uid": "cf36da7d-b254-4bdf-a5cd-bb1fbdb63159"
+        },
+        "spec": {
+          "containers": [
+            {
+              "command": [
+                "/bin/sh",
+                "-c",
+                "node scripts/qrwty-production-profile.mjs analytics-worker && SECRET_DIR=/tmp/qrwty-secrets exec node dist/processes/analytics-worker.js"
+              ],
+              "env": [
+                {
+                  "name": "JEEVES_PUBSUB_PROJECT",
+                  "value": "<project>"
+                },
+                {
+                  "name": "JEEVES_DATABASE_ANALYTICS_HOST",
+                  "value": "/cloudsql/<project>:us-central1:qrwtya-pg"
+                },
+                {
+                  "name": "JEEVES_DATABASE_ANALYTICS_PORT",
+                  "value": "5432"
+                },
+                {
+                  "name": "QRWTY_PROFILE",
+                  "value": "production"
+                },
+                {
+                  "name": "JEEVES_REQUIRE_TLS",
+                  "value": "true"
+                },
+                {
+                  "name": "QRWTY_SECRET_MOUNT_DIR",
+                  "value": "/var/run/qrwty-secrets"
+                },
+                {
+                  "name": "JEEVES_DATABASE_ANALYTICS_TLS",
+                  "value": "disable"
+                }
+              ],
+              "image": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:9bfef8db326b28fcbcda19d876ad729bc63224ff46538948630ecbcc295c049f",
+              "name": "app-1",
+              "resources": {
+                "limits": {
+                  "cpu": "1000m",
+                  "memory": "512Mi"
+                }
+              },
+              "volumeMounts": [
+                {
+                  "mountPath": "/var/run/qrwty-secrets/sql-analytics--analytics-worker",
+                  "name": "s-sql-analytics-analytics-worker"
+                }
+              ]
+            }
+          ],
+          "serviceAccountName": "qrwtya-analytics@<project>.iam.gserviceaccount.com",
+          "volumes": [
+            {
+              "name": "s-sql-analytics-analytics-worker",
+              "secret": {
+                "items": [
+                  {
+                    "key": "latest",
+                    "path": "value"
+                  }
+                ],
+                "secretName": "qrwtya-sql-analytics--analytics-worker"
+              }
+            }
+          ]
+        },
+        "status": {
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-11-15T12:57:00.194081Z",
+              "message": "Updating revision scaling succeeded in 39.3s.",
+              "status": "True",
+              "type": "Ready"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:50:09.471409Z",
+              "severity": "Info",
+              "status": "True",
+              "type": "Active"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:50:03.063916Z",
+              "message": "Container image import completed in 1.22s.",
+              "status": "True",
+              "type": "ContainerReady"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:57:00.127761Z",
+              "message": "Min instances provisioned successfully  in 39.24s.",
+              "status": "True",
+              "type": "MinInstancesProvisioned"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:50:03.609662Z",
+              "message": "Provisioning imported containers completed.",
+              "status": "True",
+              "type": "ResourcesAvailable"
+            }
+          ],
+          "containerStatuses": [
+            {
+              "imageDigest": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:9bfef8db326b28fcbcda19d876ad729bc63224ff46538948630ecbcc295c049f",
+              "name": "app-1"
+            }
+          ],
+          "desiredReplicas": 2,
+          "imageDigest": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:9bfef8db326b28fcbcda19d876ad729bc63224ff46538948630ecbcc295c049f",
+          "logUrl": "https://console.cloud.google.com/logs/viewer?project=<project>&resource=cloud_run_worker_pool/worker_pool_name/qrwtya-analytics-worker/revision_name/qrwtya-analytics-worker-00002-6ds&advancedFilter=resource.type%3D%22cloud_run_worker_pool%22%0Aresource.labels.worker_pool_name%3D%22qrwtya-analytics-worker%22%0Aresource.labels.revision_name%3D%22qrwtya-analytics-worker-00002-6ds%22",
+          "observedGeneration": 1
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "message": "Ready condition status changed to True for Revision qrwtya-analytics-worker-00002-6ds with message: Updating revision scaling succeeded in 39.3s."
+      }
+    },
+    "receiveTimestamp": "2026-11-15T12:57:00.994799569Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-analytics-worker_wp",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-analytics-worker-00002-6ds",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "severity": "INFO",
+    "timestamp": "2026-11-15T12:57:00.207657Z"
+  },
+  {
+    "insertId": "5aqnu8e1dh8w",
+    "logName": "projects/<project>/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/WorkerPools.UpdateWorkerPool",
+      "resourceName": "namespaces/<project>/workerpools/qrwtya-analytics-worker",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v2.WorkerPool",
+        "createTime": "2026-11-15T12:21:41.508530Z",
+        "creator": "<owner>",
+        "etag": "\"CPTX5tcGEICf8OoC/cHJvamVjdHMvcHJvamVjdC1mNDZmNmQ2YS04ZTc0LTQyYTAtYWIxL2xvY2F0aW9ucy91cy1jZW50cmFsMS93b3JrZXJQb29scy9xcnd0eWEtYW5hbHl0aWNzLXdvcmtlcg\"",
+        "generation": "3",
+        "instanceSplitStatuses": [
+          {
+            "percent": 100,
+            "revision": "qrwtya-analytics-worker-00002-6ds",
+            "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+          }
+        ],
+        "instanceSplits": [
+          {
+            "percent": 100,
+            "type": "INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST"
+          }
+        ],
+        "labels": {
+          "arm": "a",
+          "goog-terraform-provisioned": "true",
+          "run": "qrwty-r1-20261114",
+          "system": "qrwty"
+        },
+        "lastModifier": "<owner>",
+        "latestCreatedRevision": "projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker/revisions/qrwtya-analytics-worker-00002-6ds",
+        "latestReadyRevision": "projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker/revisions/qrwtya-analytics-worker-00002-6ds",
+        "launchStage": "GA",
+        "name": "projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker",
+        "observedGeneration": "3",
+        "scaling": {
+          "manualInstanceCount": 2,
+          "scalingMode": "MANUAL"
+        },
+        "template": {
+          "containers": [
+            {
+              "command": [
+                "/bin/sh",
+                "-c",
+                "node scripts/qrwty-production-profile.mjs analytics-worker && SECRET_DIR=/tmp/qrwty-secrets exec node dist/processes/analytics-worker.js"
+              ],
+              "env": [
+                {
+                  "name": "JEEVES_PUBSUB_PROJECT",
+                  "value": "<project>"
+                },
+                {
+                  "name": "JEEVES_DATABASE_ANALYTICS_HOST",
+                  "value": "/cloudsql/<project>:us-central1:qrwtya-pg"
+                },
+                {
+                  "name": "JEEVES_DATABASE_ANALYTICS_PORT",
+                  "value": "5432"
+                },
+                {
+                  "name": "QRWTY_PROFILE",
+                  "value": "production"
+                },
+                {
+                  "name": "JEEVES_REQUIRE_TLS",
+                  "value": "true"
+                },
+                {
+                  "name": "QRWTY_SECRET_MOUNT_DIR",
+                  "value": "/var/run/qrwty-secrets"
+                },
+                {
+                  "name": "JEEVES_DATABASE_ANALYTICS_TLS",
+                  "value": "disable"
+                }
+              ],
+              "image": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:fa158f69e427215cbe3b5123bee9601f0038412c93b306132b9ed1b6385fe989",
+              "resources": {
+                "limits": {
+                  "cpu": "1000m",
+                  "memory": "512Mi"
+                }
+              },
+              "volumeMounts": [
+                {
+                  "mountPath": "/var/run/qrwty-secrets/sql-analytics--analytics-worker",
+                  "name": "s-sql-analytics-analytics-worker"
+                },
+                {
+                  "mountPath": "/cloudsql",
+                  "name": "cloudsql"
+                }
+              ]
+            }
+          ],
+          "serviceAccount": "qrwtya-analytics@<project>.iam.gserviceaccount.com",
+          "volumes": [
+            {
+              "name": "s-sql-analytics-analytics-worker",
+              "secret": {
+                "items": [
+                  {
+                    "path": "value",
+                    "version": "latest"
+                  }
+                ],
+                "secret": "qrwtya-sql-analytics--analytics-worker"
+              }
+            },
+            {
+              "cloudSqlInstance": {
+                "instances": [
+                  "<project>:us-central1:qrwtya-pg"
+                ]
+              },
+              "name": "cloudsql"
+            }
+          ],
+          "vpcAccess": {
+            "egress": "ALL_TRAFFIC",
+            "networkInterfaces": [
+              {
+                "network": "projects/<project>/global/networks/qrwtya-vpc",
+                "subnetwork": "projects/<project>/regions/us-central1/subnetworks/qrwtya-run"
+              }
+            ]
+          }
+        },
+        "terminalCondition": {
+          "lastTransitionTime": "2026-11-15T12:57:00.315442Z",
+          "state": "CONDITION_SUCCEEDED",
+          "type": "Ready"
+        },
+        "uid": "8555a40e-8dac-446b-97c9-ab9230d876b8",
+        "updateTime": "2026-11-15T12:56:20.761008Z"
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "message": "Ready condition status changed to True for WorkerPool qrwtya-analytics-worker."
+      }
+    },
+    "receiveTimestamp": "2026-11-15T12:57:01.243504969Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "",
+        "worker_pool_name": "qrwtya-analytics-worker"
+      },
+      "type": "cloud_run_worker_pool"
+    },
+    "severity": "INFO",
+    "timestamp": "2026-11-15T12:57:00.327200Z"
+  }
+]

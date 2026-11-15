@@ -1,0 +1,74 @@
+google_project_service.api["secretmanager.googleapis.com"]: Refreshing state... [id=<project>/secretmanager.googleapis.com]
+google_project_service.api["artifactregistry.googleapis.com"]: Refreshing state... [id=<project>/artifactregistry.googleapis.com]
+google_project_service.api["sqladmin.googleapis.com"]: Refreshing state... [id=<project>/sqladmin.googleapis.com]
+google_project_service.api["servicenetworking.googleapis.com"]: Refreshing state... [id=<project>/servicenetworking.googleapis.com]
+google_project_service.api["memorystore.googleapis.com"]: Refreshing state... [id=<project>/memorystore.googleapis.com]
+google_project_service.api["iam.googleapis.com"]: Refreshing state... [id=<project>/iam.googleapis.com]
+google_project_service.api["storage.googleapis.com"]: Refreshing state... [id=<project>/storage.googleapis.com]
+google_project_service.api["webrisk.googleapis.com"]: Refreshing state... [id=<project>/webrisk.googleapis.com]
+google_project_service.api["networkconnectivity.googleapis.com"]: Refreshing state... [id=<project>/networkconnectivity.googleapis.com]
+google_project_service.api["compute.googleapis.com"]: Refreshing state... [id=<project>/compute.googleapis.com]
+google_project_service.api["pubsub.googleapis.com"]: Refreshing state... [id=<project>/pubsub.googleapis.com]
+google_project_service.api["run.googleapis.com"]: Refreshing state... [id=<project>/run.googleapis.com]
+google_compute_network.vpc: Refreshing state... [id=projects/<project>/global/networks/qrwtya-vpc]
+google_compute_global_address.psa: Refreshing state... [id=projects/<project>/global/addresses/qrwtya-psa]
+google_service_networking_connection.psa: Refreshing state... [id=projects%2F<project>%2Fglobal%2Fnetworks%2Fqrwtya-vpc:servicenetworking.googleapis.com]
+
+OpenTofu used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+OpenTofu will perform the following actions:
+
+  # google_compute_global_address.psa will be destroyed
+  - resource "google_compute_global_address" "psa" {
+      - address            = "10.206.240.0" -> null
+      - address_type       = "INTERNAL" -> null
+      - creation_timestamp = "2026-11-15T04:00:06.907-08:00" -> null
+      - deletion_policy    = "DELETE" -> null
+      - effective_labels   = {
+          - "arm"                        = "a"
+          - "goog-terraform-provisioned" = "true"
+          - "run"                        = "qrwty-r1-20261114"
+          - "system"                     = "qrwty"
+        } -> null
+      - id                 = "projects/<project>/global/addresses/qrwtya-psa" -> null
+      - label_fingerprint  = "sqFL0JVs2PE=" -> null
+      - labels             = {} -> null
+      - name               = "qrwtya-psa" -> null
+      - network            = "https://www.googleapis.com/compute/v1/projects/<project>/global/networks/qrwtya-vpc" -> null
+      - prefix_length      = 20 -> null
+      - project            = "<project>" -> null
+      - purpose            = "VPC_PEERING" -> null
+      - self_link          = "https://www.googleapis.com/compute/v1/projects/<project>/global/addresses/qrwtya-psa" -> null
+      - terraform_labels   = {
+          - "arm"                        = "a"
+          - "goog-terraform-provisioned" = "true"
+          - "run"                        = "qrwty-r1-20261114"
+          - "system"                     = "qrwty"
+        } -> null
+    }
+
+  # google_service_networking_connection.psa will be destroyed
+  - resource "google_service_networking_connection" "psa" {
+      - deletion_policy         = "DELETE" -> null
+      - id                      = "projects%2F<project>%2Fglobal%2Fnetworks%2Fqrwtya-vpc:servicenetworking.googleapis.com" -> null
+      - network                 = "projects/<project>/global/networks/qrwtya-vpc" -> null
+      - peering                 = "servicenetworking-googleapis-com" -> null
+      - reserved_peering_ranges = [
+          - "qrwtya-psa",
+        ] -> null
+      - service                 = "servicenetworking.googleapis.com" -> null
+    }
+
+Plan: 0 to add, 0 to change, 2 to destroy.
+
+Warning: Resource targeting is in effect
+
+You are creating a plan with either the -target option or the -exclude
+option, which means that the result of this plan may not represent all of the
+changes requested by the current configuration.
+
+The -target and -exclude options are not for routine use, and are provided
+only for exceptional situations such as recovering from errors or mistakes,
+or when OpenTofu specifically suggests to use it as part of an error message.

@@ -1,0 +1,1917 @@
+data.google_project.this: Reading...
+data.google_project.this: Read complete after 1s [id=projects/<project>]
+
+OpenTofu used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+OpenTofu will perform the following actions:
+
+  # google_artifact_registry_repository.images will be created
+  + resource "google_artifact_registry_repository" "images" {
+      + create_time      = (known after apply)
+      + deletion_policy  = "DELETE"
+      + effective_labels = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + format           = "DOCKER"
+      + id               = (known after apply)
+      + labels           = {
+          + "arm" = "a"
+        }
+      + location         = "us-central1"
+      + mode             = "STANDARD_REPOSITORY"
+      + name             = (known after apply)
+      + project          = "<project>"
+      + registry_uri     = (known after apply)
+      + repository_id    = "qrwtya-images"
+      + terraform_labels = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + update_time      = (known after apply)
+
+      + vulnerability_scanning_config (known after apply)
+    }
+
+  # google_compute_global_address.psa will be created
+  + resource "google_compute_global_address" "psa" {
+      + address            = (known after apply)
+      + address_type       = "INTERNAL"
+      + creation_timestamp = (known after apply)
+      + deletion_policy    = "DELETE"
+      + effective_labels   = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + id                 = (known after apply)
+      + label_fingerprint  = (known after apply)
+      + name               = "qrwtya-psa"
+      + network            = (known after apply)
+      + prefix_length      = 20
+      + project            = "<project>"
+      + purpose            = "VPC_PEERING"
+      + self_link          = (known after apply)
+      + terraform_labels   = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+    }
+
+  # google_compute_network.vpc will be created
+  + resource "google_compute_network" "vpc" {
+      + auto_create_subnetworks                   = false
+      + bgp_always_compare_med                    = (known after apply)
+      + bgp_best_path_selection_mode              = (known after apply)
+      + bgp_inter_region_cost                     = (known after apply)
+      + delete_bgp_always_compare_med             = false
+      + delete_default_routes_on_create           = false
+      + deletion_policy                           = "DELETE"
+      + gateway_ipv4                              = (known after apply)
+      + id                                        = (known after apply)
+      + internal_ipv6_range                       = (known after apply)
+      + mtu                                       = (known after apply)
+      + name                                      = "qrwtya-vpc"
+      + network_firewall_policy_enforcement_order = "AFTER_CLASSIC_FIREWALL"
+      + network_id                                = (known after apply)
+      + numeric_id                                = (known after apply)
+      + project                                   = "<project>"
+      + routing_mode                              = (known after apply)
+      + self_link                                 = (known after apply)
+    }
+
+  # google_compute_router.nat will be created
+  + resource "google_compute_router" "nat" {
+      + creation_timestamp = (known after apply)
+      + deletion_policy    = "DELETE"
+      + id                 = (known after apply)
+      + name               = "qrwtya-router"
+      + network            = (known after apply)
+      + project            = "<project>"
+      + region             = "us-central1"
+      + self_link          = (known after apply)
+    }
+
+  # google_compute_router_nat.nat will be created
+  + resource "google_compute_router_nat" "nat" {
+      + auto_network_tier                   = (known after apply)
+      + deletion_policy                     = "DELETE"
+      + drain_nat_ips                       = (known after apply)
+      + enable_dynamic_port_allocation      = (known after apply)
+      + enable_endpoint_independent_mapping = (known after apply)
+      + endpoint_types                      = (known after apply)
+      + icmp_idle_timeout_sec               = 30
+      + id                                  = (known after apply)
+      + min_ports_per_vm                    = (known after apply)
+      + name                                = "qrwtya-nat"
+      + nat_ip_allocate_option              = "AUTO_ONLY"
+      + nat_ips                             = (known after apply)
+      + project                             = "<project>"
+      + region                              = "us-central1"
+      + router                              = "qrwtya-router"
+      + source_subnetwork_ip_ranges_to_nat  = "LIST_OF_SUBNETWORKS"
+      + tcp_established_idle_timeout_sec    = 1200
+      + tcp_time_wait_timeout_sec           = 120
+      + tcp_transitory_idle_timeout_sec     = 30
+      + type                                = "PUBLIC"
+      + udp_idle_timeout_sec                = 30
+
+      + subnetwork {
+          + name                     = (known after apply)
+          + secondary_ip_range_names = []
+          + source_ip_ranges_to_nat  = [
+              + "ALL_IP_RANGES",
+            ]
+        }
+    }
+
+  # google_compute_subnetwork.run will be created
+  + resource "google_compute_subnetwork" "run" {
+      + allow_subnet_cidr_routes_overlap = (known after apply)
+      + creation_timestamp               = (known after apply)
+      + deletion_policy                  = "DELETE"
+      + external_ipv6_prefix             = (known after apply)
+      + fingerprint                      = (known after apply)
+      + gateway_address                  = (known after apply)
+      + id                               = (known after apply)
+      + internal_ipv6_prefix             = (known after apply)
+      + ip_cidr_range                    = "10.42.0.0/24"
+      + ipv6_cidr_range                  = (known after apply)
+      + ipv6_gce_endpoint                = (known after apply)
+      + name                             = "qrwtya-run"
+      + network                          = (known after apply)
+      + private_ip_google_access         = true
+      + private_ipv6_google_access       = (known after apply)
+      + project                          = "<project>"
+      + purpose                          = (known after apply)
+      + region                           = "us-central1"
+      + self_link                        = (known after apply)
+      + stack_type                       = (known after apply)
+      + state                            = (known after apply)
+      + subnetwork_id                    = (known after apply)
+
+      + secondary_ip_range (known after apply)
+    }
+
+  # google_memorystore_instance.cache["admission-cache"] will be created
+  + resource "google_memorystore_instance" "cache" {
+      + authorization_mode             = "AUTH_DISABLED"
+      + available_maintenance_versions = (known after apply)
+      + backup_collection              = (known after apply)
+      + create_time                    = (known after apply)
+      + deletion_policy                = "DELETE"
+      + deletion_protection_enabled    = true
+      + discovery_endpoints            = (known after apply)
+      + effective_labels               = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + effective_maintenance_version  = (known after apply)
+      + endpoints                      = (known after apply)
+      + engine_configs                 = {
+          + "maxmemory-policy" = "allkeys-lru"
+        }
+      + engine_version                 = "VALKEY_8_0"
+      + id                             = (known after apply)
+      + instance_id                    = "qrwtya-admission-cache"
+      + is_acl_policy_in_sync          = (known after apply)
+      + labels                         = {
+          + "arm" = "a"
+        }
+      + location                       = "us-central1"
+      + maintenance_schedule           = (known after apply)
+      + managed_server_ca              = (known after apply)
+      + mode                           = "CLUSTER_DISABLED"
+      + name                           = (known after apply)
+      + node_config                    = (known after apply)
+      + node_type                      = "SHARED_CORE_NANO"
+      + project                        = "<project>"
+      + psc_attachment_details         = (known after apply)
+      + psc_auto_connections           = (known after apply)
+      + replica_count                  = 0
+      + server_ca_mode                 = (known after apply)
+      + shard_count                    = 1
+      + state                          = (known after apply)
+      + state_info                     = (known after apply)
+      + terraform_labels               = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + transit_encryption_mode        = "SERVER_AUTHENTICATION"
+      + uid                            = (known after apply)
+      + update_time                    = (known after apply)
+
+      + cross_instance_replication_config (known after apply)
+
+      + desired_auto_created_endpoints {
+          + network    = (known after apply)
+          + project_id = "<project>"
+        }
+
+      + persistence_config (known after apply)
+
+      + zone_distribution_config (known after apply)
+    }
+
+  # google_memorystore_instance.cache["hot-routes"] will be created
+  + resource "google_memorystore_instance" "cache" {
+      + authorization_mode             = "AUTH_DISABLED"
+      + available_maintenance_versions = (known after apply)
+      + backup_collection              = (known after apply)
+      + create_time                    = (known after apply)
+      + deletion_policy                = "DELETE"
+      + deletion_protection_enabled    = true
+      + discovery_endpoints            = (known after apply)
+      + effective_labels               = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + effective_maintenance_version  = (known after apply)
+      + endpoints                      = (known after apply)
+      + engine_configs                 = {
+          + "maxmemory-policy" = "allkeys-lru"
+        }
+      + engine_version                 = "VALKEY_8_0"
+      + id                             = (known after apply)
+      + instance_id                    = "qrwtya-hot-routes"
+      + is_acl_policy_in_sync          = (known after apply)
+      + labels                         = {
+          + "arm" = "a"
+        }
+      + location                       = "us-central1"
+      + maintenance_schedule           = (known after apply)
+      + managed_server_ca              = (known after apply)
+      + mode                           = "CLUSTER_DISABLED"
+      + name                           = (known after apply)
+      + node_config                    = (known after apply)
+      + node_type                      = "SHARED_CORE_NANO"
+      + project                        = "<project>"
+      + psc_attachment_details         = (known after apply)
+      + psc_auto_connections           = (known after apply)
+      + replica_count                  = 0
+      + server_ca_mode                 = (known after apply)
+      + shard_count                    = 1
+      + state                          = (known after apply)
+      + state_info                     = (known after apply)
+      + terraform_labels               = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + transit_encryption_mode        = "SERVER_AUTHENTICATION"
+      + uid                            = (known after apply)
+      + update_time                    = (known after apply)
+
+      + cross_instance_replication_config (known after apply)
+
+      + desired_auto_created_endpoints {
+          + network    = (known after apply)
+          + project_id = "<project>"
+        }
+
+      + persistence_config (known after apply)
+
+      + zone_distribution_config (known after apply)
+    }
+
+  # google_network_connectivity_service_connection_policy.memorystore will be created
+  + resource "google_network_connectivity_service_connection_policy" "memorystore" {
+      + create_time      = (known after apply)
+      + deletion_policy  = "DELETE"
+      + effective_labels = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + etag             = (known after apply)
+      + id               = (known after apply)
+      + infrastructure   = (known after apply)
+      + location         = "us-central1"
+      + name             = "qrwtya-memorystore"
+      + network          = (known after apply)
+      + project          = "<project>"
+      + psc_connections  = (known after apply)
+      + service_class    = "gcp-memorystore"
+      + terraform_labels = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + update_time      = (known after apply)
+
+      + psc_config {
+          + producer_instance_location = (known after apply)
+          + subnetworks                = (known after apply)
+        }
+    }
+
+  # google_project_iam_member.sql_client["account"] will be created
+  + resource "google_project_iam_member" "sql_client" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + member  = "serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com"
+      + project = "<project>"
+      + role    = "roles/cloudsql.client"
+    }
+
+  # google_project_iam_member.sql_client["analytics"] will be created
+  + resource "google_project_iam_member" "sql_client" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + member  = "serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com"
+      + project = "<project>"
+      + role    = "roles/cloudsql.client"
+    }
+
+  # google_project_iam_member.sql_client["billing"] will be created
+  + resource "google_project_iam_member" "sql_client" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + member  = "serviceAccount:qrwtya-billing@<project>.iam.gserviceaccount.com"
+      + project = "<project>"
+      + role    = "roles/cloudsql.client"
+    }
+
+  # google_project_iam_member.sql_client["link"] will be created
+  + resource "google_project_iam_member" "sql_client" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + member  = "serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com"
+      + project = "<project>"
+      + role    = "roles/cloudsql.client"
+    }
+
+  # google_project_iam_member.sql_client["migrate"] will be created
+  + resource "google_project_iam_member" "sql_client" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + member  = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project = "<project>"
+      + role    = "roles/cloudsql.client"
+    }
+
+  # google_project_iam_member.sql_client["redirect"] will be created
+  + resource "google_project_iam_member" "sql_client" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + member  = "serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com"
+      + project = "<project>"
+      + role    = "roles/cloudsql.client"
+    }
+
+  # google_project_iam_member.sql_client["session"] will be created
+  + resource "google_project_iam_member" "sql_client" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + member  = "serviceAccount:qrwtya-session@<project>.iam.gserviceaccount.com"
+      + project = "<project>"
+      + role    = "roles/cloudsql.client"
+    }
+
+  # google_project_service.api["artifactregistry.googleapis.com"] will be created
+  + resource "google_project_service" "api" {
+      + deletion_policy    = "DELETE"
+      + disable_on_destroy = false
+      + id                 = (known after apply)
+      + project            = "<project>"
+      + service            = "artifactregistry.googleapis.com"
+    }
+
+  # google_project_service.api["compute.googleapis.com"] will be created
+  + resource "google_project_service" "api" {
+      + deletion_policy    = "DELETE"
+      + disable_on_destroy = false
+      + id                 = (known after apply)
+      + project            = "<project>"
+      + service            = "compute.googleapis.com"
+    }
+
+  # google_project_service.api["iam.googleapis.com"] will be created
+  + resource "google_project_service" "api" {
+      + deletion_policy    = "DELETE"
+      + disable_on_destroy = false
+      + id                 = (known after apply)
+      + project            = "<project>"
+      + service            = "iam.googleapis.com"
+    }
+
+  # google_project_service.api["memorystore.googleapis.com"] will be created
+  + resource "google_project_service" "api" {
+      + deletion_policy    = "DELETE"
+      + disable_on_destroy = false
+      + id                 = (known after apply)
+      + project            = "<project>"
+      + service            = "memorystore.googleapis.com"
+    }
+
+  # google_project_service.api["networkconnectivity.googleapis.com"] will be created
+  + resource "google_project_service" "api" {
+      + deletion_policy    = "DELETE"
+      + disable_on_destroy = false
+      + id                 = (known after apply)
+      + project            = "<project>"
+      + service            = "networkconnectivity.googleapis.com"
+    }
+
+  # google_project_service.api["pubsub.googleapis.com"] will be created
+  + resource "google_project_service" "api" {
+      + deletion_policy    = "DELETE"
+      + disable_on_destroy = false
+      + id                 = (known after apply)
+      + project            = "<project>"
+      + service            = "pubsub.googleapis.com"
+    }
+
+  # google_project_service.api["run.googleapis.com"] will be created
+  + resource "google_project_service" "api" {
+      + deletion_policy    = "DELETE"
+      + disable_on_destroy = false
+      + id                 = (known after apply)
+      + project            = "<project>"
+      + service            = "run.googleapis.com"
+    }
+
+  # google_project_service.api["secretmanager.googleapis.com"] will be created
+  + resource "google_project_service" "api" {
+      + deletion_policy    = "DELETE"
+      + disable_on_destroy = false
+      + id                 = (known after apply)
+      + project            = "<project>"
+      + service            = "secretmanager.googleapis.com"
+    }
+
+  # google_project_service.api["servicenetworking.googleapis.com"] will be created
+  + resource "google_project_service" "api" {
+      + deletion_policy    = "DELETE"
+      + disable_on_destroy = false
+      + id                 = (known after apply)
+      + project            = "<project>"
+      + service            = "servicenetworking.googleapis.com"
+    }
+
+  # google_project_service.api["sqladmin.googleapis.com"] will be created
+  + resource "google_project_service" "api" {
+      + deletion_policy    = "DELETE"
+      + disable_on_destroy = false
+      + id                 = (known after apply)
+      + project            = "<project>"
+      + service            = "sqladmin.googleapis.com"
+    }
+
+  # google_project_service.api["storage.googleapis.com"] will be created
+  + resource "google_project_service" "api" {
+      + deletion_policy    = "DELETE"
+      + disable_on_destroy = false
+      + id                 = (known after apply)
+      + project            = "<project>"
+      + service            = "storage.googleapis.com"
+    }
+
+  # google_project_service.api["webrisk.googleapis.com"] will be created
+  + resource "google_project_service" "api" {
+      + deletion_policy    = "DELETE"
+      + disable_on_destroy = false
+      + id                 = (known after apply)
+      + project            = "<project>"
+      + service            = "webrisk.googleapis.com"
+    }
+
+  # google_pubsub_subscription.analytics will be created
+  + resource "google_pubsub_subscription" "analytics" {
+      + ack_deadline_seconds       = 60
+      + deletion_policy            = "DELETE"
+      + effective_labels           = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + id                         = (known after apply)
+      + message_retention_duration = "2678400s"
+      + name                       = "click-events--analytics-worker"
+      + project                    = "<project>"
+      + terraform_labels           = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + topic                      = (known after apply)
+
+      + dead_letter_policy {
+          + dead_letter_topic     = (known after apply)
+          + max_delivery_attempts = 100
+        }
+
+      + expiration_policy {}
+
+      + retry_policy {
+          + maximum_backoff = "10s"
+          + minimum_backoff = "1s"
+        }
+    }
+
+  # google_pubsub_subscription.archive will be created
+  + resource "google_pubsub_subscription" "archive" {
+      + ack_deadline_seconds       = 60
+      + deletion_policy            = "DELETE"
+      + effective_labels           = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + id                         = (known after apply)
+      + message_retention_duration = "2678400s"
+      + name                       = "qrwtya-click-events-archive"
+      + project                    = "<project>"
+      + terraform_labels           = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + topic                      = (known after apply)
+
+      + cloud_storage_config {
+          + bucket          = "qrwtya-click-archive-<project>"
+          + filename_prefix = "click-events/"
+          + filename_suffix = ".avro"
+          + max_bytes       = 104857600
+          + max_duration    = "300s"
+          + state           = (known after apply)
+
+          + avro_config {
+              + write_metadata = true
+            }
+
+          + text_config (known after apply)
+        }
+
+      + expiration_policy {}
+    }
+
+  # google_pubsub_subscription.dead_letter will be created
+  + resource "google_pubsub_subscription" "dead_letter" {
+      + ack_deadline_seconds       = 60
+      + deletion_policy            = "DELETE"
+      + effective_labels           = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + id                         = (known after apply)
+      + message_retention_duration = "2678400s"
+      + name                       = "click-events--analytics-worker.failed"
+      + project                    = "<project>"
+      + terraform_labels           = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + topic                      = (known after apply)
+
+      + expiration_policy {}
+    }
+
+  # google_pubsub_subscription_iam_member.analytics_consume will be created
+  + resource "google_pubsub_subscription_iam_member" "analytics_consume" {
+      + etag         = (known after apply)
+      + id           = (known after apply)
+      + member       = "serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com"
+      + project      = (known after apply)
+      + role         = "roles/pubsub.subscriber"
+      + subscription = (known after apply)
+    }
+
+  # google_pubsub_subscription_iam_member.analytics_probe will be created
+  + resource "google_pubsub_subscription_iam_member" "analytics_probe" {
+      + etag         = (known after apply)
+      + id           = (known after apply)
+      + member       = "serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com"
+      + project      = (known after apply)
+      + role         = "roles/pubsub.viewer"
+      + subscription = (known after apply)
+    }
+
+  # google_pubsub_subscription_iam_member.dead_letter_subscriber will be created
+  + resource "google_pubsub_subscription_iam_member" "dead_letter_subscriber" {
+      + etag         = (known after apply)
+      + id           = (known after apply)
+      + member       = "serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com"
+      + project      = (known after apply)
+      + role         = "roles/pubsub.subscriber"
+      + subscription = (known after apply)
+    }
+
+  # google_pubsub_topic.dead_letter will be created
+  + resource "google_pubsub_topic" "dead_letter" {
+      + deletion_policy            = "DELETE"
+      + effective_labels           = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + id                         = (known after apply)
+      + message_retention_duration = "2678400s"
+      + name                       = "click-events--analytics-worker.failed"
+      + project                    = "<project>"
+      + terraform_labels           = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + message_storage_policy {
+          + allowed_persistence_regions = [
+              + "us-central1",
+            ]
+          + enforce_in_transit          = true
+        }
+    }
+
+  # google_pubsub_topic.events will be created
+  + resource "google_pubsub_topic" "events" {
+      + deletion_policy            = "DELETE"
+      + effective_labels           = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + id                         = (known after apply)
+      + message_retention_duration = "2678400s"
+      + name                       = "click-events"
+      + project                    = "<project>"
+      + terraform_labels           = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + message_storage_policy {
+          + allowed_persistence_regions = [
+              + "us-central1",
+            ]
+          + enforce_in_transit          = true
+        }
+    }
+
+  # google_pubsub_topic_iam_member.analytics_dead_letter will be created
+  + resource "google_pubsub_topic_iam_member" "analytics_dead_letter" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + member  = "serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com"
+      + project = (known after apply)
+      + role    = "roles/pubsub.publisher"
+      + topic   = (known after apply)
+    }
+
+  # google_pubsub_topic_iam_member.dead_letter_publisher will be created
+  + resource "google_pubsub_topic_iam_member" "dead_letter_publisher" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + member  = "serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com"
+      + project = (known after apply)
+      + role    = "roles/pubsub.publisher"
+      + topic   = (known after apply)
+    }
+
+  # google_pubsub_topic_iam_member.redirect_probe will be created
+  + resource "google_pubsub_topic_iam_member" "redirect_probe" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + member  = "serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com"
+      + project = (known after apply)
+      + role    = "roles/pubsub.viewer"
+      + topic   = (known after apply)
+    }
+
+  # google_pubsub_topic_iam_member.redirect_publish will be created
+  + resource "google_pubsub_topic_iam_member" "redirect_publish" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + member  = "serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com"
+      + project = (known after apply)
+      + role    = "roles/pubsub.publisher"
+      + topic   = (known after apply)
+    }
+
+  # google_secret_manager_secret.s["identity-identity"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-identity-identity"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["identity-owner-identity"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-identity-owner-identity"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["link-replay-keys"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-link-replay-keys"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["memorystore-ca"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-memorystore-ca"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["owner-analytics"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-owner-analytics"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["owner-billing"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-owner-billing"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["owner-links"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-owner-links"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["owner-sessions"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-owner-sessions"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["postgres-admin"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-postgres-admin"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["sql-analytics--account-api"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-sql-analytics--account-api"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["sql-analytics--analytics-worker"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-sql-analytics--analytics-worker"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["sql-billing--billing-api"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-sql-billing--billing-api"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["sql-links--account-api"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-sql-links--account-api"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["sql-links--link-api"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-sql-links--link-api"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["sql-links--redirect-service"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-sql-links--redirect-service"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret.s["sql-sessions--session-api"] will be created
+  + resource "google_secret_manager_secret" "s" {
+      + create_time           = (known after apply)
+      + deletion_policy       = "DELETE"
+      + deletion_protection   = false
+      + effective_annotations = (known after apply)
+      + effective_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + expire_time           = (known after apply)
+      + id                    = (known after apply)
+      + labels                = {
+          + "arm" = "a"
+        }
+      + name                  = (known after apply)
+      + project               = "<project>"
+      + secret_id             = "qrwtya-sql-sessions--session-api"
+      + terraform_labels      = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+
+      + replication {
+          + user_managed {
+              + replicas {
+                  + location = "us-central1"
+                }
+            }
+        }
+    }
+
+  # google_secret_manager_secret_iam_member.reader["account/sql-analytics--account-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["account/sql-links--account-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["analytics/sql-analytics--analytics-worker"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["billing/sql-billing--billing-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-billing@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["link/link-replay-keys"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["link/memorystore-ca"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["link/sql-links--link-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/identity-identity"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/identity-owner-identity"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/owner-analytics"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/owner-billing"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/owner-links"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/owner-sessions"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/postgres-admin"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--account-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--analytics-worker"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/sql-billing--billing-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/sql-links--account-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/sql-links--link-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/sql-links--redirect-service"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["migrate/sql-sessions--session-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["redirect/memorystore-ca"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["redirect/sql-links--redirect-service"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_iam_member.reader["session/sql-sessions--session-api"] will be created
+  + resource "google_secret_manager_secret_iam_member" "reader" {
+      + etag      = (known after apply)
+      + id        = (known after apply)
+      + member    = "serviceAccount:qrwtya-session@<project>.iam.gserviceaccount.com"
+      + project   = (known after apply)
+      + role      = "roles/secretmanager.secretAccessor"
+      + secret_id = (known after apply)
+    }
+
+  # google_secret_manager_secret_version.memorystore_ca will be created
+  + resource "google_secret_manager_secret_version" "memorystore_ca" {
+      + create_time     = (known after apply)
+      + deletion_policy = (known after apply)
+      + destroy_time    = (known after apply)
+      + enabled         = true
+      + id              = (known after apply)
+      + name            = (known after apply)
+      + project         = (known after apply)
+      + secret          = (known after apply)
+      + secret_data     = (sensitive value)
+      + secret_data_wo  = (write-only attribute)
+      + version         = (known after apply)
+    }
+
+  # google_service_account.run["account"] will be created
+  + resource "google_service_account" "run" {
+      + account_id      = "qrwtya-account"
+      + deletion_policy = "DELETE"
+      + disabled        = false
+      + display_name    = "QRWTY arm A Account API"
+      + email           = "qrwtya-account@<project>.iam.gserviceaccount.com"
+      + id              = (known after apply)
+      + member          = "serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com"
+      + name            = (known after apply)
+      + project         = "<project>"
+      + unique_id       = (known after apply)
+    }
+
+  # google_service_account.run["analytics"] will be created
+  + resource "google_service_account" "run" {
+      + account_id      = "qrwtya-analytics"
+      + deletion_policy = "DELETE"
+      + disabled        = false
+      + display_name    = "QRWTY arm A Analytics worker"
+      + email           = "qrwtya-analytics@<project>.iam.gserviceaccount.com"
+      + id              = (known after apply)
+      + member          = "serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com"
+      + name            = (known after apply)
+      + project         = "<project>"
+      + unique_id       = (known after apply)
+    }
+
+  # google_service_account.run["billing"] will be created
+  + resource "google_service_account" "run" {
+      + account_id      = "qrwtya-billing"
+      + deletion_policy = "DELETE"
+      + disabled        = false
+      + display_name    = "QRWTY arm A Billing API"
+      + email           = "qrwtya-billing@<project>.iam.gserviceaccount.com"
+      + id              = (known after apply)
+      + member          = "serviceAccount:qrwtya-billing@<project>.iam.gserviceaccount.com"
+      + name            = (known after apply)
+      + project         = "<project>"
+      + unique_id       = (known after apply)
+    }
+
+  # google_service_account.run["link"] will be created
+  + resource "google_service_account" "run" {
+      + account_id      = "qrwtya-link"
+      + deletion_policy = "DELETE"
+      + disabled        = false
+      + display_name    = "QRWTY arm A Link API"
+      + email           = "qrwtya-link@<project>.iam.gserviceaccount.com"
+      + id              = (known after apply)
+      + member          = "serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com"
+      + name            = (known after apply)
+      + project         = "<project>"
+      + unique_id       = (known after apply)
+    }
+
+  # google_service_account.run["migrate"] will be created
+  + resource "google_service_account" "run" {
+      + account_id      = "qrwtya-migrate"
+      + deletion_policy = "DELETE"
+      + disabled        = false
+      + display_name    = "QRWTY arm A Migration job"
+      + email           = "qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + id              = (known after apply)
+      + member          = "serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com"
+      + name            = (known after apply)
+      + project         = "<project>"
+      + unique_id       = (known after apply)
+    }
+
+  # google_service_account.run["redirect"] will be created
+  + resource "google_service_account" "run" {
+      + account_id      = "qrwtya-redirect"
+      + deletion_policy = "DELETE"
+      + disabled        = false
+      + display_name    = "QRWTY arm A Redirect service"
+      + email           = "qrwtya-redirect@<project>.iam.gserviceaccount.com"
+      + id              = (known after apply)
+      + member          = "serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com"
+      + name            = (known after apply)
+      + project         = "<project>"
+      + unique_id       = (known after apply)
+    }
+
+  # google_service_account.run["session"] will be created
+  + resource "google_service_account" "run" {
+      + account_id      = "qrwtya-session"
+      + deletion_policy = "DELETE"
+      + disabled        = false
+      + display_name    = "QRWTY arm A Session API"
+      + email           = "qrwtya-session@<project>.iam.gserviceaccount.com"
+      + id              = (known after apply)
+      + member          = "serviceAccount:qrwtya-session@<project>.iam.gserviceaccount.com"
+      + name            = (known after apply)
+      + project         = "<project>"
+      + unique_id       = (known after apply)
+    }
+
+  # google_service_networking_connection.psa will be created
+  + resource "google_service_networking_connection" "psa" {
+      + deletion_policy         = "DELETE"
+      + id                      = (known after apply)
+      + network                 = (known after apply)
+      + peering                 = (known after apply)
+      + reserved_peering_ranges = [
+          + "qrwtya-psa",
+        ]
+      + service                 = "servicenetworking.googleapis.com"
+    }
+
+  # google_sql_database_instance.pg will be created
+  + resource "google_sql_database_instance" "pg" {
+      + available_maintenance_versions       = (known after apply)
+      + connection_name                      = (known after apply)
+      + database_version                     = "POSTGRES_17"
+      + deletion_policy                      = "DELETE"
+      + deletion_protection                  = true
+      + dns_name                             = (known after apply)
+      + dns_names                            = (known after apply)
+      + encryption_confidential_mode         = (known after apply)
+      + encryption_key_name                  = (known after apply)
+      + enforce_new_sql_network_architecture = (known after apply)
+      + first_ip_address                     = (known after apply)
+      + id                                   = (known after apply)
+      + instance_type                        = (known after apply)
+      + ip_address                           = (known after apply)
+      + maintenance_version                  = (known after apply)
+      + master_instance_name                 = (known after apply)
+      + name                                 = "qrwtya-pg"
+      + node_count                           = (known after apply)
+      + private_ip_address                   = (known after apply)
+      + project                              = "<project>"
+      + psc_service_attachment_link          = (known after apply)
+      + public_ip_address                    = (known after apply)
+      + region                               = "us-central1"
+      + replica_names                        = (known after apply)
+      + root_password_wo                     = (write-only attribute)
+      + self_link                            = (known after apply)
+      + server_ca_cert                       = (sensitive value)
+      + service_account_email_address        = (known after apply)
+
+      + replica_configuration (known after apply)
+
+      + replication_cluster (known after apply)
+
+      + settings {
+          + activation_policy                = "ALWAYS"
+          + availability_type                = "ZONAL"
+          + connector_enforcement            = (known after apply)
+          + data_api_access                  = (known after apply)
+          + data_disk_provisioned_iops       = (known after apply)
+          + data_disk_provisioned_throughput = (known after apply)
+          + disk_autoresize                  = true
+          + disk_autoresize_limit            = 0
+          + disk_size                        = 10
+          + disk_type                        = (known after apply)
+          + edition                          = "ENTERPRISE"
+          + effective_availability_type      = (known after apply)
+          + pricing_plan                     = "PER_USE"
+          + replication_lag_max_seconds      = (known after apply)
+          + tier                             = "db-f1-micro"
+          + user_labels                      = {
+              + "arm" = "a"
+            }
+          + version                          = (known after apply)
+
+          + backup_configuration {
+              + backup_tier                    = (known after apply)
+              + enabled                        = false
+              + point_in_time_recovery_enabled = false
+              + start_time                     = (known after apply)
+              + transaction_log_retention_days = (known after apply)
+
+              + backup_retention_settings (known after apply)
+            }
+
+          + connection_pool_config (known after apply)
+
+          + data_cache_config (known after apply)
+
+          + insights_config (known after apply)
+
+          + ip_configuration {
+              + ipv4_enabled    = false
+              + private_network = (known after apply)
+              + server_ca_mode  = (known after apply)
+              + ssl_mode        = "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
+            }
+
+          + location_preference (known after apply)
+
+          + read_pool_auto_scale_config (known after apply)
+        }
+    }
+
+  # google_storage_bucket.archive will be created
+  + resource "google_storage_bucket" "archive" {
+      + deletion_policy             = "DELETE"
+      + effective_labels            = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + force_destroy               = false
+      + id                          = (known after apply)
+      + labels                      = {
+          + "arm" = "a"
+        }
+      + location                    = "US-CENTRAL1"
+      + name                        = "qrwtya-click-archive-<project>"
+      + project                     = (known after apply)
+      + project_number              = (known after apply)
+      + public_access_prevention    = "enforced"
+      + rpo                         = (known after apply)
+      + self_link                   = (known after apply)
+      + storage_class               = "STANDARD"
+      + terraform_labels            = {
+          + "arm"                        = "a"
+          + "goog-terraform-provisioned" = "true"
+          + "run"                        = "qrwty-r1-20261114"
+          + "system"                     = "qrwty"
+        }
+      + time_created                = (known after apply)
+      + uniform_bucket_level_access = true
+      + updated                     = (known after apply)
+      + url                         = (known after apply)
+
+      + lifecycle_rule {
+          + action {
+              + type = "Delete"
+            }
+          + condition {
+              + age                   = 31
+              + matches_prefix        = []
+              + matches_storage_class = []
+              + matches_suffix        = []
+              + with_state            = (known after apply)
+            }
+        }
+
+      + soft_delete_policy (known after apply)
+
+      + versioning (known after apply)
+
+      + website (known after apply)
+    }
+
+  # google_storage_bucket_iam_member.archive_reader will be created
+  + resource "google_storage_bucket_iam_member" "archive_reader" {
+      + bucket = "qrwtya-click-archive-<project>"
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com"
+      + role   = "roles/storage.legacyBucketReader"
+    }
+
+  # google_storage_bucket_iam_member.archive_writer will be created
+  + resource "google_storage_bucket_iam_member" "archive_writer" {
+      + bucket = "qrwtya-click-archive-<project>"
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com"
+      + role   = "roles/storage.objectCreator"
+    }
+
+Plan: 93 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + cloud_sql_connection_name = (known after apply)
+  + deterministic_urls        = {
+      + account-api      = "https://qrwtya-account-api-<project-number>.us-central1.run.app"
+      + billing-api      = "https://qrwtya-billing-api-<project-number>.us-central1.run.app"
+      + link-api         = "https://qrwtya-link-api-<project-number>.us-central1.run.app"
+      + redirect-service = "https://qrwtya-redirect-service-<project-number>.us-central1.run.app"
+      + session-api      = "https://qrwtya-session-api-<project-number>.us-central1.run.app"
+    }
+  + memorystore_endpoints     = {
+      + admission-cache = (known after apply)
+      + hot-routes      = (known after apply)
+    }
+  + pubsub                    = {
+      + archive      = (known after apply)
+      + bucket       = (known after apply)
+      + dead_letter  = (known after apply)
+      + subscription = (known after apply)
+      + topic        = (known after apply)
+    }
+  + secret_ids                = [
+      + "qrwtya-identity-identity",
+      + "qrwtya-identity-owner-identity",
+      + "qrwtya-link-replay-keys",
+      + "qrwtya-owner-analytics",
+      + "qrwtya-owner-billing",
+      + "qrwtya-owner-links",
+      + "qrwtya-owner-sessions",
+      + "qrwtya-postgres-admin",
+      + "qrwtya-sql-analytics--account-api",
+      + "qrwtya-sql-analytics--analytics-worker",
+      + "qrwtya-sql-billing--billing-api",
+      + "qrwtya-sql-links--account-api",
+      + "qrwtya-sql-links--link-api",
+      + "qrwtya-sql-links--redirect-service",
+      + "qrwtya-sql-sessions--session-api",
+    ]
+
+Warning: Resource targeting is in effect
+
+You are creating a plan with either the -target option or the -exclude
+option, which means that the result of this plan may not represent all of the
+changes requested by the current configuration.
+
+The -target and -exclude options are not for routine use, and are provided
+only for exceptional situations such as recovering from errors or mistakes,
+or when OpenTofu specifically suggests to use it as part of an error message.
+
+Warning: Value derived from a deprecated source
+
+  on locals.tf line 24, in locals:
+  24:   cache = { for c, i in google_memorystore_instance.cache : c => merge({
+  25:     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_HOST"    = i.discovery_endpoints[0].address
+  26:     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_PORT"    = tostring(i.discovery_endpoints[0].port)
+  27:     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_TLS"     = "verify-full"
+  28:     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_CA_FILE" = "${local.ca_mount}/value"
+  29:     }, var.memorystore_tls_servername == null ? {} : {
+  30:     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_TLS_SERVERNAME" = var.memorystore_tls_servername
+  31:   }) }
+
+This value's attribute admission-cache.JEEVES_CACHE_ADMISSION_CACHE_HOST is
+derived from
+google_memorystore_instance.cache["admission-cache"].discovery_endpoints,
+which is deprecated with the following message:
+
+This field is deprecated. As a result it will not be populated if the
+connections are created using `desired_auto_created_endpoints` parameter or
+`google_memorystore_instance_desired_user_created_endpoints` resource.
+Instead of this parameter, for discovery, use
+`endpoints.connections.pscConnection` and
+`endpoints.connections.pscAutoConnection` with `connectionType`
+CONNECTION_TYPE_DISCOVERY.
+
+Warning: Value derived from a deprecated source
+
+  on locals.tf line 24, in locals:
+  24:   cache = { for c, i in google_memorystore_instance.cache : c => merge({
+  25:     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_HOST"    = i.discovery_endpoints[0].address
+  26:     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_PORT"    = tostring(i.discovery_endpoints[0].port)
+  27:     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_TLS"     = "verify-full"
+  28:     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_CA_FILE" = "${local.ca_mount}/value"
+  29:     }, var.memorystore_tls_servername == null ? {} : {
+  30:     "JEEVES_CACHE_${upper(replace(c, "-", "_"))}_TLS_SERVERNAME" = var.memorystore_tls_servername
+  31:   }) }
+
+This value's attribute hot-routes.JEEVES_CACHE_HOT_ROUTES_HOST is derived
+from google_memorystore_instance.cache["hot-routes"].discovery_endpoints,
+which is deprecated with the following message:
+
+This field is deprecated. As a result it will not be populated if the
+connections are created using `desired_auto_created_endpoints` parameter or
+`google_memorystore_instance_desired_user_created_endpoints` resource.
+Instead of this parameter, for discovery, use
+`endpoints.connections.pscConnection` and
+`endpoints.connections.pscAutoConnection` with `connectionType`
+CONNECTION_TYPE_DISCOVERY.

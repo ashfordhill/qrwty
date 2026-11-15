@@ -1,0 +1,327 @@
+[
+ {
+  "name": "qrwtya-account-api",
+  "type": "Cloud Run service",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-billing-api",
+  "type": "Cloud Run service",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-link-api",
+  "type": "Cloud Run service",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-redirect-service",
+  "type": "Cloud Run service",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-session-api",
+  "type": "Cloud Run service",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-migrate",
+  "type": "Cloud Run job",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-probe",
+  "type": "Cloud Run job",
+  "notes": "Q13 probe (gcloud, temporary)"
+ },
+ {
+  "name": "qrwtya-probe-redirect",
+  "type": "Cloud Run job",
+  "notes": "Q13 probe as the Redirect account"
+ },
+ {
+  "name": "qrwtya-probe-sql",
+  "type": "Cloud Run job",
+  "notes": "Q13 read-only SQL probe"
+ },
+ {
+  "name": "qrwtya-analytics-worker",
+  "type": "Cloud Run worker pool",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-pg",
+  "type": "Cloud SQL instance",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-admission-cache",
+  "type": "Memorystore for Valkey instance",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-hot-routes",
+  "type": "Memorystore for Valkey instance",
+  "notes": ""
+ },
+ {
+  "name": "click-events--analytics-worker.failed",
+  "type": "Pub/Sub topic",
+  "notes": ""
+ },
+ {
+  "name": "click-events",
+  "type": "Pub/Sub topic",
+  "notes": ""
+ },
+ {
+  "name": "click-events--analytics-worker.failed",
+  "type": "Pub/Sub subscription",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-click-events-archive",
+  "type": "Pub/Sub subscription",
+  "notes": ""
+ },
+ {
+  "name": "click-events--analytics-worker",
+  "type": "Pub/Sub subscription",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-click-archive-<project>",
+  "type": "Cloud Storage bucket",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-identity-identity",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-identity-owner-identity",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-link-replay-keys",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-memorystore-ca-admission-cache",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-memorystore-ca-hot-routes",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-owner-analytics",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-owner-billing",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-owner-links",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-owner-sessions",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-postgres-admin",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-probe-auth0-web",
+  "type": "Secret Manager secret",
+  "notes": "Q13 probe's Auth0 client credentials"
+ },
+ {
+  "name": "qrwtya-sql-analytics--account-api",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-sql-analytics--analytics-worker",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-sql-billing--billing-api",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-sql-links--account-api",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-sql-links--link-api",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-sql-links--redirect-service",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-sql-sessions--session-api",
+  "type": "Secret Manager secret",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-migrate",
+  "type": "Service account",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-redirect",
+  "type": "Service account",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-analytics",
+  "type": "Service account",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-billing",
+  "type": "Service account",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-session",
+  "type": "Service account",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-account",
+  "type": "Service account",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-probe",
+  "type": "Service account",
+  "notes": "Q13 probe (gcloud, temporary)"
+ },
+ {
+  "name": "qrwtya-link",
+  "type": "Service account",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-vpc",
+  "type": "VPC network",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-run",
+  "type": "Subnet",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-psa",
+  "type": "PSA range",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-router",
+  "type": "Cloud Router (NAT)",
+  "notes": "with qrwtya-nat"
+ },
+ {
+  "name": "sca-auto-fr-22c5b997-7001-43b7-9752-3eacebf254bd",
+  "type": "PSC endpoint (Memorystore, auto)",
+  "notes": ""
+ },
+ {
+  "name": "sca-auto-fr-390733b6-a295-4cee-a509-a93b49a75f38",
+  "type": "PSC endpoint (Memorystore, auto)",
+  "notes": ""
+ },
+ {
+  "name": "sca-auto-fr-76db9979-cc48-4d2b-98bd-cafb80fd33ef",
+  "type": "PSC endpoint (Memorystore, auto)",
+  "notes": ""
+ },
+ {
+  "name": "sca-auto-fr-c5d7a81e-ed1a-44f5-8d40-10130f43cc44",
+  "type": "PSC endpoint (Memorystore, auto)",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-memorystore",
+  "type": "Service connection policy",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-images",
+  "type": "Artifact Registry repository",
+  "notes": ""
+ },
+ {
+  "name": "servicenetworking-googleapis-com",
+  "type": "VPC peering (private services access)",
+  "notes": ""
+ },
+ {
+  "name": "roles/cloudsql.client qrwtya-account",
+  "type": "Project IAM binding",
+  "notes": ""
+ },
+ {
+  "name": "roles/cloudsql.client qrwtya-analytics",
+  "type": "Project IAM binding",
+  "notes": ""
+ },
+ {
+  "name": "roles/cloudsql.client qrwtya-billing",
+  "type": "Project IAM binding",
+  "notes": ""
+ },
+ {
+  "name": "roles/cloudsql.client qrwtya-link",
+  "type": "Project IAM binding",
+  "notes": ""
+ },
+ {
+  "name": "roles/cloudsql.client qrwtya-migrate",
+  "type": "Project IAM binding",
+  "notes": ""
+ },
+ {
+  "name": "roles/cloudsql.client qrwtya-redirect",
+  "type": "Project IAM binding",
+  "notes": ""
+ },
+ {
+  "name": "roles/cloudsql.client qrwtya-session",
+  "type": "Project IAM binding",
+  "notes": ""
+ },
+ {
+  "name": "qrwtya-api",
+  "type": "Auth0 API (audience https://api.qrwtya.qrwty.io)",
+  "notes": "RS256, 60 s tokens"
+ },
+ {
+  "name": "qrwtya-web",
+  "type": "Auth0 application (machine to machine) and its grant",
+  "notes": "probe client only"
+ }
+]

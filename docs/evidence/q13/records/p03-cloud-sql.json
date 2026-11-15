@@ -1,0 +1,15 @@
+{
+ "name": "qrwtya-pg",
+ "databaseVersion": "POSTGRES_17",
+ "tier": "db-f1-micro",
+ "edition": "ENTERPRISE",
+ "availabilityType": "ZONAL",
+ "ipAddresses": [
+  "PRIVATE"
+ ],
+ "ipv4Enabled": false,
+ "sslMode": "TRUSTED_CLIENT_CERTIFICATE_REQUIRED",
+ "backups": false,
+ "dataDiskSizeGb": "10",
+ "createTime": "2026-11-15T12:01:06.835Z"
+}

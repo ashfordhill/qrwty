@@ -13,7 +13,7 @@ output "cloud_sql_connection_name" {
 }
 
 output "memorystore_endpoints" {
-  value = { for k, i in google_memorystore_instance.cache : k => i.discovery_endpoints[0] }
+  value = { for k, c in local.cache_primary : k => { address = c.ip_address, port = c.port } }
 }
 
 output "pubsub" {
@@ -28,5 +28,5 @@ output "pubsub" {
 
 output "secret_ids" {
   description = "Secrets the bootstrap must add a version to before the migration job runs."
-  value       = sort([for k, s in google_secret_manager_secret.s : s.secret_id if k != "memorystore-ca"])
+  value       = sort([for k, s in google_secret_manager_secret.s : s.secret_id if !startswith(k, "memorystore-ca-")])
 }

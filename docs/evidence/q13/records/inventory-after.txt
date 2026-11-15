@@ -1,0 +1,23 @@
+## run services
+## run jobs
+## run worker pools
+## cloud sql
+## memorystore
+## pubsub topics
+## pubsub subscriptions
+## storage buckets
+## secrets
+## service accounts
+## networks
+qrwtya-vpc
+## subnets
+qrwtya-run
+## global addresses
+qrwtya-psa
+## routers
+## forwarding rules on qrwtya-vpc
+## service connection policies
+## artifact registry
+## vpc peerings on qrwtya-vpc
+servicenetworking-googleapis-com
+## project IAM members qrwtya-

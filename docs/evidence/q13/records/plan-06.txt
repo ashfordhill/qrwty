@@ -1,0 +1,840 @@
+google_service_account.run["session"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-session@<project>.iam.gserviceaccount.com]
+google_service_account.run["account"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-account@<project>.iam.gserviceaccount.com]
+google_service_account.run["billing"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-billing@<project>.iam.gserviceaccount.com]
+google_service_account.run["analytics"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-analytics@<project>.iam.gserviceaccount.com]
+data.google_project.this: Reading...
+google_service_account.run["redirect"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_service_account.run["link"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-link@<project>.iam.gserviceaccount.com]
+google_service_account.run["migrate"]: Refreshing state... [id=projects/<project>/serviceAccounts/qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_pubsub_topic.dead_letter: Refreshing state... [id=projects/<project>/topics/click-events--analytics-worker.failed]
+google_storage_bucket.archive: Refreshing state... [id=qrwtya-click-archive-<project>]
+google_project_service.api["memorystore.googleapis.com"]: Refreshing state... [id=<project>/memorystore.googleapis.com]
+google_project_service.api["secretmanager.googleapis.com"]: Refreshing state... [id=<project>/secretmanager.googleapis.com]
+google_project_service.api["servicenetworking.googleapis.com"]: Refreshing state... [id=<project>/servicenetworking.googleapis.com]
+google_project_service.api["webrisk.googleapis.com"]: Refreshing state... [id=<project>/webrisk.googleapis.com]
+google_project_service.api["run.googleapis.com"]: Refreshing state... [id=<project>/run.googleapis.com]
+google_project_service.api["networkconnectivity.googleapis.com"]: Refreshing state... [id=<project>/networkconnectivity.googleapis.com]
+google_project_service.api["artifactregistry.googleapis.com"]: Refreshing state... [id=<project>/artifactregistry.googleapis.com]
+google_project_service.api["compute.googleapis.com"]: Refreshing state... [id=<project>/compute.googleapis.com]
+google_project_service.api["iam.googleapis.com"]: Refreshing state... [id=<project>/iam.googleapis.com]
+data.google_project.this: Read complete after 0s [id=projects/<project>]
+google_project_service.api["storage.googleapis.com"]: Refreshing state... [id=<project>/storage.googleapis.com]
+google_project_iam_member.sql_client["migrate"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["account"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com]
+google_project_service.api["sqladmin.googleapis.com"]: Refreshing state... [id=<project>/sqladmin.googleapis.com]
+google_project_iam_member.sql_client["link"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["session"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-session@<project>.iam.gserviceaccount.com]
+google_project_service.api["pubsub.googleapis.com"]: Refreshing state... [id=<project>/pubsub.googleapis.com]
+google_project_iam_member.sql_client["redirect"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["analytics"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_project_iam_member.sql_client["billing"]: Refreshing state... [id=<project>/roles/cloudsql.client/serviceAccount:qrwtya-billing@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription.dead_letter: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker.failed]
+google_pubsub_topic_iam_member.analytics_dead_letter: Refreshing state... [id=projects/<project>/topics/click-events--analytics-worker.failed/roles/pubsub.publisher/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_pubsub_topic_iam_member.dead_letter_publisher: Refreshing state... [id=projects/<project>/topics/click-events--analytics-worker.failed/roles/pubsub.publisher/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_storage_bucket_iam_member.archive_reader: Refreshing state... [id=b/qrwtya-click-archive-<project>/roles/storage.legacyBucketReader/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_storage_bucket_iam_member.archive_writer: Refreshing state... [id=b/qrwtya-click-archive-<project>/roles/storage.objectCreator/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_compute_network.vpc: Refreshing state... [id=projects/<project>/global/networks/qrwtya-vpc]
+google_artifact_registry_repository.images: Refreshing state... [id=projects/<project>/locations/us-central1/repositories/qrwtya-images]
+google_secret_manager_secret.s["link-replay-keys"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-link-replay-keys]
+google_secret_manager_secret.s["identity-owner-identity"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-identity-owner-identity]
+google_secret_manager_secret.s["sql-links--redirect-service"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--redirect-service]
+google_secret_manager_secret.s["memorystore-ca-admission-cache"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-memorystore-ca-admission-cache]
+google_secret_manager_secret.s["sql-analytics--account-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-analytics--account-api]
+google_pubsub_topic.events: Refreshing state... [id=projects/<project>/topics/click-events]
+google_secret_manager_secret.s["owner-billing"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-billing]
+google_secret_manager_secret.s["owner-analytics"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-analytics]
+google_secret_manager_secret.s["sql-links--account-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--account-api]
+google_secret_manager_secret.s["identity-identity"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-identity-identity]
+google_secret_manager_secret.s["sql-analytics--analytics-worker"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker]
+google_secret_manager_secret.s["memorystore-ca-hot-routes"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-memorystore-ca-hot-routes]
+google_secret_manager_secret.s["owner-links"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-links]
+google_secret_manager_secret.s["sql-billing--billing-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-billing--billing-api]
+google_secret_manager_secret.s["postgres-admin"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-postgres-admin]
+google_secret_manager_secret.s["owner-sessions"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-sessions]
+google_secret_manager_secret.s["sql-links--link-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--link-api]
+google_secret_manager_secret.s["sql-sessions--session-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-sessions--session-api]
+google_pubsub_subscription.analytics: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker]
+google_pubsub_topic_iam_member.redirect_publish: Refreshing state... [id=projects/<project>/topics/click-events/roles/pubsub.publisher/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_pubsub_topic_iam_member.redirect_probe: Refreshing state... [id=projects/<project>/topics/click-events/roles/pubsub.viewer/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription.archive: Refreshing state... [id=projects/<project>/subscriptions/qrwtya-click-events-archive]
+google_compute_router.nat: Refreshing state... [id=projects/<project>/regions/us-central1/routers/qrwtya-router]
+google_compute_subnetwork.run: Refreshing state... [id=projects/<project>/regions/us-central1/subnetworks/qrwtya-run]
+google_compute_global_address.psa: Refreshing state... [id=projects/<project>/global/addresses/qrwtya-psa]
+google_network_connectivity_service_connection_policy.memorystore: Refreshing state... [id=projects/<project>/locations/us-central1/serviceConnectionPolicies/qrwtya-memorystore]
+google_compute_router_nat.nat: Refreshing state... [id=<project>/us-central1/qrwtya-router/qrwtya-nat]
+google_pubsub_subscription_iam_member.analytics_consume: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.subscriber/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_pubsub_subscription_iam_member.dead_letter_subscriber: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.subscriber/serviceAccount:service-<project-number>@gcp-sa-pubsub.iam.gserviceaccount.com]
+google_pubsub_subscription_iam_member.analytics_probe: Refreshing state... [id=projects/<project>/subscriptions/click-events--analytics-worker/roles/pubsub.viewer/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_service_networking_connection.psa: Refreshing state... [id=projects%2F<project>%2Fglobal%2Fnetworks%2Fqrwtya-vpc:servicenetworking.googleapis.com]
+google_memorystore_instance.cache["hot-routes"]: Refreshing state... [id=projects/<project>/locations/us-central1/instances/qrwtya-hot-routes]
+google_memorystore_instance.cache["admission-cache"]: Refreshing state... [id=projects/<project>/locations/us-central1/instances/qrwtya-admission-cache]
+google_sql_database_instance.pg: Refreshing state... [id=qrwtya-pg]
+google_secret_manager_secret_version.memorystore_ca["hot-routes"]: Refreshing state... [id=projects/<project-number>/secrets/qrwtya-memorystore-ca-hot-routes/versions/1]
+google_secret_manager_secret_version.memorystore_ca["admission-cache"]: Refreshing state... [id=projects/<project-number>/secrets/qrwtya-memorystore-ca-admission-cache/versions/1]
+google_secret_manager_secret_iam_member.reader["migrate/owner-analytics"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-analytics/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["redirect/memorystore-ca-hot-routes"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-memorystore-ca-hot-routes/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-billing--billing-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-billing--billing-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--account-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-analytics--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-billing"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-billing/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--account-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/identity-identity"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-identity-identity/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/postgres-admin"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-postgres-admin/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--redirect-service"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--redirect-service/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["link/link-replay-keys"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-link-replay-keys/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["link/sql-links--link-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--link-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["account/sql-links--account-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["session/sql-sessions--session-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-sessions--session-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-session@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["billing/sql-billing--billing-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-billing--billing-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-billing@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-sessions"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-sessions/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-sessions--session-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-sessions--session-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-links--link-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--link-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["redirect/sql-links--redirect-service"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-links--redirect-service/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-redirect@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["link/memorystore-ca-admission-cache"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-memorystore-ca-admission-cache/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-link@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["account/sql-analytics--account-api"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-analytics--account-api/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-account@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/sql-analytics--analytics-worker"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/identity-owner-identity"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-identity-owner-identity/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["analytics/sql-analytics--analytics-worker"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-sql-analytics--analytics-worker/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-analytics@<project>.iam.gserviceaccount.com]
+google_secret_manager_secret_iam_member.reader["migrate/owner-links"]: Refreshing state... [id=projects/<project>/secrets/qrwtya-owner-links/roles/secretmanager.secretAccessor/serviceAccount:qrwtya-migrate@<project>.iam.gserviceaccount.com]
+google_cloud_run_v2_worker_pool.analytics: Refreshing state... [id=projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker]
+google_cloud_run_v2_service.http["session-api"]: Refreshing state... [id=projects/<project>/locations/us-central1/services/qrwtya-session-api]
+google_cloud_run_v2_service.http["billing-api"]: Refreshing state... [id=projects/<project>/locations/us-central1/services/qrwtya-billing-api]
+google_cloud_run_v2_job.migrate: Refreshing state... [id=projects/<project>/locations/us-central1/jobs/qrwtya-migrate]
+google_cloud_run_v2_service.http["account-api"]: Refreshing state... [id=projects/<project>/locations/us-central1/services/qrwtya-account-api]
+google_cloud_run_v2_service.http["redirect-service"]: Refreshing state... [id=projects/<project>/locations/us-central1/services/qrwtya-redirect-service]
+google_cloud_run_v2_service.http["link-api"]: Refreshing state... [id=projects/<project>/locations/us-central1/services/qrwtya-link-api]
+
+OpenTofu used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place (current -> planned)
+
+OpenTofu will perform the following actions:
+
+  # google_cloud_run_v2_job.migrate will be updated in-place
+  ~ resource "google_cloud_run_v2_job" "migrate" {
+        id                       = "projects/<project>/locations/us-central1/jobs/qrwtya-migrate"
+        name                     = "qrwtya-migrate"
+        # (23 unchanged attributes hidden)
+
+      ~ template {
+            # (5 unchanged attributes hidden)
+
+          ~ template {
+                # (5 unchanged attributes hidden)
+
+              ~ containers {
+                    # (5 unchanged attributes hidden)
+
+                  ~ volume_mounts {
+                      ~ mount_path = "/var/run/qrwty-secrets/identity-identity" -> "/cloudsql"
+                      ~ name       = "s-identity-identity" -> "cloudsql"
+                    }
+                  ~ volume_mounts {
+                      ~ mount_path = "/var/run/qrwty-secrets/identity-owner-identity" -> "/var/run/qrwty-secrets/identity-identity"
+                      ~ name       = "s-identity-owner-identity" -> "s-identity-identity"
+                    }
+                  ~ volume_mounts {
+                      ~ mount_path = "/var/run/qrwty-secrets/owner-analytics" -> "/var/run/qrwty-secrets/identity-owner-identity"
+                      ~ name       = "s-owner-analytics" -> "s-identity-owner-identity"
+                    }
+                  ~ volume_mounts {
+                      ~ mount_path = "/var/run/qrwty-secrets/owner-billing" -> "/var/run/qrwty-secrets/owner-analytics"
+                      ~ name       = "s-owner-billing" -> "s-owner-analytics"
+                    }
+                  ~ volume_mounts {
+                      ~ mount_path = "/var/run/qrwty-secrets/owner-links" -> "/var/run/qrwty-secrets/owner-billing"
+                      ~ name       = "s-owner-links" -> "s-owner-billing"
+                    }
+                  ~ volume_mounts {
+                      ~ mount_path = "/var/run/qrwty-secrets/owner-sessions" -> "/var/run/qrwty-secrets/owner-links"
+                      ~ name       = "s-owner-sessions" -> "s-owner-links"
+                    }
+                  ~ volume_mounts {
+                      ~ mount_path = "/var/run/qrwty-secrets/postgres-admin" -> "/var/run/qrwty-secrets/owner-sessions"
+                      ~ name       = "s-postgres-admin" -> "s-owner-sessions"
+                    }
+                  ~ volume_mounts {
+                      ~ mount_path = "/var/run/qrwty-secrets/sql-analytics--account-api" -> "/var/run/qrwty-secrets/postgres-admin"
+                      ~ name       = "s-sql-analytics-account-api" -> "s-postgres-admin"
+                    }
+                  ~ volume_mounts {
+                      ~ mount_path = "/var/run/qrwty-secrets/sql-analytics--analytics-worker" -> "/var/run/qrwty-secrets/sql-analytics--account-api"
+                      ~ name       = "s-sql-analytics-analytics-worker" -> "s-sql-analytics-account-api"
+                    }
+                  ~ volume_mounts {
+                      ~ mount_path = "/var/run/qrwty-secrets/sql-billing--billing-api" -> "/var/run/qrwty-secrets/sql-analytics--analytics-worker"
+                      ~ name       = "s-sql-billing-billing-api" -> "s-sql-analytics-analytics-worker"
+                    }
+                  ~ volume_mounts {
+                      ~ mount_path = "/var/run/qrwty-secrets/sql-links--account-api" -> "/var/run/qrwty-secrets/sql-billing--billing-api"
+                      ~ name       = "s-sql-links-account-api" -> "s-sql-billing-billing-api"
+                    }
+                  ~ volume_mounts {
+                      ~ mount_path = "/var/run/qrwty-secrets/sql-links--link-api" -> "/var/run/qrwty-secrets/sql-links--account-api"
+                      ~ name       = "s-sql-links-link-api" -> "s-sql-links-account-api"
+                    }
+                  ~ volume_mounts {
+                      ~ mount_path = "/var/run/qrwty-secrets/sql-links--redirect-service" -> "/var/run/qrwty-secrets/sql-links--link-api"
+                      ~ name       = "s-sql-links-redirect-service" -> "s-sql-links-link-api"
+                    }
+                  ~ volume_mounts {
+                      ~ mount_path = "/var/run/qrwty-secrets/sql-sessions--session-api" -> "/var/run/qrwty-secrets/sql-links--redirect-service"
+                      ~ name       = "s-sql-sessions-session-api" -> "s-sql-links-redirect-service"
+                    }
+                  ~ volume_mounts {
+                      ~ mount_path = "/cloudsql" -> "/var/run/qrwty-secrets/sql-sessions--session-api"
+                      ~ name       = "cloudsql" -> "s-sql-sessions-session-api"
+                    }
+
+                    # (6 unchanged blocks hidden)
+                }
+
+              ~ volumes {
+                  ~ name = "s-identity-identity" -> "cloudsql"
+
+                  + cloud_sql_instance {
+                      + instances = [
+                          + "<project>:us-central1:qrwtya-pg",
+                        ]
+                    }
+
+                  - secret {
+                      - default_mode = 0 -> null
+                      - secret       = "qrwtya-identity-identity" -> null
+
+                      - items {
+                          - mode    = 0 -> null
+                          - path    = "value" -> null
+                          - version = "latest" -> null
+                        }
+                    }
+                }
+              ~ volumes {
+                  ~ name = "s-identity-owner-identity" -> "s-identity-identity"
+
+                  ~ secret {
+                      ~ secret       = "qrwtya-identity-owner-identity" -> "qrwtya-identity-identity"
+                        # (1 unchanged attribute hidden)
+
+                        # (1 unchanged block hidden)
+                    }
+                }
+              ~ volumes {
+                  ~ name = "s-owner-analytics" -> "s-identity-owner-identity"
+
+                  ~ secret {
+                      ~ secret       = "qrwtya-owner-analytics" -> "qrwtya-identity-owner-identity"
+                        # (1 unchanged attribute hidden)
+
+                        # (1 unchanged block hidden)
+                    }
+                }
+              ~ volumes {
+                  ~ name = "s-owner-billing" -> "s-owner-analytics"
+
+                  ~ secret {
+                      ~ secret       = "qrwtya-owner-billing" -> "qrwtya-owner-analytics"
+                        # (1 unchanged attribute hidden)
+
+                        # (1 unchanged block hidden)
+                    }
+                }
+              ~ volumes {
+                  ~ name = "s-owner-links" -> "s-owner-billing"
+
+                  ~ secret {
+                      ~ secret       = "qrwtya-owner-links" -> "qrwtya-owner-billing"
+                        # (1 unchanged attribute hidden)
+
+                        # (1 unchanged block hidden)
+                    }
+                }
+              ~ volumes {
+                  ~ name = "s-owner-sessions" -> "s-owner-links"
+
+                  ~ secret {
+                      ~ secret       = "qrwtya-owner-sessions" -> "qrwtya-owner-links"
+                        # (1 unchanged attribute hidden)
+
+                        # (1 unchanged block hidden)
+                    }
+                }
+              ~ volumes {
+                  ~ name = "s-postgres-admin" -> "s-owner-sessions"
+
+                  ~ secret {
+                      ~ secret       = "qrwtya-postgres-admin" -> "qrwtya-owner-sessions"
+                        # (1 unchanged attribute hidden)
+
+                        # (1 unchanged block hidden)
+                    }
+                }
+              ~ volumes {
+                  ~ name = "s-sql-analytics-account-api" -> "s-postgres-admin"
+
+                  ~ secret {
+                      ~ secret       = "qrwtya-sql-analytics--account-api" -> "qrwtya-postgres-admin"
+                        # (1 unchanged attribute hidden)
+
+                        # (1 unchanged block hidden)
+                    }
+                }
+              ~ volumes {
+                  ~ name = "s-sql-analytics-analytics-worker" -> "s-sql-analytics-account-api"
+
+                  ~ secret {
+                      ~ secret       = "qrwtya-sql-analytics--analytics-worker" -> "qrwtya-sql-analytics--account-api"
+                        # (1 unchanged attribute hidden)
+
+                        # (1 unchanged block hidden)
+                    }
+                }
+              ~ volumes {
+                  ~ name = "s-sql-billing-billing-api" -> "s-sql-analytics-analytics-worker"
+
+                  ~ secret {
+                      ~ secret       = "qrwtya-sql-billing--billing-api" -> "qrwtya-sql-analytics--analytics-worker"
+                        # (1 unchanged attribute hidden)
+
+                        # (1 unchanged block hidden)
+                    }
+                }
+              ~ volumes {
+                  ~ name = "s-sql-links-account-api" -> "s-sql-billing-billing-api"
+
+                  ~ secret {
+                      ~ secret       = "qrwtya-sql-links--account-api" -> "qrwtya-sql-billing--billing-api"
+                        # (1 unchanged attribute hidden)
+
+                        # (1 unchanged block hidden)
+                    }
+                }
+              ~ volumes {
+                  ~ name = "s-sql-links-link-api" -> "s-sql-links-account-api"
+
+                  ~ secret {
+                      ~ secret       = "qrwtya-sql-links--link-api" -> "qrwtya-sql-links--account-api"
+                        # (1 unchanged attribute hidden)
+
+                        # (1 unchanged block hidden)
+                    }
+                }
+              ~ volumes {
+                  ~ name = "s-sql-links-redirect-service" -> "s-sql-links-link-api"
+
+                  ~ secret {
+                      ~ secret       = "qrwtya-sql-links--redirect-service" -> "qrwtya-sql-links--link-api"
+                        # (1 unchanged attribute hidden)
+
+                        # (1 unchanged block hidden)
+                    }
+                }
+              ~ volumes {
+                  ~ name = "s-sql-sessions-session-api" -> "s-sql-links-redirect-service"
+
+                  ~ secret {
+                      ~ secret       = "qrwtya-sql-sessions--session-api" -> "qrwtya-sql-links--redirect-service"
+                        # (1 unchanged attribute hidden)
+
+                        # (1 unchanged block hidden)
+                    }
+                }
+              ~ volumes {
+                  ~ name = "cloudsql" -> "s-sql-sessions-session-api"
+
+                  - cloud_sql_instance {
+                      - instances = [
+                          - "<project>:us-central1:qrwtya-pg",
+                        ] -> null
+                    }
+
+                  + secret {
+                      + secret = "qrwtya-sql-sessions--session-api"
+
+                      + items {
+                          + path    = "value"
+                          + version = "latest"
+                        }
+                    }
+                }
+
+                # (1 unchanged block hidden)
+            }
+        }
+    }
+
+  # google_cloud_run_v2_service.http["account-api"] will be updated in-place
+  ~ resource "google_cloud_run_v2_service" "http" {
+        id                      = "projects/<project>/locations/us-central1/services/qrwtya-account-api"
+        name                    = "qrwtya-account-api"
+        # (32 unchanged attributes hidden)
+
+      ~ template {
+            # (9 unchanged attributes hidden)
+
+          ~ containers {
+                # (6 unchanged attributes hidden)
+
+              ~ volume_mounts {
+                  ~ mount_path = "/var/run/qrwty-secrets/sql-analytics--account-api" -> "/cloudsql"
+                  ~ name       = "s-sql-analytics-account-api" -> "cloudsql"
+                }
+              ~ volume_mounts {
+                  ~ mount_path = "/var/run/qrwty-secrets/sql-links--account-api" -> "/var/run/qrwty-secrets/sql-analytics--account-api"
+                  ~ name       = "s-sql-links-account-api" -> "s-sql-analytics-account-api"
+                }
+              ~ volume_mounts {
+                  ~ mount_path = "/cloudsql" -> "/var/run/qrwty-secrets/sql-links--account-api"
+                  ~ name       = "cloudsql" -> "s-sql-links-account-api"
+                }
+
+                # (17 unchanged blocks hidden)
+            }
+
+          ~ volumes {
+              ~ name = "s-sql-analytics-account-api" -> "cloudsql"
+
+              + cloud_sql_instance {
+                  + instances = [
+                      + "<project>:us-central1:qrwtya-pg",
+                    ]
+                }
+
+              - secret {
+                  - default_mode = 0 -> null
+                  - secret       = "qrwtya-sql-analytics--account-api" -> null
+
+                  - items {
+                      - mode    = 0 -> null
+                      - path    = "value" -> null
+                      - version = "latest" -> null
+                    }
+                }
+            }
+          ~ volumes {
+              ~ name = "s-sql-links-account-api" -> "s-sql-analytics-account-api"
+
+              ~ secret {
+                  ~ secret       = "qrwtya-sql-links--account-api" -> "qrwtya-sql-analytics--account-api"
+                    # (1 unchanged attribute hidden)
+
+                    # (1 unchanged block hidden)
+                }
+            }
+          ~ volumes {
+              ~ name = "cloudsql" -> "s-sql-links-account-api"
+
+              - cloud_sql_instance {
+                  - instances = [
+                      - "<project>:us-central1:qrwtya-pg",
+                    ] -> null
+                }
+
+              + secret {
+                  + secret = "qrwtya-sql-links--account-api"
+
+                  + items {
+                      + path    = "value"
+                      + version = "latest"
+                    }
+                }
+            }
+
+            # (2 unchanged blocks hidden)
+        }
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # google_cloud_run_v2_service.http["billing-api"] will be updated in-place
+  ~ resource "google_cloud_run_v2_service" "http" {
+        id                      = "projects/<project>/locations/us-central1/services/qrwtya-billing-api"
+        name                    = "qrwtya-billing-api"
+        # (32 unchanged attributes hidden)
+
+      ~ template {
+            # (9 unchanged attributes hidden)
+
+          ~ containers {
+                # (6 unchanged attributes hidden)
+
+              ~ volume_mounts {
+                  ~ mount_path = "/var/run/qrwty-secrets/sql-billing--billing-api" -> "/cloudsql"
+                  ~ name       = "s-sql-billing-billing-api" -> "cloudsql"
+                }
+              ~ volume_mounts {
+                  ~ mount_path = "/cloudsql" -> "/var/run/qrwty-secrets/sql-billing--billing-api"
+                  ~ name       = "cloudsql" -> "s-sql-billing-billing-api"
+                }
+
+                # (14 unchanged blocks hidden)
+            }
+
+          ~ volumes {
+              ~ name = "s-sql-billing-billing-api" -> "cloudsql"
+
+              + cloud_sql_instance {
+                  + instances = [
+                      + "<project>:us-central1:qrwtya-pg",
+                    ]
+                }
+
+              - secret {
+                  - default_mode = 0 -> null
+                  - secret       = "qrwtya-sql-billing--billing-api" -> null
+
+                  - items {
+                      - mode    = 0 -> null
+                      - path    = "value" -> null
+                      - version = "latest" -> null
+                    }
+                }
+            }
+          ~ volumes {
+              ~ name = "cloudsql" -> "s-sql-billing-billing-api"
+
+              - cloud_sql_instance {
+                  - instances = [
+                      - "<project>:us-central1:qrwtya-pg",
+                    ] -> null
+                }
+
+              + secret {
+                  + secret = "qrwtya-sql-billing--billing-api"
+
+                  + items {
+                      + path    = "value"
+                      + version = "latest"
+                    }
+                }
+            }
+
+            # (2 unchanged blocks hidden)
+        }
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # google_cloud_run_v2_service.http["link-api"] will be updated in-place
+  ~ resource "google_cloud_run_v2_service" "http" {
+        id                      = "projects/<project>/locations/us-central1/services/qrwtya-link-api"
+        name                    = "qrwtya-link-api"
+        # (32 unchanged attributes hidden)
+
+      ~ template {
+            # (9 unchanged attributes hidden)
+
+          ~ containers {
+                # (6 unchanged attributes hidden)
+
+              ~ volume_mounts {
+                  ~ mount_path = "/var/run/qrwty-secrets/link-replay-keys" -> "/cloudsql"
+                  ~ name       = "s-link-replay-keys" -> "cloudsql"
+                }
+              ~ volume_mounts {
+                  ~ mount_path = "/var/run/qrwty-tls/memorystore-ca" -> "/var/run/qrwty-secrets/link-replay-keys"
+                  ~ name       = "s-memorystore-ca-admission-cache" -> "s-link-replay-keys"
+                }
+              ~ volume_mounts {
+                  ~ mount_path = "/var/run/qrwty-secrets/sql-links--link-api" -> "/var/run/qrwty-tls/memorystore-ca"
+                  ~ name       = "s-sql-links-link-api" -> "s-memorystore-ca-admission-cache"
+                }
+              ~ volume_mounts {
+                  ~ mount_path = "/cloudsql" -> "/var/run/qrwty-secrets/sql-links--link-api"
+                  ~ name       = "cloudsql" -> "s-sql-links-link-api"
+                }
+
+                # (22 unchanged blocks hidden)
+            }
+
+          ~ volumes {
+              ~ name = "s-link-replay-keys" -> "cloudsql"
+
+              + cloud_sql_instance {
+                  + instances = [
+                      + "<project>:us-central1:qrwtya-pg",
+                    ]
+                }
+
+              - secret {
+                  - default_mode = 0 -> null
+                  - secret       = "qrwtya-link-replay-keys" -> null
+
+                  - items {
+                      - mode    = 0 -> null
+                      - path    = "value" -> null
+                      - version = "latest" -> null
+                    }
+                }
+            }
+          ~ volumes {
+              ~ name = "s-memorystore-ca-admission-cache" -> "s-link-replay-keys"
+
+              ~ secret {
+                  ~ secret       = "qrwtya-memorystore-ca-admission-cache" -> "qrwtya-link-replay-keys"
+                    # (1 unchanged attribute hidden)
+
+                    # (1 unchanged block hidden)
+                }
+            }
+          ~ volumes {
+              ~ name = "s-sql-links-link-api" -> "s-memorystore-ca-admission-cache"
+
+              ~ secret {
+                  ~ secret       = "qrwtya-sql-links--link-api" -> "qrwtya-memorystore-ca-admission-cache"
+                    # (1 unchanged attribute hidden)
+
+                    # (1 unchanged block hidden)
+                }
+            }
+          ~ volumes {
+              ~ name = "cloudsql" -> "s-sql-links-link-api"
+
+              - cloud_sql_instance {
+                  - instances = [
+                      - "<project>:us-central1:qrwtya-pg",
+                    ] -> null
+                }
+
+              + secret {
+                  + secret = "qrwtya-sql-links--link-api"
+
+                  + items {
+                      + path    = "value"
+                      + version = "latest"
+                    }
+                }
+            }
+
+            # (2 unchanged blocks hidden)
+        }
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # google_cloud_run_v2_service.http["redirect-service"] will be updated in-place
+  ~ resource "google_cloud_run_v2_service" "http" {
+        id                      = "projects/<project>/locations/us-central1/services/qrwtya-redirect-service"
+        name                    = "qrwtya-redirect-service"
+        # (32 unchanged attributes hidden)
+
+      ~ template {
+            # (9 unchanged attributes hidden)
+
+          ~ containers {
+                # (6 unchanged attributes hidden)
+
+              ~ volume_mounts {
+                  ~ mount_path = "/var/run/qrwty-tls/memorystore-ca" -> "/cloudsql"
+                  ~ name       = "s-memorystore-ca-hot-routes" -> "cloudsql"
+                }
+              ~ volume_mounts {
+                  ~ mount_path = "/var/run/qrwty-secrets/sql-links--redirect-service" -> "/var/run/qrwty-tls/memorystore-ca"
+                  ~ name       = "s-sql-links-redirect-service" -> "s-memorystore-ca-hot-routes"
+                }
+              ~ volume_mounts {
+                  ~ mount_path = "/cloudsql" -> "/var/run/qrwty-secrets/sql-links--redirect-service"
+                  ~ name       = "cloudsql" -> "s-sql-links-redirect-service"
+                }
+
+                # (16 unchanged blocks hidden)
+            }
+
+          ~ volumes {
+              ~ name = "s-memorystore-ca-hot-routes" -> "cloudsql"
+
+              + cloud_sql_instance {
+                  + instances = [
+                      + "<project>:us-central1:qrwtya-pg",
+                    ]
+                }
+
+              - secret {
+                  - default_mode = 0 -> null
+                  - secret       = "qrwtya-memorystore-ca-hot-routes" -> null
+
+                  - items {
+                      - mode    = 0 -> null
+                      - path    = "value" -> null
+                      - version = "latest" -> null
+                    }
+                }
+            }
+          ~ volumes {
+              ~ name = "s-sql-links-redirect-service" -> "s-memorystore-ca-hot-routes"
+
+              ~ secret {
+                  ~ secret       = "qrwtya-sql-links--redirect-service" -> "qrwtya-memorystore-ca-hot-routes"
+                    # (1 unchanged attribute hidden)
+
+                    # (1 unchanged block hidden)
+                }
+            }
+          ~ volumes {
+              ~ name = "cloudsql" -> "s-sql-links-redirect-service"
+
+              - cloud_sql_instance {
+                  - instances = [
+                      - "<project>:us-central1:qrwtya-pg",
+                    ] -> null
+                }
+
+              + secret {
+                  + secret = "qrwtya-sql-links--redirect-service"
+
+                  + items {
+                      + path    = "value"
+                      + version = "latest"
+                    }
+                }
+            }
+
+            # (2 unchanged blocks hidden)
+        }
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # google_cloud_run_v2_service.http["session-api"] will be updated in-place
+  ~ resource "google_cloud_run_v2_service" "http" {
+        id                      = "projects/<project>/locations/us-central1/services/qrwtya-session-api"
+        name                    = "qrwtya-session-api"
+        # (32 unchanged attributes hidden)
+
+      ~ template {
+            # (9 unchanged attributes hidden)
+
+          ~ containers {
+                # (6 unchanged attributes hidden)
+
+              ~ volume_mounts {
+                  ~ mount_path = "/var/run/qrwty-secrets/sql-sessions--session-api" -> "/cloudsql"
+                  ~ name       = "s-sql-sessions-session-api" -> "cloudsql"
+                }
+              ~ volume_mounts {
+                  ~ mount_path = "/cloudsql" -> "/var/run/qrwty-secrets/sql-sessions--session-api"
+                  ~ name       = "cloudsql" -> "s-sql-sessions-session-api"
+                }
+
+                # (14 unchanged blocks hidden)
+            }
+
+          ~ volumes {
+              ~ name = "s-sql-sessions-session-api" -> "cloudsql"
+
+              + cloud_sql_instance {
+                  + instances = [
+                      + "<project>:us-central1:qrwtya-pg",
+                    ]
+                }
+
+              - secret {
+                  - default_mode = 0 -> null
+                  - secret       = "qrwtya-sql-sessions--session-api" -> null
+
+                  - items {
+                      - mode    = 0 -> null
+                      - path    = "value" -> null
+                      - version = "latest" -> null
+                    }
+                }
+            }
+          ~ volumes {
+              ~ name = "cloudsql" -> "s-sql-sessions-session-api"
+
+              - cloud_sql_instance {
+                  - instances = [
+                      - "<project>:us-central1:qrwtya-pg",
+                    ] -> null
+                }
+
+              + secret {
+                  + secret = "qrwtya-sql-sessions--session-api"
+
+                  + items {
+                      + path    = "value"
+                      + version = "latest"
+                    }
+                }
+            }
+
+            # (2 unchanged blocks hidden)
+        }
+
+        # (3 unchanged blocks hidden)
+    }
+
+  # google_cloud_run_v2_worker_pool.analytics will be updated in-place
+  ~ resource "google_cloud_run_v2_worker_pool" "analytics" {
+        id                      = "projects/<project>/locations/us-central1/workerPools/qrwtya-analytics-worker"
+        name                    = "qrwtya-analytics-worker"
+        # (24 unchanged attributes hidden)
+
+      ~ scaling {
+          ~ manual_instance_count = 1 -> 2
+            # (2 unchanged attributes hidden)
+        }
+
+      ~ template {
+            # (4 unchanged attributes hidden)
+
+          ~ containers {
+                # (5 unchanged attributes hidden)
+
+              ~ volume_mounts {
+                  ~ mount_path = "/var/run/qrwty-secrets/sql-analytics--analytics-worker" -> "/cloudsql"
+                  ~ name       = "s-sql-analytics-analytics-worker" -> "cloudsql"
+                }
+              ~ volume_mounts {
+                  ~ mount_path = "/cloudsql" -> "/var/run/qrwty-secrets/sql-analytics--analytics-worker"
+                  ~ name       = "cloudsql" -> "s-sql-analytics-analytics-worker"
+                }
+
+                # (8 unchanged blocks hidden)
+            }
+
+          ~ volumes {
+              ~ name = "s-sql-analytics-analytics-worker" -> "cloudsql"
+
+              + cloud_sql_instance {
+                  + instances = [
+                      + "<project>:us-central1:qrwtya-pg",
+                    ]
+                }
+
+              - secret {
+                  - default_mode = 0 -> null
+                  - secret       = "qrwtya-sql-analytics--analytics-worker" -> null
+
+                  - items {
+                      - mode    = 0 -> null
+                      - path    = "value" -> null
+                      - version = "latest" -> null
+                    }
+                }
+            }
+          ~ volumes {
+              ~ name = "cloudsql" -> "s-sql-analytics-analytics-worker"
+
+              - cloud_sql_instance {
+                  - instances = [
+                      - "<project>:us-central1:qrwtya-pg",
+                    ] -> null
+                }
+
+              + secret {
+                  + secret = "qrwtya-sql-analytics--analytics-worker"
+
+                  + items {
+                      + path    = "value"
+                      + version = "latest"
+                    }
+                }
+            }
+
+            # (1 unchanged block hidden)
+        }
+
+        # (1 unchanged block hidden)
+    }
+
+Plan: 0 to add, 7 to change, 0 to destroy.

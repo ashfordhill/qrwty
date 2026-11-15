@@ -1,0 +1,902 @@
+[
+  {
+    "insertId": "3wa6ycdroon",
+    "logName": "projects/<project>/logs/cloudaudit.googleapis.com%2Factivity",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "authenticationInfo": {
+        "oauthInfo": {
+          "oauthClientId": "764086051850-6qr4p6gpi6hn506pt8ejuq83di341hur.apps.googleusercontent.com"
+        },
+        "principalEmail": "<owner>",
+        "principalSubject": "user:<owner>"
+      },
+      "authorizationInfo": [
+        {
+          "granted": true,
+          "permission": "run.services.update",
+          "permissionType": "ADMIN_WRITE",
+          "resource": "projects/<project>/locations/us-central1/services/qrwtya-redirect-service",
+          "resourceAttributes": {}
+        },
+        {
+          "granted": true,
+          "permission": "run.services.update",
+          "permissionType": "ADMIN_WRITE",
+          "resource": "projects/<project>/locations/us-central1/services/qrwtya-redirect-service",
+          "resourceAttributes": {
+            "name": "projects/<project>/locations/us-central1/services/qrwtya-redirect-service",
+            "service": "run.googleapis.com/",
+            "type": "run.googleapis.com/Service"
+          }
+        }
+      ],
+      "methodName": "google.cloud.run.v2.Services.UpdateService",
+      "request": {
+        "@type": "type.googleapis.com/google.cloud.run.v2.UpdateServiceRequest",
+        "service": {
+          "ingress": "INGRESS_TRAFFIC_ALL",
+          "labels": {
+            "arm": "a",
+            "goog-terraform-provisioned": "true",
+            "run": "qrwty-r1-20261114",
+            "system": "qrwty"
+          },
+          "launchStage": "GA",
+          "name": "projects/<project>/locations/us-central1/services/qrwtya-redirect-service",
+          "scaling": {
+            "maxInstanceCount": 3
+          },
+          "template": {
+            "containers": [
+              {
+                "image": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:fa158f69e427215cbe3b5123bee9601f0038412c93b306132b9ed1b6385fe989",
+                "livenessProbe": {
+                  "failureThreshold": 3,
+                  "httpGet": {
+                    "path": "/healthz",
+                    "port": 3000
+                  },
+                  "periodSeconds": 10,
+                  "timeoutSeconds": 1
+                },
+                "ports": [
+                  {
+                    "containerPort": 3000,
+                    "name": "http1"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "1",
+                    "memory": "512Mi"
+                  }
+                },
+                "startupProbe": {
+                  "failureThreshold": 30,
+                  "httpGet": {
+                    "path": "/healthz",
+                    "port": 3000
+                  },
+                  "periodSeconds": 2,
+                  "timeoutSeconds": 1
+                },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/cloudsql",
+                    "name": "cloudsql"
+                  },
+                  {
+                    "mountPath": "/var/run/qrwty-tls/memorystore-ca",
+                    "name": "s-memorystore-ca-hot-routes"
+                  },
+                  {
+                    "mountPath": "/var/run/qrwty-secrets/sql-links--redirect-service",
+                    "name": "s-sql-links-redirect-service"
+                  }
+                ]
+              }
+            ],
+            "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+            "maxInstanceRequestConcurrency": 100,
+            "scaling": {
+              "maxInstanceCount": 3,
+              "minInstanceCount": 1
+            },
+            "serviceAccount": "qrwtya-redirect@<project>.iam.gserviceaccount.com",
+            "timeout": "30s",
+            "volumes": [
+              {
+                "cloudSqlInstance": {
+                  "instances": [
+                    "<project>:us-central1:qrwtya-pg"
+                  ]
+                },
+                "name": "cloudsql"
+              },
+              {
+                "name": "s-memorystore-ca-hot-routes",
+                "secret": {
+                  "items": [
+                    {
+                      "version": "latest"
+                    }
+                  ],
+                  "secret": "qrwtya-memorystore-ca-hot-routes"
+                }
+              },
+              {
+                "name": "s-sql-links-redirect-service",
+                "secret": {
+                  "items": [
+                    {
+                      "version": "latest"
+                    }
+                  ],
+                  "secret": "qrwtya-sql-links--redirect-service"
+                }
+              }
+            ],
+            "vpcAccess": {
+              "egress": "ALL_TRAFFIC",
+              "networkInterfaces": [
+                {
+                  "network": "projects/<project>/global/networks/qrwtya-vpc",
+                  "subnetwork": "projects/<project>/regions/us-central1/subnetworks/qrwtya-run"
+                }
+              ]
+            }
+          },
+          "traffic": [
+            {
+              "percent": 100,
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+            }
+          ]
+        }
+      },
+      "requestMetadata": {
+        "callerIp": "23.118.82.118",
+        "callerSuppliedUserAgent": "Terraform/1.13.0 (+https://www.terraform.io) Terraform-Plugin-SDK/2.40.1 terraform-provider-google/dev8,gzip(gfe)",
+        "destinationAttributes": {},
+        "requestAttributes": {
+          "auth": {},
+          "time": "2026-11-15T12:50:01.314056Z"
+        }
+      },
+      "resourceLocation": {
+        "currentLocations": [
+          "us-central1"
+        ]
+      },
+      "resourceName": "projects/<project>/locations/us-central1/services/qrwtya-redirect-service",
+      "serviceName": "run.googleapis.com",
+      "status": {}
+    },
+    "receiveTimestamp": "2026-11-15T12:50:01.609632338Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "",
+        "service_name": "qrwtya-redirect-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "NOTICE",
+    "timestamp": "2026-11-15T12:50:01.145634Z"
+  },
+  {
+    "insertId": "6af9aa7c00032d2494ea4477",
+    "labels": {
+      "instanceId": "00e8a408bd133bfae16d88fef9c1b6dcdc3d23a6a837b1466f9e30ba23f7de9e186172ac9c295f565c6bb3b22b6b53052077e46fdb4f9b5c1875fef3d4764b669b723b18f85e990e9d7cf9d6fc1ef025ba451a3e04f56e916c",
+      "scaling_reason": "MANUAL_OR_CUSTOMER_MIN_INSTANCE"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-11-15T12:50:04.215239632Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-redirect-service",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-redirect-service-00002-k6c",
+        "service_name": "qrwtya-redirect-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "Starting new instance. Reason: MANUAL_OR_CUSTOMER_MIN_INSTANCE - Instance started because of customer-configured min-instances or manual scaling.",
+    "timestamp": "2026-11-15T12:50:04.208164Z"
+  },
+  {
+    "insertId": "6af9aa7d0008144036e89715",
+    "jsonPayload": {
+      "event": "profile-ok",
+      "level": "info",
+      "process": "redirect-service",
+      "secrets": 2
+    },
+    "labels": {
+      "instanceId": "00e8a408bd133bfae16d88fef9c1b6dcdc3d23a6a837b1466f9e30ba23f7de9e186172ac9c295f565c6bb3b22b6b53052077e46fdb4f9b5c1875fef3d4764b669b723b18f85e990e9d7cf9d6fc1ef025ba451a3e04f56e916c"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:50:05.533912729Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-redirect-service",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-redirect-service-00002-k6c",
+        "service_name": "qrwtya-redirect-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "timestamp": "2026-11-15T12:50:05.529472Z"
+  },
+  {
+    "insertId": "6af9aa7f000882d73ac3209f",
+    "jsonPayload": {
+      "check": "the Pub/Sub topic exists",
+      "client": "click-events",
+      "event": "probe",
+      "kind": "queue",
+      "level": "info",
+      "result": "ok",
+      "tile": "redirect-service"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd133bfae16d88fef9c1b6dcdc3d23a6a837b1466f9e30ba23f7de9e186172ac9c295f565c6bb3b22b6b53052077e46fdb4f9b5c1875fef3d4764b669b723b18f85e990e9d7cf9d6fc1ef025ba451a3e04f56e916c"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:50:07.865748709Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-redirect-service",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-redirect-service-00002-k6c",
+        "service_name": "qrwtya-redirect-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "timestamp": "2026-11-15T12:50:07.557783Z"
+  },
+  {
+    "insertId": "6af9aa7f000b48530f290897",
+    "jsonPayload": {
+      "cache": "hot-routes",
+      "event": "cache",
+      "level": "info",
+      "state": "available",
+      "tile": "redirect-service"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd133bfae16d88fef9c1b6dcdc3d23a6a837b1466f9e30ba23f7de9e186172ac9c295f565c6bb3b22b6b53052077e46fdb4f9b5c1875fef3d4764b669b723b18f85e990e9d7cf9d6fc1ef025ba451a3e04f56e916c"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:50:07.865748709Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-redirect-service",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-redirect-service-00002-k6c",
+        "service_name": "qrwtya-redirect-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "timestamp": "2026-11-15T12:50:07.739411Z"
+  },
+  {
+    "insertId": "6af9aa7f000b51d624b2d0e8",
+    "jsonPayload": {
+      "check": "PING",
+      "client": "hot-routes",
+      "event": "probe",
+      "kind": "cache",
+      "level": "info",
+      "result": "ok",
+      "tile": "redirect-service"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd133bfae16d88fef9c1b6dcdc3d23a6a837b1466f9e30ba23f7de9e186172ac9c295f565c6bb3b22b6b53052077e46fdb4f9b5c1875fef3d4764b669b723b18f85e990e9d7cf9d6fc1ef025ba451a3e04f56e916c"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:50:07.865748709Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-redirect-service",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-redirect-service-00002-k6c",
+        "service_name": "qrwtya-redirect-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "timestamp": "2026-11-15T12:50:07.741846Z"
+  },
+  {
+    "insertId": "6af9aa80000006b5df1bd72e",
+    "jsonPayload": {
+      "check": "SELECT 1",
+      "client": "links",
+      "event": "probe",
+      "kind": "database",
+      "level": "info",
+      "result": "ok",
+      "tile": "redirect-service"
+    },
+    "labels": {
+      "instanceId": "00e8a408bd133bfae16d88fef9c1b6dcdc3d23a6a837b1466f9e30ba23f7de9e186172ac9c295f565c6bb3b22b6b53052077e46fdb4f9b5c1875fef3d4764b669b723b18f85e990e9d7cf9d6fc1ef025ba451a3e04f56e916c"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:50:08.199867096Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-redirect-service",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-redirect-service-00002-k6c",
+        "service_name": "qrwtya-redirect-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "timestamp": "2026-11-15T12:50:08.001717Z"
+  },
+  {
+    "insertId": "6af9aa8000021b3b1d9042d5",
+    "labels": {
+      "instanceId": "00e8a408bd133bfae16d88fef9c1b6dcdc3d23a6a837b1466f9e30ba23f7de9e186172ac9c295f565c6bb3b22b6b53052077e46fdb4f9b5c1875fef3d4764b669b723b18f85e990e9d7cf9d6fc1ef025ba451a3e04f56e916c"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:50:08.199867096Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-redirect-service",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-redirect-service-00002-k6c",
+        "service_name": "qrwtya-redirect-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "textPayload": "Application ready",
+    "timestamp": "2026-11-15T12:50:08.138043Z"
+  },
+  {
+    "insertId": "6af9aa80000d655a62121905",
+    "labels": {
+      "instanceId": "00e8a408bd133bfae16d88fef9c1b6dcdc3d23a6a837b1466f9e30ba23f7de9e186172ac9c295f565c6bb3b22b6b53052077e46fdb4f9b5c1875fef3d4764b669b723b18f85e990e9d7cf9d6fc1ef025ba451a3e04f56e916c"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-11-15T12:50:09.211235245Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-redirect-service",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-redirect-service-00002-k6c",
+        "service_name": "qrwtya-redirect-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "STARTUP HTTP probe succeeded after 3 attempts for container \"app-1\" on port 3000 path \"/healthz\".",
+    "timestamp": "2026-11-15T12:50:08.877914Z"
+  },
+  {
+    "insertId": "6af9aa80000d69c9eb6cd2dc",
+    "labels": {
+      "instanceId": "00e8a408bd133bfae16d88fef9c1b6dcdc3d23a6a837b1466f9e30ba23f7de9e186172ac9c295f565c6bb3b22b6b53052077e46fdb4f9b5c1875fef3d4764b669b723b18f85e990e9d7cf9d6fc1ef025ba451a3e04f56e916c"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-11-15T12:50:09.211235245Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-redirect-service",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-redirect-service-00002-k6c",
+        "service_name": "qrwtya-redirect-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "textPayload": "LIVENESS HTTP probe succeeded for container \"app-1\" on port 3000 path \"/healthz\". Only the first successful liveness probe per revision is logged.",
+    "timestamp": "2026-11-15T12:50:08.879049Z"
+  },
+  {
+    "insertId": "5byzf9dwvew",
+    "logName": "projects/<project>/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Services.UpdateService",
+      "resourceName": "namespaces/<project>/revisions/qrwtya-redirect-service-00002-k6c",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Revision",
+        "apiVersion": "serving.knative.dev/v1",
+        "kind": "Revision",
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "3",
+            "autoscaling.knative.dev/minScale": "1",
+            "run.googleapis.com/cloudsql-instances": "<project>:us-central1:qrwtya-pg",
+            "run.googleapis.com/cpu-throttling": "true",
+            "run.googleapis.com/execution-environment": "gen2",
+            "run.googleapis.com/ingress": "all",
+            "run.googleapis.com/network-interfaces": "[{\"network\":\"projects/<project>/global/networks/qrwtya-vpc\",\"subnetwork\":\"projects/<project>/regions/us-central1/subnetworks/qrwtya-run\"}]",
+            "run.googleapis.com/operation-id": "b2070ee8-c6b6-4727-928e-ea0211ba8a4c",
+            "run.googleapis.com/sessionAffinity": "false",
+            "run.googleapis.com/vpc-access-egress": "all-traffic",
+            "serving.knative.dev/creator": "<owner>"
+          },
+          "creationTimestamp": "2026-11-15T12:50:01.368368Z",
+          "generation": 1,
+          "labels": {
+            "cloud.googleapis.com/location": "us-central1",
+            "run.googleapis.com/startupProbeType": "Custom",
+            "serving.knative.dev/configuration": "qrwtya-redirect-service",
+            "serving.knative.dev/configurationGeneration": "2",
+            "serving.knative.dev/route": "qrwtya-redirect-service",
+            "serving.knative.dev/service": "qrwtya-redirect-service",
+            "serving.knative.dev/serviceUid": "5234d762-91bb-4058-b4ac-0a5b2d3f5959"
+          },
+          "name": "qrwtya-redirect-service-00002-k6c",
+          "namespace": "<project-number>",
+          "ownerReferences": [
+            {
+              "apiVersion": "serving.knative.dev/v1",
+              "blockOwnerDeletion": true,
+              "controller": true,
+              "kind": "Configuration",
+              "name": "qrwtya-redirect-service",
+              "uid": "3a846fc6-d8e8-4a83-89f2-c5477a46e5fe"
+            }
+          ],
+          "resourceVersion": "AAZgUBojIOM",
+          "selfLink": "/apis/serving.knative.dev/v1/namespaces/<project-number>/revisions/qrwtya-redirect-service-00002-k6c",
+          "uid": "e9681e9b-8331-4818-95ac-72ca252d1895"
+        },
+        "spec": {
+          "containerConcurrency": 100,
+          "containers": [
+            {
+              "command": [
+                "/bin/sh",
+                "-c",
+                "node scripts/qrwty-production-profile.mjs redirect-service && SECRET_DIR=/tmp/qrwty-secrets exec node dist/processes/redirect-service.js"
+              ],
+              "env": [
+                {
+                  "name": "JEEVES_DATABASE_LINKS_HOST",
+                  "value": "/cloudsql/<project>:us-central1:qrwtya-pg"
+                },
+                {
+                  "name": "JEEVES_PUBSUB_PROJECT",
+                  "value": "<project>"
+                },
+                {
+                  "name": "JEEVES_DATABASE_LINKS_PORT",
+                  "value": "5432"
+                },
+                {
+                  "name": "JEEVES_DATABASE_LINKS_TLS",
+                  "value": "disable"
+                },
+                {
+                  "name": "JEEVES_CACHE_HOT_ROUTES_PORT",
+                  "value": "6379"
+                },
+                {
+                  "name": "JEEVES_CACHE_HOT_ROUTES_CA_FILE",
+                  "value": "/var/run/qrwty-tls/memorystore-ca/value"
+                },
+                {
+                  "name": "QRWTY_PROFILE",
+                  "value": "production"
+                },
+                {
+                  "name": "JEEVES_REQUIRE_TLS",
+                  "value": "true"
+                },
+                {
+                  "name": "QRWTY_SECRET_MOUNT_DIR",
+                  "value": "/var/run/qrwty-secrets"
+                },
+                {
+                  "name": "QRWTY_CACHE_AUTH_DISABLED",
+                  "value": "true"
+                },
+                {
+                  "name": "JEEVES_CACHE_HOT_ROUTES_TLS",
+                  "value": "verify-full"
+                },
+                {
+                  "name": "JEEVES_CACHE_HOT_ROUTES_HOST",
+                  "value": "10.42.0.3"
+                }
+              ],
+              "image": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:9bfef8db326b28fcbcda19d876ad729bc63224ff46538948630ecbcc295c049f",
+              "livenessProbe": {
+                "failureThreshold": 3,
+                "httpGet": {
+                  "path": "/healthz",
+                  "port": 3000
+                },
+                "periodSeconds": 10,
+                "timeoutSeconds": 1
+              },
+              "name": "app-1",
+              "ports": [
+                {
+                  "containerPort": 3000,
+                  "name": "http1"
+                }
+              ],
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "512Mi"
+                }
+              },
+              "startupProbe": {
+                "failureThreshold": 30,
+                "httpGet": {
+                  "path": "/healthz",
+                  "port": 3000
+                },
+                "periodSeconds": 2,
+                "timeoutSeconds": 1
+              },
+              "volumeMounts": [
+                {
+                  "mountPath": "/var/run/qrwty-tls/memorystore-ca",
+                  "name": "s-memorystore-ca-hot-routes"
+                },
+                {
+                  "mountPath": "/var/run/qrwty-secrets/sql-links--redirect-service",
+                  "name": "s-sql-links-redirect-service"
+                }
+              ]
+            }
+          ],
+          "serviceAccountName": "qrwtya-redirect@<project>.iam.gserviceaccount.com",
+          "timeoutSeconds": 30,
+          "volumes": [
+            {
+              "name": "s-memorystore-ca-hot-routes",
+              "secret": {
+                "items": [
+                  {
+                    "key": "latest",
+                    "path": "value"
+                  }
+                ],
+                "secretName": "qrwtya-memorystore-ca-hot-routes"
+              }
+            },
+            {
+              "name": "s-sql-links-redirect-service",
+              "secret": {
+                "items": [
+                  {
+                    "key": "latest",
+                    "path": "value"
+                  }
+                ],
+                "secretName": "qrwtya-sql-links--redirect-service"
+              }
+            }
+          ]
+        },
+        "status": {
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-11-15T12:50:12.423907Z",
+              "message": "Deploying revision succeeded in 11.05s.",
+              "status": "True",
+              "type": "Ready"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:50:08.892305Z",
+              "message": "Containers became healthy in 4.09s.",
+              "status": "True",
+              "type": "ContainerHealthy"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:50:03.061335Z",
+              "message": "Container image import completed in 1.18s.",
+              "status": "True",
+              "type": "ContainerReady"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:50:12.387400Z",
+              "message": "Min instances provisioned successfully  in 9.16s.",
+              "status": "True",
+              "type": "MinInstancesProvisioned"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:50:04.860790Z",
+              "message": "Provisioning imported containers completed in 1.8s. Checking container health. This will wait for up to 1m for the configured startup probe, including an initial delay of 0s.",
+              "status": "True",
+              "type": "ResourcesAvailable"
+            }
+          ],
+          "containerStatuses": [
+            {
+              "imageDigest": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:9bfef8db326b28fcbcda19d876ad729bc63224ff46538948630ecbcc295c049f",
+              "name": "app-1"
+            }
+          ],
+          "desiredReplicas": 1,
+          "imageDigest": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:9bfef8db326b28fcbcda19d876ad729bc63224ff46538948630ecbcc295c049f",
+          "logUrl": "https://console.cloud.google.com/logs/viewer?project=<project>&resource=cloud_run_revision/service_name/qrwtya-redirect-service/revision_name/qrwtya-redirect-service-00002-k6c&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22qrwtya-redirect-service%22%0Aresource.labels.revision_name%3D%22qrwtya-redirect-service-00002-k6c%22",
+          "observedGeneration": 1
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "message": "Ready condition status changed to True for Revision qrwtya-redirect-service-00002-k6c with message: Deploying revision succeeded in 11.05s."
+      }
+    },
+    "receiveTimestamp": "2026-11-15T12:50:12.670642110Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "qrwtya-redirect-service",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "qrwtya-redirect-service-00002-k6c",
+        "service_name": "qrwtya-redirect-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "timestamp": "2026-11-15T12:50:12.436472Z"
+  },
+  {
+    "insertId": "2jwmu7e1d0l8",
+    "logName": "projects/<project>/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Services.UpdateService",
+      "resourceName": "namespaces/<project>/services/qrwtya-redirect-service",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Service",
+        "apiVersion": "serving.knative.dev/v1",
+        "kind": "Service",
+        "metadata": {
+          "annotations": {
+            "run.googleapis.com/ingress": "all",
+            "run.googleapis.com/ingress-status": "all",
+            "run.googleapis.com/maxScale": "3",
+            "run.googleapis.com/operation-id": "b2070ee8-c6b6-4727-928e-ea0211ba8a4c",
+            "run.googleapis.com/urls": "[\"https://qrwtya-redirect-service-<project-number>.us-central1.run.app\",\"https://qrwtya-redirect-service-gzyxu6u6ea-uc.a.run.app\"]",
+            "serving.knative.dev/creator": "<owner>",
+            "serving.knative.dev/lastModifier": "<owner>"
+          },
+          "creationTimestamp": "2026-11-15T12:21:41.510568Z",
+          "generation": 2,
+          "labels": {
+            "arm": "a",
+            "cloud.googleapis.com/location": "us-central1",
+            "goog-terraform-provisioned": "true",
+            "run": "qrwty-r1-20261114",
+            "system": "qrwty"
+          },
+          "name": "qrwtya-redirect-service",
+          "namespace": "<project-number>",
+          "resourceVersion": "AAZgUBo3MhU",
+          "selfLink": "/apis/serving.knative.dev/v1/namespaces/<project-number>/services/qrwtya-redirect-service",
+          "uid": "5234d762-91bb-4058-b4ac-0a5b2d3f5959"
+        },
+        "spec": {
+          "template": {
+            "metadata": {
+              "annotations": {
+                "autoscaling.knative.dev/maxScale": "3",
+                "autoscaling.knative.dev/minScale": "1",
+                "run.googleapis.com/cloudsql-instances": "<project>:us-central1:qrwtya-pg",
+                "run.googleapis.com/cpu-throttling": "true",
+                "run.googleapis.com/execution-environment": "gen2",
+                "run.googleapis.com/network-interfaces": "[{\"network\":\"projects/<project>/global/networks/qrwtya-vpc\",\"subnetwork\":\"projects/<project>/regions/us-central1/subnetworks/qrwtya-run\"}]",
+                "run.googleapis.com/sessionAffinity": "false",
+                "run.googleapis.com/vpc-access-egress": "all-traffic"
+              },
+              "labels": {
+                "run.googleapis.com/startupProbeType": "Custom"
+              }
+            },
+            "spec": {
+              "containerConcurrency": 100,
+              "containers": [
+                {
+                  "command": [
+                    "/bin/sh",
+                    "-c",
+                    "node scripts/qrwty-production-profile.mjs redirect-service && SECRET_DIR=/tmp/qrwty-secrets exec node dist/processes/redirect-service.js"
+                  ],
+                  "env": [
+                    {
+                      "name": "JEEVES_DATABASE_LINKS_HOST",
+                      "value": "/cloudsql/<project>:us-central1:qrwtya-pg"
+                    },
+                    {
+                      "name": "JEEVES_PUBSUB_PROJECT",
+                      "value": "<project>"
+                    },
+                    {
+                      "name": "JEEVES_DATABASE_LINKS_PORT",
+                      "value": "5432"
+                    },
+                    {
+                      "name": "JEEVES_DATABASE_LINKS_TLS",
+                      "value": "disable"
+                    },
+                    {
+                      "name": "JEEVES_CACHE_HOT_ROUTES_PORT",
+                      "value": "6379"
+                    },
+                    {
+                      "name": "JEEVES_CACHE_HOT_ROUTES_CA_FILE",
+                      "value": "/var/run/qrwty-tls/memorystore-ca/value"
+                    },
+                    {
+                      "name": "QRWTY_PROFILE",
+                      "value": "production"
+                    },
+                    {
+                      "name": "JEEVES_REQUIRE_TLS",
+                      "value": "true"
+                    },
+                    {
+                      "name": "QRWTY_SECRET_MOUNT_DIR",
+                      "value": "/var/run/qrwty-secrets"
+                    },
+                    {
+                      "name": "QRWTY_CACHE_AUTH_DISABLED",
+                      "value": "true"
+                    },
+                    {
+                      "name": "JEEVES_CACHE_HOT_ROUTES_TLS",
+                      "value": "verify-full"
+                    },
+                    {
+                      "name": "JEEVES_CACHE_HOT_ROUTES_HOST",
+                      "value": "10.42.0.3"
+                    }
+                  ],
+                  "image": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:fa158f69e427215cbe3b5123bee9601f0038412c93b306132b9ed1b6385fe989",
+                  "livenessProbe": {
+                    "failureThreshold": 3,
+                    "httpGet": {
+                      "path": "/healthz",
+                      "port": 3000
+                    },
+                    "periodSeconds": 10,
+                    "timeoutSeconds": 1
+                  },
+                  "ports": [
+                    {
+                      "containerPort": 3000,
+                      "name": "http1"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "1",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "startupProbe": {
+                    "failureThreshold": 30,
+                    "httpGet": {
+                      "path": "/healthz",
+                      "port": 3000
+                    },
+                    "periodSeconds": 2,
+                    "timeoutSeconds": 1
+                  },
+                  "volumeMounts": [
+                    {
+                      "mountPath": "/var/run/qrwty-tls/memorystore-ca",
+                      "name": "s-memorystore-ca-hot-routes"
+                    },
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/sql-links--redirect-service",
+                      "name": "s-sql-links-redirect-service"
+                    }
+                  ]
+                }
+              ],
+              "serviceAccountName": "qrwtya-redirect@<project>.iam.gserviceaccount.com",
+              "timeoutSeconds": 30,
+              "volumes": [
+                {
+                  "name": "s-memorystore-ca-hot-routes",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-memorystore-ca-hot-routes"
+                  }
+                },
+                {
+                  "name": "s-sql-links-redirect-service",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-sql-links--redirect-service"
+                  }
+                }
+              ]
+            }
+          },
+          "traffic": [
+            {
+              "latestRevision": true,
+              "percent": 100
+            }
+          ]
+        },
+        "status": {
+          "address": {
+            "url": "https://qrwtya-redirect-service-gzyxu6u6ea-uc.a.run.app"
+          },
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-11-15T12:50:13.739029Z",
+              "status": "True",
+              "type": "Ready"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:50:03.176862Z",
+              "status": "True",
+              "type": "ConfigurationsReady"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:50:13.713434Z",
+              "status": "True",
+              "type": "RoutesReady"
+            }
+          ],
+          "latestCreatedRevisionName": "qrwtya-redirect-service-00002-k6c",
+          "latestReadyRevisionName": "qrwtya-redirect-service-00002-k6c",
+          "observedGeneration": 2,
+          "traffic": [
+            {
+              "latestRevision": true,
+              "percent": 100,
+              "revisionName": "qrwtya-redirect-service-00002-k6c"
+            }
+          ],
+          "url": "https://qrwtya-redirect-service-gzyxu6u6ea-uc.a.run.app"
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "message": "Ready condition status changed to True for Service qrwtya-redirect-service."
+      }
+    },
+    "receiveTimestamp": "2026-11-15T12:50:14.362292404Z",
+    "resource": {
+      "labels": {
+        "configuration_name": "",
+        "location": "us-central1",
+        "project_id": "<project>",
+        "revision_name": "",
+        "service_name": "qrwtya-redirect-service"
+      },
+      "type": "cloud_run_revision"
+    },
+    "severity": "INFO",
+    "timestamp": "2026-11-15T12:50:13.754847Z"
+  }
+]

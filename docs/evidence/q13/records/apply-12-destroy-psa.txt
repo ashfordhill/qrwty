@@ -1,0 +1,18 @@
+google_service_networking_connection.psa: Destroying... [id=projects%2F<project>%2Fglobal%2Fnetworks%2Fqrwtya-vpc:servicenetworking.googleapis.com]
+google_service_networking_connection.psa: Still destroying... [id=projects%2Fproject-f46f6d6a-8e74-42a0-a...a-vpc:servicenetworking.googleapis.com, 13s elapsed]
+
+Warning: Applied changes may be incomplete
+
+The plan was created with the -target or the -exclude option in effect, so
+some changes requested in the configuration may have been ignored and the
+output values may not be fully updated. Run the following command to verify
+that no other changes are pending:
+    tofu plan
+
+Note that the -target and -exclude options are not suitable for routine use,
+and are provided only for exceptional situations such as recovering from
+errors or mistakes, or when OpenTofu specifically suggests to use it as part
+of an error message.
+
+Error: Unable to remove Service Networking Connection, err: Error waiting for Delete Service Networking Connection: Error code 9, message: Failed to delete connection; Producer services (e.g. CloudSQL, Cloud Memstore, etc.) are still using this connection.
+Help Token: AaVM3aMz6vKkhW5R9q511yN5GJRa6W7fTz0jXKhE9l20-7h130d0sFe2wj3yT2f7riW3HskMVnvB_kti7p-aRfxfHTCuP-eSQwbmSS1N-MVcLLas

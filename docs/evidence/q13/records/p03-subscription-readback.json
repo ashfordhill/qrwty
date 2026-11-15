@@ -1,0 +1,24 @@
+{
+  "ackDeadlineSeconds": 60,
+  "deadLetterPolicy": {
+    "deadLetterTopic": "projects/<project>/topics/click-events--analytics-worker.failed",
+    "maxDeliveryAttempts": 100
+  },
+  "expirationPolicy": {},
+  "labels": {
+    "arm": "a",
+    "goog-terraform-provisioned": "true",
+    "run": "qrwty-r1-20261114",
+    "system": "qrwty"
+  },
+  "messageRetentionDuration": "2678400s",
+  "name": "projects/<project>/subscriptions/click-events--analytics-worker",
+  "pushConfig": {},
+  "retryPolicy": {
+    "maximumBackoff": "10s",
+    "minimumBackoff": "1s"
+  },
+  "state": "ACTIVE",
+  "topic": "projects/<project>/topics/click-events",
+  "topicMessageRetentionDuration": "2678400s"
+}

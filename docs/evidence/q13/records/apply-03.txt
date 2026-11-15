@@ -1,0 +1,62 @@
+google_cloud_run_v2_job.migrate: Modifying... [id=projects/<project>/locations/us-central1/jobs/qrwtya-migrate]
+google_cloud_run_v2_job.migrate: Modifications complete after 1s [id=projects/<project>/locations/us-central1/jobs/qrwtya-migrate]
+
+Warning: Applied changes may be incomplete
+
+The plan was created with the -target or the -exclude option in effect, so
+some changes requested in the configuration may have been ignored and the
+output values may not be fully updated. Run the following command to verify
+that no other changes are pending:
+    tofu plan
+
+Note that the -target and -exclude options are not suitable for routine use,
+and are provided only for exceptional situations such as recovering from
+errors or mistakes, or when OpenTofu specifically suggests to use it as part
+of an error message.
+
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+
+Outputs:
+
+cloud_sql_connection_name = "<project>:us-central1:qrwtya-pg"
+deterministic_urls = {
+  "account-api" = "https://qrwtya-account-api-<project-number>.us-central1.run.app"
+  "billing-api" = "https://qrwtya-billing-api-<project-number>.us-central1.run.app"
+  "link-api" = "https://qrwtya-link-api-<project-number>.us-central1.run.app"
+  "redirect-service" = "https://qrwtya-redirect-service-<project-number>.us-central1.run.app"
+  "session-api" = "https://qrwtya-session-api-<project-number>.us-central1.run.app"
+}
+memorystore_endpoints = {
+  "admission-cache" = {
+    "address" = "10.42.0.5"
+    "port" = 6379
+  }
+  "hot-routes" = {
+    "address" = "10.42.0.3"
+    "port" = 6379
+  }
+}
+pubsub = {
+  "archive" = "projects/<project>/subscriptions/qrwtya-click-events-archive"
+  "bucket" = "gs://qrwtya-click-archive-<project>"
+  "dead_letter" = "projects/<project>/topics/click-events--analytics-worker.failed"
+  "subscription" = "projects/<project>/subscriptions/click-events--analytics-worker"
+  "topic" = "projects/<project>/topics/click-events"
+}
+secret_ids = tolist([
+  "qrwtya-identity-identity",
+  "qrwtya-identity-owner-identity",
+  "qrwtya-link-replay-keys",
+  "qrwtya-owner-analytics",
+  "qrwtya-owner-billing",
+  "qrwtya-owner-links",
+  "qrwtya-owner-sessions",
+  "qrwtya-postgres-admin",
+  "qrwtya-sql-analytics--account-api",
+  "qrwtya-sql-analytics--analytics-worker",
+  "qrwtya-sql-billing--billing-api",
+  "qrwtya-sql-links--account-api",
+  "qrwtya-sql-links--link-api",
+  "qrwtya-sql-links--redirect-service",
+  "qrwtya-sql-sessions--session-api",
+])

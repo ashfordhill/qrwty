@@ -1,0 +1,730 @@
+[
+  {
+    "insertId": "6af9a32d000614500fc2888c",
+    "jsonPayload": {
+      "event": "profile-ok",
+      "level": "info",
+      "process": "migrate",
+      "secrets": 14
+    },
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:53.407126155Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "timestamp": "2026-11-15T12:18:53.398416Z"
+  },
+  {
+    "insertId": "6af9a32e0007af6adc82a426",
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:54.737486904Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "Applied infra/postgres/analytics/000-foundation.sql",
+    "timestamp": "2026-11-15T12:18:54.503658Z"
+  },
+  {
+    "insertId": "6af9a32e0007c3dbf7056ec5",
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:54.737486904Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "Applied infra/postgres/analytics/modules/analytics-worker-click-aggregator.sql",
+    "timestamp": "2026-11-15T12:18:54.508891Z"
+  },
+  {
+    "insertId": "6af9a32e000a87d9d9190667",
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:54.737486904Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "Applied infra/postgres/billing/000-foundation.sql",
+    "timestamp": "2026-11-15T12:18:54.690137Z"
+  },
+  {
+    "insertId": "6af9a32e000a9f3463558d79",
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:54.737486904Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "Applied infra/postgres/billing/modules/billing-api-customer-billing.sql",
+    "timestamp": "2026-11-15T12:18:54.696116Z"
+  },
+  {
+    "insertId": "6af9a32e000aad57df1630e1",
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:54.737486904Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "Applied infra/postgres/billing/modules/billing-api-entitlements.sql",
+    "timestamp": "2026-11-15T12:18:54.699735Z"
+  },
+  {
+    "insertId": "6af9a32e000ac4f98c46ac73",
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:54.737486904Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "Applied infra/postgres/billing/modules/billing-api-payment-events.sql",
+    "timestamp": "2026-11-15T12:18:54.705785Z"
+  },
+  {
+    "insertId": "6af9a32e000efb517225f650",
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:55.070589650Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "Applied infra/postgres/links/000-foundation.sql",
+    "timestamp": "2026-11-15T12:18:54.981841Z"
+  },
+  {
+    "insertId": "6af9a32e000f13205afef81a",
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:55.070589650Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "Applied infra/postgres/links/modules/link-api-abuse-and-moderation.sql",
+    "timestamp": "2026-11-15T12:18:54.987936Z"
+  },
+  {
+    "insertId": "6af9a32f0000891c3108cfe7",
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:55.070589650Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "Applied infra/postgres/links/modules/link-api-link-operations.sql",
+    "timestamp": "2026-11-15T12:18:55.035100Z"
+  },
+  {
+    "insertId": "6af9a32f0004473a360fb404",
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:55.403382363Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "Applied infra/postgres/sessions/000-foundation.sql",
+    "timestamp": "2026-11-15T12:18:55.280378Z"
+  },
+  {
+    "insertId": "6af9a32f000451120d779a76",
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:55.403382363Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "Applied infra/postgres/sessions/modules/session-api-api-forwarding.sql",
+    "timestamp": "2026-11-15T12:18:55.282898Z"
+  },
+  {
+    "insertId": "6af9a32f00045c1a12d0e248",
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:55.403382363Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "Applied infra/postgres/sessions/modules/session-api-sign-in-flow.sql",
+    "timestamp": "2026-11-15T12:18:55.285722Z"
+  },
+  {
+    "insertId": "6af9a32f0006e730001b824f",
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:55.737113982Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "Applied infra/postgres/identity/000-foundation.sql",
+    "timestamp": "2026-11-15T12:18:55.452400Z"
+  },
+  {
+    "insertId": "6af9a32f00074e4db6d7c64f",
+    "labels": {
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fstdout",
+    "receiveTimestamp": "2026-11-15T12:18:55.737113982Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "textPayload": "Migrations current; setup-only owners and exact runtime credentials preserved.",
+    "timestamp": "2026-11-15T12:18:55.478797Z"
+  },
+  {
+    "insertId": "6af9a32f0008024b79666af3",
+    "labels": {
+      "container_name": "worker",
+      "instanceId": "00e8a408bddc95ab53b84ca282099deed85766622fcaf4737f2aa476ed54fff9313312dc6b1231cd3ab60580907ebc2fdc1c27bd1b37c52a113fe9dce04a84a30a4d7a58af0f9c8c1dbb96e9eaee58f767e26a21881a77e5997b",
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p",
+      "run.googleapis.com/task_attempt": "0",
+      "run.googleapis.com/task_index": "0"
+    },
+    "logName": "projects/<project>/logs/run.googleapis.com%2Fvarlog%2Fsystem",
+    "receiveTimestamp": "2026-11-15T12:18:55.532756059Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "severity": "INFO",
+    "textPayload": "Container called exit(0).",
+    "timestamp": "2026-11-15T12:18:55.524809Z"
+  },
+  {
+    "insertId": "-tw5bwe1ftps",
+    "labels": {
+      "run.googleapis.com/execution_name": "qrwtya-migrate-hxs7p"
+    },
+    "logName": "projects/<project>/logs/cloudaudit.googleapis.com%2Fsystem_event",
+    "protoPayload": {
+      "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+      "methodName": "/Jobs.RunJob",
+      "resourceName": "namespaces/<project>/executions/qrwtya-migrate-hxs7p",
+      "response": {
+        "@type": "type.googleapis.com/google.cloud.run.v1.Execution",
+        "apiVersion": "run.googleapis.com/v1",
+        "kind": "Execution",
+        "metadata": {
+          "annotations": {
+            "run.googleapis.com/cloudsql-instances": "<project>:us-central1:qrwtya-pg",
+            "run.googleapis.com/creator": "<owner>",
+            "run.googleapis.com/execution-environment": "gen2",
+            "run.googleapis.com/lastModifier": "<owner>",
+            "run.googleapis.com/network-interfaces": "[{\"network\":\"projects/<project>/global/networks/qrwtya-vpc\",\"subnetwork\":\"projects/<project>/regions/us-central1/subnetworks/qrwtya-run\"}]",
+            "run.googleapis.com/operation-id": "4d12ab0a-1741-4561-bab7-3bd5c244d75d",
+            "run.googleapis.com/vpc-access-egress": "all-traffic"
+          },
+          "creationTimestamp": "2026-11-15T12:18:25.386927Z",
+          "generation": 1,
+          "labels": {
+            "cloud.googleapis.com/location": "us-central1",
+            "run.googleapis.com/job": "qrwtya-migrate",
+            "run.googleapis.com/jobGeneration": "2",
+            "run.googleapis.com/jobResourceVersion": "1794745097056923",
+            "run.googleapis.com/jobUid": "7bca2038-acfa-460f-ab1b-b089bad75f9b"
+          },
+          "name": "qrwtya-migrate-hxs7p",
+          "namespace": "<project-number>",
+          "ownerReferences": [
+            {
+              "apiVersion": "serving.knative.dev/v1",
+              "blockOwnerDeletion": true,
+              "controller": true,
+              "kind": "Job",
+              "name": "qrwtya-migrate",
+              "uid": "7bca2038-acfa-460f-ab1b-b089bad75f9b"
+            }
+          ],
+          "resourceVersion": "AAZgT6qxVq8",
+          "selfLink": "/apis/run.googleapis.com/v1/namespaces/<project-number>/executions/qrwtya-migrate-hxs7p",
+          "uid": "27966383-da6f-4340-9c77-daaebb26ef05"
+        },
+        "spec": {
+          "parallelism": 1,
+          "taskCount": 1,
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "command": [
+                    "/bin/sh",
+                    "-c",
+                    "node scripts/qrwty-production-profile.mjs migrate && SECRET_DIR=/tmp/qrwty-secrets exec node scripts/migrate.mjs"
+                  ],
+                  "env": [
+                    {
+                      "name": "PGHOST",
+                      "value": "/cloudsql/<project>:us-central1:qrwtya-pg"
+                    },
+                    {
+                      "name": "QRWTY_PROFILE",
+                      "value": "production"
+                    },
+                    {
+                      "name": "JEEVES_REQUIRE_TLS",
+                      "value": "true"
+                    },
+                    {
+                      "name": "QRWTY_SECRET_MOUNT_DIR",
+                      "value": "/var/run/qrwty-secrets"
+                    },
+                    {
+                      "name": "PGPORT",
+                      "value": "5432"
+                    }
+                  ],
+                  "image": "us-central1-docker.pkg.dev/<project>/qrwtya-images/app@sha256:7ce1b32defc0714aa8fff260554e2d17518b603bb35a10c013b2e3e6d3f9ced0",
+                  "resources": {
+                    "limits": {
+                      "cpu": "1000m",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "volumeMounts": [
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/identity-identity",
+                      "name": "s-identity-identity"
+                    },
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/identity-owner-identity",
+                      "name": "s-identity-owner-identity"
+                    },
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/owner-analytics",
+                      "name": "s-owner-analytics"
+                    },
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/owner-billing",
+                      "name": "s-owner-billing"
+                    },
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/owner-links",
+                      "name": "s-owner-links"
+                    },
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/owner-sessions",
+                      "name": "s-owner-sessions"
+                    },
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/postgres-admin",
+                      "name": "s-postgres-admin"
+                    },
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/sql-analytics--account-api",
+                      "name": "s-sql-analytics-account-api"
+                    },
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/sql-analytics--analytics-worker",
+                      "name": "s-sql-analytics-analytics-worker"
+                    },
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/sql-billing--billing-api",
+                      "name": "s-sql-billing-billing-api"
+                    },
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/sql-links--account-api",
+                      "name": "s-sql-links-account-api"
+                    },
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/sql-links--link-api",
+                      "name": "s-sql-links-link-api"
+                    },
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/sql-links--redirect-service",
+                      "name": "s-sql-links-redirect-service"
+                    },
+                    {
+                      "mountPath": "/var/run/qrwty-secrets/sql-sessions--session-api",
+                      "name": "s-sql-sessions-session-api"
+                    }
+                  ]
+                }
+              ],
+              "maxRetries": 0,
+              "serviceAccountName": "qrwtya-migrate@<project>.iam.gserviceaccount.com",
+              "timeoutSeconds": "600",
+              "volumes": [
+                {
+                  "name": "s-identity-identity",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-identity-identity"
+                  }
+                },
+                {
+                  "name": "s-identity-owner-identity",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-identity-owner-identity"
+                  }
+                },
+                {
+                  "name": "s-owner-analytics",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-owner-analytics"
+                  }
+                },
+                {
+                  "name": "s-owner-billing",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-owner-billing"
+                  }
+                },
+                {
+                  "name": "s-owner-links",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-owner-links"
+                  }
+                },
+                {
+                  "name": "s-owner-sessions",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-owner-sessions"
+                  }
+                },
+                {
+                  "name": "s-postgres-admin",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-postgres-admin"
+                  }
+                },
+                {
+                  "name": "s-sql-analytics-account-api",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-sql-analytics--account-api"
+                  }
+                },
+                {
+                  "name": "s-sql-analytics-analytics-worker",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-sql-analytics--analytics-worker"
+                  }
+                },
+                {
+                  "name": "s-sql-billing-billing-api",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-sql-billing--billing-api"
+                  }
+                },
+                {
+                  "name": "s-sql-links-account-api",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-sql-links--account-api"
+                  }
+                },
+                {
+                  "name": "s-sql-links-link-api",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-sql-links--link-api"
+                  }
+                },
+                {
+                  "name": "s-sql-links-redirect-service",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-sql-links--redirect-service"
+                  }
+                },
+                {
+                  "name": "s-sql-sessions-session-api",
+                  "secret": {
+                    "items": [
+                      {
+                        "key": "latest",
+                        "path": "value"
+                      }
+                    ],
+                    "secretName": "qrwtya-sql-sessions--session-api"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "status": {
+          "completionTime": "2026-11-15T12:19:02.204845Z",
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-11-15T12:19:02.204845Z",
+              "message": "Execution completed successfully in 26.38s.",
+              "status": "True",
+              "type": "Completed"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:18:26.338741Z",
+              "message": "Provisioned imported containers.",
+              "status": "True",
+              "type": "ResourcesAvailable"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:18:51.590340Z",
+              "message": "Started deployed execution in 25.25s.",
+              "status": "True",
+              "type": "Started"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:18:26.069718Z",
+              "message": "Imported container image.",
+              "status": "True",
+              "type": "ContainerReady"
+            },
+            {
+              "lastTransitionTime": "2026-11-15T12:19:02.695599Z",
+              "message": "System will retry after 00:00 from lastTransitionTime for attempt 0.",
+              "reason": "ImmediateRetry",
+              "severity": "Info",
+              "status": "True",
+              "type": "Retry"
+            }
+          ],
+          "logUri": "https://console.cloud.google.com/logs/viewer?project=<project>&advancedFilter=resource.type%3D%22cloud_run_job%22%0Aresource.labels.job_name%3D%22qrwtya-migrate%22%0Aresource.labels.location%3D%22us-central1%22%0Alabels.%22run.googleapis.com/execution_name%22%3D%22qrwtya-migrate-hxs7p%22",
+          "observedGeneration": 1,
+          "startTime": "2026-11-15T12:18:35.821766Z",
+          "succeededCount": 1
+        }
+      },
+      "serviceName": "run.googleapis.com",
+      "status": {
+        "message": "Execution qrwtya-migrate-hxs7p has completed successfully."
+      }
+    },
+    "receiveTimestamp": "2026-11-15T12:19:03.182594718Z",
+    "resource": {
+      "labels": {
+        "job_name": "qrwtya-migrate",
+        "location": "us-central1",
+        "project_id": "<project>"
+      },
+      "type": "cloud_run_job"
+    },
+    "severity": "INFO",
+    "timestamp": "2026-11-15T12:19:02.710924Z"
+  }
+]

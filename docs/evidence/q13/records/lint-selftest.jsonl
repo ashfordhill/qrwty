@@ -1,0 +1,8 @@
+{"fault":"name","detected":true,"error":"L4 resource.google_compute_network.vpc: name = \"shared-vpc\" lacks the qrwtya- prefix"}
+{"fault":"var","detected":true,"error":"L3 resource.google_sql_database_instance.pg: undeclared var.sql_tierx"}
+{"fault":"local","detected":true,"error":"L3 locals@locals.tf:8: undeclared local.ca_mountx"}
+{"fault":"budget","detected":true,"error":"L5 google_billing_budget must not be created"}
+{"fault":"brace","detected":true,"error":"L1 secrets.tf: 1 unclosed bracket(s)"}
+{"fault":"pin","detected":true,"error":"L6 provider hashicorp/google is not pinned exactly (~> 8.8)"}
+{"fault":"secretver","detected":true,"error":"L5 resource.google_secret_manager_secret_version.pw: only Memorystore's public CA may be a version in state"}
+{"fault":"sqluser","detected":true,"error":"L4 resource.google_sql_user.admin: name = \"postgres\" lacks the qrwtya- prefix"}

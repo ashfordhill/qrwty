@@ -1,0 +1,103 @@
+{
+ "method": "Q13: spend computed from each billable resource's lifetime (cloud create and delete times, from\nCloud Audit Logs and the resources' createTime) at the requoted list prices (cost-quote.json).\nNot a billing figure: Cloud Billing reports lag and this project has no billing export.\nLifetimes run to the delete operation's completion (an upper bound).",
+ "rows": [
+  {
+   "resource": "Cloud SQL db-f1-micro",
+   "quantity": 1,
+   "hours": 1.15,
+   "usdPerHourEach": 0.0105,
+   "usd": 0.0121
+  },
+  {
+   "resource": "Cloud SQL 10 GiB storage",
+   "quantity": 1,
+   "hours": 1.15,
+   "usdPerHourEach": 0.002329,
+   "usd": 0.0027
+  },
+  {
+   "resource": "Valkey hot-routes node",
+   "quantity": 1,
+   "hours": 1.319,
+   "usdPerHourEach": 0.0318,
+   "usd": 0.042
+  },
+  {
+   "resource": "Valkey admission-cache node",
+   "quantity": 1,
+   "hours": 1.307,
+   "usdPerHourEach": 0.0318,
+   "usd": 0.0416
+  },
+  {
+   "resource": "PSC endpoints, hot-routes (2)",
+   "quantity": 2,
+   "hours": 1.319,
+   "usdPerHourEach": 0.01,
+   "usd": 0.0264
+  },
+  {
+   "resource": "PSC endpoints, admission-cache (2)",
+   "quantity": 2,
+   "hours": 1.307,
+   "usdPerHourEach": 0.01,
+   "usd": 0.0261
+  },
+  {
+   "resource": "Cloud NAT gateway and its IP",
+   "quantity": 1,
+   "hours": 1.13,
+   "usdPerHourEach": 0.0064,
+   "usd": 0.0072
+  },
+  {
+   "resource": "Redirect min instance (idle CPU and memory)",
+   "quantity": 1,
+   "hours": 0.771,
+   "usdPerHourEach": 0.0135,
+   "usd": 0.0104
+  },
+  {
+   "resource": "Worker pool instance",
+   "quantity": 1,
+   "hours": 0.771,
+   "usdPerHourEach": 0.042701,
+   "usd": 0.0329
+  },
+  {
+   "resource": "Worker pool second instance (P10)",
+   "quantity": 1,
+   "hours": 0.053,
+   "usdPerHourEach": 0.042701,
+   "usd": 0.0023
+  },
+  {
+   "resource": "Secret Manager versions (17, as if none were free)",
+   "quantity": 17,
+   "hours": 1.133,
+   "usdPerHourEach": 8.2e-05,
+   "usd": 0.0016
+  },
+  {
+   "resource": "Cloud Run job executions (5 migrate, 13 probe; 60 s each, 1 vCPU, 0.5 GiB)",
+   "usd": 0.0205
+  },
+  {
+   "resource": "Cloud Run service requests (about 1,700, 50 ms CPU each at request-based rates)",
+   "usd": 0.0021
+  },
+  {
+   "resource": "Artifact Registry storage (two images, about 0.45 GB, 1.4 h)",
+   "usd": 0.0001
+  },
+  {
+   "resource": "Pub/Sub (21 publishes, 20 dead letters, 11 archive objects), Cloud Storage, logging",
+   "usd": 0.0
+  },
+  {
+   "resource": "Web Risk lookups (6, inside the free 100,000)",
+   "usd": 0.0
+  }
+ ],
+ "totalUsd": 0.23
+}

@@ -12,6 +12,7 @@ import type { ModuleRequest, ModuleResponse } from "../../entry.ts";
 import type { Dependencies } from "../link-api-link-operations.slots.ts";
 import { notFound, problem } from "./contract.ts";
 import { type CreateContext, createLink } from "./create.ts";
+import { metadataTokenSource, reputationCredentials } from "./google-credentials.ts";
 import { parseKeyRing } from "./replay-seal.ts";
 import { webRiskReputation } from "./reputation.ts";
 import { testHooks } from "./test-hooks.ts";
@@ -66,6 +67,10 @@ export function linkOperationsFromEnvironment(
 			error instanceof Error && error.message.startsWith("Invalid") ? `: ${error.message}` : "";
 		throw new Error(`Unreadable credential link-replay-keys${message}`);
 	}
+	const token =
+		reputationCredentials(env.QRWTY_REPUTATION_CREDENTIALS) === "metadata"
+			? metadataTokenSource()
+			: undefined;
 	const failure = createFailureLog("link-api");
 	return linkOperations({
 		origin,
@@ -74,6 +79,7 @@ export function linkOperationsFromEnvironment(
 		reputation: (dependencies) =>
 			webRiskReputation(dependencies.reputationApi, {
 				onFailure: (error) => failure("reputation check", error),
+				token,
 			}),
 		onFailure: failure,
 	});

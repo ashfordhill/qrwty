@@ -1,0 +1,97 @@
+[
+ {
+  "secret": "qrwtya-postgres-admin",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "secret": "qrwtya-owner-analytics",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "secret": "qrwtya-owner-billing",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "secret": "qrwtya-owner-links",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "secret": "qrwtya-owner-sessions",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "secret": "qrwtya-identity-owner-identity",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "secret": "qrwtya-identity-identity",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "secret": "qrwtya-sql-analytics--account-api",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "secret": "qrwtya-sql-links--account-api",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "secret": "qrwtya-sql-analytics--analytics-worker",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "secret": "qrwtya-sql-billing--billing-api",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "secret": "qrwtya-sql-links--link-api",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "secret": "qrwtya-sql-links--redirect-service",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "secret": "qrwtya-sql-sessions--session-api",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "secret": "qrwtya-link-replay-keys",
+  "added": true,
+  "version": "1",
+  "error": null
+ },
+ {
+  "sqlUser": "postgres",
+  "operation": "UPDATE_USER",
+  "status": "DONE"
+ }
+]
