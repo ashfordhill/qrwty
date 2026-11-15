@@ -1,0 +1,177 @@
+{
+  "method": "source-loc-v2",
+  "parser": "rolldown@1.2.15",
+  "baselineCommit": "3f546c26578d6237ed032d7b19add2e938bc2387",
+  "finalCommit": "0647e4a44256e46d80a2898e62eed310348745cd",
+  "baselineManifestSha256": "f0eb002fcbf6008cbbde2f6320cbdd1b4b5148263e7d0a9f042cec335283e024",
+  "scopeSha256": "8721e79826610aa123b4bf4b5bcd67eb0c793809078bcbcb39e8597b36923a22",
+  "backend": {
+    "G0": 3572,
+    "R": 3548,
+    "C": 4998,
+    "D": 24,
+    "B": 8546,
+    "templateSharePercent": 41.52,
+    "identities": {
+      "R + C = B": true,
+      "G0 - R = D": true
+    },
+    "includedFiles": 84
+  },
+  "baselineSplit": {
+    "scaffolding": {
+      "files": 36,
+      "loc": 3495,
+      "byDirectory": {
+        "src/features": {
+          "files": 1,
+          "loc": 50
+        },
+        "src/modules": {
+          "files": 13,
+          "loc": 288
+        },
+        "src/processes": {
+          "files": 6,
+          "loc": 649
+        },
+        "src/runtime": {
+          "files": 16,
+          "loc": 2508
+        }
+      },
+      "slotsFiles": {
+        "files": 11,
+        "loc": 130
+      }
+    },
+    "stubBodies": {
+      "files": 11,
+      "loc": 77,
+      "allAreStubBodies": true,
+      "paths": [
+        "src/modules/account-api/account-api-link-analytics.ts",
+        "src/modules/account-api/account-api-my-links.ts",
+        "src/modules/analytics-worker/analytics-worker-click-aggregator.ts",
+        "src/modules/billing-api/billing-api-customer-billing.ts",
+        "src/modules/billing-api/billing-api-entitlements.ts",
+        "src/modules/billing-api/billing-api-payment-events.ts",
+        "src/modules/link-api/link-api-abuse-and-moderation.ts",
+        "src/modules/link-api/link-api-link-operations.ts",
+        "src/modules/redirect-service/redirect-service-resolve-and-redirect.ts",
+        "src/modules/session-api/session-api-api-forwarding.ts",
+        "src/modules/session-api/session-api-sign-in-flow.ts"
+      ]
+    },
+    "unclassified": {
+      "files": 0,
+      "loc": 0
+    }
+  },
+  "openWork": {
+    "stubBodies": {
+      "total": 11,
+      "unwritten": 0,
+      "unwrittenPaths": []
+    },
+    "hooks": {
+      "files": [],
+      "reportHooks": []
+    },
+    "unreachedIncludedSource": [
+      {
+        "path": "src/features/service-resources.ts",
+        "loc": 50
+      }
+    ]
+  },
+  "ui": {
+    "files": 0,
+    "lines": 0,
+    "byExtension": {},
+    "webDirectoryAtFinal": "present (count with ui-loc-v1)"
+  },
+  "support": {
+    "scope": "app/ at the final commit; source-loc-v2 exclusions by category",
+    "categories": {
+      "deployment-config": {
+        "files": 8,
+        "lines": 727,
+        "byExtension": {
+          ".dockerignore": 4,
+          "Dockerfile": 31,
+          ".yaml": 160,
+          ".lock": 288,
+          ".conf": 18,
+          ".json": 226
+        }
+      },
+      "package-and-build-config": {
+        "files": 6,
+        "lines": 2166,
+        "byExtension": {
+          ".gitignore": 5,
+          ".json": 64,
+          ".yaml": 2097
+        }
+      },
+      "generator-metadata": {
+        "files": 5,
+        "lines": 5,
+        "byExtension": {
+          ".json": 5
+        }
+      },
+      "docs": {
+        "files": 1,
+        "lines": 15,
+        "byExtension": {
+          ".md": 15
+        }
+      },
+      "other": {
+        "files": 21,
+        "lines": 5042,
+        "byExtension": {
+          ".json": 21,
+          ".ts": 5021
+        }
+      },
+      "generated-sql": {
+        "files": 9,
+        "lines": 30,
+        "byExtension": {
+          ".sql": 30
+        }
+      },
+      "product-sql": {
+        "files": 8,
+        "lines": 1467,
+        "byExtension": {
+          ".sql": 1467
+        }
+      },
+      "scripts": {
+        "files": 11,
+        "lines": 958,
+        "byExtension": {
+          ".mjs": 958
+        }
+      },
+      "configuration-source": {
+        "files": 6,
+        "lines": 236,
+        "byExtension": {
+          ".ts": 236
+        }
+      },
+      "tests": {
+        "files": 1,
+        "lines": 63,
+        "byExtension": {
+          ".ts": 63
+        }
+      }
+    }
+  }
+}

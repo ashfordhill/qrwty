@@ -2,11 +2,67 @@
 
 [qrwty](https://qrwty.io) grew out of a [brainstorm about QR-code tracking](https://github.com/ashfordhill/brainstorm/blob/main/archives/QR%20Code%20Tracking/README.md), which spawned from a [local neighborhood project](https://github.com/ashfordhill/qr-code-tracking). The original niche use case involved hardware: I wanted to record where I installed QR codes using my phone's GPS while I was running around placing posters & QR codes in random spots.
 
+- [Results after finishing A (2026-11-15)](#results-after-finishing-a-2026-11-15)
 - [Results](#results)
 - [Business value?](#business-value)
   - [What about custom hardware?](#what-about-custom-hardware)
 - [Research notes](#research-notes)
 - [Future moves](#future-moves)
+
+## Results after finishing A (2026-11-15)
+
+After the wind-down, A was regenerated from Jeeves `0aea8e7` (A1) and finished in A2–A7: sessions,
+redirect, analytics, abuse controls, billing in Stripe test mode, and a UI. It runs at
+[qrwty.io](https://qrwty.io). B is as it was at the wind-down. Backend only: the UI is excluded.
+
+**A now vs B** (backend source lines, source-loc-v2)
+
+| Backend area | A generated (R) | A hand-written (C) | A total | B hand-written |
+| --- | ---: | ---: | ---: | ---: |
+| Platform | 2,558 | 0 | 2,558 | 1,821 |
+| Process entry points and wiring | 807 | 0 | 807 | 985 |
+| Sessions and accounts | 51 | 1,385 | 1,436 | 1,773 |
+| Links | 19 | 1,286 | 1,305 | 1,181 |
+| Redirect | 18 | 324 | 342 | 719 |
+| Analytics | 35 | 380 | 415 | 1,893 |
+| Abuse | 15 | 494 | 509 | 476 |
+| Billing | 45 | 1,129 | 1,174 | not built |
+| Edge (A: the Worker, not counted) | – | – | – | 513 |
+| **Total** | **3,548** | **4,998** | **8,546** | **9,361** |
+
+- **Scope.** A has billing (1,129 lines written); B doesn't. Without it, A wrote 3,869. UI is
+  excluded on both sides: A's is in `web/`, and B built none. A's edge is the Cloudflare Worker
+  (`deploy/cloudflare/src`, 418 lines, 217 of them from before A2), outside `app/` and not counted.
+- **Template share: 41.52%**, with all 11 stubs written. G0 3,572 = 3,495 scaffolding + 77 stub
+  bodies; R 3,548, D 24.
+- **Helpers and QG fixes.** For the same diagram, Jeeves `0aea8e7` generates 646 more lines than
+  `4e87f97`. A used all four helpers: `declareSettings` in all 11 stubs, `defineRoutes` for 9 route
+  tables, `idempotent` for owned create, claim and checkout, and `transaction` for edit and delete.
+  B wrote its own: a transaction wrapper (118), idempotency (108) and a settings registry (1,752,
+  outside its 9,361). Where a helper didn't fit, A wrote its own code: the guest create's sealed
+  replay (AG-18), click dedup in SQL (AG-30) and per-copy admission counts (AG-31). The QG fixes
+  changed the generated runtime, and A1 adapted A's IaC to QG28, QG29 and QG34; A1's only
+  product-code change was QL05's settings. Lines saved weren't measured.
+- **Tests · SQL · infrastructure** (not in the totals): A 5,058 · 1,497 (1,342 written) · 3,086
+  (2,746 without JSON); B 11,058 · 476 · 13,193 (8,298 without JSON).
+- **How it was counted.** A: the committed runner ([`tools/loc`](tools/loc/README.md),
+  source-loc-v2, Jeeves `4e87f97`) up to `0647e4a`. Its pinned files are byte-identical at
+  `0aea8e7`. The runner refuses `3179494` as the baseline, because Q06's code is in it. So the
+  baseline is the clean `0aea8e7` export of the same input: A1's fresh export, each file matching
+  `3179494`'s manifest by SHA-256, committed in a scratch clone. A's areas follow tiles and modules;
+  B's are S02's (`f2fb3ce`). source-loc-v2's name rule drops A's `settings.ts` files (141
+  generated, 93 written) and B's `config/` (1,752; B is 11,113 with it).
+  [A8 evidence](docs/evidence/a8/checks.md).
+
+**A v1 vs A now**
+
+| | Jeeves commit | Generated (G0 / R) | Hand-written (C) | Total (B) | Template share | Features covered |
+| --- | --- | --- | ---: | ---: | ---: | --- |
+| A v1 (after Q06) | `4e87f97` | 2,926 (2,871 + 55) / 2,925 | 720 | 3,645 | 80.25% | Guest link creation only (1 of 11 stubs) |
+| A now (A7, `0647e4a`) | `0aea8e7` + A1–A7 | 3,572 (3,495 + 77) / 3,548 | 4,998 | 8,546 | 41.52% | All 11 stubs: guest links, sign-in and sessions, my links, redirect with durable clicks, analytics, abuse controls, billing (Stripe test mode); a UI, not counted |
+
+At A1 (`3179494`), before A2–A7, A was R 3,569, C 761, B 4,330: 82.42%. The share falls as stubs
+are written, as the run's limitations predicted.
 
 ## Results
 
@@ -107,10 +163,11 @@ with anonymous quick links, individual free/paid accounts, management and durabl
 a real cloud deployment and two comparable implementations: [with Jeeves](docs/plans/production-build/units.md) and
 [without Jeeves](docs/plans/production-build/baseline-units.md).
 
-**Status: stopped (run `qrwty-r1-20261114`, owner wind-down 2026-11-15). Both arms are stopped
-and staging is torn down:** B's b.qrwty.io and A's one live deploy were recorded, then removed, and
-the GCP project runs nothing (only the budget, B's state bucket and its images are kept). The
-outcome is in [Results](#results). The
+**Status: A is finished and live at [qrwty.io](https://qrwty.io), with a UI; B is torn down.** Run
+`qrwty-r1-20261114` was wound down on 2026-11-15 ([Results](#results)): B's staging at b.qrwty.io
+and A's one live deploy were recorded, then removed. A was then regenerated from Jeeves `0aea8e7`
+(A1) and finished in A2–A7 on the GCP trial credit, with Stripe in test mode only
+([Results after finishing A](#results-after-finishing-a-2026-11-15)). The
 [neutral pack v1.6](docs/benchmarks/neutral-pack/v1.6/README.md) holds the shared inputs both builds
 used. Q05 froze the generated baseline in [`app/`](app/README.md) (commit `33d50e9`, Jeeves
 revision 84, frozen generator Jeeves `4e87f97`): it builds and starts. Q06 wrote one stub body and
@@ -118,10 +175,11 @@ its product SQL, and Q13 deployed A's application once and tore it down. The sav
 diagram and its export are linked below. The Excalidraw drawing after them is a proposed
 explanation, not a saved Jeeves diagram or runtime verification.
 
-**Live sites:** [qrwty.io](https://qrwty.io) serves a placeholder and the static
-[versions pages](https://qrwty.io/versions/) from a Cloudflare Worker (Free plan); redeploy with
-`deploy/cloudflare/deploy.sh` ([details](deploy/cloudflare/README.md)). `b.qrwty.io` now redirects
-to B's record at `/versions/b/`.
+**Live sites:** [qrwty.io](https://qrwty.io) is A's app. A Cloudflare Worker (Free plan) serves the
+UI from `web/` and the static [versions pages](https://qrwty.io/versions/), and forwards `/api`,
+`/auth` and short links to A's services on Cloud Run. Redeploy A with `infra/gcp/scripts/redeploy.sh`
+([details](infra/README.md#redeploy)), or only the Worker with `deploy/cloudflare/deploy.sh`
+([details](deploy/cloudflare/README.md)). `b.qrwty.io` redirects to B's record at `/versions/b/`.
 
 The [local-to-cloud contract](docs/plans/production-build/local-to-cloud.md) requires production
 containers, real GCP adapters, migrations and infrastructure definitions during the local build.

@@ -1,0 +1,3 @@
+{"runner": "~/github/qrwty/.scratch/A8/loc-runner-4e87f97", "jeeves": "4e87f97bdc8ce590edd479e16308c892b9049554", "verified": true, "parserSmoke": "ok"}
+Error: Baseline source does not match its generated manifest: src/modules/link-api/link-api-link-operations.ts
+exit 1

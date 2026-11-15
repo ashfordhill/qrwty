@@ -2236,3 +2236,51 @@ records. Status: **done**; A7b (below) names three follow-ups.
 - **Elapsed.** 21:49:53Z to about 22:40Z on the host clock (about 50 minutes).
 - **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status, a
   memory index); it was ignored.
+
+## A8: README tables for the finished arm A, 2026-11-15
+
+Reporting unit, A8 attempt 1, from QRWTY `74139d3` (A7 is `0647e4a`). No test or oracle was rerun,
+no cloud was used, and `~/.config/qrwty/` was not read. B's repository was only read. Full record:
+[A8 checks](evidence/a8/checks.md).
+
+- **Changed.**
+  - Root `README.md`: a new section, **Results after finishing A (2026-11-15)**, above the
+    unchanged Results section, with a TOC entry. It holds two tables:
+    - A now vs B, by backend area;
+    - A v1 vs A now.
+  - The status and live-sites lines now say A is live at qrwty.io with a UI and B is torn down.
+  - New `docs/evidence/a8/`: the runner's output, the area grouping (`areas.py`, `areas.json`)
+    and S02's counter rows for `0647e4a` and `a0ddd52`.
+- **Runner.** The committed `tools/loc` runner (source-loc-v2, Jeeves `4e87f97`), rebuilt in
+  `.scratch/A8/` under Node 24.21.0 and verified. Its pinned files are byte-identical at `0aea8e7`,
+  so the fallback copy would be the same runner, and none was built.
+  - With `3179494` as the baseline, the runner refuses: the baseline doesn't match its manifest,
+    because Q06's merged stub and its `link-operations/` files are already in A1's commit.
+  - The baseline used instead is A1's fresh `0aea8e7` export of revision 84. Its manifest is
+    identical to `3179494`'s, and all 93 files match it by SHA-256. It was committed in a scratch
+    clone, which holds the `app/` tree `dc6f559e…980f`.
+- **Numbers.**
+  - A now (`0647e4a`): G0 3,572 = 3,495 + 77, R 3,548, C 4,998, D 24, B 8,546, **41.52%**, with all
+    11 stubs written. C by area:
+    - sessions and accounts 1,385, links 1,286, billing 1,129, abuse 494, analytics 380, redirect 324;
+    - platform and process entry points 0.
+  - Tests 5,058; SQL 1,497 (1,342 written); infrastructure 3,086. The Worker's source is 418 lines
+    (217 before A2), outside `app/` and not counted.
+  - A1 alone (`3179494`): C 761, B 4,330, 82.42%.
+  - B: S02's numbers, unchanged.
+- **Findings.**
+  - The runner can't take an update commit as its baseline once stub bodies are written. A later
+    regeneration needs the clean export committed (or kept) for counting.
+  - source-loc-v2's `settings` name rule drops A's `settings.ts` files: 141 generated lines and 93
+    written ones. This is the same rule that drops B's `config/`.
+  - The README's "Source and effort measurement" tables still describe the run at its wind-down
+    (no `web/`, A at `a6f982b`), and `docs/benchmarks/status.json` is still stale. Neither was in
+    this unit's scope.
+- **Read.**
+  - The packet, `AGENTS.md`, and this file (S02, A1–A7).
+  - The README, `tools/loc/`, and the S02 and A1 evidence.
+  - Jeeves `git log` and `git show` (read-only).
+  - In B: the backend files that correspond to A's helpers, at `f2fb3ce`.
+- **Elapsed.** 22:35:29Z to 22:47Z on the host clock (about 12 minutes).
+- **Foreign context.** The session started with foreign Jeeves context (`AGENTS.md`, Git status and
+  a memory index); it was ignored.

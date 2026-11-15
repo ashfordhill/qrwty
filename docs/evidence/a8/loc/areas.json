@@ -1,0 +1,206 @@
+{
+ "report": {
+  "baselineCommit": "3f546c26578d6237ed032d7b19add2e938bc2387",
+  "finalCommit": "0647e4a44256e46d80a2898e62eed310348745cd"
+ },
+ "byArea": {
+  "abuse": {
+   "files": 6,
+   "G0": 18,
+   "R": 15,
+   "C": 494,
+   "D": 3,
+   "B": 509
+  },
+  "analytics": {
+   "files": 6,
+   "G0": 37,
+   "R": 35,
+   "C": 380,
+   "D": 2,
+   "B": 415
+  },
+  "billing": {
+   "files": 13,
+   "G0": 52,
+   "R": 45,
+   "C": 1129,
+   "D": 7,
+   "B": 1174
+  },
+  "links": {
+   "files": 14,
+   "G0": 22,
+   "R": 19,
+   "C": 1286,
+   "D": 3,
+   "B": 1305
+  },
+  "platform": {
+   "files": 17,
+   "G0": 2558,
+   "R": 2558,
+   "C": 0,
+   "D": 0,
+   "B": 2558
+  },
+  "process-entry-points": {
+   "files": 8,
+   "G0": 807,
+   "R": 807,
+   "C": 0,
+   "D": 0,
+   "B": 807
+  },
+  "redirect": {
+   "files": 4,
+   "G0": 20,
+   "R": 18,
+   "C": 324,
+   "D": 2,
+   "B": 342
+  },
+  "sessions-and-accounts": {
+   "files": 16,
+   "G0": 58,
+   "R": 51,
+   "C": 1385,
+   "D": 7,
+   "B": 1436
+  }
+ },
+ "total": {
+  "files": 84,
+  "G0": 3572,
+  "R": 3548,
+  "B": 8546,
+  "C": 4998,
+  "D": 24
+ },
+ "sql": {
+  "files": {
+   "infra/postgres/analytics/000-foundation.sql": {
+    "ownership": "generated-scaffold",
+    "baselineLines": 2,
+    "finalLines": 2,
+    "baselineIsPrefix": true,
+    "written": 0
+   },
+   "infra/postgres/analytics/050-jeeves-idempotency.sql": {
+    "ownership": "generated-scaffold",
+    "baselineLines": 5,
+    "finalLines": 5,
+    "baselineIsPrefix": true,
+    "written": 0
+   },
+   "infra/postgres/analytics/modules/analytics-worker-click-aggregator.sql": {
+    "ownership": "generated-extension",
+    "baselineLines": 16,
+    "finalLines": 222,
+    "baselineIsPrefix": true,
+    "written": 206
+   },
+   "infra/postgres/billing/000-foundation.sql": {
+    "ownership": "generated-scaffold",
+    "baselineLines": 2,
+    "finalLines": 2,
+    "baselineIsPrefix": true,
+    "written": 0
+   },
+   "infra/postgres/billing/050-jeeves-idempotency.sql": {
+    "ownership": "generated-scaffold",
+    "baselineLines": 5,
+    "finalLines": 5,
+    "baselineIsPrefix": true,
+    "written": 0
+   },
+   "infra/postgres/billing/modules/billing-api-customer-billing.sql": {
+    "ownership": "generated-extension",
+    "baselineLines": 15,
+    "finalLines": 300,
+    "baselineIsPrefix": true,
+    "written": 285
+   },
+   "infra/postgres/billing/modules/billing-api-entitlements.sql": {
+    "ownership": "generated-extension",
+    "baselineLines": 15,
+    "finalLines": 18,
+    "baselineIsPrefix": true,
+    "written": 3
+   },
+   "infra/postgres/billing/modules/billing-api-payment-events.sql": {
+    "ownership": "generated-extension",
+    "baselineLines": 15,
+    "finalLines": 18,
+    "baselineIsPrefix": true,
+    "written": 3
+   },
+   "infra/postgres/identity/000-foundation.sql": {
+    "ownership": "generated-scaffold",
+    "baselineLines": 2,
+    "finalLines": 2,
+    "baselineIsPrefix": true,
+    "written": 0
+   },
+   "infra/postgres/links/000-foundation.sql": {
+    "ownership": "generated-scaffold",
+    "baselineLines": 2,
+    "finalLines": 2,
+    "baselineIsPrefix": true,
+    "written": 0
+   },
+   "infra/postgres/links/050-jeeves-idempotency.sql": {
+    "ownership": "generated-scaffold",
+    "baselineLines": 5,
+    "finalLines": 5,
+    "baselineIsPrefix": true,
+    "written": 0
+   },
+   "infra/postgres/links/modules/link-api-abuse-and-moderation.sql": {
+    "ownership": "generated-extension",
+    "baselineLines": 17,
+    "finalLines": 237,
+    "baselineIsPrefix": true,
+    "written": 220
+   },
+   "infra/postgres/links/modules/link-api-link-operations.sql": {
+    "ownership": "generated-extension",
+    "baselineLines": 17,
+    "finalLines": 469,
+    "baselineIsPrefix": true,
+    "written": 452
+   },
+   "infra/postgres/sessions/000-foundation.sql": {
+    "ownership": "generated-scaffold",
+    "baselineLines": 2,
+    "finalLines": 2,
+    "baselineIsPrefix": true,
+    "written": 0
+   },
+   "infra/postgres/sessions/050-jeeves-idempotency.sql": {
+    "ownership": "generated-scaffold",
+    "baselineLines": 5,
+    "finalLines": 5,
+    "baselineIsPrefix": true,
+    "written": 0
+   },
+   "infra/postgres/sessions/modules/session-api-api-forwarding.sql": {
+    "ownership": "generated-extension",
+    "baselineLines": 15,
+    "finalLines": 15,
+    "baselineIsPrefix": true,
+    "written": 0
+   },
+   "infra/postgres/sessions/modules/session-api-sign-in-flow.sql": {
+    "ownership": "generated-extension",
+    "baselineLines": 15,
+    "finalLines": 188,
+    "baselineIsPrefix": true,
+    "written": 173
+   }
+  },
+  "total": 1497,
+  "generatedHeadersAndFoundation": 155,
+  "written": 1342
+ }
+}
